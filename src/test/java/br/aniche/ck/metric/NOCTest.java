@@ -10,7 +10,7 @@ import br.aniche.ck.CKReport;
 public class NOCTest {
 
 	@Test
-	public void should_detect_simple_inheritance() {
+	public void should_detect_children() {
 		
 		CKReport report = new CK().calculate("/Users/mauricioaniche/workspace/ck/src/test/p1");
 

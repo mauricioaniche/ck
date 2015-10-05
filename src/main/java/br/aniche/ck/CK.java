@@ -13,6 +13,7 @@ import br.aniche.ck.metric.ClassInfo;
 import br.aniche.ck.metric.DIT;
 import br.aniche.ck.metric.Metric;
 import br.aniche.ck.metric.NOC;
+import br.aniche.ck.metric.WMC;
 
 public class CK {
 
@@ -83,7 +84,7 @@ public class CK {
 	}
 
 	private List<Metric> metrics() {
-		return Arrays.asList(new DIT(), new NOC());
+		return Arrays.asList(new DIT(), new NOC(), new WMC());
 	}
 	
 }

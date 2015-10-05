@@ -6,6 +6,7 @@ public class CKNumber {
 	private int dit;
 	private String className;
 	private int noc;
+	private int wmc;
 
 	public CKNumber(String file, String className) {
 		this.file = file;
@@ -53,11 +54,6 @@ public class CKNumber {
 		this.file = file;
 	}
 
-	@Override
-	public String toString() {
-		return "CalculatedCK [file=" + file + ", dit=" + dit + "]";
-	}
-
 	public String getClassName() {
 		return className;
 	}
@@ -70,5 +66,18 @@ public class CKNumber {
 		return noc;
 	}
 
+	public void setWmc(int cc) {
+		this.wmc = cc;
+	}
 	
+	public int getWmc() {
+		return wmc;
+	}
+
+	@Override
+	public String toString() {
+		return "CKNumber [file=" + file + ", dit=" + dit + ", className=" + className + ", noc=" + noc + ", wmc=" + wmc
+				+ "]";
+	}
+
 }
