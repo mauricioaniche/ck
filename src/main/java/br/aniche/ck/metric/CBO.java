@@ -47,7 +47,9 @@ public class CBO extends ASTVisitor implements Metric {
 	}
 	
 	public boolean visit(ReturnStatement node) {
-		coupleTo(node.getExpression().resolveTypeBinding());
+		if(node.getExpression()!=null) {
+			coupleTo(node.getExpression().resolveTypeBinding());
+		}
 		return super.visit(node);
 	}
 
@@ -125,6 +127,8 @@ public class CBO extends ASTVisitor implements Metric {
 	}
 	
 	private void coupleTo(ITypeBinding binding) {
+		if(binding==null) return;
+		
 		String type = binding.getQualifiedName();
 		if(!binding.isPrimitive()) coupling.add(type.replace("[]", ""));
 	}

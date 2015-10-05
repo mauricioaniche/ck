@@ -18,6 +18,7 @@ public class FileUtils {
 	private static void getAllDirs(String path, ArrayList<String> dirs) {
 		
 		File f = new File(path);
+		if(f.getName().equals(".git")) return;
 		
 		for(File inside : f.listFiles()) {
 			if(inside.isDirectory()) {
@@ -40,6 +41,7 @@ public class FileUtils {
 	private static void getAllJavaFiles(String path, ArrayList<String> files) {
 		
 		File f = new File(path);
+		if(f.getName().equals(".git")) return;
 		
 		for(File inside : f.listFiles()) {
 			if(inside.isDirectory()) {

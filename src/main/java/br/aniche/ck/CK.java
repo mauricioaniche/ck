@@ -45,8 +45,8 @@ public class CK {
 			ClassInfo info = new ClassInfo();
 			cu.accept(info);
 			
-			report.add(new CKNumber(file, info.getClassName()));
-			
+			if(info.getClassName()!=null)
+				report.add(new CKNumber(file, info.getClassName()));
 		}
 	}
 
@@ -74,6 +74,8 @@ public class CK {
 		try {
 			CompilationUnit cu = storage.get(file);
 			CKNumber result = report.get(file);
+			
+			if(cu==null || result == null) return;
 			
 			for(Metric visitor : metrics()) {
 				visitor.execute(cu, report);
