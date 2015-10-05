@@ -1,10 +1,11 @@
 package br.aniche.ck;
 
-public class CalculatedCK {
+public class CKNumber {
 
 	private String file;
+	private int dit;
 
-	public CalculatedCK(String file) {
+	public CKNumber(String file) {
 		this.file = file;
 	}
 	
@@ -28,7 +29,7 @@ public class CalculatedCK {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		CalculatedCK other = (CalculatedCK) obj;
+		CKNumber other = (CKNumber) obj;
 		if (file == null) {
 			if (other.file != null)
 				return false;
@@ -36,6 +37,24 @@ public class CalculatedCK {
 			return false;
 		return true;
 	}
+
+	public int getDit() {
+		return dit;
+	}
+
+	public void setDit(int dit) {
+		this.dit = dit;
+	}
+
+	public void setFile(String file) {
+		this.file = file;
+	}
+
+	@Override
+	public String toString() {
+		return "CalculatedCK [file=" + file + ", dit=" + dit + "]";
+	}
+
 
 	
 }

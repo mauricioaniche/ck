@@ -5,33 +5,39 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
-import br.aniche.ck.CalculatedCK;
+import br.aniche.ck.CKNumber;
 
 public class DIT extends ASTVisitor implements Metric {
 
-	private CalculatedCK result;
+	int dit = 0;
 
 	@Override
 	public boolean visit(TypeDeclaration node) {
 		ITypeBinding binding = node.resolveBinding();
-		
-        if( binding.getSuperclass() != null ) {
-//        	System.out.println("Pai: " + binding.getSuperclass().getQualifiedName());
-	        ITypeBinding avo = binding.getSuperclass().getSuperclass();
-			if( avo != null ) {
-//	        	System.out.println(avo);
-//	        	System.out.println("avô: " + binding.getSuperclass().getSuperclass().getBinaryName());
-	        }
-        }
-		
+		calculate(binding);
+
 		return super.visit(node);
 	}
 
+	private void calculate(ITypeBinding binding) {
+		ITypeBinding father = binding.getSuperclass();
+		if (father != null) {
+			String fatherName = father.getQualifiedName();
+			if (fatherName.endsWith("Object")) return;
+			dit++;
+
+			calculate(father);
+		}
+
+	}
+
 	@Override
-	public void execute(CompilationUnit cu, CalculatedCK result) {
-		
-		this.result = result;
+	public void execute(CompilationUnit cu) {
 		cu.accept(this);
-		
+	}
+
+	@Override
+	public void setResult(CKNumber result) {
+		result.setDit(dit);
 	}
 }

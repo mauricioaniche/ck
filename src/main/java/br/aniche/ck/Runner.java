@@ -1,8 +1,5 @@
 package br.aniche.ck;
 
-import java.util.Set;
-
-
 public class Runner {
 
 	public static void main(String[] args) {
@@ -10,9 +7,9 @@ public class Runner {
 //		String path = args[0];
 		String path = "/Users/mauricioaniche/workspace/metricminer2/";
 		
-		Set<CalculatedCK> results = new CK().parseAll(path);
+		CKReport report = new CK().calculate(path);
 		
-		for(CalculatedCK result : results) {
+		for(CKNumber result : report.all()) {
 			System.out.println(result.getFile());
 		}
 

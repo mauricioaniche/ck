@@ -1,10 +1,8 @@
 package br.aniche.ck;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.AST;
@@ -16,13 +14,13 @@ import br.aniche.ck.metric.Metric;
 
 public class CK {
 
-	private HashSet<CalculatedCK> results;
+	private CKReport report;
 
 	public CK() {
-		this.results = new HashSet<CalculatedCK>();
+		this.report = new CKReport();
 	}
 	
-	public Set<CalculatedCK> parseAll(String path) {
+	public CKReport calculate(String path) {
 
 		Storage storage = generateASTs(path);
 		
@@ -30,7 +28,7 @@ public class CK {
 			calculateMetricsIn(file, storage);
 		}
 		
-		return results;
+		return report;
 	}
 
 	private Storage generateASTs(String path) {
@@ -57,13 +55,14 @@ public class CK {
 		try {
 			CompilationUnit cu = storage.get(file);
 			
-			CalculatedCK result = new CalculatedCK(file);
+			CKNumber result = new CKNumber(file);
 			
 			for(Metric visitor : metrics()) {
-				visitor.execute(cu, result);
+				visitor.execute(cu);
+				visitor.setResult(result);
 			}
 			
-			results.add(result);
+			report.add(result);
 		} catch(Exception e) {
 			// just ignore... sorry!
 			// later on: log

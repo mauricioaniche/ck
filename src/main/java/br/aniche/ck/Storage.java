@@ -18,7 +18,6 @@ public class Storage extends FileASTRequestor {
 	@Override
 	public void acceptAST(String sourceFilePath, 
 			CompilationUnit compilationUnit) {
-
 		this.cus.put(sourceFilePath, compilationUnit);	
 	}	
 	
