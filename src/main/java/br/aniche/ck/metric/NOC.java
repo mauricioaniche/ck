@@ -8,37 +8,29 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
 import br.aniche.ck.CKNumber;
 import br.aniche.ck.CKReport;
 
-public class DIT extends ASTVisitor implements Metric {
+public class NOC extends ASTVisitor implements Metric {
 
-	int dit = 1; // Object is the father of everyone!
+	private CKReport report;
 
 	@Override
 	public boolean visit(TypeDeclaration node) {
 		ITypeBinding binding = node.resolveBinding();
-		calculate(binding);
-
-		return super.visit(node);
-	}
-
-	private void calculate(ITypeBinding binding) {
 		ITypeBinding father = binding.getSuperclass();
-		if (father != null) {
-			String fatherName = father.getQualifiedName();
-			if (fatherName.endsWith("Object")) return;
-			dit++;
-
-			calculate(father);
+		if(father!=null) {
+			CKNumber fatherCk = report.getByClassName(father.getBinaryName());
+			if(fatherCk!=null) fatherCk.incNoc();
 		}
 
+		return false;
 	}
 
 	@Override
 	public void execute(CompilationUnit cu, CKReport report) {
+		this.report = report;
 		cu.accept(this);
 	}
 
 	@Override
 	public void setResult(CKNumber result) {
-		result.setDit(dit);
 	}
 }

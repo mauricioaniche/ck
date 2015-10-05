@@ -26,7 +26,7 @@ public class CKReport {
 
 	public CKNumber getByClassName(String name) {
 		for(CKNumber ck : all()) {
-			if(ck.getFile().endsWith(name)) return ck;
+			if(ck.getClassName().equals(name)) return ck;
 		}
 		
 		return null;

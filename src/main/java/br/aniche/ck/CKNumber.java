@@ -4,9 +4,12 @@ public class CKNumber {
 
 	private String file;
 	private int dit;
+	private String className;
+	private int noc;
 
-	public CKNumber(String file) {
+	public CKNumber(String file, String className) {
 		this.file = file;
+		this.className = className;
 	}
 	
 	public String getFile() {
@@ -55,6 +58,17 @@ public class CKNumber {
 		return "CalculatedCK [file=" + file + ", dit=" + dit + "]";
 	}
 
+	public String getClassName() {
+		return className;
+	}
+
+	public void incNoc() {
+		this.noc++;
+	}
+	
+	public int getNoc() {
+		return noc;
+	}
 
 	
 }

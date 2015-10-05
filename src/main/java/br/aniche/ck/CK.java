@@ -9,8 +9,10 @@ import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
+import br.aniche.ck.metric.ClassInfo;
 import br.aniche.ck.metric.DIT;
 import br.aniche.ck.metric.Metric;
+import br.aniche.ck.metric.NOC;
 
 public class CK {
 
@@ -23,12 +25,25 @@ public class CK {
 	public CKReport calculate(String path) {
 
 		Storage storage = generateASTs(path);
+		createEmptyResults(storage);
 		
 		for(String file : storage.keys()) {
 			calculateMetricsIn(file, storage);
 		}
 		
 		return report;
+	}
+
+	private void createEmptyResults(Storage storage) {
+		for(String file : storage.keys()) {
+			
+			CompilationUnit cu = storage.get(file);
+			ClassInfo info = new ClassInfo();
+			cu.accept(info);
+			
+			report.add(new CKNumber(file, info.getClassName()));
+			
+		}
 	}
 
 	private Storage generateASTs(String path) {
@@ -54,15 +69,13 @@ public class CK {
 	private void calculateMetricsIn(String file, Storage storage) {
 		try {
 			CompilationUnit cu = storage.get(file);
-			
-			CKNumber result = new CKNumber(file);
+			CKNumber result = report.get(file);
 			
 			for(Metric visitor : metrics()) {
-				visitor.execute(cu);
+				visitor.execute(cu, report);
 				visitor.setResult(result);
 			}
 			
-			report.add(result);
 		} catch(Exception e) {
 			// just ignore... sorry!
 			// later on: log
@@ -70,7 +83,7 @@ public class CK {
 	}
 
 	private List<Metric> metrics() {
-		return Arrays.asList(new DIT());
+		return Arrays.asList(new DIT(), new NOC());
 	}
 	
 }
