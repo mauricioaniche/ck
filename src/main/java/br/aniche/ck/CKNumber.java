@@ -7,6 +7,7 @@ public class CKNumber {
 	private String className;
 	private int noc;
 	private int wmc;
+	private int cbo;
 
 	public CKNumber(String file, String className) {
 		this.file = file;
@@ -77,7 +78,15 @@ public class CKNumber {
 	@Override
 	public String toString() {
 		return "CKNumber [file=" + file + ", dit=" + dit + ", className=" + className + ", noc=" + noc + ", wmc=" + wmc
-				+ "]";
+				+ ", cbo=" + cbo + "]";
+	}
+
+	public int getCbo() {
+		return cbo;
+	}
+
+	public void setCbo(int cbo) {
+		this.cbo = cbo;
 	}
 
 }

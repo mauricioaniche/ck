@@ -9,6 +9,7 @@ import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
+import br.aniche.ck.metric.CBO;
 import br.aniche.ck.metric.ClassInfo;
 import br.aniche.ck.metric.DIT;
 import br.aniche.ck.metric.Metric;
@@ -84,7 +85,7 @@ public class CK {
 	}
 
 	private List<Metric> metrics() {
-		return Arrays.asList(new DIT(), new NOC(), new WMC());
+		return Arrays.asList(new DIT(), new NOC(), new WMC(), new CBO());
 	}
 	
 }
