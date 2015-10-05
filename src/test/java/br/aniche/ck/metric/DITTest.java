@@ -15,10 +15,10 @@ public class DITTest {
 		CKReport report = new CK().calculate("/Users/mauricioaniche/workspace/ck/src/test/p1");
 
 		CKNumber a = report.getByClassName("A.java");
-		Assert.assertEquals(0, a.getDit());
+		Assert.assertEquals(1, a.getDit());
 		CKNumber b = report.getByClassName("B.java");
-		Assert.assertEquals(1, b.getDit());
+		Assert.assertEquals(2, b.getDit());
 		CKNumber c = report.getByClassName("C.java");
-		Assert.assertEquals(2, c.getDit());
+		Assert.assertEquals(3, c.getDit());
 	}
 }

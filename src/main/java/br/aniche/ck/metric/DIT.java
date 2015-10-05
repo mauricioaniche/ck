@@ -9,7 +9,7 @@ import br.aniche.ck.CKNumber;
 
 public class DIT extends ASTVisitor implements Metric {
 
-	int dit = 0;
+	int dit = 1; // Object is the father of everyone!
 
 	@Override
 	public boolean visit(TypeDeclaration node) {
