@@ -3,6 +3,7 @@ package cbo;
 import dit.A;
 import dit.B;
 import dit.C;
+import dit.C2;
 import wmc.CC1;
 
 public class Coupling1 {

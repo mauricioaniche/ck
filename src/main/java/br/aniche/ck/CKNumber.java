@@ -8,6 +8,8 @@ public class CKNumber {
 	private int noc;
 	private int wmc;
 	private int cbo;
+	private int lcom;
+	private int rfc;
 
 	public CKNumber(String file, String className) {
 		this.file = file;
@@ -78,7 +80,7 @@ public class CKNumber {
 	@Override
 	public String toString() {
 		return "CKNumber [file=" + file + ", dit=" + dit + ", className=" + className + ", noc=" + noc + ", wmc=" + wmc
-				+ ", cbo=" + cbo + "]";
+				+ ", cbo=" + cbo + ", lcom=" + lcom + ", rfc=" + rfc + "]";
 	}
 
 	public int getCbo() {
@@ -87,6 +89,21 @@ public class CKNumber {
 
 	public void setCbo(int cbo) {
 		this.cbo = cbo;
+	}
+
+	public void setLcom(int lcom) {
+		this.lcom = lcom;
+	}
+	public int getLcom() {
+		return lcom;
+	}
+
+	public void setRfc(int rfc) {
+		this.rfc = rfc;
+	}
+	
+	public int getRfc() {
+		return rfc;
 	}
 
 }

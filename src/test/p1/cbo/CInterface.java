@@ -1,5 +1,5 @@
-package br.aniche.ck.metric;
+package cbo;
 
-public class CInterface {
+public interface CInterface {
 
 }

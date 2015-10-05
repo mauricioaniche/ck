@@ -13,6 +13,7 @@ import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.InstanceofExpression;
 import org.eclipse.jdt.core.dom.MarkerAnnotation;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.ReturnStatement;
 import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
@@ -47,6 +48,17 @@ public class CBO extends ASTVisitor implements Metric {
 	
 	public boolean visit(ReturnStatement node) {
 		coupleTo(node.getExpression().resolveTypeBinding());
+		return super.visit(node);
+	}
+
+	public boolean visit(MethodInvocation node) {
+		IMethodBinding binding = node.resolveMethodBinding();
+		if(binding!=null) {
+			for(ITypeBinding t : binding.getParameterTypes()) {
+				coupleTo(t);
+			}
+		}
+		
 		return super.visit(node);
 	}
 	

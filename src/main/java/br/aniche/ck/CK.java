@@ -12,8 +12,10 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import br.aniche.ck.metric.CBO;
 import br.aniche.ck.metric.ClassInfo;
 import br.aniche.ck.metric.DIT;
+import br.aniche.ck.metric.LCOM;
 import br.aniche.ck.metric.Metric;
 import br.aniche.ck.metric.NOC;
+import br.aniche.ck.metric.RFC;
 import br.aniche.ck.metric.WMC;
 
 public class CK {
@@ -81,11 +83,12 @@ public class CK {
 		} catch(Exception e) {
 			// just ignore... sorry!
 			// later on: log
+			e.printStackTrace(System.err);
 		}
 	}
 
 	private List<Metric> metrics() {
-		return Arrays.asList(new DIT(), new NOC(), new WMC(), new CBO());
+		return Arrays.asList(new DIT(), new NOC(), new WMC(), new CBO(), new LCOM(), new RFC());
 	}
 	
 }
