@@ -18,9 +18,10 @@ public class LCOM extends ASTVisitor implements Metric {
 	
 	public boolean visit(FieldAccess node) {
 		IVariableBinding binding = node.resolveFieldBinding();
-		String fieldName = binding.getName();
-		
-		fields.get(fields.size() - 1).add(fieldName);
+		if(binding != null) {
+			String fieldName = binding.getName();
+			fields.get(fields.size() - 1).add(fieldName);
+		}
 		
 		return super.visit(node);
 	}

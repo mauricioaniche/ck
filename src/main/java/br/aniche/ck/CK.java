@@ -71,13 +71,14 @@ public class CK {
 	}
 
 	private void calculateMetricsIn(String file, Storage storage) {
+		CompilationUnit cu = storage.get(file);
+		CKNumber result = report.get(file);
+		if(cu==null || result == null) return;
+
 		try {
-			CompilationUnit cu = storage.get(file);
-			CKNumber result = report.get(file);
-			
-			if(cu==null || result == null) return;
 			
 			for(Metric visitor : metrics()) {
+				
 				visitor.execute(cu, report);
 				visitor.setResult(result);
 			}
@@ -85,6 +86,7 @@ public class CK {
 		} catch(Exception e) {
 			// just ignore... sorry!
 			// later on: log
+			System.err.println("error in " + result.getClassName());
 			e.printStackTrace(System.err);
 		}
 	}
