@@ -15,6 +15,7 @@ import org.eclipse.jdt.core.dom.MarkerAnnotation;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
+import org.eclipse.jdt.core.dom.ParameterizedType;
 import org.eclipse.jdt.core.dom.ReturnStatement;
 import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
 import org.eclipse.jdt.core.dom.ThrowStatement;
@@ -126,11 +127,27 @@ public class CBO extends ASTVisitor implements Metric {
 		return super.visit(node);
 	}
 	
+	public boolean visit(ParameterizedType node) {
+		ITypeBinding binding = node.resolveBinding();
+		coupleTo(binding);
+		
+		for(ITypeBinding types : binding.getTypeArguments()) {
+			coupleTo(types);
+		}
+		
+		return super.visit(node);
+	}
+	
 	private void coupleTo(ITypeBinding binding) {
 		if(binding==null) return;
+		if(binding.isWildcardType()) return;
 		
 		String type = binding.getQualifiedName();
-		if(!binding.isPrimitive()) coupling.add(type.replace("[]", ""));
+		if(!isFromJava(type) && !binding.isPrimitive()) coupling.add(type.replace("[]", ""));
+	}
+
+	private boolean isFromJava(String type) {
+		return type.startsWith("java.") || type.startsWith("javax.");
 	}
 
 	@Override
