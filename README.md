@@ -8,6 +8,8 @@ Read more about them here: http://www.aivosto.com/project/help/pm-oo-ck.html.
 
 ```
 git clone https://github.com/mauricioaniche/ck.git
+cd src/test/resources
+echo "/my/dir/to/src/test/project" < project-dir.txt
 ```
 
 Then, you can:
