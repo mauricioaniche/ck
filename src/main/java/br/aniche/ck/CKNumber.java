@@ -10,6 +10,7 @@ public class CKNumber {
 	private int cbo;
 	private int lcom;
 	private int rfc;
+	private int nom;
 
 	public CKNumber(String file, String className) {
 		this.file = file;
@@ -104,6 +105,13 @@ public class CKNumber {
 	
 	public int getRfc() {
 		return rfc;
+	}
+
+	public void setNom(int nom) {
+		this.nom = nom;
+	}
+	public int getNom() {
+		return nom;
 	}
 
 }

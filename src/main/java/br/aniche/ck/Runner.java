@@ -9,7 +9,7 @@ public class Runner {
 		
 		CKReport report = new CK().calculate(path);
 		
-		System.out.println("class,cbo,wmc,dit,noc,rfc,lcom");
+		System.out.println("class,cbo,wmc,dit,noc,rfc,lcom,nom");
 		for(CKNumber result : report.all()) {
 			System.out.println(
 					result.getClassName() + "," +
@@ -18,7 +18,8 @@ public class Runner {
 					result.getDit() + "," +
 					result.getNoc() + "," +
 					result.getRfc() + "," +
-					result.getLcom()
+					result.getLcom() + "," +
+					result.getNom()
 			);
 		}
 

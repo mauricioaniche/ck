@@ -15,6 +15,7 @@ import br.aniche.ck.metric.DIT;
 import br.aniche.ck.metric.LCOM;
 import br.aniche.ck.metric.Metric;
 import br.aniche.ck.metric.NOC;
+import br.aniche.ck.metric.NOM;
 import br.aniche.ck.metric.RFC;
 import br.aniche.ck.metric.WMC;
 
@@ -92,7 +93,7 @@ public class CK {
 	}
 
 	private List<Metric> metrics() {
-		return Arrays.asList(new DIT(), new NOC(), new WMC(), new CBO(), new LCOM(), new RFC());
+		return Arrays.asList(new DIT(), new NOC(), new WMC(), new CBO(), new LCOM(), new RFC(), new NOM());
 	}
 	
 }
