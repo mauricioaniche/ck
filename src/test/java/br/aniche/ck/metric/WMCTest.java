@@ -7,12 +7,12 @@ import br.aniche.ck.CK;
 import br.aniche.ck.CKNumber;
 import br.aniche.ck.CKReport;
 
-public class WMCTest {
+public class WMCTest extends BaseTest {
 
 	@Test
 	public void should_detect_wmc() {
 		
-		CKReport report = new CK().calculate("/Users/mauricioaniche/workspace/ck/src/test/p1");
+		CKReport report = new CK().calculate(p1dir());
 
 		CKNumber a = report.getByClassName("wmc.CC1");
 		Assert.assertEquals(5, a.getWmc());

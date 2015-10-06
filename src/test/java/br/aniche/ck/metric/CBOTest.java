@@ -7,12 +7,12 @@ import br.aniche.ck.CK;
 import br.aniche.ck.CKNumber;
 import br.aniche.ck.CKReport;
 
-public class CBOTest {
+public class CBOTest extends BaseTest {
 
 	@Test
 	public void should_count_cbo() {
 		
-		CKReport report = new CK().calculate("/Users/mauricioaniche/workspace/ck/src/test/p1");
+		CKReport report = new CK().calculate(p1dir());
 
 		CKNumber a = report.getByClassName("cbo.Coupling1");
 		Assert.assertEquals(8, a.getCbo());

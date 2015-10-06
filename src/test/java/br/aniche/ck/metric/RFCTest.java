@@ -7,12 +7,12 @@ import br.aniche.ck.CKNumber;
 import br.aniche.ck.CKReport;
 import org.junit.Assert;
 
-public class RFCTest {
+public class RFCTest extends BaseTest {
 
 	@Test
 	public void should_detect_wmc() {
 		
-		CKReport report = new CK().calculate("/Users/mauricioaniche/workspace/ck/src/test/p1/rfc");
+		CKReport report = new CK().calculate(p1dir());
 
 		CKNumber a = report.getByClassName("rfc.GO");
 		Assert.assertEquals(3, a.getRfc());

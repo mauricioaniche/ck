@@ -7,12 +7,12 @@ import br.aniche.ck.CK;
 import br.aniche.ck.CKNumber;
 import br.aniche.ck.CKReport;
 
-public class DITTest {
+public class DITTest extends BaseTest {
 
 	@Test
 	public void should_detect_simple_inheritance() {
 		
-		CKReport report = new CK().calculate("/Users/mauricioaniche/workspace/ck/src/test/p1");
+		CKReport report = new CK().calculate(p1dir());
 
 		CKNumber a = report.getByClassName("dit.A");
 		Assert.assertEquals(1, a.getDit());
