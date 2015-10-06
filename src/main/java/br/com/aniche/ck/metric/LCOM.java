@@ -1,4 +1,4 @@
-package br.aniche.ck.metric;
+package br.com.aniche.ck.metric;
 
 import java.util.ArrayList;
 import java.util.TreeSet;
@@ -9,8 +9,8 @@ import org.eclipse.jdt.core.dom.FieldAccess;
 import org.eclipse.jdt.core.dom.IVariableBinding;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 
-import br.aniche.ck.CKNumber;
-import br.aniche.ck.CKReport;
+import br.com.aniche.ck.CKNumber;
+import br.com.aniche.ck.CKReport;
 
 public class LCOM extends ASTVisitor implements Metric {
 

@@ -1,4 +1,4 @@
-package br.aniche.ck.metric;
+package br.com.aniche.ck.metric;
 
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.EnumDeclaration;

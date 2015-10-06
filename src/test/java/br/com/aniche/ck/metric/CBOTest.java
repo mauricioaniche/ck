@@ -1,11 +1,11 @@
-package br.aniche.ck.metric;
+package br.com.aniche.ck.metric;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import br.aniche.ck.CK;
-import br.aniche.ck.CKNumber;
-import br.aniche.ck.CKReport;
+import br.com.aniche.ck.CK;
+import br.com.aniche.ck.CKNumber;
+import br.com.aniche.ck.CKReport;
 
 public class CBOTest extends BaseTest {
 
@@ -15,9 +15,9 @@ public class CBOTest extends BaseTest {
 		CKReport report = new CK().calculate(p1dir());
 
 		CKNumber a = report.getByClassName("cbo.Coupling1");
-		Assert.assertEquals(8, a.getCbo());
+		Assert.assertEquals(7, a.getCbo());
 
 		CKNumber b = report.getByClassName("cbo.Coupling2");
-		Assert.assertEquals(6, b.getCbo());
+		Assert.assertEquals(4, b.getCbo());
 	}
 }

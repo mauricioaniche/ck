@@ -1,4 +1,4 @@
-package br.aniche.ck.metric;
+package br.com.aniche.ck.metric;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -22,8 +22,8 @@ import org.eclipse.jdt.core.dom.ThrowStatement;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
 
-import br.aniche.ck.CKNumber;
-import br.aniche.ck.CKReport;
+import br.com.aniche.ck.CKNumber;
+import br.com.aniche.ck.CKReport;
 
 public class CBO extends ASTVisitor implements Metric {
 

@@ -1,11 +1,11 @@
-package br.aniche.ck.metric;
+package br.com.aniche.ck.metric;
 
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 
-import br.aniche.ck.CKNumber;
-import br.aniche.ck.CKReport;
+import br.com.aniche.ck.CKNumber;
+import br.com.aniche.ck.CKReport;
 
 public class NOM extends ASTVisitor implements Metric {
 

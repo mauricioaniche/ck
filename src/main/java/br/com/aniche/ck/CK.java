@@ -1,4 +1,4 @@
-package br.aniche.ck;
+package br.com.aniche.ck;
 
 import java.util.Arrays;
 import java.util.List;
@@ -9,15 +9,15 @@ import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
-import br.aniche.ck.metric.CBO;
-import br.aniche.ck.metric.ClassInfo;
-import br.aniche.ck.metric.DIT;
-import br.aniche.ck.metric.LCOM;
-import br.aniche.ck.metric.Metric;
-import br.aniche.ck.metric.NOC;
-import br.aniche.ck.metric.NOM;
-import br.aniche.ck.metric.RFC;
-import br.aniche.ck.metric.WMC;
+import br.com.aniche.ck.metric.CBO;
+import br.com.aniche.ck.metric.ClassInfo;
+import br.com.aniche.ck.metric.DIT;
+import br.com.aniche.ck.metric.LCOM;
+import br.com.aniche.ck.metric.Metric;
+import br.com.aniche.ck.metric.NOC;
+import br.com.aniche.ck.metric.NOM;
+import br.com.aniche.ck.metric.RFC;
+import br.com.aniche.ck.metric.WMC;
 
 public class CK {
 

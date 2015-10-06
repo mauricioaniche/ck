@@ -1,4 +1,4 @@
-package br.aniche.ck;
+package br.com.aniche.ck;
 
 import java.util.Collection;
 import java.util.HashMap;

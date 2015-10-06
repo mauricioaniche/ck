@@ -1,4 +1,4 @@
-package br.aniche.ck.metric;
+package br.com.aniche.ck.metric;
 
 import java.io.File;
 import java.io.IOException;

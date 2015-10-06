@@ -1,4 +1,4 @@
-package br.aniche.ck.metric;
+package br.com.aniche.ck.metric;
 
 import java.util.HashSet;
 
@@ -8,8 +8,8 @@ import org.eclipse.jdt.core.dom.IMethodBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 
-import br.aniche.ck.CKNumber;
-import br.aniche.ck.CKReport;
+import br.com.aniche.ck.CKNumber;
+import br.com.aniche.ck.CKReport;
 
 public class RFC extends ASTVisitor implements Metric {
 

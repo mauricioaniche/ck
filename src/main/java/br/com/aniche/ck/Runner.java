@@ -1,4 +1,4 @@
-package br.aniche.ck;
+package br.com.aniche.ck;
 
 public class Runner {
 

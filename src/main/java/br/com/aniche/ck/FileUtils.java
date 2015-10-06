@@ -1,4 +1,4 @@
-package br.aniche.ck;
+package br.com.aniche.ck;
 
 import java.io.File;
 import java.util.ArrayList;

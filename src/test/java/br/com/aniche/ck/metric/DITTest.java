@@ -1,11 +1,11 @@
-package br.aniche.ck.metric;
+package br.com.aniche.ck.metric;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import br.aniche.ck.CK;
-import br.aniche.ck.CKNumber;
-import br.aniche.ck.CKReport;
+import br.com.aniche.ck.CK;
+import br.com.aniche.ck.CKNumber;
+import br.com.aniche.ck.CKReport;
 
 public class DITTest extends BaseTest {
 
