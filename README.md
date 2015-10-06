@@ -4,6 +4,12 @@ Simple CK metrics calculator for Java files. No need for bytecode.
 
 Read more about them here: http://www.aivosto.com/project/help/pm-oo-ck.html.
 
+# How to use it
+
+```
+java -jar ck.jar /dir/to/your/project/src > output.csv
+```
+
 # How to Contribute
 
 ```
