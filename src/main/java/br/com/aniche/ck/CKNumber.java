@@ -1,5 +1,8 @@
 package br.com.aniche.ck;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class CKNumber {
 
 	private String file;
@@ -12,10 +15,14 @@ public class CKNumber {
 	private int lcom;
 	private int rfc;
 	private int nom;
+	
+	private Map<String, Integer> specific; 
 
 	public CKNumber(String file, String className) {
 		this.file = file;
 		this.className = className;
+		
+		this.specific = new HashMap<String, Integer>();
 	}
 	
 	public String getFile() {
@@ -109,10 +116,19 @@ public class CKNumber {
 	public int getNom() {
 		return nom;
 	}
+	
+	public int getSpecific(String key) {
+		return specific.get(key);
+	}
+	
+	public void addSpecific(String key, int value) {
+		specific.put(key, value);
+	}
 
 	@Override
 	public String toString() {
-		return "CKNumber [file=" + file + ", dit=" + dit + ", className=" + className + ", noc=" + noc + ", wmc=" + wmc
-				+ ", cbo=" + cbo + ", lcom=" + lcom + ", rfc=" + rfc + "]";
+		return "CKNumber [file=" + file + ", className=" + className + ", dit=" + dit + ", noc=" + noc + ", wmc=" + wmc
+				+ ", cbo=" + cbo + ", lcom=" + lcom + ", rfc=" + rfc + ", nom=" + nom + ", specific=" + specific + "]";
 	}
+	
 }

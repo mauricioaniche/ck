@@ -1,8 +1,10 @@
 package br.com.aniche.ck;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.AST;
@@ -22,9 +24,11 @@ import br.com.aniche.ck.metric.WMC;
 public class CK {
 
 	private CKReport report;
+	public List<Callable<Metric>> pluggedMetrics; 
 
 	public CK() {
 		this.report = new CKReport();
+		this.pluggedMetrics = new ArrayList<>();
 	}
 	
 	public CKReport calculate(String path) {
@@ -37,6 +41,11 @@ public class CK {
 		}
 		
 		return report;
+	}
+	
+	public CK plug(Callable<Metric> metric) {
+		this.pluggedMetrics.add(metric);
+		return this;
 	}
 
 	private void createEmptyResults(Storage storage) {
@@ -93,7 +102,28 @@ public class CK {
 	}
 
 	private List<Metric> metrics() {
+		List<Metric> all = defaultMetrics();
+		all.addAll(userMetrics());
+		
+		return all;
+	}
+
+	private List<Metric> defaultMetrics() {
 		return Arrays.asList(new DIT(), new NOC(), new WMC(), new CBO(), new LCOM(), new RFC(), new NOM());
+	}
+
+	private List<Metric> userMetrics() {
+		try {
+			List<Metric> userMetrics = new ArrayList<Metric>();
+			
+			for(Callable<Metric> metricToBeCreated : pluggedMetrics) {
+				userMetrics.add(metricToBeCreated.call());
+			}
+
+			return userMetrics;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 	
 }
