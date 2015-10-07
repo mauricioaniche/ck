@@ -3,8 +3,9 @@ package br.com.aniche.ck;
 public class CKNumber {
 
 	private String file;
-	private int dit;
 	private String className;
+
+	private int dit;
 	private int noc;
 	private int wmc;
 	private int cbo;
@@ -78,11 +79,6 @@ public class CKNumber {
 		return wmc;
 	}
 
-	@Override
-	public String toString() {
-		return "CKNumber [file=" + file + ", dit=" + dit + ", className=" + className + ", noc=" + noc + ", wmc=" + wmc
-				+ ", cbo=" + cbo + ", lcom=" + lcom + ", rfc=" + rfc + "]";
-	}
 
 	public int getCbo() {
 		return cbo;
@@ -114,4 +110,9 @@ public class CKNumber {
 		return nom;
 	}
 
+	@Override
+	public String toString() {
+		return "CKNumber [file=" + file + ", dit=" + dit + ", className=" + className + ", noc=" + noc + ", wmc=" + wmc
+				+ ", cbo=" + cbo + ", lcom=" + lcom + ", rfc=" + rfc + "]";
+	}
 }

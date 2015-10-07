@@ -2,7 +2,9 @@ package br.com.aniche.ck;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class CKReport {
 
@@ -25,10 +27,9 @@ public class CKReport {
 	}
 
 	public CKNumber getByClassName(String name) {
-		for(CKNumber ck : all()) {
-			if(ck.getClassName().equals(name)) return ck;
-		}
-		
-		return null;
+		List<CKNumber> numbers = all().stream().filter(x -> x.getClassName().equals(name)).collect(Collectors.toList());
+		if(numbers.isEmpty()) throw new RuntimeException("didnt find class " + name);
+		if(numbers.size()>1) throw new RuntimeException("there are two classes " + name);
+		return numbers.get(0);
 	}
 }
