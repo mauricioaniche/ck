@@ -109,7 +109,7 @@ public class CK {
 	}
 
 	private List<Metric> defaultMetrics() {
-		return Arrays.asList(new DIT(), new NOC(), new WMC(), new CBO(), new LCOM(), new RFC(), new NOM());
+		return new ArrayList<>(Arrays.asList(new DIT(), new NOC(), new WMC(), new CBO(), new LCOM(), new RFC(), new NOM()));
 	}
 
 	private List<Metric> userMetrics() {
