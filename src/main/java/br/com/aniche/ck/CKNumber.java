@@ -118,6 +118,7 @@ public class CKNumber {
 	}
 	
 	public int getSpecific(String key) {
+		if(!specific.containsKey(key)) return -1;
 		return specific.get(key);
 	}
 	

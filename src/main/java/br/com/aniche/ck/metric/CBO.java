@@ -86,6 +86,7 @@ public class CBO extends ASTVisitor implements Metric {
 	public boolean visit(MethodDeclaration node) {
 		
 		IMethodBinding method = node.resolveBinding();
+		if(method == null) return super.visit(node);
 		
 		coupleTo(method.getReturnType());
 		
@@ -129,6 +130,8 @@ public class CBO extends ASTVisitor implements Metric {
 	
 	public boolean visit(ParameterizedType node) {
 		ITypeBinding binding = node.resolveBinding();
+		if(binding == null) return super.visit(node);
+		
 		coupleTo(binding);
 		
 		for(ITypeBinding types : binding.getTypeArguments()) {
