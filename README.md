@@ -10,6 +10,20 @@ Read more about them here: http://www.aivosto.com/project/help/pm-oo-ck.html.
 java -jar ck.jar /dir/to/your/project/src > output.csv
 ```
 
+# How to plug in my app
+
+```
+  String path = "/path/to/the/project";
+  
+	CKReport report = new CK()
+			.plug(() -> new ArchitecturalRole()) //  do you wanna create your own metric?
+			.calculate(path);
+
+	for(CKNumber number : report.all()) {
+	  // ...
+  }
+```
+
 # How to Contribute
 
 ```
