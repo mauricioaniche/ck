@@ -12,6 +12,19 @@ java -jar ck.jar /dir/to/your/project/src > output.csv
 
 # How to plug in my app
 
+Configure your Maven:
+
+```
+<dependency>
+	<groupId>br.com.aniche</groupId>
+	<artifactId>ck</artifactId>
+	<version>0.0.2</version>
+</dependency>
+
+```
+
+Then, just code: 
+
 ```
   String path = "/path/to/the/project";
   
