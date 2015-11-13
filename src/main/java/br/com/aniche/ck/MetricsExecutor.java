@@ -1,31 +1,50 @@
 package br.com.aniche.ck;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.List;
+import java.util.concurrent.Callable;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.FileASTRequestor;
 
-public class Storage extends FileASTRequestor {
+import br.com.aniche.ck.metric.ClassInfo;
+import br.com.aniche.ck.metric.Metric;
 
-	private Map<String, CompilationUnit> cus;
+public class MetricsExecutor extends FileASTRequestor {
+
+	private CKReport report;
+	private Callable<List<Metric>> metrics;
 	
-	public Storage() {
-		this.cus = new HashMap<String, CompilationUnit>();
+	public MetricsExecutor(Callable<List<Metric>> metrics) {
+		this.metrics = metrics;
+		this.report = new CKReport();
 	}
-	
+
+
 	@Override
 	public void acceptAST(String sourceFilePath, 
-			CompilationUnit compilationUnit) {
-		this.cus.put(sourceFilePath, compilationUnit);	
-	}	
-	
-	public Set<String> keys() {
-		return cus.keySet();
+			CompilationUnit cu) {
+		
+		try {
+			ClassInfo info = new ClassInfo();
+			cu.accept(info);
+			if(info.getClassName()==null) return;
+		
+			CKNumber result = new CKNumber(sourceFilePath, info.getClassName());
+			for(Metric visitor : metrics.call()) {
+				visitor.execute(cu, report);
+				visitor.setResult(result);
+			}
+			report.add(result);
+		} catch(Exception e) {
+			// just ignore... sorry!
+			// later on: log
+			System.err.println("error in " + sourceFilePath);
+			e.printStackTrace(System.err);
+		}
 	}
 	
-	public CompilationUnit get(String key) {
-		return cus.get(key);
+	public CKReport getReport() {
+		return report;
 	}
+	
 }

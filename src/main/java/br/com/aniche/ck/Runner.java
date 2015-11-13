@@ -4,9 +4,12 @@ public class Runner {
 
 	public static void main(String[] args) {
 		
-		String path = args[0];
-//		String path = "/Users/mauricioaniche/workspace/gnarus/src/main";
+		if(args==null || args.length == 0) {
+			System.out.println("Usage java -jar ck.jar /path/to/project");
+			System.exit(1);
+		}
 		
+		String path = args[0];
 		CKReport report = new CK().calculate(path);
 		
 		System.out.println("class,cbo,wmc,dit,noc,rfc,lcom,nom");

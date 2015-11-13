@@ -11,7 +11,7 @@ import org.junit.Assert;
 public class RFCTest extends BaseTest {
 
 	@Test
-	public void should_detect_wmc() {
+	public void should_detect_rfc() {
 		
 		CKReport report = new CK().calculate(p1dir());
 

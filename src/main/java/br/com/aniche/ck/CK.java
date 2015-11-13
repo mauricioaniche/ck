@@ -9,10 +9,8 @@ import java.util.concurrent.Callable;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 
 import br.com.aniche.ck.metric.CBO;
-import br.com.aniche.ck.metric.ClassInfo;
 import br.com.aniche.ck.metric.DIT;
 import br.com.aniche.ck.metric.LCOM;
 import br.com.aniche.ck.metric.Metric;
@@ -23,44 +21,18 @@ import br.com.aniche.ck.metric.WMC;
 
 public class CK {
 
-	private CKReport report;
 	public List<Callable<Metric>> pluggedMetrics; 
 
 	public CK() {
-		this.report = new CKReport();
 		this.pluggedMetrics = new ArrayList<>();
-	}
-	
-	public CKReport calculate(String path) {
-
-		Storage storage = generateASTs(path);
-		createEmptyResults(storage);
-		
-		for(String file : storage.keys()) {
-			calculateMetricsIn(file, storage);
-		}
-		
-		return report;
 	}
 	
 	public CK plug(Callable<Metric> metric) {
 		this.pluggedMetrics.add(metric);
 		return this;
 	}
-
-	private void createEmptyResults(Storage storage) {
-		for(String file : storage.keys()) {
-			
-			CompilationUnit cu = storage.get(file);
-			ClassInfo info = new ClassInfo();
-			cu.accept(info);
-			
-			if(info.getClassName()!=null)
-				report.add(new CKNumber(file, info.getClassName()));
-		}
-	}
-
-	private Storage generateASTs(String path) {
+	
+	public CKReport calculate(String path) {
 		ASTParser parser = ASTParser.newParser(AST.JLS8);
 		
 		parser.setResolveBindings(true);
@@ -75,31 +47,11 @@ public class CK {
 
 		parser.setEnvironment(null, srcDirs, null, true);
 		
-		Storage storage = new Storage();
+		MetricsExecutor storage = new MetricsExecutor(() -> metrics());
 		parser.createASTs(javaFiles, null, new String[0], storage, null);
-		return storage;
+		return storage.getReport();
 	}
 
-	private void calculateMetricsIn(String file, Storage storage) {
-		CompilationUnit cu = storage.get(file);
-		CKNumber result = report.get(file);
-		if(cu==null || result == null) return;
-
-		try {
-			
-			for(Metric visitor : metrics()) {
-				
-				visitor.execute(cu, report);
-				visitor.setResult(result);
-			}
-			
-		} catch(Exception e) {
-			// just ignore... sorry!
-			// later on: log
-			System.err.println("error in " + result.getClassName());
-			e.printStackTrace(System.err);
-		}
-	}
 
 	private List<Metric> metrics() {
 		List<Metric> all = defaultMetrics();
