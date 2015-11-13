@@ -15,7 +15,7 @@ public class DIT extends ASTVisitor implements Metric {
 	@Override
 	public boolean visit(TypeDeclaration node) {
 		ITypeBinding binding = node.resolveBinding();
-		calculate(binding);
+		if(binding!=null) calculate(binding);
 
 		return super.visit(node);
 	}

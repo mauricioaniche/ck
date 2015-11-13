@@ -11,21 +11,23 @@ public class ClassInfo extends ASTVisitor {
 
 	@Override
 	public boolean visit(TypeDeclaration node) {
-		ITypeBinding binding = node.resolveBinding();
-
-		this.className = binding.getBinaryName();
+		
+		getFullClassName(node.resolveBinding());
 		return false;
 	}
-	
+
 	@Override
 	public boolean visit(EnumDeclaration node) {
-		
-		this.className = node.resolveBinding().getBinaryName();
-		
+		getFullClassName(node.resolveBinding());
 		return false;
 	}
 	
 	public String getClassName() {
 		return className;
 	}
+	
+	private void getFullClassName(ITypeBinding binding) {
+		this.className = binding.getBinaryName();
+	}
+	
 }
