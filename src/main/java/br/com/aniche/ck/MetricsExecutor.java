@@ -3,6 +3,7 @@ package br.com.aniche.ck;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import org.apache.log4j.Logger;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.FileASTRequestor;
 
@@ -14,6 +15,8 @@ public class MetricsExecutor extends FileASTRequestor {
 	private CKReport report;
 	private Callable<List<Metric>> metrics;
 	
+	private static Logger log = Logger.getLogger(MetricsExecutor.class);
+	
 	public MetricsExecutor(Callable<List<Metric>> metrics) {
 		this.metrics = metrics;
 		this.report = new CKReport();
@@ -24,6 +27,7 @@ public class MetricsExecutor extends FileASTRequestor {
 	public void acceptAST(String sourceFilePath, 
 			CompilationUnit cu) {
 		
+		log.info("accepted " + sourceFilePath);
 		try {
 			ClassInfo info = new ClassInfo();
 			cu.accept(info);
@@ -34,12 +38,11 @@ public class MetricsExecutor extends FileASTRequestor {
 				visitor.execute(cu, report);
 				visitor.setResult(result);
 			}
+			log.info(result);
 			report.add(result);
 		} catch(Exception e) {
 			// just ignore... sorry!
-			// later on: log
-			System.err.println("error in " + sourceFilePath);
-			e.printStackTrace(System.err);
+			log.error("error in " + sourceFilePath, e);
 		}
 	}
 	

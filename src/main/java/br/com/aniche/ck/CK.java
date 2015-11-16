@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
+import org.apache.log4j.Logger;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
@@ -22,6 +23,7 @@ import br.com.aniche.ck.metric.WMC;
 public class CK {
 
 	public List<Callable<Metric>> pluggedMetrics; 
+	private static Logger log = Logger.getLogger(CK.class);
 
 	public CK() {
 		this.pluggedMetrics = new ArrayList<>();
@@ -44,6 +46,7 @@ public class CK {
 
 		String[] srcDirs = FileUtils.getAllDirs(path);
 		String[] javaFiles = FileUtils.getAllJavaFiles(path);
+		log.info("Found " + javaFiles.length + " java files");
 
 		parser.setEnvironment(null, srcDirs, null, true);
 		
