@@ -11,6 +11,8 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 
+import com.google.common.collect.Lists;
+
 import br.com.aniche.ck.metric.CBO;
 import br.com.aniche.ck.metric.DIT;
 import br.com.aniche.ck.metric.LCOM;
@@ -21,6 +23,17 @@ import br.com.aniche.ck.metric.RFC;
 import br.com.aniche.ck.metric.WMC;
 
 public class CK {
+
+	private static final int MAX_AT_ONCE;
+	static {
+		long maxMemory= Runtime.getRuntime().maxMemory() / (1 << 20); // in MiB
+		
+		if      (maxMemory >= 2000) MAX_AT_ONCE= 400;
+		else if (maxMemory >= 1500) MAX_AT_ONCE= 300;
+		else if (maxMemory >= 1000) MAX_AT_ONCE= 200;
+		else if (maxMemory >=  500) MAX_AT_ONCE= 100;
+		else                        MAX_AT_ONCE=  25;
+	}
 
 	public List<Callable<Metric>> pluggedMetrics; 
 	private static Logger log = Logger.getLogger(CK.class);
@@ -45,13 +58,19 @@ public class CK {
 		parser.setCompilerOptions(options);
 
 		String[] srcDirs = FileUtils.getAllDirs(path);
+		parser.setEnvironment(null, srcDirs, null, true);
+
 		String[] javaFiles = FileUtils.getAllJavaFiles(path);
 		log.info("Found " + javaFiles.length + " java files");
-
-		parser.setEnvironment(null, srcDirs, null, true);
-		
 		MetricsExecutor storage = new MetricsExecutor(() -> metrics());
-		parser.createASTs(javaFiles, null, new String[0], storage, null);
+		
+		List<List<String>> partitions = Lists.partition(Arrays.asList(javaFiles), MAX_AT_ONCE);
+		log.info("Max partition size: " + MAX_AT_ONCE + ", total partitions=" + partitions.size());
+		for(List<String> partition : partitions) {
+			log.info("Next partition");
+			parser.createASTs(partition.toArray(new String[partition.size()]), null, new String[0], storage, null);
+		}
+		
 		log.info("Finished parsing");
 		return storage.getReport();
 	}
