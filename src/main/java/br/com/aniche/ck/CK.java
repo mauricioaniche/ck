@@ -52,6 +52,7 @@ public class CK {
 		
 		MetricsExecutor storage = new MetricsExecutor(() -> metrics());
 		parser.createASTs(javaFiles, null, new String[0], storage, null);
+		log.info("Finished parsing");
 		return storage.getReport();
 	}
 
