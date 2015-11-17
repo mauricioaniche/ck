@@ -27,7 +27,6 @@ public class MetricsExecutor extends FileASTRequestor {
 	public void acceptAST(String sourceFilePath, 
 			CompilationUnit cu) {
 		
-		log.info("accepted " + sourceFilePath);
 		try {
 			ClassInfo info = new ClassInfo();
 			cu.accept(info);
