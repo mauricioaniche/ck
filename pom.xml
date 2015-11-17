@@ -3,7 +3,7 @@
 	<groupId>br.com.aniche</groupId>
 	<artifactId>ck</artifactId>
 	<packaging>jar</packaging>
-	<version>0.0.5-SNAPSHOT</version>
+	<version>0.0.4-SNAPSHOT</version>
 	<name>ck</name>
 	<url>http://www.aniche.com.br/ck</url>
 	<description>CK metrics</description>
