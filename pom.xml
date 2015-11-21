@@ -1,10 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>br.com.aniche</groupId>
 	<artifactId>ck</artifactId>
 	<packaging>jar</packaging>
-	<version>0.0.5-SNAPSHOT</version>
+	<version>0.0.5</version>
 	<name>ck</name>
 	<url>http://www.aniche.com.br/ck</url>
 	<description>CK metrics</description>
@@ -34,7 +33,7 @@
 		<url>http://github.com/mauricioaniche/ck</url>
 		<connection>scm:git:git://github.com/mauricioaniche/ck</connection>
 		<developerConnection>scm:git:git@github.com:mauricioaniche/ck.git</developerConnection>
-		<tag>HEAD</tag>
+		<tag>ck-0.0.5</tag>
 	</scm>
 
 	<dependencies>
