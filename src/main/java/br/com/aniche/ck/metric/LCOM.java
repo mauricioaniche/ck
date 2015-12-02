@@ -46,11 +46,12 @@ public class LCOM extends ASTVisitor implements Metric {
 		 * P = set of all empty set intersections
 		 * Q = set of all nonempty set intersections
 		 */
-		// extracted from https://github.com/dspinellis/ckjm
 		
+		// extracted from https://github.com/dspinellis/ckjm
 		int lcom = 0;
 		for (int i = 0; i < fields.size(); i++)
 		    for (int j = i + 1; j < fields.size(); j++) {
+		    	
 				TreeSet<?> intersection = (TreeSet<?>)fields.get(i).clone();
 				intersection.retainAll(fields.get(j));
 				if (intersection.size() == 0) lcom++;
