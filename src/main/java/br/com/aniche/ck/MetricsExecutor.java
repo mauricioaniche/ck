@@ -32,7 +32,7 @@ public class MetricsExecutor extends FileASTRequestor {
 			cu.accept(info);
 			if(info.getClassName()==null) return;
 		
-			CKNumber result = new CKNumber(sourceFilePath, info.getClassName());
+			CKNumber result = new CKNumber(sourceFilePath, info.getClassName(), info.getType());
 			for(Metric visitor : metrics.call()) {
 				visitor.execute(cu, report);
 				visitor.setResult(result);

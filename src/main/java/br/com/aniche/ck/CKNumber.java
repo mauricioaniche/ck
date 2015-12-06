@@ -7,6 +7,7 @@ public class CKNumber {
 
 	private String file;
 	private String className;
+	private String type;
 
 	private int dit;
 	private int noc;
@@ -18,9 +19,10 @@ public class CKNumber {
 	
 	private Map<String, Integer> specific; 
 
-	public CKNumber(String file, String className) {
+	public CKNumber(String file, String className, String type) {
 		this.file = file;
 		this.className = className;
+		this.type = type;
 		
 		this.specific = new HashMap<String, Integer>();
 	}
@@ -126,10 +128,17 @@ public class CKNumber {
 		specific.put(key, value);
 	}
 
+	public String getType() {
+		return type;
+	}
+
 	@Override
 	public String toString() {
-		return "CKNumber [file=" + file + ", className=" + className + ", dit=" + dit + ", noc=" + noc + ", wmc=" + wmc
-				+ ", cbo=" + cbo + ", lcom=" + lcom + ", rfc=" + rfc + ", nom=" + nom + ", specific=" + specific + "]";
+		return "CKNumber [file=" + file + ", className=" + className + ", type=" + type + ", dit=" + dit + ", noc="
+				+ noc + ", wmc=" + wmc + ", cbo=" + cbo + ", lcom=" + lcom + ", rfc=" + rfc + ", nom=" + nom
+				+ ", specific=" + specific + "]";
 	}
+
+	
 	
 }
