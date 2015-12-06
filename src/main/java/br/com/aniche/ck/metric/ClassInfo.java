@@ -27,7 +27,8 @@ public class ClassInfo extends ASTVisitor {
 	}
 	
 	private void getFullClassName(ITypeBinding binding) {
-		this.className = binding.getBinaryName();
+		if(binding!=null)
+			this.className = binding.getBinaryName();
 	}
 	
 }
