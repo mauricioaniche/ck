@@ -15,6 +15,12 @@ public class LCOMTest extends BaseTest {
 		CKReport report = new CK().calculate(p1dir());
 
 		CKNumber a = report.getByClassName("lcom.TripStatusBean");
-		Assert.assertEquals(1485, a.getLcom());
+		Assert.assertEquals(1415, a.getLcom());
+
+		CKNumber b = report.getByClassName("lcom.SimpleGetterAndSetter");
+		Assert.assertEquals(0, b.getLcom());
+
+		CKNumber c = report.getByClassName("lcom.SimpleGetterAndSetter2");
+		Assert.assertEquals(2, c.getLcom());
 	}
 }
