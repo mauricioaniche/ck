@@ -22,5 +22,10 @@ public class LCOMTest extends BaseTest {
 
 		CKNumber c = report.getByClassName("lcom.SimpleGetterAndSetter2");
 		Assert.assertEquals(2, c.getLcom());
+
+		CKNumber d = report.getByClassName("lcom.TermsOfServiceController");
+		Assert.assertEquals(0, d.getLcom());
+
 	}
+	
 }

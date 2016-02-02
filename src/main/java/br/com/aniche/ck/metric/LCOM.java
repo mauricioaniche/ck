@@ -17,7 +17,7 @@ import br.com.aniche.ck.CKReport;
 
 public class LCOM extends ASTVisitor implements Metric {
 
-	ArrayList<TreeSet<String>> fields = new ArrayList<TreeSet<String>>();
+	ArrayList<TreeSet<String>> methods = new ArrayList<TreeSet<String>>();
 	Set<String> declaredFields;
 	
 	public LCOM() {
@@ -44,13 +44,13 @@ public class LCOM extends ASTVisitor implements Metric {
 	}
 
 	private void acessed(String name) {
-		if(!fields.isEmpty()){
-			fields.get(fields.size() - 1).add(name);
+		if(!methods.isEmpty()){
+			methods.get(methods.size() - 1).add(name);
 		}
 	}
 	
 	public boolean visit(MethodDeclaration node) {
-		fields.add(new TreeSet<String>());
+		methods.add(new TreeSet<String>());
 		
 		return super.visit(node);
 	}
@@ -72,11 +72,11 @@ public class LCOM extends ASTVisitor implements Metric {
 		
 		// extracted from https://github.com/dspinellis/ckjm
 		int lcom = 0;
-		for (int i = 0; i < fields.size(); i++)
-		    for (int j = i + 1; j < fields.size(); j++) {
+		for (int i = 0; i < methods.size(); i++)
+		    for (int j = i + 1; j < methods.size(); j++) {
 		    	
-				TreeSet<?> intersection = (TreeSet<?>)fields.get(i).clone();
-				intersection.retainAll(fields.get(j));
+				TreeSet<?> intersection = (TreeSet<?>)methods.get(i).clone();
+				intersection.retainAll(methods.get(j));
 				if (intersection.size() == 0) lcom++;
 				else lcom--;
 		    }
