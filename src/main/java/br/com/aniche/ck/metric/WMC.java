@@ -19,7 +19,7 @@ import br.com.aniche.ck.CKReport;
 
 public class WMC extends ASTVisitor implements Metric {
 
-	private int cc = 0;
+	protected int cc = 0;
 	
     public boolean visit(MethodDeclaration node) {
     	
@@ -94,7 +94,7 @@ public class WMC extends ASTVisitor implements Metric {
     	increaseCc(1);
     }
 
-    private void increaseCc(int qtd) {
+    protected void increaseCc(int qtd) {
     	cc++;
     }
 
