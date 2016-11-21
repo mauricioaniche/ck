@@ -12,9 +12,10 @@ public class Runner {
 		String path = args[0];
 		CKReport report = new CK().calculate(path);
 		
-		System.out.println("class,type,cbo,wmc,dit,noc,rfc,lcom,nom");
+		System.out.println("file,class,type,cbo,wmc,dit,noc,rfc,lcom,nom");
 		for(CKNumber result : report.all()) {
 			System.out.println(
+					result.getFile() + "," +
 					result.getClassName() + "," +
 					result.getType() + "," +
 					result.getCbo() + "," +
