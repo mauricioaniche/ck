@@ -16,6 +16,7 @@ public class CKNumber {
 	private int lcom;
 	private int rfc;
 	private int nom;
+	private int nopm;
 	
 	private Map<String, Integer> specific; 
 
@@ -132,13 +133,19 @@ public class CKNumber {
 		return type;
 	}
 
+	public int getNopm() {
+		return nopm;
+	}
+
+	public void setNopm(int nopm) {
+		this.nopm = nopm;
+	}
+
 	@Override
 	public String toString() {
 		return "CKNumber [file=" + file + ", className=" + className + ", type=" + type + ", dit=" + dit + ", noc="
-				+ noc + ", wmc=" + wmc + ", cbo=" + cbo + ", lcom=" + lcom + ", rfc=" + rfc + ", nom=" + nom
-				+ ", specific=" + specific + "]";
+				+ noc + ", wmc=" + wmc + ", cbo=" + cbo + ", lcom=" + lcom + ", rfc=" + rfc + ", nom=" + nom + ", nopm="
+				+ nopm + ", specific=" + specific + "]";
 	}
 
-	
-	
 }
