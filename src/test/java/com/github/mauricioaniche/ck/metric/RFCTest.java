@@ -30,9 +30,9 @@ public class RFCTest extends BaseTest {
 	}
 
 	@Test
-	public void differentiateTypes() {
+	public void notPossibleToDifferentiateTypesWithStaticAnalysis() {
 		CKNumber a = report.getByClassName("rfc.RFC3");
-		Assert.assertEquals(2, a.getRfc());
+		Assert.assertEquals(1, a.getRfc());
 	}
 
 	@Test

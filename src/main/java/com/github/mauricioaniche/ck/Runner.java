@@ -1,20 +1,26 @@
 package com.github.mauricioaniche.ck;
 
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
+
 public class Runner {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FileNotFoundException {
 		
-		if(args==null || args.length == 0) {
-			System.out.println("Usage java -jar ck.jar /path/to/project");
+		if(args==null || args.length < 2) {
+			System.out.println("Usage java -jar ck.jar <path to project> <path to csv>");
 			System.exit(1);
 		}
 		
 		String path = args[0];
+		String csvPath = args[1];
+		
 		CKReport report = new CK().calculate(path);
 		
-		System.out.println("file,class,type,cbo,wmc,dit,noc,rfc,lcom,nom,nopm");
+		PrintStream ps = new PrintStream(csvPath);
+		ps.println("file,class,type,cbo,wmc,dit,noc,rfc,lcom,nom,nopm,nosm,nof,nopf,nosf,nosi");
 		for(CKNumber result : report.all()) {
-			System.out.println(
+			ps.println(
 				result.getFile() + "," +
 				result.getClassName() + "," +
 				result.getType() + "," +
@@ -25,10 +31,16 @@ public class Runner {
 				result.getRfc() + "," +
 				result.getLcom() + "," +
 				result.getNom() + "," +
-				result.getNopm()
+				result.getNopm() + "," + 
+				result.getNosm() + "," +
+				result.getNof() + "," +
+				result.getNopf() + "," + 
+				result.getNosf() + "," +
+				result.getNosi()
 			);
 		}
 
+		ps.close();
 		
 	}
 }

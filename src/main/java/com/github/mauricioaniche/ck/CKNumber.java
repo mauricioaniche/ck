@@ -17,6 +17,13 @@ public class CKNumber {
 	private int rfc;
 	private int nom;
 	private int nopm;
+	private int nosm;
+
+	private int nof;
+	private int nopf;
+	private int nosf;
+
+	private int nosi;
 	
 	private Map<String, Integer> specific; 
 
@@ -141,11 +148,53 @@ public class CKNumber {
 		this.nopm = nopm;
 	}
 
+	public int getNosm() {
+		return nosm;
+	}
+
+	public void setNosm(int nosm) {
+		this.nosm = nosm;
+	}
+
+	public int getNof() {
+		return nof;
+	}
+
+	public void setNof(int nof) {
+		this.nof = nof;
+	}
+
+	public int getNopf() {
+		return nopf;
+	}
+
+	public void setNopf(int nopf) {
+		this.nopf = nopf;
+	}
+
+	public int getNosf() {
+		return nosf;
+	}
+
+	public void setNosf(int nosf) {
+		this.nosf = nosf;
+	}
+	
+	public int getNosi() {
+		return nosi;
+	}
+
+	public void setNosi(int nosi) {
+		this.nosi = nosi;
+	}
+
 	@Override
 	public String toString() {
 		return "CKNumber [file=" + file + ", className=" + className + ", type=" + type + ", dit=" + dit + ", noc="
 				+ noc + ", wmc=" + wmc + ", cbo=" + cbo + ", lcom=" + lcom + ", rfc=" + rfc + ", nom=" + nom + ", nopm="
-				+ nopm + ", specific=" + specific + "]";
+				+ nopm + ", nosm=" + nosm + ", nof=" + nof + ", nopf=" + nopf + ", nosf=" + nosf + ", nosi=" + nosi
+				+ ", specific=" + specific + "]";
 	}
+
 
 }

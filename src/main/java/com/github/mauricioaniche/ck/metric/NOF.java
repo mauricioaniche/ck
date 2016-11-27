@@ -2,20 +2,18 @@ package com.github.mauricioaniche.ck.metric;
 
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.MethodDeclaration;
-import org.eclipse.jdt.core.dom.Modifier;
+import org.eclipse.jdt.core.dom.FieldDeclaration;
 
 import com.github.mauricioaniche.ck.CKNumber;
 import com.github.mauricioaniche.ck.CKReport;
 
-public class NOPM extends ASTVisitor implements Metric {
+public class NOF extends ASTVisitor implements Metric {
 
-	private int methods;
+	private int fields;
 
 	@Override
-	public boolean visit(MethodDeclaration node) {
-		if(Modifier.isPublic(node.getModifiers())) 
-			methods++;
+	public boolean visit(FieldDeclaration node) {
+		fields++;
 
 		return false;
 	}
@@ -27,6 +25,6 @@ public class NOPM extends ASTVisitor implements Metric {
 
 	@Override
 	public void setResult(CKNumber result) {
-		result.setNopm(methods);
+		result.setNof(fields);
 	}
 }

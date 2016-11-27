@@ -14,7 +14,7 @@ public class DITTest extends BaseTest {
 	
 	@BeforeClass
 	public static void setUp() {
-		report = new CK().calculate(fixturesDir() + "/rfc");
+		report = new CK().calculate(fixturesDir() + "/dit");
 	}
 	
 	@Test

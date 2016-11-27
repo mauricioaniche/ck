@@ -16,7 +16,13 @@ import com.github.mauricioaniche.ck.metric.DIT;
 import com.github.mauricioaniche.ck.metric.LCOM;
 import com.github.mauricioaniche.ck.metric.Metric;
 import com.github.mauricioaniche.ck.metric.NOC;
+import com.github.mauricioaniche.ck.metric.NOF;
 import com.github.mauricioaniche.ck.metric.NOM;
+import com.github.mauricioaniche.ck.metric.NOPF;
+import com.github.mauricioaniche.ck.metric.NOPM;
+import com.github.mauricioaniche.ck.metric.NOSF;
+import com.github.mauricioaniche.ck.metric.NOSI;
+import com.github.mauricioaniche.ck.metric.NOSM;
 import com.github.mauricioaniche.ck.metric.RFC;
 import com.github.mauricioaniche.ck.metric.WMC;
 import com.google.common.collect.Lists;
@@ -89,7 +95,9 @@ public class CK {
 	}
 
 	private List<Metric> defaultMetrics() {
-		return new ArrayList<>(Arrays.asList(new DIT(), new NOC(), new WMC(), new CBO(), new LCOM(), new RFC(), new NOM()));
+		return new ArrayList<>(Arrays.asList(new DIT(), new NOC(), new WMC(), new CBO(), new LCOM(), new RFC(), new NOM(),
+				new NOF(), new NOPF(), new NOSF(),
+				new NOPM(), new NOSM(), new NOSI()));
 	}
 
 	private List<Metric> userMetrics() {
