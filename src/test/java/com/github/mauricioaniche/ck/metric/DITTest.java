@@ -43,4 +43,11 @@ public class DITTest extends BaseTest {
 		CKNumber d = report.getByClassName("dit.D");
 		Assert.assertEquals(4, d.getDit());
 	}
+	
+	@Test
+	public void countEvenClassesNotResolved() {
+		CKNumber a = report.getByClassName("dit.X");
+		Assert.assertEquals(2, a.getDit());
+	}
+
 }
