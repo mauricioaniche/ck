@@ -47,7 +47,7 @@ public class FileUtils {
 			if(inside.isDirectory()) {
 				String newDir = inside.getAbsolutePath();
 				getAllJavaFiles(newDir, files);
-			} else if(inside.getAbsolutePath().endsWith(".java")) {
+			} else if(inside.getAbsolutePath().toLowerCase().endsWith(".java")) {
 				files.add(inside.getAbsolutePath());
 			}
 		}
