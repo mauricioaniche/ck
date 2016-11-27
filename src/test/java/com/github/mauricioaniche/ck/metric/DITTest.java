@@ -12,7 +12,7 @@ public class DITTest extends BaseTest {
 	@Test
 	public void should_detect_simple_inheritance() {
 		
-		CKReport report = new CK().calculate(p1dir());
+		CKReport report = new CK().calculate(fixturesDir());
 
 		CKNumber a = report.getByClassName("dit.A");
 		Assert.assertEquals(1, a.getDit());

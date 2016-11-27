@@ -12,7 +12,7 @@ public class WMCTest extends BaseTest {
 	@Test
 	public void should_detect_wmc() {
 		
-		CKReport report = new CK().calculate(p1dir());
+		CKReport report = new CK().calculate(fixturesDir());
 
 		CKNumber a = report.getByClassName("wmc.CC1");
 		Assert.assertEquals(5, a.getWmc());

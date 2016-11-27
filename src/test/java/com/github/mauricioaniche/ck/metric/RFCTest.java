@@ -13,7 +13,7 @@ public class RFCTest extends BaseTest {
 	@Test
 	public void should_detect_rfc() {
 		
-		CKReport report = new CK().calculate(p1dir());
+		CKReport report = new CK().calculate(fixturesDir());
 
 		CKNumber a = report.getByClassName("rfc.GO");
 		Assert.assertEquals(3, a.getRfc());

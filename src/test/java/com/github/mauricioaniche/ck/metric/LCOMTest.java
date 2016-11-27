@@ -12,7 +12,7 @@ public class LCOMTest extends BaseTest {
 	@Test
 	public void should_count_lcom() {
 		
-		CKReport report = new CK().calculate(p1dir());
+		CKReport report = new CK().calculate(fixturesDir());
 
 		CKNumber a = report.getByClassName("lcom.TripStatusBean");
 		Assert.assertEquals(1415, a.getLcom());

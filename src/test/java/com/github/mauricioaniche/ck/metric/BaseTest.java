@@ -3,14 +3,13 @@ package com.github.mauricioaniche.ck.metric;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.commons.io.FileUtils;
-
 abstract class BaseTest {
 
-	protected String p1dir() {
+	protected String fixturesDir() {
 		try {
-			String cfgFile = BaseTest.class.getResource("/project-dir.txt").getPath();
-			return FileUtils.readFileToString(new File(cfgFile));
+			String cfgFile = new File(BaseTest.class.getResource("/").getPath() + "../../fixtures/").getCanonicalPath();
+			System.out.println(cfgFile);
+			return cfgFile;
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
