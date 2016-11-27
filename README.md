@@ -44,6 +44,9 @@ but different types.
 - *WMC (Weight Method Class)* or *McCabe's complexity*. It counts the number
 of branch instructions in a class.
 
+- *LOC (Lines of code)*: It counts the lines of count, ignoring
+empty lines.
+
 - *LCOM (Lack of Cohesion of Methods)*: Calculates LCOM metric. This is the very first
 version of metric, which is not reliable. LCOM-HS can be better (hopefully, you will
 send us a pull request). 
