@@ -18,8 +18,10 @@ public class Runner {
 		CKReport report = new CK().calculate(path);
 		
 		PrintStream ps = new PrintStream(csvPath);
-		ps.println("file,class,type,cbo,wmc,dit,noc,rfc,lcom,nom,nopm,nosm,nof,nopf,nosf,nosi");
+		ps.println("file,class,type,cbo,wmc,dit,noc,rfc,lcom,nom,nopm,nosm,nof,nopf,nosf,nosi,loc");
 		for(CKNumber result : report.all()) {
+			if(result.isError()) continue;
+			
 			ps.println(
 				result.getFile() + "," +
 				result.getClassName() + "," +
@@ -36,7 +38,7 @@ public class Runner {
 				result.getNof() + "," +
 				result.getNopf() + "," + 
 				result.getNosf() + "," +
-				result.getNosi()
+				result.getNosi() + ","
 			);
 		}
 

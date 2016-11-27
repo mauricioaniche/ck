@@ -85,8 +85,7 @@ public class CK {
 		log.info("Finished parsing");
 		return storage.getReport();
 	}
-
-
+	
 	private List<Metric> metrics() {
 		List<Metric> all = defaultMetrics();
 		all.addAll(userMetrics());

@@ -1,5 +1,6 @@
 package com.github.mauricioaniche.ck;
 
+import java.io.FileInputStream;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -27,12 +28,18 @@ public class MetricsExecutor extends FileASTRequestor {
 	public void acceptAST(String sourceFilePath, 
 			CompilationUnit cu) {
 		
+		CKNumber result = null;
+		
 		try {
 			ClassInfo info = new ClassInfo();
 			cu.accept(info);
 			if(info.getClassName()==null) return;
 		
-			CKNumber result = new CKNumber(sourceFilePath, info.getClassName(), info.getType());
+			result = new CKNumber(sourceFilePath, info.getClassName(), info.getType());
+			
+			int loc = new LOCCalculator().calculate(new FileInputStream(sourceFilePath));
+			result.setLoc(loc);
+			
 			for(Metric visitor : metrics.call()) {
 				visitor.execute(cu, result, report);
 				visitor.setResult(result);
@@ -40,7 +47,7 @@ public class MetricsExecutor extends FileASTRequestor {
 			log.info(result);
 			report.add(result);
 		} catch(Exception e) {
-			// just ignore... sorry!
+			if(result!=null) result.error();
 			log.error("error in " + sourceFilePath, e);
 		}
 	}

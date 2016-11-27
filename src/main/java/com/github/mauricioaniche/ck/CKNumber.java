@@ -24,8 +24,10 @@ public class CKNumber {
 	private int nosf;
 
 	private int nosi;
+	private int loc;
 	
-	private Map<String, Integer> specific; 
+	private Map<String, Integer> specific;
+	private boolean error; 
 
 	public CKNumber(String file, String className, String type) {
 		this.file = file;
@@ -188,12 +190,29 @@ public class CKNumber {
 		this.nosi = nosi;
 	}
 
+	public int getLoc() {
+		return loc;
+	}
+
+	public void setLoc(int loc) {
+		this.loc = loc;
+	}
+
+
+	public boolean isError() {
+		return error;
+	}
+	
+	public void error() {
+		this.error = true;
+	}
+
 	@Override
 	public String toString() {
 		return "CKNumber [file=" + file + ", className=" + className + ", type=" + type + ", dit=" + dit + ", noc="
 				+ noc + ", wmc=" + wmc + ", cbo=" + cbo + ", lcom=" + lcom + ", rfc=" + rfc + ", nom=" + nom + ", nopm="
 				+ nopm + ", nosm=" + nosm + ", nof=" + nof + ", nopf=" + nopf + ", nosf=" + nosf + ", nosi=" + nosi
-				+ ", specific=" + specific + "]";
+				+ ", loc=" + loc + ", specific=" + specific + ", error=" + error + "]";
 	}
 
 
