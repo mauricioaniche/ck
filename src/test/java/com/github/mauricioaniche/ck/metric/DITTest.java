@@ -1,7 +1,7 @@
 package com.github.mauricioaniche.ck.metric;
 
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.github.mauricioaniche.ck.CK;
@@ -10,12 +10,13 @@ import com.github.mauricioaniche.ck.CKReport;
 
 public class DITTest extends BaseTest {
 
-	private CKReport report;
-	@Before
-	public void setUp() {
-		report = new CK().calculate(fixturesDir() + "/dit");
+	private static CKReport report;
+	
+	@BeforeClass
+	public static void setUp() {
+		report = new CK().calculate(fixturesDir() + "/rfc");
 	}
-
+	
 	@Test
 	public void everyOneHasObjectAsFather() {
 		CKNumber a = report.getByClassName("dit.A");

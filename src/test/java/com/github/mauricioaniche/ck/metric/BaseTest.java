@@ -5,7 +5,7 @@ import java.io.IOException;
 
 abstract class BaseTest {
 
-	protected String fixturesDir() {
+	protected static String fixturesDir() {
 		try {
 			String cfgFile = new File(BaseTest.class.getResource("/").getPath() + "../../fixtures/").getCanonicalPath();
 			System.out.println(cfgFile);
