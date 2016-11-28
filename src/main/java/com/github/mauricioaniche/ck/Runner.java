@@ -38,7 +38,8 @@ public class Runner {
 				result.getNof() + "," +
 				result.getNopf() + "," + 
 				result.getNosf() + "," +
-				result.getNosi() + ","
+				result.getNosi() + "," +
+				result.getLoc() + ","
 			);
 		}
 
