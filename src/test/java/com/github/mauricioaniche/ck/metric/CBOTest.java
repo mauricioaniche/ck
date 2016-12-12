@@ -45,6 +45,13 @@ public class CBOTest extends BaseTest {
 	}
 
 	@Test
+	public void countClassCreations() {
+		
+		CKNumber b = report.getByClassName("cbo.Coupling4");
+		Assert.assertEquals(3, b.getCbo());
+	}
+
+	@Test
 	public void countMethodParameters() {
 		
 		CKNumber b = report.getByClassName("cbo.MethodParams");

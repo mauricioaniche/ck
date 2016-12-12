@@ -6,6 +6,6 @@ public class Coupling2 extends D implements CInterface {
 	}
 	
 	public C m2() {
-		return new C();
+		return null;
 	}
 }

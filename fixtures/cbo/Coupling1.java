@@ -11,7 +11,6 @@ public class Coupling1 {
 		CouplingHelper h = new CouplingHelper();
 		C2 c2 = h.m1();
 		
-		return new D();
-		
+		return d;
 	}
 }
