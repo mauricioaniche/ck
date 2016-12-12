@@ -14,13 +14,13 @@ import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.InstanceofExpression;
 import org.eclipse.jdt.core.dom.MarkerAnnotation;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
-import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.ParameterizedType;
 import org.eclipse.jdt.core.dom.ReturnStatement;
 import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
 import org.eclipse.jdt.core.dom.ThrowStatement;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
+import org.eclipse.jdt.core.dom.TypeLiteral;
 import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
 
 import com.github.mauricioaniche.ck.CKNumber;
@@ -61,17 +61,13 @@ public class CBO extends ASTVisitor implements Metric {
 		return super.visit(node);
 	}
 
-	public boolean visit(MethodInvocation node) {
-		IMethodBinding binding = node.resolveMethodBinding();
-		if (binding != null) {
-			for (ITypeBinding t : binding.getParameterTypes()) {
-				coupleTo(t);
-			}
-		}
-
+	@Override
+	public boolean visit(TypeLiteral node) {
+		coupleTo(node.resolveTypeBinding());
+		coupleTo(node.getType().resolveBinding());
 		return super.visit(node);
 	}
-
+	
 	public boolean visit(ThrowStatement node) {
 		coupleTo(node.getExpression().resolveTypeBinding());
 		return super.visit(node);
@@ -158,8 +154,9 @@ public class CBO extends ASTVisitor implements Metric {
 			return;
 
 		String type = binding.getQualifiedName();
-		if(type.equals("null")) return;
-		
+		if (type.equals("null"))
+			return;
+
 		if (!isFromJava(type) && !binding.isPrimitive())
 			coupling.add(type.replace("[]", ""));
 	}
@@ -171,7 +168,7 @@ public class CBO extends ASTVisitor implements Metric {
 	@Override
 	public void execute(CompilationUnit cu, CKNumber number, CKReport report) {
 		cu.accept(this);
-		
+
 		System.out.println(coupling);
 	}
 
