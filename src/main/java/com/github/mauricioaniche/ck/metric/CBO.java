@@ -168,8 +168,6 @@ public class CBO extends ASTVisitor implements Metric {
 	@Override
 	public void execute(CompilationUnit cu, CKNumber number, CKReport report) {
 		cu.accept(this);
-
-		System.out.println(coupling);
 	}
 
 	@Override
