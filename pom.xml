@@ -112,7 +112,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>br.com.metricminer2.ck.Runner</mainClass>
+							<mainClass>com.github.mauricioaniche.ck.Runner</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>
