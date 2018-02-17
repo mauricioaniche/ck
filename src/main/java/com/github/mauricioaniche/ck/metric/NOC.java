@@ -11,6 +11,11 @@ import com.github.mauricioaniche.ck.CKReport;
 public class NOC extends ASTVisitor implements Metric {
 
 	private CKReport report;
+	private NOCExtras extras;
+
+	public NOC(NOCExtras extras) {
+		this.extras = extras;
+	}
 
 	@Override
 	public boolean visit(TypeDeclaration node) {
@@ -19,6 +24,7 @@ public class NOC extends ASTVisitor implements Metric {
 		if(father!=null) {
 			CKNumber fatherCk = report.getByClassName(father.getBinaryName());
 			if(fatherCk!=null) fatherCk.incNoc();
+			else extras.plusOne(father.getBinaryName());
 		}
 
 		return false;
