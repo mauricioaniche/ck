@@ -1,5 +1,7 @@
 # CK
 
+[![Build Status](https://travis-ci.org/mauricioaniche/ck.svg?branch=master)](https://travis-ci.org/mauricioaniche/ck)
+
 This small projects calculates code metrics in Java projects by means
 of static analysis (i.e. no need for compiled code). Currently, it contains
 a large set of metrics, including the famous CK metrics:
