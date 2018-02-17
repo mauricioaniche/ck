@@ -6,25 +6,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
+import com.github.mauricioaniche.ck.metric.*;
 import org.apache.log4j.Logger;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 
-import com.github.mauricioaniche.ck.metric.CBO;
-import com.github.mauricioaniche.ck.metric.DIT;
-import com.github.mauricioaniche.ck.metric.LCOM;
-import com.github.mauricioaniche.ck.metric.Metric;
-import com.github.mauricioaniche.ck.metric.NOC;
-import com.github.mauricioaniche.ck.metric.NOF;
-import com.github.mauricioaniche.ck.metric.NOM;
-import com.github.mauricioaniche.ck.metric.NOPF;
-import com.github.mauricioaniche.ck.metric.NOPM;
-import com.github.mauricioaniche.ck.metric.NOSF;
-import com.github.mauricioaniche.ck.metric.NOSI;
-import com.github.mauricioaniche.ck.metric.NOSM;
-import com.github.mauricioaniche.ck.metric.RFC;
-import com.github.mauricioaniche.ck.metric.WMC;
 import com.google.common.collect.Lists;
 
 public class CK {
@@ -46,11 +33,14 @@ public class CK {
 		}
 	}
 
-	public List<Callable<Metric>> pluggedMetrics; 
+    private final NOCExtras extras;
+
+    public List<Callable<Metric>> pluggedMetrics;
 	private static Logger log = Logger.getLogger(CK.class);
 
 	public CK() {
 		this.pluggedMetrics = new ArrayList<>();
+		this.extras = new NOCExtras();
 	}
 	
 	public CK plug(Callable<Metric> metric) {
@@ -83,8 +73,10 @@ public class CK {
 		}
 		
 		log.info("Finished parsing");
-		return storage.getReport();
-	}
+        CKReport report = storage.getReport();
+        extras.update(report);
+        return report;
+    }
 	
 	private List<Metric> metrics() {
 		List<Metric> all = defaultMetrics();
@@ -94,7 +86,7 @@ public class CK {
 	}
 
 	private List<Metric> defaultMetrics() {
-		return new ArrayList<>(Arrays.asList(new DIT(), new NOC(), new WMC(), new CBO(), new LCOM(), new RFC(), new NOM(),
+		return new ArrayList<>(Arrays.asList(new DIT(), new NOC(extras), new WMC(), new CBO(), new LCOM(), new RFC(), new NOM(),
 				new NOF(), new NOPF(), new NOSF(),
 				new NOPM(), new NOSM(), new NOSI()));
 	}

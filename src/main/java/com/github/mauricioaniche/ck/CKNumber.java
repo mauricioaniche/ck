@@ -83,7 +83,7 @@ public class CKNumber {
 	}
 
 	public void incNoc() {
-		this.noc++;
+		incNoc(1);
 	}
 	
 	public int getNoc() {
@@ -216,4 +216,7 @@ public class CKNumber {
 	}
 
 
+	public void incNoc (int value) {
+		this.noc += value;
+	}
 }
