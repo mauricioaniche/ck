@@ -57,8 +57,12 @@ You can read more about CK metrics: http://www.aivosto.com/project/help/pm-oo-ck
 
 # How to use it
 
+To use the _latest version_ (which you should), clone the project and generate a JAR. A simple
+`mvn clean compile assembly:single` generates the single JAR file for you (see your _target_ folder).
+
+Then, just run:
 ```
-java -jar ck.jar <project dir> <path to csv output>
+java -jar ck-x.x.x-SNAPSHOT-jar-with-dependencies.jar <project dir> <path to csv output>
 ```
 
 # How to Contribute
