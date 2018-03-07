@@ -95,7 +95,7 @@ public class WMC extends ASTVisitor implements Metric {
     }
 
     protected void increaseCc(int qtd) {
-    	cc++;
+    	cc += qtd;
     }
 
 	@Override
