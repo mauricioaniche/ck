@@ -42,12 +42,12 @@ public class CK {
 		this.pluggedMetrics = new ArrayList<>();
 	}
 
-	public CKReport calculate(String path) {
+	public void calculate(String path, CKNotifier notifier) {
 		String[] srcDirs = FileUtils.getAllDirs(path);
 		String[] javaFiles = FileUtils.getAllJavaFiles(path);
 		log.info("Found " + javaFiles.length + " java files");
 		
-		MetricsExecutor storage = new MetricsExecutor(() -> metrics(), () -> methodLevelMetrics());
+		MetricsExecutor storage = new MetricsExecutor(() -> metrics(), () -> methodLevelMetrics(), notifier);
 		
 		List<List<String>> partitions = Lists.partition(Arrays.asList(javaFiles), MAX_AT_ONCE);
 		log.debug("Max partition size: " + MAX_AT_ONCE + ", total partitions=" + partitions.size());
@@ -67,8 +67,6 @@ public class CK {
 		}
 		
 		log.info("Finished parsing");
-        CKReport report = storage.getReport();
-        return report;
     }
 
 	private List<MethodLevelMetric> methodLevelMetrics() {

@@ -9,7 +9,6 @@ public class CKNumber {
 	private String type;
 
 	private int dit;
-	private int noc;
 	private int wmc;
 	private int cbo;
 	private int lcom;
@@ -74,20 +73,8 @@ public class CKNumber {
 		this.dit = dit;
 	}
 
-	public void setFile(String file) {
-		this.file = file;
-	}
-
 	public String getClassName() {
 		return className;
-	}
-
-	public void incNoc() {
-		incNoc(1);
-	}
-	
-	public int getNoc() {
-		return noc;
 	}
 
 	public void setWmc(int cc) {
@@ -97,7 +84,6 @@ public class CKNumber {
 	public int getWmc() {
 		return wmc;
 	}
-
 
 	public int getCbo() {
 		return cbo;
@@ -200,16 +186,12 @@ public class CKNumber {
 
 	@Override
 	public String toString() {
-		return "CKNumber [file=" + file + ", className=" + className + ", type=" + type + ", dit=" + dit + ", noc="
-				+ noc + ", wmc=" + wmc + ", cbo=" + cbo + ", lcom=" + lcom + ", rfc=" + rfc + ", nom=" + nom + ", nopm="
+		return "CKNumber [file=" + file + ", className=" + className + ", type=" + type + ", dit=" + dit +
+				", wmc=" + wmc + ", cbo=" + cbo + ", lcom=" + lcom + ", rfc=" + rfc + ", nom=" + nom + ", nopm="
 				+ nopm + ", nosm=" + nosm + ", nof=" + nof + ", nopf=" + nopf + ", nosf=" + nosf + ", nosi=" + nosi
 				+ ", loc=" + loc + ", error=" + error + "]";
 	}
 
-
-	public void incNoc (int value) {
-		this.noc += value;
-	}
 
 	public void setMethods(Map<String, MethodMetric> methods) {
 		this.methods = new HashSet<>(methods.values());

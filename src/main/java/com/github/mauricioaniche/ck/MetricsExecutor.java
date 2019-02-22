@@ -16,16 +16,16 @@ import com.github.mauricioaniche.ck.metric.Metric;
 
 public class MetricsExecutor extends FileASTRequestor {
 
-	private CKReport report;
 	private Callable<List<Metric>> metrics;
 	private Callable<List<MethodLevelMetric>> methodLevelMetrics;
+	private CKNotifier notifier;
 
 	private static Logger log = Logger.getLogger(MetricsExecutor.class);
 	
-	public MetricsExecutor(Callable<List<Metric>> metrics, Callable<List<MethodLevelMetric>> methodLevelMetrics) {
+	public MetricsExecutor(Callable<List<Metric>> metrics, Callable<List<MethodLevelMetric>> methodLevelMetrics, CKNotifier notifier) {
 		this.metrics = metrics;
 		this.methodLevelMetrics = methodLevelMetrics;
-		this.report = new CKReport();
+		this.notifier = notifier;
 	}
 
 
@@ -57,15 +57,11 @@ public class MetricsExecutor extends FileASTRequestor {
 			result.setMethods(methodVisitor.getMap());
 
 			log.info(result);
-			report.add(result);
+			notifier.notify(result);
 		} catch(Exception e) {
 			if(result!=null) result.error();
 			log.error("error in " + sourceFilePath, e);
 		}
-	}
-	
-	public CKReport getReport() {
-		return report;
 	}
 	
 }

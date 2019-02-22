@@ -14,14 +14,13 @@ public class Runner {
 		
 		String path = args[0];
 		String csvPath = args[1];
-		
-		CKReport report = new CK().calculate(path);
-		
+
 		PrintStream ps = new PrintStream(csvPath);
-		ps.println("file,class,type,cbo,wmc,dit,noc,rfc,lcom,nom,nopm,nosm,nof,nopf,nosf,nosi,loc");
-		for(CKNumber result : report.all()) {
-			if(result.isError()) continue;
-			
+		ps.println("file,class,type,cbo,wmc,dit,rfc,lcom,nom,nopm,nosm,nof,nopf,nosf,nosi,loc");
+
+		new CK().calculate(path, result -> {
+			if(result.isError()) return;
+
 			ps.println(
 				result.getFile() + "," +
 				result.getClassName() + "," +
@@ -29,20 +28,19 @@ public class Runner {
 				result.getCbo() + "," +
 				result.getWmc() + "," +
 				result.getDit() + "," +
-				result.getNoc() + "," +
 				result.getRfc() + "," +
 				result.getLcom() + "," +
 				result.getNom() + "," +
-				result.getNopm() + "," + 
+				result.getNopm() + "," +
 				result.getNosm() + "," +
 				result.getNof() + "," +
-				result.getNopf() + "," + 
+				result.getNopf() + "," +
 				result.getNosf() + "," +
 				result.getNosi() + "," +
 				result.getLoc()
 			);
-		}
-
+		});
+		
 		ps.close();
 		
 	}
