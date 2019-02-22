@@ -23,8 +23,6 @@ public class MethodLevelVisitor extends ASTVisitor {
 	public boolean visit(MethodDeclaration node) {
 		currentMethodName = node.getName().getFullyQualifiedName();
 
-		if(currentMethodName.equals("am4"))
-			System.out.println("oi");
 		currentMethod = new MethodMetric(currentMethodName);
 		methods.put(currentMethodName, currentMethod);
 
