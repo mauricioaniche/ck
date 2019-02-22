@@ -25,7 +25,6 @@ public class CKNumber {
 	private int nosi;
 	private int loc;
 	
-	private Map<String, Integer> specific;
 	private boolean error;
 
 	private Set<MethodMetric> methods;
@@ -36,7 +35,6 @@ public class CKNumber {
 		this.type = type;
 		this.methods = new HashSet<>();
 		
-		this.specific = new HashMap<>();
 	}
 	
 	public String getFile() {
@@ -131,15 +129,6 @@ public class CKNumber {
 		return nom;
 	}
 	
-	public int getSpecific(String key) {
-		if(!specific.containsKey(key)) return -1;
-		return specific.get(key);
-	}
-	
-	public void addSpecific(String key, int value) {
-		specific.put(key, value);
-	}
-
 	public String getType() {
 		return type;
 	}
@@ -214,7 +203,7 @@ public class CKNumber {
 		return "CKNumber [file=" + file + ", className=" + className + ", type=" + type + ", dit=" + dit + ", noc="
 				+ noc + ", wmc=" + wmc + ", cbo=" + cbo + ", lcom=" + lcom + ", rfc=" + rfc + ", nom=" + nom + ", nopm="
 				+ nopm + ", nosm=" + nosm + ", nof=" + nof + ", nopf=" + nopf + ", nosf=" + nosf + ", nosi=" + nosi
-				+ ", loc=" + loc + ", specific=" + specific + ", error=" + error + "]";
+				+ ", loc=" + loc + ", error=" + error + "]";
 	}
 
 
