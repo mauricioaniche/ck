@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 
 import com.github.mauricioaniche.ck.metric.*;
+import com.github.mauricioaniche.ck.util.FileUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.AST;
@@ -33,33 +34,26 @@ public class CK {
 		}
 	}
 
-    private final NOCExtras extras;
 
     public List<Callable<Metric>> pluggedMetrics;
 	private static Logger log = Logger.getLogger(CK.class);
 
 	public CK() {
 		this.pluggedMetrics = new ArrayList<>();
-		this.extras = new NOCExtras();
 	}
-	
-	public CK plug(Callable<Metric> metric) {
-		this.pluggedMetrics.add(metric);
-		return this;
-	}
-	
+
 	public CKReport calculate(String path) {
 		String[] srcDirs = FileUtils.getAllDirs(path);
 		String[] javaFiles = FileUtils.getAllJavaFiles(path);
 		log.info("Found " + javaFiles.length + " java files");
 		
-		MetricsExecutor storage = new MetricsExecutor(() -> metrics());
+		MetricsExecutor storage = new MetricsExecutor(() -> metrics(), () -> methodLevelMetrics());
 		
 		List<List<String>> partitions = Lists.partition(Arrays.asList(javaFiles), MAX_AT_ONCE);
-		log.info("Max partition size: " + MAX_AT_ONCE + ", total partitions=" + partitions.size());
+		log.debug("Max partition size: " + MAX_AT_ONCE + ", total partitions=" + partitions.size());
 
 		for(List<String> partition : partitions) {
-			log.info("Next partition");
+			log.debug("Next partition");
 			ASTParser parser = ASTParser.newParser(AST.JLS8);
 			
 			parser.setResolveBindings(true);
@@ -74,35 +68,17 @@ public class CK {
 		
 		log.info("Finished parsing");
         CKReport report = storage.getReport();
-        extras.update(report);
         return report;
     }
-	
-	private List<Metric> metrics() {
-		List<Metric> all = defaultMetrics();
-		all.addAll(userMetrics());
-		
-		return all;
+
+	private List<MethodLevelMetric> methodLevelMetrics() {
+		return new ArrayList<>(Arrays.asList(new CBO(), new RFC(), new WMC()));
 	}
 
-	private List<Metric> defaultMetrics() {
-		return new ArrayList<>(Arrays.asList(new DIT(), new NOC(extras), new WMC(), new CBO(), new LCOM(), new RFC(), new NOM(),
+	private List<Metric> metrics() {
+		return new ArrayList<>(Arrays.asList(new DIT(), new WMC(), new CBO(), new LCOM(), new RFC(), new NOM(),
 				new NOF(), new NOPF(), new NOSF(),
 				new NOPM(), new NOSM(), new NOSI()));
 	}
 
-	private List<Metric> userMetrics() {
-		try {
-			List<Metric> userMetrics = new ArrayList<Metric>();
-			
-			for(Callable<Metric> metricToBeCreated : pluggedMetrics) {
-				userMetrics.add(metricToBeCreated.call());
-			}
-
-			return userMetrics;
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-	
 }

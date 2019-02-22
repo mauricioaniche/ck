@@ -19,7 +19,7 @@ public class NOF extends ASTVisitor implements Metric {
 	}
 
 	@Override
-	public void execute(CompilationUnit cu, CKNumber number, CKReport report) {
+	public void execute(CompilationUnit cu, CKNumber number) {
 		cu.accept(this);
 	}
 

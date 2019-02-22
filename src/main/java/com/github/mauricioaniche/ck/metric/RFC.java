@@ -3,6 +3,7 @@ package com.github.mauricioaniche.ck.metric;
 import java.util.HashSet;
 import java.util.List;
 
+import com.github.mauricioaniche.ck.MethodMetric;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.IMethodBinding;
@@ -13,7 +14,7 @@ import org.eclipse.jdt.core.dom.SuperMethodInvocation;
 import com.github.mauricioaniche.ck.CKNumber;
 import com.github.mauricioaniche.ck.CKReport;
 
-public class RFC extends ASTVisitor implements Metric {
+public class RFC extends ASTVisitor implements Metric, MethodLevelMetric {
 
 	private HashSet<String> methodInvocations = new HashSet<String>();
 
@@ -57,14 +58,17 @@ public class RFC extends ASTVisitor implements Metric {
 	}
 	
 	@Override
-	public void execute(CompilationUnit cu, CKNumber number, CKReport report) {
+	public void execute(CompilationUnit cu, CKNumber number) {
 		cu.accept(this);
 	}
 
 	@Override
 	public void setResult(CKNumber result) {
 		result.setRfc(methodInvocations.size());
-		
 	}
-	
+
+	@Override
+	public void setResult(MethodMetric result) {
+		result.setRfc(methodInvocations.size());
+	}
 }

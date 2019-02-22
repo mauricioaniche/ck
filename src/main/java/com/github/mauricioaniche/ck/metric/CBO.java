@@ -3,6 +3,7 @@ package com.github.mauricioaniche.ck.metric;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.github.mauricioaniche.ck.MethodMetric;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.ArrayCreation;
 import org.eclipse.jdt.core.dom.CastExpression;
@@ -26,7 +27,7 @@ import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
 import com.github.mauricioaniche.ck.CKNumber;
 import com.github.mauricioaniche.ck.CKReport;
 
-public class CBO extends ASTVisitor implements Metric {
+public class CBO extends ASTVisitor implements Metric, MethodLevelMetric {
 
 	private Set<String> coupling = new HashSet<String>();
 
@@ -166,12 +167,21 @@ public class CBO extends ASTVisitor implements Metric {
 	}
 
 	@Override
-	public void execute(CompilationUnit cu, CKNumber number, CKReport report) {
+	public void execute(CompilationUnit cu, CKNumber number) {
 		cu.accept(this);
 	}
 
 	@Override
 	public void setResult(CKNumber result) {
-		result.setCbo(coupling.size());
+		result.setCbo(getValue());
+	}
+
+	@Override
+	public void setResult(MethodMetric result) {
+		result.setCbo(getValue());
+	}
+
+	private int getValue() {
+		return coupling.size();
 	}
 }

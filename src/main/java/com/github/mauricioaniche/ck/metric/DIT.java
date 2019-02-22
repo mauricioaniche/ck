@@ -1,5 +1,6 @@
 package com.github.mauricioaniche.ck.metric;
 
+import com.github.mauricioaniche.ck.MethodMetric;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.ITypeBinding;
@@ -33,7 +34,7 @@ public class DIT extends ASTVisitor implements Metric {
 	}
 
 	@Override
-	public void execute(CompilationUnit cu, CKNumber number, CKReport report) {
+	public void execute(CompilationUnit cu, CKNumber number) {
 		cu.accept(this);
 	}
 
@@ -41,4 +42,5 @@ public class DIT extends ASTVisitor implements Metric {
 	public void setResult(CKNumber result) {
 		result.setDit(dit);
 	}
+
 }

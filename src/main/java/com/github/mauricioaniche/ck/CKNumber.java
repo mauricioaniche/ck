@@ -1,7 +1,9 @@
 package com.github.mauricioaniche.ck;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class CKNumber {
 
@@ -27,14 +29,17 @@ public class CKNumber {
 	private int loc;
 	
 	private Map<String, Integer> specific;
-	private boolean error; 
+	private boolean error;
+
+	private Set<MethodMetric> methods;
 
 	public CKNumber(String file, String className, String type) {
 		this.file = file;
 		this.className = className;
 		this.type = type;
+		this.methods = new HashSet<>();
 		
-		this.specific = new HashMap<String, Integer>();
+		this.specific = new HashMap<>();
 	}
 	
 	public String getFile() {
@@ -218,5 +223,9 @@ public class CKNumber {
 
 	public void incNoc (int value) {
 		this.noc += value;
+	}
+
+	public void setMethods(Map<String, MethodMetric> methods) {
+		this.methods = new HashSet<>(methods.values());
 	}
 }

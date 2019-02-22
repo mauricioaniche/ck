@@ -1,5 +1,6 @@
 package com.github.mauricioaniche.ck.metric;
 
+import com.github.mauricioaniche.ck.MethodMetric;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.CatchClause;
@@ -17,7 +18,7 @@ import org.eclipse.jdt.core.dom.WhileStatement;
 import com.github.mauricioaniche.ck.CKNumber;
 import com.github.mauricioaniche.ck.CKReport;
 
-public class WMC extends ASTVisitor implements Metric {
+public class WMC extends ASTVisitor implements Metric, MethodLevelMetric {
 
 	protected int cc = 0;
 	
@@ -99,7 +100,7 @@ public class WMC extends ASTVisitor implements Metric {
     }
 
 	@Override
-	public void execute(CompilationUnit cu, CKNumber number, CKReport report) {
+	public void execute(CompilationUnit cu, CKNumber number) {
 		cu.accept(this);
 		
 	}
@@ -108,6 +109,10 @@ public class WMC extends ASTVisitor implements Metric {
 	public void setResult(CKNumber result) {
 		result.setWmc(cc);
 	}
-    
 
+
+	@Override
+	public void setResult(MethodMetric result) {
+		result.setWmc(cc);
+	}
 }

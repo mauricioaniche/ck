@@ -1,4 +1,4 @@
-package com.github.mauricioaniche.ck;
+package com.github.mauricioaniche.ck.util;
 
 import java.io.File;
 import java.util.ArrayList;

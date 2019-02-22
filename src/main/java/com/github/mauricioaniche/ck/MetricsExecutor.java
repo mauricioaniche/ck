@@ -4,6 +4,9 @@ import java.io.FileInputStream;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import com.github.mauricioaniche.ck.metric.MethodLevelMetric;
+import com.github.mauricioaniche.ck.metric.MethodLevelVisitor;
+import com.github.mauricioaniche.ck.util.LOCCalculator;
 import org.apache.log4j.Logger;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.FileASTRequestor;
@@ -15,11 +18,13 @@ public class MetricsExecutor extends FileASTRequestor {
 
 	private CKReport report;
 	private Callable<List<Metric>> metrics;
-	
+	private Callable<List<MethodLevelMetric>> methodLevelMetrics;
+
 	private static Logger log = Logger.getLogger(MetricsExecutor.class);
 	
-	public MetricsExecutor(Callable<List<Metric>> metrics) {
+	public MetricsExecutor(Callable<List<Metric>> metrics, Callable<List<MethodLevelMetric>> methodLevelMetrics) {
 		this.metrics = metrics;
+		this.methodLevelMetrics = methodLevelMetrics;
 		this.report = new CKReport();
 	}
 
@@ -39,11 +44,18 @@ public class MetricsExecutor extends FileASTRequestor {
 			
 			int loc = new LOCCalculator().calculate(new FileInputStream(sourceFilePath));
 			result.setLoc(loc);
-			
+
+			// calculate class level metrics
 			for(Metric visitor : metrics.call()) {
-				visitor.execute(cu, result, report);
+				visitor.execute(cu, result);
 				visitor.setResult(result);
 			}
+
+			// calculate metric level metrics
+			MethodLevelVisitor methodVisitor = new MethodLevelVisitor(methodLevelMetrics);
+			cu.accept(methodVisitor);
+			result.setMethods(methodVisitor.getMap());
+
 			log.info(result);
 			report.add(result);
 		} catch(Exception e) {
