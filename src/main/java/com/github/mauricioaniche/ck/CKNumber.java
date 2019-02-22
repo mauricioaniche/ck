@@ -1,9 +1,6 @@
 package com.github.mauricioaniche.ck;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class CKNumber {
 
@@ -227,5 +224,9 @@ public class CKNumber {
 
 	public void setMethods(Map<String, MethodMetric> methods) {
 		this.methods = new HashSet<>(methods.values());
+	}
+
+	public Set<MethodMetric> getMethods() {
+		return Collections.unmodifiableSet(methods);
 	}
 }

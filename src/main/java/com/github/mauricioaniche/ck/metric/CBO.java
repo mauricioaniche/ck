@@ -4,25 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.github.mauricioaniche.ck.MethodMetric;
-import org.eclipse.jdt.core.dom.ASTVisitor;
-import org.eclipse.jdt.core.dom.ArrayCreation;
-import org.eclipse.jdt.core.dom.CastExpression;
-import org.eclipse.jdt.core.dom.ClassInstanceCreation;
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.FieldDeclaration;
-import org.eclipse.jdt.core.dom.IMethodBinding;
-import org.eclipse.jdt.core.dom.ITypeBinding;
-import org.eclipse.jdt.core.dom.InstanceofExpression;
-import org.eclipse.jdt.core.dom.MarkerAnnotation;
-import org.eclipse.jdt.core.dom.MethodDeclaration;
-import org.eclipse.jdt.core.dom.NormalAnnotation;
-import org.eclipse.jdt.core.dom.ParameterizedType;
-import org.eclipse.jdt.core.dom.ReturnStatement;
-import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
-import org.eclipse.jdt.core.dom.ThrowStatement;
-import org.eclipse.jdt.core.dom.TypeDeclaration;
-import org.eclipse.jdt.core.dom.TypeLiteral;
-import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
+import org.eclipse.jdt.core.dom.*;
 
 import com.github.mauricioaniche.ck.CKNumber;
 import com.github.mauricioaniche.ck.CKReport;
@@ -115,6 +97,16 @@ public class CBO extends ASTVisitor implements Metric, MethodLevelMetric {
 
 		coupleTo(node.getRightOperand().resolveBinding());
 		coupleTo(node.getLeftOperand().resolveTypeBinding());
+
+		return super.visit(node);
+	}
+
+	@Override
+	public boolean visit(MethodInvocation node) {
+
+		IMethodBinding binding = node.resolveMethodBinding();
+		if(binding!=null)
+			coupleTo(binding.getDeclaringClass());
 
 		return super.visit(node);
 	}

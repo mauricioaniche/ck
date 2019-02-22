@@ -46,7 +46,6 @@ public class CBOTest extends BaseTest {
 
 	@Test
 	public void countClassCreations() {
-		
 		CKNumber b = report.getByClassName("cbo.Coupling4");
 		Assert.assertEquals(3, b.getCbo());
 	}
@@ -56,5 +55,15 @@ public class CBOTest extends BaseTest {
 		
 		CKNumber b = report.getByClassName("cbo.MethodParams");
 		Assert.assertEquals(2, b.getCbo());
+	}
+
+	@Test
+	public void methodLevel() {
+		CKNumber b = report.getByClassName("cbo.Coupling5");
+		Assert.assertEquals(0, b.getMethods().stream().filter(x -> x.getMethodName().equals("am1")).findFirst().get().getCbo());
+		Assert.assertEquals(1, b.getMethods().stream().filter(x -> x.getMethodName().equals("am2")).findFirst().get().getCbo());
+		Assert.assertEquals(1, b.getMethods().stream().filter(x -> x.getMethodName().equals("am3")).findFirst().get().getCbo());
+		Assert.assertEquals(2, b.getMethods().stream().filter(x -> x.getMethodName().equals("am4")).findFirst().get().getCbo());
+
 	}
 }

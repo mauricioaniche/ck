@@ -8,4 +8,5 @@ public interface Metric {
 	void execute(CompilationUnit cu, CKNumber result);
 	void setResult(CKNumber result);
 
+
 }

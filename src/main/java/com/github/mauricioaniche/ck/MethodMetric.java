@@ -38,4 +38,13 @@ public class MethodMetric {
 		return methodName;
 	}
 
+	@Override
+	public String toString() {
+		return "MethodMetric{" +
+				"cbo=" + cbo +
+				", rfc=" + rfc +
+				", wmc=" + wmc +
+				", methodName='" + methodName + '\'' +
+				'}';
+	}
 }
