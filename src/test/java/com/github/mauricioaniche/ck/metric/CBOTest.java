@@ -27,7 +27,7 @@ public class CBOTest extends BaseTest {
 	public void countDifferentPossibilitiesOfDependencies() {
 		
 		CKNumber a = report.getByClassName("cbo.Coupling1");
-		Assert.assertEquals(7, a.getCbo());
+		Assert.assertEquals(6, a.getCbo());
 	}
 	
 	@Test
