@@ -229,4 +229,8 @@ public class CKNumber {
 	public Set<MethodMetric> getMethods() {
 		return Collections.unmodifiableSet(methods);
 	}
+
+	public Optional<MethodMetric> getMethod(String methodName) {
+		return methods.stream().filter(m -> m.getMethodName().equals(methodName)).findFirst();
+	}
 }

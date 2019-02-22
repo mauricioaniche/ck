@@ -40,4 +40,13 @@ public class RFCTest extends BaseTest {
 		CKNumber a = report.getByClassName("rfc.RFC2");
 		Assert.assertEquals(0, a.getRfc());
 	}
+
+	@Test
+	public void methodLevel() {
+		CKNumber a = report.getByClassName("rfc.GO");
+		Assert.assertEquals(2, a.getMethod("m1").get().getRfc());
+		Assert.assertEquals(0, a.getMethod("m2").get().getRfc());
+		Assert.assertEquals(1, a.getMethod("m3").get().getRfc());
+
+	}
 }

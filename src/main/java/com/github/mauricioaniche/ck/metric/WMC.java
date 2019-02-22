@@ -22,12 +22,6 @@ public class WMC extends ASTVisitor implements Metric, MethodLevelMetric {
 
 	protected int cc = 0;
 	
-    public boolean visit(MethodDeclaration node) {
-    	
-    	increaseCc();
-    	return super.visit(node);
-    }
-    
     @Override
     public boolean visit(ForStatement node) {
     	increaseCc();
