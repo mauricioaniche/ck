@@ -1,10 +1,13 @@
 package com.github.mauricioaniche.ck.metric;
 
 import com.github.mauricioaniche.ck.MethodMetric;
+import com.github.mauricioaniche.ck.util.JDTUtils;
 import org.eclipse.jdt.core.dom.*;
 
 import java.util.*;
 import java.util.concurrent.Callable;
+
+import static com.github.mauricioaniche.ck.util.JDTUtils.getMethodFullName;
 
 public class MethodLevelVisitor extends ASTVisitor {
 
@@ -21,7 +24,7 @@ public class MethodLevelVisitor extends ASTVisitor {
 	}
 
 	public boolean visit(MethodDeclaration node) {
-		currentMethodName = node.getName().getFullyQualifiedName();
+		currentMethodName = getMethodFullName(node);
 
 		currentMethod = new MethodMetric(currentMethodName);
 		methods.put(currentMethodName, currentMethod);

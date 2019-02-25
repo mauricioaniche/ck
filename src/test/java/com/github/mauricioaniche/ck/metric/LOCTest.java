@@ -1,25 +1,24 @@
 package com.github.mauricioaniche.ck.metric;
 
+import com.github.mauricioaniche.ck.CKNumber;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.github.mauricioaniche.ck.CK;
-import com.github.mauricioaniche.ck.CKNumber;
-import com.github.mauricioaniche.ck.CKReport;
+import java.util.Map;
 
 public class LOCTest extends BaseTest {
 
-	private static CKReport report;
-	
+	private static Map<String, CKNumber> report;
+
 	@BeforeClass
 	public static void setUp() {
-		report = new CK().calculate(fixturesDir() + "/cbo");
+		report = run(fixturesDir() + "/cbo");
 	}
 	
 	@Test
 	public void countLinesIgnoringEmptyLines() {
-		CKNumber a = report.getByClassName("cbo.Coupling1");
+		CKNumber a = report.get("cbo.Coupling1");
 		Assert.assertEquals(11, a.getLoc());
 	}
 	
