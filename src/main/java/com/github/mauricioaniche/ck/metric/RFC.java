@@ -1,18 +1,11 @@
 package com.github.mauricioaniche.ck.metric;
 
+import com.github.mauricioaniche.ck.CKNumber;
+import com.github.mauricioaniche.ck.MethodMetric;
+import org.eclipse.jdt.core.dom.*;
+
 import java.util.HashSet;
 import java.util.List;
-
-import com.github.mauricioaniche.ck.MethodMetric;
-import org.eclipse.jdt.core.dom.ASTVisitor;
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.IMethodBinding;
-import org.eclipse.jdt.core.dom.ITypeBinding;
-import org.eclipse.jdt.core.dom.MethodInvocation;
-import org.eclipse.jdt.core.dom.SuperMethodInvocation;
-
-import com.github.mauricioaniche.ck.CKNumber;
-import com.github.mauricioaniche.ck.CKReport;
 
 public class RFC extends ASTVisitor implements Metric, MethodLevelMetric {
 

@@ -1,13 +1,11 @@
 package com.github.mauricioaniche.ck.metric;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import com.github.mauricioaniche.ck.CKNumber;
 import com.github.mauricioaniche.ck.MethodMetric;
 import org.eclipse.jdt.core.dom.*;
 
-import com.github.mauricioaniche.ck.CKNumber;
-import com.github.mauricioaniche.ck.CKReport;
+import java.util.HashSet;
+import java.util.Set;
 
 public class CBO extends ASTVisitor implements Metric, MethodLevelMetric {
 

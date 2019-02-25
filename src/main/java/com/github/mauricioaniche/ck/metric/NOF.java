@@ -1,11 +1,9 @@
 package com.github.mauricioaniche.ck.metric;
 
+import com.github.mauricioaniche.ck.CKNumber;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
-
-import com.github.mauricioaniche.ck.CKNumber;
-import com.github.mauricioaniche.ck.CKReport;
 
 public class NOF extends ASTVisitor implements Metric {
 

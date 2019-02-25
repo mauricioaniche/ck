@@ -1,13 +1,7 @@
 package com.github.mauricioaniche.ck.metric;
 
-import org.eclipse.jdt.core.dom.ASTVisitor;
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.IMethodBinding;
-import org.eclipse.jdt.core.dom.MethodInvocation;
-import org.eclipse.jdt.core.dom.Modifier;
-
 import com.github.mauricioaniche.ck.CKNumber;
-import com.github.mauricioaniche.ck.CKReport;
+import org.eclipse.jdt.core.dom.*;
 
 public class NOSI extends ASTVisitor implements Metric {
 
