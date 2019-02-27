@@ -68,6 +68,8 @@ public class Runner {
 		});
 		
 		classOutput.close();
+		methodOutput.close();
+		variableOutput.close();
 		
 	}
 }
