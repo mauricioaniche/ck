@@ -83,7 +83,6 @@ Then, you can:
 
 * compile : `mvn clean compile`
 * test    : `mvn test`
-* eclipse : `mvn eclipse:eclipse`
 
 
 # License
