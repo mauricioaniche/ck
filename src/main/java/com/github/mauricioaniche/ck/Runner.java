@@ -2,26 +2,32 @@ package com.github.mauricioaniche.ck;
 
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
+import java.util.Map;
 
 public class Runner {
 
 	public static void main(String[] args) throws FileNotFoundException {
 		
-		if(args==null || args.length < 2) {
-			System.out.println("Usage java -jar ck.jar <path to project> <path to csv>");
+		if(args==null || args.length != 1) {
+			System.out.println("Usage java -jar ck.jar <path to project>");
 			System.exit(1);
 		}
 		
 		String path = args[0];
-		String csvPath = args[1];
 
-		PrintStream ps = new PrintStream(csvPath);
-		ps.println("file,class,type,cbo,wmc,dit,rfc,lcom,nom,nopm,nosm,nof,nopf,nosf,nosi,loc");
+		PrintStream classOutput = new PrintStream("class.csv");
+		classOutput.println("file,class,type,cbo,wmc,dit,rfc,lcom,nom,nopm,nosm,nof,nopf,nosf,nosi,loc");
+
+		PrintStream methodOutput = new PrintStream("method.csv");
+		methodOutput.println("file,class,method,cbo,wmc,rfc,loc,returns,variables,parameters");
+
+		PrintStream variableOutput = new PrintStream("variable.csv");
+		variableOutput.println("file,class,method,variable,usage");
 
 		new CK().calculate(path, result -> {
 			if(result.isError()) return;
 
-			ps.println(
+			classOutput.println(
 				result.getFile() + "," +
 				result.getClassName() + "," +
 				result.getType() + "," +
@@ -39,9 +45,28 @@ public class Runner {
 				result.getNosi() + "," +
 				result.getLoc()
 			);
+
+			for(MethodMetric method : result.getMethods()) {
+				methodOutput.println(
+					method.getMethodName() + "," +
+					method.getCbo() + "," +
+					method.getWmc() + "," +
+					method.getRfc() + "," +
+					method.getLoc() + "," +
+					method.getReturnQty() + "," +
+					method.getVariablesQty() + "," +
+					method.getParametersQty()
+				);
+
+				for(Map.Entry<String,Integer> entry : method.getVariablesUsage().entrySet()) {
+					variableOutput.println(entry.getKey() + "," + entry.getValue());
+				}
+			}
+
+
 		});
 		
-		ps.close();
+		classOutput.close();
 		
 	}
 }
