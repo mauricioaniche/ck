@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/mauricioaniche/ck.svg?branch=master)](https://travis-ci.org/mauricioaniche/ck)
 
-This small projects calculates code metrics in Java projects by means
+CK calculates code metrics in Java projects by means
 of static analysis (i.e. no need for compiled code). Currently, it contains
 a large set of metrics, including the famous CK metrics:
 
@@ -16,8 +16,6 @@ All classes have DIT at least 1 (everyone inherits java.lang.Object).
 In order to make it happen, classes must exist in the project (i.e. if a class
 depends upon X which relies in a jar/dependency file, and X depends upon other
 classes, DIT is counted as 2). 
-
-- *NOC (Number of Children)*: Counts the number of children a class has.
 
 - *NOF (Number of fields)*: Counts the number of fields in a class, no matter
 its modifiers.
@@ -37,7 +35,6 @@ modifiers.
 to static methods. It can only count the ones that can be resolved by the
 JDT.
 
-
 - *RFC (Response for a Class)*: Counts the number of unique method
 invocations in a class. As invocations are resolved via static analysis,
 this implementation fails when a method has overloads with same number of parameters,
@@ -53,7 +50,11 @@ empty lines.
 version of metric, which is not reliable. LCOM-HS can be better (hopefully, you will
 send us a pull request). 
 
-You can read more about CK metrics: http://www.aivosto.com/project/help/pm-oo-ck.html.
+(In a previous version, it calculated NOC (Number of Children), but it doesn't do it anymore,
+as it requires too much memory.)
+
+The tool also prints some metrics at method level: number of parameters, number of return 
+instructions, number of variables, number of times each variable is used, WMC, CBO, RFC.
 
 # How to use it
 
@@ -62,9 +63,16 @@ To use the _latest version_ (which you should), clone the project and generate a
 
 Then, just run:
 ```
-java -jar ck-x.x.x-SNAPSHOT-jar-with-dependencies.jar <project dir> <path to csv output>
+java -jar ck-x.x.x-SNAPSHOT-jar-with-dependencies.jar <project dir>
 ```
 
+The tool will generate three csv files (one for metrics at class level, method level, and variable level).
+
+# Why is it called CK?
+
+Because the tool was born to just calculate the CK metrics, but it grew beyond
+my expectations... Life is funny!
+  
 # How to Contribute
 
 ```
