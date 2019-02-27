@@ -11,7 +11,7 @@ public class LOCCalculator {
 
 	private static Logger log = Logger.getLogger(LOCCalculator.class);
 	
-	public int calculate(InputStream sourceCode) {
+	public static int calculate(InputStream sourceCode) {
 
 		try {
 			BufferedReader reader = new BufferedReader(new InputStreamReader(sourceCode));
@@ -32,7 +32,7 @@ public class LOCCalculator {
 		}
 	}
 
-	private boolean empty(String line) {
+	private static boolean empty(String line) {
 		String result = line.replace("\t", "").replace(" ", "").trim();
 		return result.isEmpty();
 	}

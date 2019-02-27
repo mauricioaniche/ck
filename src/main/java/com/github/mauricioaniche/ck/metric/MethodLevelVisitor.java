@@ -11,6 +11,7 @@ import java.util.*;
 import java.util.concurrent.Callable;
 
 import static com.github.mauricioaniche.ck.util.JDTUtils.getMethodFullName;
+import static com.github.mauricioaniche.ck.util.LOCCalculator.calculate;
 
 public class MethodLevelVisitor extends ASTVisitor {
 
@@ -34,7 +35,7 @@ public class MethodLevelVisitor extends ASTVisitor {
 		currentMethod = new MethodMetric(currentMethodName);
 		methods.put(currentMethodName, currentMethod);
 
-		currentMethod.setLoc(new LOCCalculator().calculate(IOUtils.toInputStream(node.toString())));
+		currentMethod.setLoc(calculate(IOUtils.toInputStream(node.toString())));
 
 		try {
 			currentMetricsToRun = metrics.call();

@@ -14,6 +14,8 @@ import org.eclipse.jdt.core.dom.FileASTRequestor;
 import com.github.mauricioaniche.ck.metric.ClassInfo;
 import com.github.mauricioaniche.ck.metric.Metric;
 
+import static com.github.mauricioaniche.ck.util.LOCCalculator.calculate;
+
 public class MetricsExecutor extends FileASTRequestor {
 
 	private Callable<List<Metric>> metrics;
@@ -42,7 +44,7 @@ public class MetricsExecutor extends FileASTRequestor {
 		
 			result = new CKNumber(sourceFilePath, info.getClassName(), info.getType());
 			
-			int loc = new LOCCalculator().calculate(new FileInputStream(sourceFilePath));
+			int loc = calculate(new FileInputStream(sourceFilePath));
 			result.setLoc(loc);
 
 			// calculate class level metrics
