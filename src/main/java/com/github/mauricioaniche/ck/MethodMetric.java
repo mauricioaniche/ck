@@ -5,6 +5,10 @@ public class MethodMetric {
 	private int rfc;
 	private int wmc;
 	private String methodName;
+	private int parametersQty;
+	private int returnQty;
+	private int loc;
+	private int variablesQty;
 
 	public MethodMetric(String methodName) {
 		this.methodName = methodName;
@@ -20,6 +24,10 @@ public class MethodMetric {
 
 	public void setWmc(int wmc) {
 		this.wmc = wmc;
+	}
+
+	public void setParametersQty(int parametersQty) {
+		this.parametersQty = parametersQty;
 	}
 
 	public int getCbo() {
@@ -46,5 +54,33 @@ public class MethodMetric {
 				", wmc=" + wmc +
 				", methodName='" + methodName + '\'' +
 				'}';
+	}
+
+	public void setReturnQty(int returnQty) {
+		this.returnQty = returnQty;
+	}
+
+	public void setLoc(int loc) {
+		this.loc = loc;
+	}
+
+	public void setVariablesQty(int variablesQty) {
+		this.variablesQty = variablesQty;
+	}
+
+	public int getLoc() {
+		return loc;
+	}
+
+	public int getParametersQty() {
+		return parametersQty;
+	}
+
+	public int getVariablesQty() {
+		return variablesQty;
+	}
+
+	public int getReturnQty() {
+		return returnQty;
 	}
 }

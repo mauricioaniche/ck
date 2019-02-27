@@ -70,7 +70,7 @@ public class CK {
     }
 
 	private List<MethodLevelMetric> methodLevelMetrics() {
-		return new ArrayList<>(Arrays.asList(new CBO(), new RFC(), new WMC()));
+		return new ArrayList<>(Arrays.asList(new CBO(), new RFC(), new WMC(), new NumberOfParameters(), new NumberOfReturns(), new NumberOfVariables()));
 	}
 
 	private List<Metric> metrics() {

@@ -14,7 +14,6 @@ abstract class BaseTest {
 	protected static String fixturesDir() {
 		try {
 			String cfgFile = new File(BaseTest.class.getResource("/").getPath() + "../../fixtures/").getCanonicalPath();
-			System.out.println(cfgFile);
 			return cfgFile;
 		} catch (IOException e) {
 			throw new RuntimeException(e);

@@ -2,8 +2,11 @@ package com.github.mauricioaniche.ck.metric;
 
 import com.github.mauricioaniche.ck.MethodMetric;
 import com.github.mauricioaniche.ck.util.JDTUtils;
+import com.github.mauricioaniche.ck.util.LOCCalculator;
+import org.apache.commons.io.IOUtils;
 import org.eclipse.jdt.core.dom.*;
 
+import java.io.FileInputStream;
 import java.util.*;
 import java.util.concurrent.Callable;
 
@@ -13,13 +16,15 @@ public class MethodLevelVisitor extends ASTVisitor {
 
 	private Map<String, MethodMetric> methods;
 	private Callable<List<MethodLevelMetric>> metrics;
+	private CompilationUnit cu;
 
 	private MethodMetric currentMethod;
 	private String currentMethodName;
 	private List<MethodLevelMetric> currentMetricsToRun;
 
-	public MethodLevelVisitor(Callable<List<MethodLevelMetric>> metrics) {
+	public MethodLevelVisitor(Callable<List<MethodLevelMetric>> metrics, CompilationUnit cu) {
 		this.metrics = metrics;
+		this.cu = cu;
 		methods = new HashMap<>();
 	}
 
@@ -29,8 +34,11 @@ public class MethodLevelVisitor extends ASTVisitor {
 		currentMethod = new MethodMetric(currentMethodName);
 		methods.put(currentMethodName, currentMethod);
 
+		currentMethod.setLoc(new LOCCalculator().calculate(IOUtils.toInputStream(node.toString())));
+
 		try {
 			currentMetricsToRun = metrics.call();
+			if(currentMetricsToRun!=null) currentMetricsToRun.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.visit(node));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

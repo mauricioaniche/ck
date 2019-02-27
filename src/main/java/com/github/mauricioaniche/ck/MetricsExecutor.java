@@ -52,7 +52,7 @@ public class MetricsExecutor extends FileASTRequestor {
 			}
 
 			// calculate metric level metrics
-			MethodLevelVisitor methodVisitor = new MethodLevelVisitor(methodLevelMetrics);
+			MethodLevelVisitor methodVisitor = new MethodLevelVisitor(methodLevelMetrics, cu);
 			cu.accept(methodVisitor);
 			result.setMethods(methodVisitor.getMap());
 
