@@ -56,7 +56,7 @@ as it requires too much memory.)
 The tool also prints some metrics at method level: number of parameters, number of return 
 instructions, number of variables, number of times each variable is used, WMC, CBO, RFC.
 
-# How to use it
+# How to use the standalone version
 
 To use the _latest version_ (which you should), clone the project and generate a JAR. A simple
 `mvn clean compile assembly:single` generates the single JAR file for you (see your _target_ folder).
@@ -67,6 +67,17 @@ java -jar ck-x.x.x-SNAPSHOT-jar-with-dependencies.jar <project dir>
 ```
 
 The tool will generate three csv files (one for metrics at class level, method level, and variable level).
+
+
+# How to integrate it in my Java app
+
+Learn by example. See `Runner.java` class. In a nutshell:
+
+```
+new CK().calculate(path, result -> {
+    // process each 'result' here
+}
+```
 
 # Why is it called CK?
 
