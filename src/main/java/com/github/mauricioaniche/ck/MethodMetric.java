@@ -1,5 +1,7 @@
 package com.github.mauricioaniche.ck;
 
+import java.util.Map;
+
 public class MethodMetric {
 	private int cbo;
 	private int rfc;
@@ -9,6 +11,7 @@ public class MethodMetric {
 	private int returnQty;
 	private int loc;
 	private int variablesQty;
+	private Map<String, Integer> variablesUsage;
 
 	public MethodMetric(String methodName) {
 		this.methodName = methodName;
@@ -82,5 +85,13 @@ public class MethodMetric {
 
 	public int getReturnQty() {
 		return returnQty;
+	}
+
+	public void setVariablesUsage(Map<String, Integer> variablesUsage) {
+		this.variablesUsage = variablesUsage;
+	}
+
+	public Map<String, Integer> getVariablesUsage() {
+		return variablesUsage;
 	}
 }

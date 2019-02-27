@@ -1,13 +1,13 @@
 package com.github.mauricioaniche.ck.metric;
 
 import com.github.mauricioaniche.ck.MethodMetric;
-import com.github.mauricioaniche.ck.util.JDTUtils;
-import com.github.mauricioaniche.ck.util.LOCCalculator;
 import org.apache.commons.io.IOUtils;
 import org.eclipse.jdt.core.dom.*;
 
-import java.io.FileInputStream;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 
 import static com.github.mauricioaniche.ck.util.JDTUtils.getMethodFullName;
