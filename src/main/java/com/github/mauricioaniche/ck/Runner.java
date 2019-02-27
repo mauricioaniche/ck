@@ -19,7 +19,7 @@ public class Runner {
 		classOutput.println("file,class,type,cbo,wmc,dit,rfc,lcom,nom,nopm,nosm,nof,nopf,nosf,nosi,loc");
 
 		PrintStream methodOutput = new PrintStream("method.csv");
-		methodOutput.println("file,class,method,cbo,wmc,rfc,loc,returns,variables,parameters");
+		methodOutput.println("file,class,method,line,cbo,wmc,rfc,loc,returns,variables,parameters");
 
 		PrintStream variableOutput = new PrintStream("variable.csv");
 		variableOutput.println("file,class,method,variable,usage");
@@ -49,6 +49,7 @@ public class Runner {
 			for(MethodMetric method : result.getMethods()) {
 				methodOutput.println(
 					method.getMethodName() + "," +
+					method.getStartLine() + "," +
 					method.getCbo() + "," +
 					method.getWmc() + "," +
 					method.getRfc() + "," +

@@ -36,6 +36,7 @@ public class MethodLevelVisitor extends ASTVisitor {
 		methods.put(currentMethodName, currentMethod);
 
 		currentMethod.setLoc(calculate(IOUtils.toInputStream(node.toString())));
+		currentMethod.setStartLine(cu.getLineNumber(node.getStartPosition()));
 
 		try {
 			currentMetricsToRun = metrics.call();

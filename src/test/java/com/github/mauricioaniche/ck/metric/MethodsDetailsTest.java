@@ -17,7 +17,7 @@ public class MethodsDetailsTest extends BaseTest{
 	}
 
 	@Test
-	public void lineNumber() {
+	public void loc() {
 		CKNumber a = report.get("methods2.A1");
 		Assert.assertEquals(6, a.getMethod("a/0").get().getLoc());
 		Assert.assertEquals(2, a.getMethod("b/0").get().getLoc());
@@ -45,5 +45,14 @@ public class MethodsDetailsTest extends BaseTest{
 		Assert.assertEquals(0, a.getMethod("a/0").get().getReturnQty());
 		Assert.assertEquals(3, a.getMethod("d/0").get().getReturnQty());
 		Assert.assertEquals(1, a.getMethod("e/0").get().getReturnQty());
+	}
+
+	@Test
+	public void lineNumber() {
+		CKNumber a = report.get("methods2.A1");
+		Assert.assertEquals(18, a.getMethod("c/3[int,int,methods2.A]").get().getStartLine());
+		Assert.assertEquals(5, a.getMethod("a/0").get().getStartLine());
+		Assert.assertEquals(22, a.getMethod("d/0").get().getStartLine());
+		Assert.assertEquals(29, a.getMethod("e/0").get().getStartLine());
 	}
 }

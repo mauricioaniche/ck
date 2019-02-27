@@ -12,6 +12,7 @@ public class MethodMetric {
 	private int loc;
 	private int variablesQty;
 	private Map<String, Integer> variablesUsage;
+	private int startLine;
 
 	public MethodMetric(String methodName) {
 		this.methodName = methodName;
@@ -93,5 +94,13 @@ public class MethodMetric {
 
 	public Map<String, Integer> getVariablesUsage() {
 		return variablesUsage;
+	}
+
+	public void setStartLine(int startLine) {
+		this.startLine = startLine;
+	}
+
+	public int getStartLine() {
+		return startLine;
 	}
 }
