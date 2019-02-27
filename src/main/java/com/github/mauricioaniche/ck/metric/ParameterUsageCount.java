@@ -41,7 +41,7 @@ public class ParameterUsageCount extends ASTVisitor implements MethodLevelMetric
 		if(declaredVariables.contains(node.toString())) {
 			String var = node.getIdentifier();
 			if (!occurences.containsKey(var))
-				occurences.put(var, 0);
+				occurences.put(var, -1);
 
 			occurences.put(var, occurences.get(var) + 1);
 		}
