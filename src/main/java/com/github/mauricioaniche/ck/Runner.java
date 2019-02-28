@@ -48,6 +48,8 @@ public class Runner {
 
 			for(MethodMetric method : result.getMethods()) {
 				methodOutput.println(
+					result.getFile() + "," +
+					result.getClassName() + "," +
 					method.getMethodName() + "," +
 					method.getStartLine() + "," +
 					method.getCbo() + "," +
@@ -60,7 +62,12 @@ public class Runner {
 				);
 
 				for(Map.Entry<String,Integer> entry : method.getVariablesUsage().entrySet()) {
-					variableOutput.println(entry.getKey() + "," + entry.getValue());
+
+					variableOutput.println(
+						result.getFile() + "," +
+						result.getClassName() + "," +
+						method.getMethodName() + "," +
+						entry.getKey() + "," + entry.getValue());
 				}
 			}
 
