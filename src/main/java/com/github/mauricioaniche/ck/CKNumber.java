@@ -27,6 +27,7 @@ public class CKNumber {
 	private boolean error;
 
 	private Set<MethodMetric> methods;
+	private int returnQty;
 
 	public CKNumber(String file, String className, String type) {
 		this.file = file;
@@ -203,5 +204,13 @@ public class CKNumber {
 
 	public Optional<MethodMetric> getMethod(String methodName) {
 		return methods.stream().filter(m -> m.getMethodName().equals(methodName)).findFirst();
+	}
+
+	public void setReturnQty(int returnQty) {
+		this.returnQty = returnQty;
+	}
+
+	public int getReturnQty() {
+		return returnQty;
 	}
 }
