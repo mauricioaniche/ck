@@ -17,6 +17,7 @@ public class MethodMetric {
 	private int comparisonsQty;
 	private int tryCatchQty;
 	private int parenthesizedExpsQty;
+	private int stringsQty;
 
 	public MethodMetric(String methodName) {
 		this.methodName = methodName;
@@ -138,5 +139,13 @@ public class MethodMetric {
 
 	public int getParenthesizedExpsQty() {
 		return parenthesizedExpsQty;
+	}
+
+	public void setStringsQty(int stringsQty) {
+		this.stringsQty = stringsQty;
+	}
+
+	public int getStringsQty() {
+		return stringsQty;
 	}
 }

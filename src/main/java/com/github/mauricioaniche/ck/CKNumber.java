@@ -32,6 +32,7 @@ public class CKNumber {
 	private int comparisonsQty;
 	private int tryCatchQty;
 	private int parenthesizedExpsQty;
+	private int stringsQty;
 
 	public CKNumber(String file, String className, String type) {
 		this.file = file;
@@ -248,5 +249,13 @@ public class CKNumber {
 
 	public int getParenthesizedExpsQty() {
 		return parenthesizedExpsQty;
+	}
+
+	public void setStringsQty(int stringsQty) {
+		this.stringsQty = stringsQty;
+	}
+
+	public int getStringsQty() {
+		return stringsQty;
 	}
 }
