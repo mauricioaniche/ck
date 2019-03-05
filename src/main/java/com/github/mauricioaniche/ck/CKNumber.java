@@ -37,6 +37,7 @@ public class CKNumber {
 	private int assignmentsQty;
 	private int mathOperationsQty;
 	private int variablesQty;
+	private int maxNestedBlocks;
 
 	public CKNumber(String file, String className, String type) {
 		this.file = file;
@@ -289,5 +290,13 @@ public class CKNumber {
 
 	public int getVariablesQty() {
 		return variablesQty;
+	}
+
+	public void setMaxNestedBlocks(int maxNestedBlocks) {
+		this.maxNestedBlocks = maxNestedBlocks;
+	}
+
+	public int getMaxNestedBlocks() {
+		return maxNestedBlocks;
 	}
 }

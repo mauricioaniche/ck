@@ -21,6 +21,7 @@ public class MethodMetric {
 	private int numbersQty;
 	private int assignmentsQty;
 	private int mathOperationsQty;
+	private int maxNestedBlocks;
 
 	public MethodMetric(String methodName) {
 		this.methodName = methodName;
@@ -170,5 +171,13 @@ public class MethodMetric {
 
 	public int getMathOperationsQty() {
 		return mathOperationsQty;
+	}
+
+	public void setMaxNestedBlocks(int maxNestedBlocks) {
+		this.maxNestedBlocks = maxNestedBlocks;
+	}
+
+	public int getMaxNestedBlocks() {
+		return maxNestedBlocks;
 	}
 }

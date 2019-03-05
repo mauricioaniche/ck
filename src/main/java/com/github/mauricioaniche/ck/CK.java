@@ -73,7 +73,7 @@ public class CK {
 		return new ArrayList<>(Arrays.asList(new CBO(), new RFC(), new WMC(),
 				new NumberOfParameters(), new NumberOfReturns(), new NumberOfVariables(), new ParameterUsageCount(), new NumberOfLoops(),
 				new NumberOfComparisons(), new NumberOfTryCatches(), new NumberOfParenthesis(), new NumberOfStrings(),
-				new NumberOfNumbers(), new NumberOfAssignments(), new NumberOfMathOperators()));
+				new NumberOfNumbers(), new NumberOfAssignments(), new NumberOfMathOperators(), new NumberOfMaxNestedBlock()));
 	}
 
 	private List<Metric> metrics() {
@@ -81,7 +81,7 @@ public class CK {
 				new NOF(), new NOPF(), new NOSF(),
 				new NOPM(), new NOSM(), new NOSI(), new NumberOfLoops(), new NumberOfComparisons(), new NumberOfTryCatches(),
 				new NumberOfParenthesis(), new NumberOfStrings(), new NumberOfNumbers(), new NumberOfAssignments(),
-				new NumberOfMathOperators(), new NumberOfVariables()));
+				new NumberOfMathOperators(), new NumberOfVariables(), new NumberOfMaxNestedBlock()));
 	}
 
 }
