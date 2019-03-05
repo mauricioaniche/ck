@@ -81,7 +81,7 @@ public class CK {
 				new NOF(), new NOPF(), new NOSF(),
 				new NOPM(), new NOSM(), new NOSI(), new NumberOfLoops(), new NumberOfComparisons(), new NumberOfTryCatches(),
 				new NumberOfParenthesis(), new NumberOfStrings(), new NumberOfNumbers(), new NumberOfAssignments(),
-				new NumberOfMathOperators()));
+				new NumberOfMathOperators(), new NumberOfVariables()));
 	}
 
 }

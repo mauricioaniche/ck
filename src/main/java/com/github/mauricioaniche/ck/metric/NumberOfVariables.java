@@ -1,9 +1,10 @@
 package com.github.mauricioaniche.ck.metric;
 
+import com.github.mauricioaniche.ck.CKNumber;
 import com.github.mauricioaniche.ck.MethodMetric;
 import org.eclipse.jdt.core.dom.*;
 
-public class NumberOfVariables extends ASTVisitor implements MethodLevelMetric {
+public class NumberOfVariables extends ASTVisitor implements Metric, MethodLevelMetric {
 	private int qty = 0;
 
 	@Override
@@ -17,4 +18,15 @@ public class NumberOfVariables extends ASTVisitor implements MethodLevelMetric {
 	}
 
 
+	@Override
+	public void execute(CompilationUnit cu, CKNumber result) {
+		cu.accept(this);
+	}
+
+	@Override
+	public void setResult(CKNumber result) {
+
+		result.setVariablesQty(qty);
+
+	}
 }

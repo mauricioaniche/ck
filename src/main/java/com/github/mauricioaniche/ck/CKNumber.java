@@ -36,6 +36,7 @@ public class CKNumber {
 	private int numbersQty;
 	private int assignmentsQty;
 	private int mathOperationsQty;
+	private int variablesQty;
 
 	public CKNumber(String file, String className, String type) {
 		this.file = file;
@@ -280,5 +281,13 @@ public class CKNumber {
 
 	public int getMathOperationsQty() {
 		return mathOperationsQty;
+	}
+
+	public void setVariablesQty(int variablesQty) {
+		this.variablesQty = variablesQty;
+	}
+
+	public int getVariablesQty() {
+		return variablesQty;
 	}
 }
