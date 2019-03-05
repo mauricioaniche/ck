@@ -30,6 +30,7 @@ public class CKNumber {
 	private int returnQty;
 	private int loopQty;
 	private int comparisonsQty;
+	private int tryCatchQty;
 
 	public CKNumber(String file, String className, String type) {
 		this.file = file;
@@ -230,5 +231,13 @@ public class CKNumber {
 
 	public int getComparisonsQty() {
 		return comparisonsQty;
+	}
+
+	public void setTryCatchQty(int tryCatchQty) {
+		this.tryCatchQty = tryCatchQty;
+	}
+
+	public int getTryCatchQty() {
+		return tryCatchQty;
 	}
 }

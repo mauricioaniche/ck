@@ -15,6 +15,7 @@ public class MethodMetric {
 	private int startLine;
 	private int loopQty;
 	private int comparisonsQty;
+	private int tryCatchQty;
 
 	public MethodMetric(String methodName) {
 		this.methodName = methodName;
@@ -120,5 +121,13 @@ public class MethodMetric {
 
 	public int getComparisonsQty() {
 		return comparisonsQty;
+	}
+
+	public void setTryCatchQty(int tryCatchQty) {
+		this.tryCatchQty = tryCatchQty;
+	}
+
+	public int getTryCatchQty() {
+		return tryCatchQty;
 	}
 }
