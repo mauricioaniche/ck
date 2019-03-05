@@ -14,6 +14,7 @@ public class MethodMetric {
 	private Map<String, Integer> variablesUsage;
 	private int startLine;
 	private int loopQty;
+	private int comparisonsQty;
 
 	public MethodMetric(String methodName) {
 		this.methodName = methodName;
@@ -111,5 +112,13 @@ public class MethodMetric {
 
 	public int getLoopQty() {
 		return loopQty;
+	}
+
+	public void setComparisonsQty(int comparisonsQty) {
+		this.comparisonsQty = comparisonsQty;
+	}
+
+	public int getComparisonsQty() {
+		return comparisonsQty;
 	}
 }
