@@ -16,6 +16,7 @@ public class MethodMetric {
 	private int loopQty;
 	private int comparisonsQty;
 	private int tryCatchQty;
+	private int parenthesizedExpsQty;
 
 	public MethodMetric(String methodName) {
 		this.methodName = methodName;
@@ -129,5 +130,13 @@ public class MethodMetric {
 
 	public int getTryCatchQty() {
 		return tryCatchQty;
+	}
+
+	public void setParenthesizedExpsQty(int parenthesizedExpsQty) {
+		this.parenthesizedExpsQty = parenthesizedExpsQty;
+	}
+
+	public int getParenthesizedExpsQty() {
+		return parenthesizedExpsQty;
 	}
 }
