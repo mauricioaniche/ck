@@ -34,6 +34,7 @@ public class CKNumber {
 	private int parenthesizedExpsQty;
 	private int stringsQty;
 	private int numbersQty;
+	private int assignmentsQty;
 
 	public CKNumber(String file, String className, String type) {
 		this.file = file;
@@ -262,5 +263,13 @@ public class CKNumber {
 
 	public void setNumbersQty(int numbersQty) {
 		this.numbersQty = numbersQty;
+	}
+
+	public void setAssignmentsQty(int assignmentsQty) {
+		this.assignmentsQty = assignmentsQty;
+	}
+
+	public int getAssignmentsQty() {
+		return assignmentsQty;
 	}
 }
