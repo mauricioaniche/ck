@@ -18,6 +18,7 @@ public class MethodMetric {
 	private int tryCatchQty;
 	private int parenthesizedExpsQty;
 	private int stringsQty;
+	private int numbersQty;
 
 	public MethodMetric(String methodName) {
 		this.methodName = methodName;
@@ -147,5 +148,9 @@ public class MethodMetric {
 
 	public int getStringsQty() {
 		return stringsQty;
+	}
+
+	public void setNumbersQty(int numbersQty) {
+		this.numbersQty = numbersQty;
 	}
 }
