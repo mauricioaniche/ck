@@ -4,7 +4,7 @@ import com.github.mauricioaniche.ck.CKNumber;
 import com.github.mauricioaniche.ck.MethodMetric;
 import org.eclipse.jdt.core.dom.*;
 
-public class NumberOfComparisons extends ASTVisitor implements Metric, MethodLevelMetric {
+public class NumberOfLoops extends ASTVisitor implements Metric, MethodLevelMetric {
 
 	private int qty = 0;
 

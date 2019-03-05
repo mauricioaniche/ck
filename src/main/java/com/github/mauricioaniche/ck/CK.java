@@ -71,13 +71,13 @@ public class CK {
 
 	private List<MethodLevelMetric> methodLevelMetrics() {
 		return new ArrayList<>(Arrays.asList(new CBO(), new RFC(), new WMC(),
-				new NumberOfParameters(), new NumberOfReturns(), new NumberOfVariables(), new ParameterUsageCount(), new NumberOfComparisons()));
+				new NumberOfParameters(), new NumberOfReturns(), new NumberOfVariables(), new ParameterUsageCount(), new NumberOfLoops()));
 	}
 
 	private List<Metric> metrics() {
 		return new ArrayList<>(Arrays.asList(new DIT(), new WMC(), new CBO(), new LCOM(), new RFC(), new NOM(),
 				new NOF(), new NOPF(), new NOSF(),
-				new NOPM(), new NOSM(), new NOSI(), new NumberOfComparisons()));
+				new NOPM(), new NOSM(), new NOSI(), new NumberOfLoops()));
 	}
 
 }
