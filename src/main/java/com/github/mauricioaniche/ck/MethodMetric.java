@@ -20,6 +20,7 @@ public class MethodMetric {
 	private int stringsQty;
 	private int numbersQty;
 	private int assignmentsQty;
+	private int mathOperationsQty;
 
 	public MethodMetric(String methodName) {
 		this.methodName = methodName;
@@ -161,5 +162,13 @@ public class MethodMetric {
 
 	public int getAssignmentsQty() {
 		return assignmentsQty;
+	}
+
+	public void setMathOperationsQty(int mathOperationsQty) {
+		this.mathOperationsQty = mathOperationsQty;
+	}
+
+	public int getMathOperationsQty() {
+		return mathOperationsQty;
 	}
 }

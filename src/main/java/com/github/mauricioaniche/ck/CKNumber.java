@@ -35,6 +35,7 @@ public class CKNumber {
 	private int stringsQty;
 	private int numbersQty;
 	private int assignmentsQty;
+	private int mathOperationsQty;
 
 	public CKNumber(String file, String className, String type) {
 		this.file = file;
@@ -271,5 +272,13 @@ public class CKNumber {
 
 	public int getAssignmentsQty() {
 		return assignmentsQty;
+	}
+
+	public void setMathOperationsQty(int mathOperationsQty) {
+		this.mathOperationsQty = mathOperationsQty;
+	}
+
+	public int getMathOperationsQty() {
+		return mathOperationsQty;
 	}
 }
