@@ -13,6 +13,7 @@ public class MethodMetric {
 	private int variablesQty;
 	private Map<String, Integer> variablesUsage;
 	private int startLine;
+	private int loopQty;
 
 	public MethodMetric(String methodName) {
 		this.methodName = methodName;
@@ -102,5 +103,13 @@ public class MethodMetric {
 
 	public int getStartLine() {
 		return startLine;
+	}
+
+	public void setLoopQty(int loopQty) {
+		this.loopQty = loopQty;
+	}
+
+	public int getLoopQty() {
+		return loopQty;
 	}
 }

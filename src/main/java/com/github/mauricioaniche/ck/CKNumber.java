@@ -28,6 +28,7 @@ public class CKNumber {
 
 	private Set<MethodMetric> methods;
 	private int returnQty;
+	private int loopQty;
 
 	public CKNumber(String file, String className, String type) {
 		this.file = file;
@@ -212,5 +213,13 @@ public class CKNumber {
 
 	public int getReturnQty() {
 		return returnQty;
+	}
+
+	public void setLoopQty(int loopQty) {
+		this.loopQty = loopQty;
+	}
+
+	public int getLoopQty() {
+		return loopQty;
 	}
 }
