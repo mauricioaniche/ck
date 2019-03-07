@@ -52,6 +52,12 @@ public class MethodLevelVisitor extends ASTVisitor {
 		currentMetricsToRun.forEach(m -> m.setResult(currentMethod));
 	}
 
+	@Override
+	public void endVisit(Block node) {
+		if(currentMetricsToRun!=null) currentMetricsToRun.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+	// TODO: add all other endVisit method invocations here.
 
 	public Map<String, CKMethodResult> getMap() {
 		return Collections.unmodifiableMap(methods);

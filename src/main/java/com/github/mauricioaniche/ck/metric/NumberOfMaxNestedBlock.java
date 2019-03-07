@@ -17,13 +17,14 @@ public class NumberOfMaxNestedBlock extends ASTVisitor implements ClassLevelMetr
 		return super.visit(node);
 	}
 
+	@Override
 	public void endVisit(Block node) {
 		current--;
 	}
 
 	@Override
 	public void setResult(CKMethodResult result) {
-		result.setMaxNestedBlocks(max);
+		result.setMaxNestedBlocks(max - 1); // -1 because the method block is considered a block.
 
 	}
 
@@ -34,6 +35,6 @@ public class NumberOfMaxNestedBlock extends ASTVisitor implements ClassLevelMetr
 
 	@Override
 	public void setResult(CKClassResult result) {
-		result.setMaxNestedBlocks(max);
+		result.setMaxNestedBlocks(max - 1);
 	}
 }
