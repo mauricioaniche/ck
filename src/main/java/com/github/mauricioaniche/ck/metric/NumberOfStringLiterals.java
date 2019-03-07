@@ -25,6 +25,6 @@ public class NumberOfStringLiterals extends ASTVisitor implements ClassLevelMetr
 
 	@Override
 	public void setResult(CKClassResult result) {
-		result.setStringsQty(qty);
+		result.setStringLiteralsQty(qty);
 	}
 }

@@ -32,7 +32,7 @@ public class CKClassResult {
 	private int comparisonsQty;
 	private int tryCatchQty;
 	private int parenthesizedExpsQty;
-	private int stringsQty;
+	private int stringLiteralsQty;
 	private int numbersQty;
 	private int assignmentsQty;
 	private int mathOperationsQty;
@@ -263,12 +263,12 @@ public class CKClassResult {
 		return parenthesizedExpsQty;
 	}
 
-	public void setStringsQty(int stringsQty) {
-		this.stringsQty = stringsQty;
+	public void setStringLiteralsQty(int stringLiteralsQty) {
+		this.stringLiteralsQty = stringLiteralsQty;
 	}
 
-	public int getStringsQty() {
-		return stringsQty;
+	public int getStringLiteralsQty() {
+		return stringLiteralsQty;
 	}
 
 	public void setNumbersQty(int numbersQty) {
