@@ -1,4 +1,4 @@
-package com.github.mauricioaniche.ck.metric;
+package com.github.mauricioaniche.ck;
 
 import com.github.mauricioaniche.ck.CKClassResult;
 import com.github.mauricioaniche.ck.metric.ClassLevelMetric;

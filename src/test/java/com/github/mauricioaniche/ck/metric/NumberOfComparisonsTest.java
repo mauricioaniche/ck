@@ -17,7 +17,7 @@ public class NumberOfComparisonsTest extends BaseTest {
 	}
 
 	@Test
-	public void countComparisons() {
+	public void count() {
 		CKClassResult a = report.get("comparison.Comparison");
 
 		Assert.assertEquals(3, a.getComparisonsQty());

@@ -8,6 +8,7 @@ import java.util.concurrent.Callable;
 
 import com.github.mauricioaniche.ck.metric.*;
 import com.github.mauricioaniche.ck.util.FileUtils;
+import com.github.mauricioaniche.ck.util.MetricsFinder;
 import org.apache.log4j.Logger;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.AST;
@@ -46,7 +47,10 @@ public class CK {
 	}
 
 	public CK() {
-		this(() -> classLevelMetrics(), () -> methodLevelMetrics());
+		MetricsFinder finder = new MetricsFinder();
+
+		this.classLevelMetrics = () -> finder.allClassLevelMetrics();
+		this.methodLevelMetrics = () -> finder.allMethodLevelMetrics();
 	}
 
 	public void calculate(String path, CKNotifier notifier) {
@@ -75,58 +79,5 @@ public class CK {
 		
 		log.info("Finished parsing");
     }
-
-	private static List<MethodLevelMetric> methodLevelMetrics() {
-		return new ArrayList<>(Arrays.asList(
-				new CBO(),
-				new RFC(),
-				new WMC(),
-				new NumberOfParameters(),
-				new NumberOfReturns(),
-				new NumberOfVariables(),
-				new VariableOrParameterUsageCount(),
-				new NumberOfLoops(),
-				new NumberOfComparisons(),
-				new NumberOfTryCatches(),
-				new NumberOfParenthesis(),
-				new NumberOfStringLiterals(),
-				new NumberOfNumbers(),
-				new NumberOfAssignments(),
-				new NumberOfMathOperators(),
-				new NumberOfMaxNestedBlock(),
-				new NumberOfSubClassesLambdasAndAnonymousClasses(),
-				new MethodLevelWordsAndCharsCounter(),
-				new MethodLevelFieldUsageCount()));
-
-	}
-
-	private static List<ClassLevelMetric> classLevelMetrics() {
-		return new ArrayList<>(Arrays.asList(
-				new DIT(),
-				new WMC(),
-				new CBO(),
-				new LCOM(),
-				new RFC(),
-				new NOM(),
-				new NOF(),
-				new NOPF(),
-				new NOSF(),
-				new NOPM(),
-				new NOSM(),
-				new NOSI(),
-				new NumberOfLoops(),
-				new NumberOfComparisons(),
-				new NumberOfTryCatches(),
-				new NumberOfParenthesis(),
-				new NumberOfStringLiterals(),
-				new NumberOfNumbers(),
-				new NumberOfAssignments(),
-				new NumberOfMathOperators(),
-				new NumberOfVariables(),
-				new NumberOfMaxNestedBlock(),
-				new NumberOfSubClassesLambdasAndAnonymousClasses(),
-				new ClassLevelWordsAndCharsCounter(),
-				new ClassLevelFieldUsageCount()));
-	}
 
 }

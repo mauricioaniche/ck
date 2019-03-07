@@ -63,11 +63,6 @@ public class WordUtils {
 			add("super");
 			add("while");
 
-			add("int");
-			add("double");
-			add("float");
-			add("long");
-			add("char");
 			add("String");
 		}};
 	}

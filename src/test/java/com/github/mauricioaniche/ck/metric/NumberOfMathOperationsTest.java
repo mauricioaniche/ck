@@ -17,7 +17,7 @@ public class NumberOfMathOperationsTest extends BaseTest {
 	}
 
 	@Test
-	public void countLoops() {
+	public void count() {
 		CKClassResult a = report.get("math.Math");
 
 		Assert.assertEquals(5, a.getMathOperationsQty());
