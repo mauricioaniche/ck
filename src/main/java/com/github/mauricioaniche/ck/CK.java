@@ -86,7 +86,8 @@ public class CK {
 				new NumberOfNumbers(),
 				new NumberOfAssignments(),
 				new NumberOfMathOperators(),
-				new NumberOfMaxNestedBlock()));
+				new NumberOfMaxNestedBlock(),
+				new NumberOfSubClassesLambdasAndAnonymousClasses()));
 
 	}
 
@@ -113,7 +114,8 @@ public class CK {
 				new NumberOfAssignments(),
 				new NumberOfMathOperators(),
 				new NumberOfVariables(),
-				new NumberOfMaxNestedBlock()));
+				new NumberOfMaxNestedBlock(),
+				new NumberOfSubClassesLambdasAndAnonymousClasses()));
 	}
 
 }

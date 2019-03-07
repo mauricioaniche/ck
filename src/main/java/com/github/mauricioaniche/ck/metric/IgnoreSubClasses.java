@@ -17,18 +17,17 @@ public class IgnoreSubClasses extends ASTVisitor {
 	public boolean visit(TypeDeclaration node) {
 		currentType.add(node.getName().toString());
 
-		if(isMainType()) return otherVisitor.visit(node);
-		return super.visit(node);
+		return otherVisitor.visit(node);
 	}
 
 	public boolean visit(AnonymousClassDeclaration node) {
 		currentType.add("anonymous");
-		return true;
+		return otherVisitor.visit(node);
 	}
 
 	public boolean visit(LambdaExpression node) {
 		currentType.add("lambda");
-		return true;
+		return otherVisitor.visit(node);
 	}
 
 	@Override

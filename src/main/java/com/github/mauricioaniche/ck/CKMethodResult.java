@@ -22,6 +22,9 @@ public class CKMethodResult {
 	private int assignmentsQty;
 	private int mathOperationsQty;
 	private int maxNestedBlocks;
+	private int anonymousClassesQty;
+	private int subClassesQty;
+	private int lambdasQty;
 
 	public CKMethodResult(String methodName) {
 		this.methodName = methodName;
@@ -183,5 +186,17 @@ public class CKMethodResult {
 
 	public int getNumbersQty() {
 		return numbersQty;
+	}
+
+	public void setAnonymousClassesQty(int anonymousClassesQty) {
+		this.anonymousClassesQty = anonymousClassesQty;
+	}
+
+	public void setSubClassesQty(int subClassesQty) {
+		this.subClassesQty = subClassesQty;
+	}
+
+	public void setLambdasQty(int lambdasQty) {
+		this.lambdasQty = lambdasQty;
 	}
 }

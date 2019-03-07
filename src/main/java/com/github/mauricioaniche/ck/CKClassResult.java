@@ -38,6 +38,9 @@ public class CKClassResult {
 	private int mathOperationsQty;
 	private int variablesQty;
 	private int maxNestedBlocks;
+	private int anonymousClassesQty;
+	private int subClassesQty;
+	private int lambdasQty;
 
 	public CKClassResult(String file, String className, String type) {
 		this.file = file;
@@ -298,5 +301,17 @@ public class CKClassResult {
 
 	public int getMaxNestedBlocks() {
 		return maxNestedBlocks;
+	}
+
+	public void setAnonymousClassesQty(int anonymousClassesQty) {
+		this.anonymousClassesQty = anonymousClassesQty;
+	}
+
+	public void setSubClassesQty(int subClassesQty) {
+		this.subClassesQty = subClassesQty;
+	}
+
+	public void setLambdasQty(int lambdasQty) {
+		this.lambdasQty = lambdasQty;
 	}
 }
