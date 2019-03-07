@@ -207,10 +207,7 @@ public class CKClassResult {
 
 	@Override
 	public String toString() {
-		return "CKClassResult [file=" + file + ", className=" + className + ", type=" + type + ", dit=" + dit +
-				", wmc=" + wmc + ", cbo=" + cbo + ", lcom=" + lcom + ", rfc=" + rfc + ", nom=" + nom + ", nopm="
-				+ nopm + ", nosm=" + nosm + ", nof=" + nof + ", nopf=" + nopf + ", nosf=" + nosf + ", nosi=" + nosi
-				+ ", loc=" + loc + ", error=" + error + "]";
+		return "CKClassResult [file=" + file + ", className=" + className + "]";
 	}
 
 

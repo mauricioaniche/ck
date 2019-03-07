@@ -14,14 +14,14 @@ import static com.github.mauricioaniche.ck.util.LOCCalculator.calculate;
 
 public class MetricsExecutor extends FileASTRequestor {
 
-	private Callable<List<ClassLevelMetric>> metrics;
+	private Callable<List<ClassLevelMetric>> classLevelMetrics;
 	private Callable<List<MethodLevelMetric>> methodLevelMetrics;
 	private CKNotifier notifier;
 
 	private static Logger log = Logger.getLogger(MetricsExecutor.class);
 	
-	public MetricsExecutor(Callable<List<ClassLevelMetric>> metrics, Callable<List<MethodLevelMetric>> methodLevelMetrics, CKNotifier notifier) {
-		this.metrics = metrics;
+	public MetricsExecutor(Callable<List<ClassLevelMetric>> classLevelMetrics, Callable<List<MethodLevelMetric>> methodLevelMetrics, CKNotifier notifier) {
+		this.classLevelMetrics = classLevelMetrics;
 		this.methodLevelMetrics = methodLevelMetrics;
 		this.notifier = notifier;
 	}
@@ -43,13 +43,13 @@ public class MetricsExecutor extends FileASTRequestor {
 			int loc = calculate(new FileInputStream(sourceFilePath));
 			result.setLoc(loc);
 
-			// calculate class level metrics
-			for(ClassLevelMetric visitor : metrics.call()) {
+			// calculate class level classLevelMetrics
+			for(ClassLevelMetric visitor : classLevelMetrics.call()) {
 				visitor.execute(cu, result);
 				visitor.setResult(result);
 			}
 
-			// calculate metric level metrics
+			// calculate metric level classLevelMetrics
 			MethodLevelVisitor methodLevelVisitor = new MethodLevelVisitor(methodLevelMetrics, cu);
 			ASTVisitor astVisitor = new IgnoreSubClasses(methodLevelVisitor);
 			cu.accept(astVisitor);

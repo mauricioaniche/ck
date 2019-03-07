@@ -35,11 +35,18 @@ public class CK {
 	}
 
 
-    public List<Callable<ClassLevelMetric>> pluggedMetrics;
 	private static Logger log = Logger.getLogger(CK.class);
 
+	Callable<List<ClassLevelMetric>> classLevelMetrics;
+	Callable<List<MethodLevelMetric>> methodLevelMetrics;
+
+	public CK(Callable<List<ClassLevelMetric>> classLevelMetrics, Callable<List<MethodLevelMetric>> methodLevelMetrics) {
+		this.classLevelMetrics = classLevelMetrics;
+		this.methodLevelMetrics = methodLevelMetrics;
+	}
+
 	public CK() {
-		this.pluggedMetrics = new ArrayList<>();
+		this(() -> classLevelMetrics(), () -> methodLevelMetrics());
 	}
 
 	public void calculate(String path, CKNotifier notifier) {
@@ -47,7 +54,7 @@ public class CK {
 		String[] javaFiles = FileUtils.getAllJavaFiles(path);
 		log.info("Found " + javaFiles.length + " java files");
 		
-		MetricsExecutor storage = new MetricsExecutor(() -> metrics(), () -> methodLevelMetrics(), notifier);
+		MetricsExecutor storage = new MetricsExecutor(classLevelMetrics, methodLevelMetrics, notifier);
 		
 		List<List<String>> partitions = Lists.partition(Arrays.asList(javaFiles), MAX_AT_ONCE);
 		log.debug("Max partition size: " + MAX_AT_ONCE + ", total partitions=" + partitions.size());
@@ -69,7 +76,7 @@ public class CK {
 		log.info("Finished parsing");
     }
 
-	private List<MethodLevelMetric> methodLevelMetrics() {
+	private static List<MethodLevelMetric> methodLevelMetrics() {
 		return new ArrayList<>(Arrays.asList(
 				new CBO(),
 				new RFC(),
@@ -93,7 +100,7 @@ public class CK {
 
 	}
 
-	private List<ClassLevelMetric> metrics() {
+	private static List<ClassLevelMetric> classLevelMetrics() {
 		return new ArrayList<>(Arrays.asList(
 				new DIT(),
 				new WMC(),

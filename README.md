@@ -2,9 +2,9 @@
 
 [![Build Status](https://travis-ci.org/mauricioaniche/ck.svg?branch=master)](https://travis-ci.org/mauricioaniche/ck)
 
-CK calculates code metrics in Java projects by means
+CK calculates code classLevelMetrics in Java projects by means
 of static analysis (i.e. no need for compiled code). Currently, it contains
-a large set of metrics, including the famous CK metrics:
+a large set of classLevelMetrics, including the famous CK classLevelMetrics:
 
 - *CBO (Coupling between objects)*: Counts the number of dependencies a class has.
 The tools checks for any type used in the entire class (field declaration, method
@@ -53,7 +53,7 @@ send us a pull request).
 (In a previous version, it calculated NOC (Number of Children), but it doesn't do it anymore,
 as it requires too much memory.)
 
-The tool also prints some metrics at method level: number of parameters, number of return 
+The tool also prints some classLevelMetrics at method level: number of parameters, number of return 
 instructions, number of variables, number of times each variable is used, WMC, CBO, RFC.
 
 # How to use the standalone version
@@ -66,7 +66,7 @@ Then, just run:
 java -jar ck-x.x.x-SNAPSHOT-jar-with-dependencies.jar <project dir>
 ```
 
-The tool will generate three csv files (one for metrics at class level, method level, and variable level).
+The tool will generate three csv files (one for classLevelMetrics at class level, method level, and variable level).
 
 
 # How to integrate it in my Java app
@@ -81,7 +81,7 @@ new CK().calculate(path, result -> {
 
 # Why is it called CK?
 
-Because the tool was born to just calculate the CK metrics, but it grew beyond
+Because the tool was born to just calculate the CK classLevelMetrics, but it grew beyond
 my expectations... Life is funny!
   
 # How to Contribute

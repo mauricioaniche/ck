@@ -7,7 +7,9 @@ import com.github.mauricioaniche.ck.CKNotifier;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 abstract class BaseTest {
 
@@ -22,13 +24,13 @@ abstract class BaseTest {
 
 	protected static Map<String, CKClassResult> run(String dir) {
 		Map<String, CKClassResult> map = new HashMap<>();
-		new CK().calculate(dir, new CKNotifier() {
-			@Override
-			public void notify(CKClassResult result) {
-				map.put(result.getClassName(), result);
-			}
-		});
+		new CK().calculate(dir, result -> map.put(result.getClassName(), result));
+		return map;
+	}
 
+	protected static Map<String, CKClassResult> run(String dir, Callable<List<ClassLevelMetric>> classLevelMetrics, Callable<List<MethodLevelMetric>> methodLevelMetrics) {
+		Map<String, CKClassResult> map = new HashMap<>();
+		new CK(classLevelMetrics, methodLevelMetrics).calculate(dir, result -> map.put(result.getClassName(), result));
 		return map;
 	}
 }
