@@ -5,7 +5,6 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.Map;
 
 public class NumberOfLoopsTest extends BaseTest {
@@ -14,12 +13,12 @@ public class NumberOfLoopsTest extends BaseTest {
 
 	@BeforeClass
 	public static void setUp() {
-		report = run(fixturesDir() + "/numbers");
+		report = run(fixturesDir() + "/loop");
 	}
 
 	@Test
 	public void countLoops() {
-		CKClassResult a = report.get("numbers.Number");
+		CKClassResult a = report.get("loop.Loop");
 
 		Assert.assertEquals(5, a.getLoopQty());
 

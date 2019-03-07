@@ -1,6 +1,6 @@
-package numbers;
+package loop;
 
-class Number {
+class Loop {
 	
 	public void m1() {
 		int total = 10;
