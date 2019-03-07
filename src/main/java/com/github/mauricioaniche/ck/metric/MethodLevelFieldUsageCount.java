@@ -21,6 +21,9 @@ public class MethodLevelFieldUsageCount extends ASTVisitor implements MethodLeve
 	public boolean visit(MethodDeclaration node) {
 
 		IMethodBinding binding = node.resolveBinding();
+		if(binding==null)
+			return super.visit(node);
+
 		IVariableBinding[] fields = binding.getDeclaringClass().getDeclaredFields();
 
 		for (IVariableBinding field : fields) {

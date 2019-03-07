@@ -3,7 +3,7 @@ package com.github.mauricioaniche.ck.util;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.List;
+import java.util.Set;
 
 public class WordUtilsTest {
 
@@ -11,7 +11,7 @@ public class WordUtilsTest {
 	public void countWords() {
 		String sourceCode = "a b c d r$ a@ h^";
 
-		List<String> words = WordUtils.stringsIn(sourceCode);
+		Set<String> words = WordUtils.wordsIn(sourceCode);
 		Assert.assertEquals(4, words.size());
 		Assert.assertTrue(words.contains("a"));
 		Assert.assertTrue(words.contains("b"));
@@ -28,13 +28,26 @@ public class WordUtilsTest {
 				"  double interests = 0;"+
 				"\n} }";
 
-		List<String> words = WordUtils.stringsIn(sourceCode);
+		Set<String> words = WordUtils.wordsIn(sourceCode);
 		Assert.assertEquals(4, words.size());
 		Assert.assertTrue(words.contains("Test"));
 		Assert.assertTrue(words.contains("metodo"));
 		Assert.assertTrue(words.contains("taxes"));
 		Assert.assertTrue(words.contains("interests"));
 
+	}
+
+	@Test
+	public void breakWords() {
+		String sourceCode = "thisIsABigWord another_word_like_this now_weMix";
+		Set<String> words = WordUtils.wordsIn(sourceCode);
+
+		Assert.assertEquals(11, words.size());
+
+		String[] expected = new String[] { "A", "Big", "Word", "like", "another", "now", "this", "Is", "word", "Mix", "we"};
+		for (String expectedString : expected) {
+			Assert.assertTrue(words.contains(expectedString));
+		}
 	}
 
 }

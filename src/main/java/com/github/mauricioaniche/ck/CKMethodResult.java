@@ -25,11 +25,6 @@ public class CKMethodResult {
 	private int anonymousClassesQty;
 	private int subClassesQty;
 	private int lambdasQty;
-	private int dotsQty;
-	private int parenthesisQty;
-	private int tabsQty;
-	private int spacesQty;
-	private int wordsQty;
 	private int uniqueWordsQty;
 	private Map<String, Integer> fieldUsage;
 
@@ -207,28 +202,12 @@ public class CKMethodResult {
 		this.lambdasQty = lambdasQty;
 	}
 
-	public void setDotsQty(int dotsQty) {
-		this.dotsQty = dotsQty;
-	}
-
-	public void setParenthesisQty(int parenthesisQty) {
-		this.parenthesisQty = parenthesisQty;
-	}
-
-	public void setTabsQty(int tabsQty) {
-		this.tabsQty = tabsQty;
-	}
-
-	public void setSpacesQty(int spacesQty) {
-		this.spacesQty = spacesQty;
-	}
-
-	public void setWordsQty(int wordsQty) {
-		this.wordsQty = wordsQty;
-	}
-
 	public void setUniqueWordsQty(int uniqueWordsQty) {
 		this.uniqueWordsQty = uniqueWordsQty;
+	}
+
+	public int getUniqueWordsQty() {
+		return uniqueWordsQty;
 	}
 
 	public void setFieldUsage(Map<String, Integer> fieldUsage) {

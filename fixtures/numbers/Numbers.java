@@ -8,6 +8,8 @@ class Numbers {
 		double b = 10.0;
 		long a = 10L;
 		float f = 10.0f;
+
+		f = 30.0;
 	}
 
 	public void m2() {

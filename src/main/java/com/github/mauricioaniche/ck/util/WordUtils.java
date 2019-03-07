@@ -1,9 +1,6 @@
 package com.github.mauricioaniche.ck.util;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class WordUtils {
@@ -68,8 +65,8 @@ public class WordUtils {
 	}
 
 
-	public static List<String> stringsIn(String fullString) {
-		String[] words = fullString
+	public static Set<String> wordsIn(String fullString) {
+		String[] cleanString = fullString
 				.replace("\t", " ")
 				.replace("\n", " ")
 				.replace("\r", " ")
@@ -77,12 +74,55 @@ public class WordUtils {
 				.replace(")", " ")
 				.replace("{", " ")
 				.replace("}", " ")
+				.replace("=", " ")
+				.replace(">", " ")
+				.replace(">", " ")
+				.replace("&", " ")
+				.replace("|", " ")
+				.replace("!", " ")
+				.replace("+", " ")
+				.replace("*", " ")
+				.replace("/", " ")
+				.replace("-", " ")
+				.replace(";", " ")
+
+
+
+
 				.split(" ");
 
-		return Arrays.stream(words).filter(word -> !javaKeywords.contains(word))
+		List<String> strings = Arrays.stream(cleanString).filter(word -> !javaKeywords.contains(word))
 				.filter(word -> !word.isEmpty())
 				.filter(word -> word.matches("\\w*"))
+				.filter(word -> !word.matches("[0-9]*"))
 				.collect(Collectors.toList());
 
+		HashSet<String> words = new HashSet<>();
+		for(String string : strings) {
+			words.addAll(breakString(string));
+		}
+
+		return words;
+
+	}
+
+	private static Collection<? extends String> breakString(String string) {
+
+		if(string.length() == 1)
+			return Arrays.asList(string);
+
+		int current = 0;
+		List<String> words = new ArrayList<>();
+
+		for(int i = 1; i < string.length(); i++) {
+			if(string.charAt(i) == '_' || Character.isUpperCase(string.charAt(i))) {
+				String wordToAdd = string.substring(current, i);
+				words.add(wordToAdd);
+				current = i + (string.charAt(i) == '_' ? 1 : 0);
+			}
+		}
+		String remainingWord = string.substring(current);
+		words.add(remainingWord);
+		return words;
 	}
 }

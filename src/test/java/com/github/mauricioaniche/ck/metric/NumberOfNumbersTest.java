@@ -20,10 +20,10 @@ public class NumberOfNumbersTest extends BaseTest {
 	public void count() {
 		CKClassResult a = report.get("numbers.Numbers");
 
-		Assert.assertEquals(4, a.getVariablesQty());
+		Assert.assertEquals(5, a.getNumbersQty());
 
-		Assert.assertEquals(4, a.getMethod("m1/0").get().getVariablesQty());
-		Assert.assertEquals(0, a.getMethod("m2/0").get().getVariablesQty());
+		Assert.assertEquals(5, a.getMethod("m1/0").get().getNumbersQty());
+		Assert.assertEquals(0, a.getMethod("m2/0").get().getNumbersQty());
 
 	}
 }
