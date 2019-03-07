@@ -1,0 +1,5 @@
+package variables;
+
+class OtherClass {
+	
+}
