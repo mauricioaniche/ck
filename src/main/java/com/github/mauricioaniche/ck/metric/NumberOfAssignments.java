@@ -5,6 +5,7 @@ import com.github.mauricioaniche.ck.CKMethodResult;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.Assignment;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 
 public class NumberOfAssignments extends ASTVisitor implements ClassLevelMetric, MethodLevelMetric {
 
@@ -13,6 +14,14 @@ public class NumberOfAssignments extends ASTVisitor implements ClassLevelMetric,
 	@Override
 	public boolean visit(Assignment node) {
 		qty++;
+		return super.visit(node);
+	}
+
+	@Override
+	public boolean visit(VariableDeclarationFragment node) {
+		if(node.getInitializer()!=null)
+			qty++;
+
 		return super.visit(node);
 	}
 
