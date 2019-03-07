@@ -1,6 +1,6 @@
 package com.github.mauricioaniche.ck.metric;
 
-import com.github.mauricioaniche.ck.MethodMetric;
+import com.github.mauricioaniche.ck.CKMethodResult;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
@@ -21,7 +21,7 @@ public class VariableOrParameterUsageCount extends ASTVisitor implements MethodL
 	}
 
 	@Override
-	public void setResult(MethodMetric result) {
+	public void setResult(CKMethodResult result) {
 		result.setVariablesUsage(occurrences);
 	}
 

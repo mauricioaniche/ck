@@ -1,7 +1,7 @@
 package com.github.mauricioaniche.ck.metric;
 
-import com.github.mauricioaniche.ck.CKNumber;
-import com.github.mauricioaniche.ck.MethodMetric;
+import com.github.mauricioaniche.ck.CKClassResult;
+import com.github.mauricioaniche.ck.CKMethodResult;
 import org.eclipse.jdt.core.dom.*;
 
 import java.util.HashSet;
@@ -51,17 +51,17 @@ public class RFC extends ASTVisitor implements ClassLevelMetric, MethodLevelMetr
 	}
 	
 	@Override
-	public void execute(CompilationUnit cu, CKNumber number) {
+	public void execute(CompilationUnit cu, CKClassResult number) {
 		cu.accept(new IgnoreSubClasses(this));
 	}
 
 	@Override
-	public void setResult(CKNumber result) {
+	public void setResult(CKClassResult result) {
 		result.setRfc(methodInvocations.size());
 	}
 
 	@Override
-	public void setResult(MethodMetric result) {
+	public void setResult(CKMethodResult result) {
 		result.setRfc(methodInvocations.size());
 	}
 }

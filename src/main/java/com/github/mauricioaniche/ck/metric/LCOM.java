@@ -1,6 +1,6 @@
 package com.github.mauricioaniche.ck.metric;
 
-import com.github.mauricioaniche.ck.CKNumber;
+import com.github.mauricioaniche.ck.CKClassResult;
 import org.eclipse.jdt.core.dom.*;
 
 import java.util.ArrayList;
@@ -49,12 +49,12 @@ public class LCOM extends ASTVisitor implements ClassLevelMetric {
 	}
 	
 	@Override
-	public void execute(CompilationUnit cu, CKNumber number) {
+	public void execute(CompilationUnit cu, CKClassResult number) {
 		cu.accept(new IgnoreSubClasses(this));
 	}
 
 	@Override
-	public void setResult(CKNumber result) {
+	public void setResult(CKClassResult result) {
 		
 		/*
 		 * LCOM = |P| - |Q| if |P| - |Q| > 0

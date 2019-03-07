@@ -1,7 +1,7 @@
 package com.github.mauricioaniche.ck.metric;
 
-import com.github.mauricioaniche.ck.CKNumber;
-import com.github.mauricioaniche.ck.MethodMetric;
+import com.github.mauricioaniche.ck.CKClassResult;
+import com.github.mauricioaniche.ck.CKMethodResult;
 import org.eclipse.jdt.core.dom.*;
 
 public class NumberOfStrings extends ASTVisitor implements ClassLevelMetric, MethodLevelMetric {
@@ -13,18 +13,18 @@ public class NumberOfStrings extends ASTVisitor implements ClassLevelMetric, Met
 		return super.visit(node);
 	}
 	@Override
-	public void setResult(MethodMetric result) {
+	public void setResult(CKMethodResult result) {
 		result.setStringsQty(qty);
 
 	}
 
 	@Override
-	public void execute(CompilationUnit cu, CKNumber number) {
+	public void execute(CompilationUnit cu, CKClassResult number) {
 		cu.accept(new IgnoreSubClasses(this));
 	}
 
 	@Override
-	public void setResult(CKNumber result) {
+	public void setResult(CKClassResult result) {
 		result.setStringsQty(qty);
 	}
 }

@@ -2,7 +2,7 @@ package com.github.mauricioaniche.ck;
 
 import java.util.Map;
 
-public class MethodMetric {
+public class CKMethodResult {
 	private int cbo;
 	private int rfc;
 	private int wmc;
@@ -23,7 +23,7 @@ public class MethodMetric {
 	private int mathOperationsQty;
 	private int maxNestedBlocks;
 
-	public MethodMetric(String methodName) {
+	public CKMethodResult(String methodName) {
 		this.methodName = methodName;
 	}
 
@@ -61,7 +61,7 @@ public class MethodMetric {
 
 	@Override
 	public String toString() {
-		return "MethodMetric{" +
+		return "CKMethodResult{" +
 				"cbo=" + cbo +
 				", rfc=" + rfc +
 				", wmc=" + wmc +

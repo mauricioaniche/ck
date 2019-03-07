@@ -1,6 +1,6 @@
 package com.github.mauricioaniche.ck.metric;
 
-import com.github.mauricioaniche.ck.CKNumber;
+import com.github.mauricioaniche.ck.CKClassResult;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class ParameterCountTest  extends BaseTest{
 
-	private static Map<String, CKNumber> report;
+	private static Map<String, CKClassResult> report;
 
 	@BeforeClass
 	public static void setUp() {
@@ -18,7 +18,7 @@ public class ParameterCountTest  extends BaseTest{
 
 	@Test
 	public void justDeclaration() {
-		CKNumber a = report.get("pcount.A");
+		CKClassResult a = report.get("pcount.A");
 		Map<String, Integer> variablesUsageA = a.getMethod("a/0").get().getVariablesUsage();
 		Assert.assertEquals(new Integer(0), variablesUsageA.get("a"));
 		Assert.assertEquals(new Integer(0), variablesUsageA.get("b"));
@@ -26,7 +26,7 @@ public class ParameterCountTest  extends BaseTest{
 
 	@Test
 	public void normalUse() {
-		CKNumber a = report.get("pcount.A");
+		CKClassResult a = report.get("pcount.A");
 		Map<String, Integer> variablesUsageA = a.getMethod("b/0").get().getVariablesUsage();
 		Assert.assertEquals(new Integer(4), variablesUsageA.get("a")); // a appears 5 times
 		Assert.assertEquals(new Integer(2), variablesUsageA.get("b"));
@@ -34,14 +34,14 @@ public class ParameterCountTest  extends BaseTest{
 
 	@Test
 	public void passingVariableToMethod() {
-		CKNumber a = report.get("pcount.A");
+		CKClassResult a = report.get("pcount.A");
 		Map<String, Integer> variablesUsageA = a.getMethod("bb/0").get().getVariablesUsage();
 		Assert.assertEquals(new Integer(1), variablesUsageA.get("a"));
 	}
 
 	@Test
 	public void methodParameters() {
-		CKNumber a = report.get("pcount.A");
+		CKClassResult a = report.get("pcount.A");
 		Map<String, Integer> variablesUsageA = a.getMethod("c/1[int]").get().getVariablesUsage();
 		Assert.assertEquals(new Integer(0), variablesUsageA.get("a"));
 

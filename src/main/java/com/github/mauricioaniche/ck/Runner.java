@@ -46,7 +46,7 @@ public class Runner {
 				result.getLoc()
 			);
 
-			for(MethodMetric method : result.getMethods()) {
+			for(CKMethodResult method : result.getMethods()) {
 				methodOutput.println(
 					result.getFile() + "," +
 					result.getClassName() + "," +

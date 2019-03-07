@@ -31,14 +31,14 @@ public class MetricsExecutor extends FileASTRequestor {
 	public void acceptAST(String sourceFilePath, 
 			CompilationUnit cu) {
 		
-		CKNumber result = null;
+		CKClassResult result = null;
 		
 		try {
 			ClassInfo info = new ClassInfo();
 			cu.accept(info);
 			if(info.getClassName()==null) return;
 		
-			result = new CKNumber(sourceFilePath, info.getClassName(), info.getType());
+			result = new CKClassResult(sourceFilePath, info.getClassName(), info.getType());
 			
 			int loc = calculate(new FileInputStream(sourceFilePath));
 			result.setLoc(loc);

@@ -2,7 +2,7 @@ package com.github.mauricioaniche.ck;
 
 import java.util.*;
 
-public class CKNumber {
+public class CKClassResult {
 
 	private String file;
 	private String className;
@@ -26,7 +26,7 @@ public class CKNumber {
 	
 	private boolean error;
 
-	private Set<MethodMetric> methods;
+	private Set<CKMethodResult> methods;
 	private int returnQty;
 	private int loopQty;
 	private int comparisonsQty;
@@ -39,7 +39,7 @@ public class CKNumber {
 	private int variablesQty;
 	private int maxNestedBlocks;
 
-	public CKNumber(String file, String className, String type) {
+	public CKClassResult(String file, String className, String type) {
 		this.file = file;
 		this.className = className;
 		this.type = type;
@@ -67,7 +67,7 @@ public class CKNumber {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		CKNumber other = (CKNumber) obj;
+		CKClassResult other = (CKClassResult) obj;
 		if (file == null) {
 			if (other.file != null)
 				return false;
@@ -197,22 +197,22 @@ public class CKNumber {
 
 	@Override
 	public String toString() {
-		return "CKNumber [file=" + file + ", className=" + className + ", type=" + type + ", dit=" + dit +
+		return "CKClassResult [file=" + file + ", className=" + className + ", type=" + type + ", dit=" + dit +
 				", wmc=" + wmc + ", cbo=" + cbo + ", lcom=" + lcom + ", rfc=" + rfc + ", nom=" + nom + ", nopm="
 				+ nopm + ", nosm=" + nosm + ", nof=" + nof + ", nopf=" + nopf + ", nosf=" + nosf + ", nosi=" + nosi
 				+ ", loc=" + loc + ", error=" + error + "]";
 	}
 
 
-	public void setMethods(Map<String, MethodMetric> methods) {
+	public void setMethods(Map<String, CKMethodResult> methods) {
 		this.methods = new HashSet<>(methods.values());
 	}
 
-	public Set<MethodMetric> getMethods() {
+	public Set<CKMethodResult> getMethods() {
 		return Collections.unmodifiableSet(methods);
 	}
 
-	public Optional<MethodMetric> getMethod(String methodName) {
+	public Optional<CKMethodResult> getMethod(String methodName) {
 		return methods.stream().filter(m -> m.getMethodName().equals(methodName)).findFirst();
 	}
 

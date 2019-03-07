@@ -4,15 +4,14 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.github.mauricioaniche.ck.CK;
-import com.github.mauricioaniche.ck.CKNumber;
+import com.github.mauricioaniche.ck.CKClassResult;
 
 import java.util.Map;
 
 public class FieldsTest extends BaseTest {
 
 
-	private static Map<String, CKNumber> report;
+	private static Map<String, CKClassResult> report;
 
 	@BeforeClass
 	public static void setUp() {
@@ -21,19 +20,19 @@ public class FieldsTest extends BaseTest {
 	
 	@Test
 	public void all() {
-		CKNumber a = report.get("fields.Fields");
+		CKClassResult a = report.get("fields.Fields");
 		Assert.assertEquals(5, a.getNof());
 	}
 
 	@Test
 	public void allPublic() {
-		CKNumber a = report.get("fields.Fields");
+		CKClassResult a = report.get("fields.Fields");
 		Assert.assertEquals(2, a.getNopf());
 	}
 
 	@Test
 	public void allStatic() {
-		CKNumber a = report.get("fields.Fields");
+		CKClassResult a = report.get("fields.Fields");
 		Assert.assertEquals(2, a.getNosf());
 	}
 }

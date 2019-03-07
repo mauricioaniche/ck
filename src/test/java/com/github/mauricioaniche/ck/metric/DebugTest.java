@@ -1,7 +1,7 @@
 package com.github.mauricioaniche.ck.metric;
 
-import com.github.mauricioaniche.ck.CKNumber;
-import com.github.mauricioaniche.ck.MethodMetric;
+import com.github.mauricioaniche.ck.CKClassResult;
+import com.github.mauricioaniche.ck.CKMethodResult;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class DebugTest extends BaseTest {
 
-	private static Map<String, CKNumber> report;
+	private static Map<String, CKClassResult> report;
 
 	@BeforeClass
 	public static void setUp() {
@@ -21,12 +21,12 @@ public class DebugTest extends BaseTest {
 	@Test
 	public void commonsCsvClass() {
 
-		CKNumber ck = report.get("debug.CSVParser");
+		CKClassResult ck = report.get("debug.CSVParser");
 
-		for (MethodMetric methodMetric : ck.getMethods()) {
-			System.out.println(methodMetric.getMethodName());
+		for (CKMethodResult CKMethodResult : ck.getMethods()) {
+			System.out.println(CKMethodResult.getMethodName());
 
-			for (Map.Entry<String, Integer> entry : methodMetric.getVariablesUsage().entrySet()) {
+			for (Map.Entry<String, Integer> entry : CKMethodResult.getVariablesUsage().entrySet()) {
 				System.out.println("- variable: " + entry.getKey());
 			}
 		}

@@ -1,6 +1,6 @@
 package com.github.mauricioaniche.ck.metric;
 
-import com.github.mauricioaniche.ck.MethodMetric;
+import com.github.mauricioaniche.ck.CKMethodResult;
 import org.apache.commons.io.IOUtils;
 import org.eclipse.jdt.core.dom.*;
 
@@ -15,11 +15,11 @@ import static com.github.mauricioaniche.ck.util.LOCCalculator.calculate;
 
 public class MethodLevelVisitor extends ASTVisitor {
 
-	private Map<String, MethodMetric> methods;
+	private Map<String, CKMethodResult> methods;
 	private Callable<List<MethodLevelMetric>> metrics;
 	private CompilationUnit cu;
 
-	private MethodMetric currentMethod;
+	private CKMethodResult currentMethod;
 	private String currentMethodName;
 	private List<MethodLevelMetric> currentMetricsToRun;
 
@@ -32,7 +32,7 @@ public class MethodLevelVisitor extends ASTVisitor {
 	public boolean visit(MethodDeclaration node) {
 		currentMethodName = getMethodFullName(node);
 
-		currentMethod = new MethodMetric(currentMethodName);
+		currentMethod = new CKMethodResult(currentMethodName);
 		methods.put(currentMethodName, currentMethod);
 
 		currentMethod.setLoc(calculate(IOUtils.toInputStream(node.toString())));
@@ -53,7 +53,7 @@ public class MethodLevelVisitor extends ASTVisitor {
 	}
 
 
-	public Map<String, MethodMetric> getMap() {
+	public Map<String, CKMethodResult> getMap() {
 		return Collections.unmodifiableMap(methods);
 	}
 

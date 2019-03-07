@@ -1,6 +1,6 @@
 package com.github.mauricioaniche.ck.metric;
 
-import com.github.mauricioaniche.ck.CKNumber;
+import com.github.mauricioaniche.ck.CKClassResult;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class WMCTest extends BaseTest {
 
-	private static Map<String, CKNumber> report;
+	private static Map<String, CKClassResult> report;
 
 	@BeforeClass
 	public static void setUp() {
@@ -26,15 +26,15 @@ public class WMCTest extends BaseTest {
 	@Test
 	public void methodLevel() {
 
-		CKNumber a = report.get("wmc.CC1");
+		CKClassResult a = report.get("wmc.CC1");
 		Assert.assertEquals(2, a.getMethod("m1/0").get().getWmc());
 		Assert.assertEquals(2, a.getMethod("m2/0").get().getWmc());
 
-		CKNumber b = report.get("wmc.CC2");
+		CKClassResult b = report.get("wmc.CC2");
 		Assert.assertEquals(3, b.getMethod("m1/0").get().getWmc());
 		Assert.assertEquals(2, b.getMethod("m2/0").get().getWmc());
 
-		CKNumber c = report.get("wmc.CC3");
+		CKClassResult c = report.get("wmc.CC3");
 		Assert.assertEquals(11, c.getMethod("m1/0").get().getWmc());
 	}
 }
