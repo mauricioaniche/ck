@@ -88,7 +88,8 @@ public class CK {
 				new NumberOfMathOperators(),
 				new NumberOfMaxNestedBlock(),
 				new NumberOfSubClassesLambdasAndAnonymousClasses(),
-				new MethodLevelWordsAndCharsCounter()));
+				new MethodLevelWordsAndCharsCounter(),
+				new MethodLevelFieldUsageCount()));
 
 	}
 
@@ -117,7 +118,8 @@ public class CK {
 				new NumberOfVariables(),
 				new NumberOfMaxNestedBlock(),
 				new NumberOfSubClassesLambdasAndAnonymousClasses(),
-				new ClassLevelWordsAndCharsCounter()));
+				new ClassLevelWordsAndCharsCounter(),
+				new ClassLevelFieldUsageCount()));
 	}
 
 }

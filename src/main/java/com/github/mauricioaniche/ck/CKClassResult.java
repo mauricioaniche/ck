@@ -47,6 +47,7 @@ public class CKClassResult {
 	private int spacesQty;
 	private int wordsQty;
 	private int uniqueWordsQty;
+	private Map<String, Integer> fieldUsage;
 
 	public CKClassResult(String file, String className, String type) {
 		this.file = file;
@@ -343,5 +344,9 @@ public class CKClassResult {
 
 	public void setUniqueWordsQty(int uniqueWordsQty) {
 		this.uniqueWordsQty = uniqueWordsQty;
+	}
+
+	public void setFieldUsage(Map<String, Integer> fieldUsage) {
+		this.fieldUsage = fieldUsage;
 	}
 }

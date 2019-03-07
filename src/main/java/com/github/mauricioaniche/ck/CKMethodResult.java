@@ -31,6 +31,7 @@ public class CKMethodResult {
 	private int spacesQty;
 	private int wordsQty;
 	private int uniqueWordsQty;
+	private Map<String, Integer> fieldUsage;
 
 	public CKMethodResult(String methodName) {
 		this.methodName = methodName;
@@ -228,5 +229,9 @@ public class CKMethodResult {
 
 	public void setUniqueWordsQty(int uniqueWordsQty) {
 		this.uniqueWordsQty = uniqueWordsQty;
+	}
+
+	public void setFieldUsage(Map<String, Integer> fieldUsage) {
+		this.fieldUsage = fieldUsage;
 	}
 }
