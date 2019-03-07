@@ -4,7 +4,7 @@ import com.github.mauricioaniche.ck.CKClassResult;
 import com.github.mauricioaniche.ck.CKMethodResult;
 import org.eclipse.jdt.core.dom.*;
 
-public class NumberOfStrings extends ASTVisitor implements ClassLevelMetric, MethodLevelMetric {
+public class NumberOfStringLiterals extends ASTVisitor implements ClassLevelMetric, MethodLevelMetric {
 
 	private int qty = 0;
 
@@ -14,7 +14,7 @@ public class NumberOfStrings extends ASTVisitor implements ClassLevelMetric, Met
 	}
 	@Override
 	public void setResult(CKMethodResult result) {
-		result.setStringsQty(qty);
+		result.setStringLiteralsQty(qty);
 
 	}
 

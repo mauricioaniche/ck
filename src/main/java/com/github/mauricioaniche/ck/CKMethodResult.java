@@ -17,7 +17,7 @@ public class CKMethodResult {
 	private int comparisonsQty;
 	private int tryCatchQty;
 	private int parenthesizedExpsQty;
-	private int stringsQty;
+	private int stringLiteralsQty;
 	private int numbersQty;
 	private int assignmentsQty;
 	private int mathOperationsQty;
@@ -25,6 +25,12 @@ public class CKMethodResult {
 	private int anonymousClassesQty;
 	private int subClassesQty;
 	private int lambdasQty;
+	private int dotsQty;
+	private int parenthesisQty;
+	private int tabsQty;
+	private int spacesQty;
+	private int wordsQty;
+	private int uniqueWordsQty;
 
 	public CKMethodResult(String methodName) {
 		this.methodName = methodName;
@@ -148,12 +154,12 @@ public class CKMethodResult {
 		return parenthesizedExpsQty;
 	}
 
-	public void setStringsQty(int stringsQty) {
-		this.stringsQty = stringsQty;
+	public void setStringLiteralsQty(int stringsQty) {
+		this.stringLiteralsQty = stringsQty;
 	}
 
-	public int getStringsQty() {
-		return stringsQty;
+	public int getStringLiteralsQty() {
+		return stringLiteralsQty;
 	}
 
 	public void setNumbersQty(int numbersQty) {
@@ -198,5 +204,29 @@ public class CKMethodResult {
 
 	public void setLambdasQty(int lambdasQty) {
 		this.lambdasQty = lambdasQty;
+	}
+
+	public void setDotsQty(int dotsQty) {
+		this.dotsQty = dotsQty;
+	}
+
+	public void setParenthesisQty(int parenthesisQty) {
+		this.parenthesisQty = parenthesisQty;
+	}
+
+	public void setTabsQty(int tabsQty) {
+		this.tabsQty = tabsQty;
+	}
+
+	public void setSpacesQty(int spacesQty) {
+		this.spacesQty = spacesQty;
+	}
+
+	public void setWordsQty(int wordsQty) {
+		this.wordsQty = wordsQty;
+	}
+
+	public void setUniqueWordsQty(int uniqueWordsQty) {
+		this.uniqueWordsQty = uniqueWordsQty;
 	}
 }

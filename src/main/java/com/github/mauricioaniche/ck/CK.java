@@ -82,12 +82,13 @@ public class CK {
 				new NumberOfComparisons(),
 				new NumberOfTryCatches(),
 				new NumberOfParenthesis(),
-				new NumberOfStrings(),
+				new NumberOfStringLiterals(),
 				new NumberOfNumbers(),
 				new NumberOfAssignments(),
 				new NumberOfMathOperators(),
 				new NumberOfMaxNestedBlock(),
-				new NumberOfSubClassesLambdasAndAnonymousClasses()));
+				new NumberOfSubClassesLambdasAndAnonymousClasses(),
+				new MethodLevelWordsAndCharsCounter()));
 
 	}
 
@@ -109,13 +110,14 @@ public class CK {
 				new NumberOfComparisons(),
 				new NumberOfTryCatches(),
 				new NumberOfParenthesis(),
-				new NumberOfStrings(),
+				new NumberOfStringLiterals(),
 				new NumberOfNumbers(),
 				new NumberOfAssignments(),
 				new NumberOfMathOperators(),
 				new NumberOfVariables(),
 				new NumberOfMaxNestedBlock(),
-				new NumberOfSubClassesLambdasAndAnonymousClasses()));
+				new NumberOfSubClassesLambdasAndAnonymousClasses(),
+				new ClassLevelWordsAndCharsCounter()));
 	}
 
 }
