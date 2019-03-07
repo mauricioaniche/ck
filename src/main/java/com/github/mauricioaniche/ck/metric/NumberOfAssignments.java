@@ -6,7 +6,7 @@ import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.Assignment;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
-public class NumberOfAssignments extends ASTVisitor implements Metric, MethodLevelMetric {
+public class NumberOfAssignments extends ASTVisitor implements ClassLevelMetric, MethodLevelMetric {
 
 	private int qty = 0;
 
@@ -24,7 +24,7 @@ public class NumberOfAssignments extends ASTVisitor implements Metric, MethodLev
 
 	@Override
 	public void execute(CompilationUnit cu, CKNumber number) {
-		cu.accept(this);
+		cu.accept(new IgnoreSubClasses(this));
 	}
 
 	@Override

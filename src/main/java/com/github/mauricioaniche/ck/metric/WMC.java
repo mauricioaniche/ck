@@ -5,7 +5,7 @@ import com.github.mauricioaniche.ck.MethodMetric;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jdt.core.dom.*;
 
-public class WMC extends ASTVisitor implements Metric, MethodLevelMetric {
+public class WMC extends ASTVisitor implements ClassLevelMetric, MethodLevelMetric {
 
 	protected int cc = 0;
 
@@ -89,8 +89,7 @@ public class WMC extends ASTVisitor implements Metric, MethodLevelMetric {
 
 	@Override
 	public void execute(CompilationUnit cu, CKNumber number) {
-		cu.accept(this);
-		
+		cu.accept(new IgnoreSubClasses(this));
 	}
 
 	@Override

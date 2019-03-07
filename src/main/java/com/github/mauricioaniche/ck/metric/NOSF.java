@@ -6,7 +6,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.Modifier;
 
-public class NOSF extends ASTVisitor implements Metric {
+public class NOSF extends ASTVisitor implements ClassLevelMetric {
 
 	private int fields;
 
@@ -20,7 +20,7 @@ public class NOSF extends ASTVisitor implements Metric {
 
 	@Override
 	public void execute(CompilationUnit cu, CKNumber number) {
-		cu.accept(this);
+		cu.accept(new IgnoreSubClasses(this));
 	}
 
 	@Override

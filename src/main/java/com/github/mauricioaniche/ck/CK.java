@@ -35,7 +35,7 @@ public class CK {
 	}
 
 
-    public List<Callable<Metric>> pluggedMetrics;
+    public List<Callable<ClassLevelMetric>> pluggedMetrics;
 	private static Logger log = Logger.getLogger(CK.class);
 
 	public CK() {
@@ -70,18 +70,50 @@ public class CK {
     }
 
 	private List<MethodLevelMetric> methodLevelMetrics() {
-		return new ArrayList<>(Arrays.asList(new CBO(), new RFC(), new WMC(),
-				new NumberOfParameters(), new NumberOfReturns(), new NumberOfVariables(), new ParameterUsageCount(), new NumberOfLoops(),
-				new NumberOfComparisons(), new NumberOfTryCatches(), new NumberOfParenthesis(), new NumberOfStrings(),
-				new NumberOfNumbers(), new NumberOfAssignments(), new NumberOfMathOperators(), new NumberOfMaxNestedBlock()));
+		return new ArrayList<>(Arrays.asList(
+				new CBO(),
+				new RFC(),
+				new WMC(),
+				new NumberOfParameters(),
+				new NumberOfReturns(),
+				new NumberOfVariables(),
+				new VariableOrParameterUsageCount(),
+				new NumberOfLoops(),
+				new NumberOfComparisons(),
+				new NumberOfTryCatches(),
+				new NumberOfParenthesis(),
+				new NumberOfStrings(),
+				new NumberOfNumbers(),
+				new NumberOfAssignments(),
+				new NumberOfMathOperators(),
+				new NumberOfMaxNestedBlock()));
+
 	}
 
-	private List<Metric> metrics() {
-		return new ArrayList<>(Arrays.asList(new DIT(), new WMC(), new CBO(), new LCOM(), new RFC(), new NOM(),
-				new NOF(), new NOPF(), new NOSF(),
-				new NOPM(), new NOSM(), new NOSI(), new NumberOfLoops(), new NumberOfComparisons(), new NumberOfTryCatches(),
-				new NumberOfParenthesis(), new NumberOfStrings(), new NumberOfNumbers(), new NumberOfAssignments(),
-				new NumberOfMathOperators(), new NumberOfVariables(), new NumberOfMaxNestedBlock()));
+	private List<ClassLevelMetric> metrics() {
+		return new ArrayList<>(Arrays.asList(
+				new DIT(),
+				new WMC(),
+				new CBO(),
+				new LCOM(),
+				new RFC(),
+				new NOM(),
+				new NOF(),
+				new NOPF(),
+				new NOSF(),
+				new NOPM(),
+				new NOSM(),
+				new NOSI(),
+				new NumberOfLoops(),
+				new NumberOfComparisons(),
+				new NumberOfTryCatches(),
+				new NumberOfParenthesis(),
+				new NumberOfStrings(),
+				new NumberOfNumbers(),
+				new NumberOfAssignments(),
+				new NumberOfMathOperators(),
+				new NumberOfVariables(),
+				new NumberOfMaxNestedBlock()));
 	}
 
 }

@@ -4,27 +4,23 @@ import java.io.FileInputStream;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import com.github.mauricioaniche.ck.metric.MethodLevelMetric;
-import com.github.mauricioaniche.ck.metric.MethodLevelVisitor;
-import com.github.mauricioaniche.ck.util.LOCCalculator;
+import com.github.mauricioaniche.ck.metric.*;
 import org.apache.log4j.Logger;
+import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.FileASTRequestor;
-
-import com.github.mauricioaniche.ck.metric.ClassInfo;
-import com.github.mauricioaniche.ck.metric.Metric;
 
 import static com.github.mauricioaniche.ck.util.LOCCalculator.calculate;
 
 public class MetricsExecutor extends FileASTRequestor {
 
-	private Callable<List<Metric>> metrics;
+	private Callable<List<ClassLevelMetric>> metrics;
 	private Callable<List<MethodLevelMetric>> methodLevelMetrics;
 	private CKNotifier notifier;
 
 	private static Logger log = Logger.getLogger(MetricsExecutor.class);
 	
-	public MetricsExecutor(Callable<List<Metric>> metrics, Callable<List<MethodLevelMetric>> methodLevelMetrics, CKNotifier notifier) {
+	public MetricsExecutor(Callable<List<ClassLevelMetric>> metrics, Callable<List<MethodLevelMetric>> methodLevelMetrics, CKNotifier notifier) {
 		this.metrics = metrics;
 		this.methodLevelMetrics = methodLevelMetrics;
 		this.notifier = notifier;
@@ -48,15 +44,16 @@ public class MetricsExecutor extends FileASTRequestor {
 			result.setLoc(loc);
 
 			// calculate class level metrics
-			for(Metric visitor : metrics.call()) {
+			for(ClassLevelMetric visitor : metrics.call()) {
 				visitor.execute(cu, result);
 				visitor.setResult(result);
 			}
 
 			// calculate metric level metrics
-			MethodLevelVisitor methodVisitor = new MethodLevelVisitor(methodLevelMetrics, cu);
-			cu.accept(methodVisitor);
-			result.setMethods(methodVisitor.getMap());
+			MethodLevelVisitor methodLevelVisitor = new MethodLevelVisitor(methodLevelMetrics, cu);
+			ASTVisitor astVisitor = new IgnoreSubClasses(methodLevelVisitor);
+			cu.accept(astVisitor);
+			result.setMethods(methodLevelVisitor.getMap());
 
 			log.info(result);
 			notifier.notify(result);

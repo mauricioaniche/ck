@@ -7,7 +7,7 @@ import org.eclipse.jdt.core.dom.*;
 import java.util.HashSet;
 import java.util.List;
 
-public class RFC extends ASTVisitor implements Metric, MethodLevelMetric {
+public class RFC extends ASTVisitor implements ClassLevelMetric, MethodLevelMetric {
 
 	private HashSet<String> methodInvocations = new HashSet<String>();
 
@@ -52,7 +52,7 @@ public class RFC extends ASTVisitor implements Metric, MethodLevelMetric {
 	
 	@Override
 	public void execute(CompilationUnit cu, CKNumber number) {
-		cu.accept(this);
+		cu.accept(new IgnoreSubClasses(this));
 	}
 
 	@Override

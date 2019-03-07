@@ -8,7 +8,7 @@ import org.eclipse.jdt.core.dom.InfixExpression;
 
 import java.util.Arrays;
 
-public class NumberOfMathOperators extends ASTVisitor implements Metric, MethodLevelMetric {
+public class NumberOfMathOperators extends ASTVisitor implements ClassLevelMetric, MethodLevelMetric {
 
 	private int qty = 0;
 
@@ -36,7 +36,7 @@ public class NumberOfMathOperators extends ASTVisitor implements Metric, MethodL
 
 	@Override
 	public void execute(CompilationUnit cu, CKNumber number) {
-		cu.accept(this);
+		cu.accept(new IgnoreSubClasses(this));
 	}
 
 	@Override

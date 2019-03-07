@@ -11,19 +11,18 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class ParameterUsageCount extends ASTVisitor implements MethodLevelMetric {
+public class VariableOrParameterUsageCount extends ASTVisitor implements MethodLevelMetric {
 	private Set<String> declaredVariables;
-	private Map<String, Integer> occurences;
+	private Map<String, Integer> occurrences;
 
-	public ParameterUsageCount() {
+	public VariableOrParameterUsageCount() {
 		declaredVariables = new HashSet<>();
-		this.occurences = new HashMap<>();
+		this.occurrences = new HashMap<>();
 	}
 
 	@Override
 	public void setResult(MethodMetric result) {
-		result.setVariablesUsage(occurences);
-
+		result.setVariablesUsage(occurrences);
 	}
 
 	public boolean visit(VariableDeclarationFragment node) {
@@ -40,10 +39,10 @@ public class ParameterUsageCount extends ASTVisitor implements MethodLevelMetric
 	public boolean visit(SimpleName node) {
 		if(declaredVariables.contains(node.toString())) {
 			String var = node.getIdentifier();
-			if (!occurences.containsKey(var))
-				occurences.put(var, -1);
+			if (!occurrences.containsKey(var))
+				occurrences.put(var, -1);
 
-			occurences.put(var, occurences.get(var) + 1);
+			occurrences.put(var, occurrences.get(var) + 1);
 		}
 
 		return super.visit(node);

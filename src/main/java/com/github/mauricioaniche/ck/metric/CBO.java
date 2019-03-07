@@ -7,7 +7,7 @@ import org.eclipse.jdt.core.dom.*;
 import java.util.HashSet;
 import java.util.Set;
 
-public class CBO extends ASTVisitor implements Metric, MethodLevelMetric {
+public class CBO extends ASTVisitor implements ClassLevelMetric, MethodLevelMetric {
 
 	private Set<String> coupling = new HashSet<String>();
 
@@ -158,7 +158,7 @@ public class CBO extends ASTVisitor implements Metric, MethodLevelMetric {
 
 	@Override
 	public void execute(CompilationUnit cu, CKNumber number) {
-		cu.accept(this);
+		cu.accept(new IgnoreSubClasses(this));
 	}
 
 	@Override

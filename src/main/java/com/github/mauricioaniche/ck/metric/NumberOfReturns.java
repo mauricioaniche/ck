@@ -6,7 +6,7 @@ import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.ReturnStatement;
 
-public class NumberOfReturns extends ASTVisitor implements Metric, MethodLevelMetric {
+public class NumberOfReturns extends ASTVisitor implements ClassLevelMetric, MethodLevelMetric {
 	private int qty = 0;
 
 	@Override
@@ -21,7 +21,7 @@ public class NumberOfReturns extends ASTVisitor implements Metric, MethodLevelMe
 	}
 
 	public void execute(CompilationUnit cu, CKNumber number) {
-		cu.accept(this);
+		cu.accept(new IgnoreSubClasses(this));
 	}
 
 	@Override

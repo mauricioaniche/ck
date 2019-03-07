@@ -3,7 +3,7 @@ package com.github.mauricioaniche.ck.metric;
 import com.github.mauricioaniche.ck.CKNumber;
 import org.eclipse.jdt.core.dom.*;
 
-public class NOSI extends ASTVisitor implements Metric {
+public class NOSI extends ASTVisitor implements ClassLevelMetric {
 
 	private int count = 0;
 
@@ -23,7 +23,7 @@ public class NOSI extends ASTVisitor implements Metric {
 
 	@Override
 	public void execute(CompilationUnit cu, CKNumber number) {
-		cu.accept(this);
+		cu.accept(new IgnoreSubClasses(this));
 	}
 	
 }

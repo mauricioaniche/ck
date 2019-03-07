@@ -40,9 +40,9 @@ public class MethodLevelVisitor extends ASTVisitor {
 
 		try {
 			currentMetricsToRun = metrics.call();
-			if(currentMetricsToRun!=null) currentMetricsToRun.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.visit(node));
+			if(currentMetricsToRun!=null) currentMetricsToRun.stream().forEach(ast -> ast.visit(node));
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 		return super.visit(node);
 	}

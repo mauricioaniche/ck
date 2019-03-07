@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class LCOM extends ASTVisitor implements Metric {
+public class LCOM extends ASTVisitor implements ClassLevelMetric {
 
 	ArrayList<TreeSet<String>> methods = new ArrayList<TreeSet<String>>();
 	Set<String> declaredFields;
@@ -50,7 +50,7 @@ public class LCOM extends ASTVisitor implements Metric {
 	
 	@Override
 	public void execute(CompilationUnit cu, CKNumber number) {
-		cu.accept(this);
+		cu.accept(new IgnoreSubClasses(this));
 	}
 
 	@Override

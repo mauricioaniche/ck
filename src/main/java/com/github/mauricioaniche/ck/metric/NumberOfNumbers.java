@@ -6,7 +6,7 @@ import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.NumberLiteral;
 
-public class NumberOfNumbers extends ASTVisitor implements Metric, MethodLevelMetric {
+public class NumberOfNumbers extends ASTVisitor implements ClassLevelMetric, MethodLevelMetric {
 
 	private int qty = 0;
 
@@ -23,7 +23,7 @@ public class NumberOfNumbers extends ASTVisitor implements Metric, MethodLevelMe
 
 	@Override
 	public void execute(CompilationUnit cu, CKNumber number) {
-		cu.accept(this);
+		cu.accept(new IgnoreSubClasses(this));
 	}
 
 	@Override

@@ -6,7 +6,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
-public class DIT extends ASTVisitor implements Metric {
+public class DIT extends ASTVisitor implements ClassLevelMetric {
 
 	int dit = 1; // Object is the father of everyone!
 
@@ -32,7 +32,7 @@ public class DIT extends ASTVisitor implements Metric {
 
 	@Override
 	public void execute(CompilationUnit cu, CKNumber number) {
-		cu.accept(this);
+		cu.accept(new IgnoreSubClasses(this));
 	}
 
 	@Override

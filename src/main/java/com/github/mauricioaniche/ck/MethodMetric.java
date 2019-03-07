@@ -180,4 +180,8 @@ public class MethodMetric {
 	public int getMaxNestedBlocks() {
 		return maxNestedBlocks;
 	}
+
+	public int getNumbersQty() {
+		return numbersQty;
+	}
 }

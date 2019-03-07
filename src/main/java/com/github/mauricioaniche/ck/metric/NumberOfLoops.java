@@ -4,7 +4,7 @@ import com.github.mauricioaniche.ck.CKNumber;
 import com.github.mauricioaniche.ck.MethodMetric;
 import org.eclipse.jdt.core.dom.*;
 
-public class NumberOfLoops extends ASTVisitor implements Metric, MethodLevelMetric {
+public class NumberOfLoops extends ASTVisitor implements ClassLevelMetric, MethodLevelMetric {
 
 	private int qty = 0;
 
@@ -36,7 +36,7 @@ public class NumberOfLoops extends ASTVisitor implements Metric, MethodLevelMetr
 
 	@Override
 	public void execute(CompilationUnit cu, CKNumber number) {
-		cu.accept(this);
+		cu.accept(new IgnoreSubClasses(this));
 	}
 
 	@Override

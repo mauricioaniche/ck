@@ -5,7 +5,7 @@ import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 
-public class NOM extends ASTVisitor implements Metric {
+public class NOM extends ASTVisitor implements ClassLevelMetric {
 
 	private int methods;
 
@@ -18,7 +18,7 @@ public class NOM extends ASTVisitor implements Metric {
 
 	@Override
 	public void execute(CompilationUnit cu, CKNumber number) {
-		cu.accept(this);
+		cu.accept(new IgnoreSubClasses(this));
 	}
 
 	@Override
