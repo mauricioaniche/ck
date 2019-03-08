@@ -213,4 +213,8 @@ public class CKMethodResult {
 	public void setFieldUsage(Map<String, Integer> fieldUsage) {
 		this.fieldUsage = fieldUsage;
 	}
+
+	public Map<String, Integer> getFieldUsage() {
+		return fieldUsage;
+	}
 }

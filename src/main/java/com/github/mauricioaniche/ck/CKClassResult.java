@@ -42,7 +42,6 @@ public class CKClassResult {
 	private int subClassesQty;
 	private int lambdasQty;
 	private int uniqueWordsQty;
-	private Map<String, Integer> fieldUsage;
 
 	public CKClassResult(String file, String className, String type) {
 		this.file = file;
@@ -326,7 +325,4 @@ public class CKClassResult {
 		return uniqueWordsQty;
 	}
 
-	public void setFieldUsage(Map<String, Integer> fieldUsage) {
-		this.fieldUsage = fieldUsage;
-	}
 }

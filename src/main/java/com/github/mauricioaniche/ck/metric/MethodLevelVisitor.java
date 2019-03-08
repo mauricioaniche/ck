@@ -57,6 +57,11 @@ public class MethodLevelVisitor extends ASTVisitor {
 		if(currentMetricsToRun!=null) currentMetricsToRun.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.endVisit(node));
 	}
 
+	@Override
+	public void endVisit(FieldAccess node) {
+		if(currentMetricsToRun!=null) currentMetricsToRun.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
 	// TODO: add all other endVisit method invocations here.
 
 	public Map<String, CKMethodResult> getMap() {
