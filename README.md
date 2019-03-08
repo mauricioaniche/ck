@@ -2,9 +2,9 @@
 
 [![Build Status](https://travis-ci.org/mauricioaniche/ck.svg?branch=master)](https://travis-ci.org/mauricioaniche/ck)
 
-CK calculates code classLevelMetrics in Java projects by means
+CK calculates class-level and metric-level code metrics in Java projects by means
 of static analysis (i.e. no need for compiled code). Currently, it contains
-a large set of classLevelMetrics, including the famous CK classLevelMetrics:
+a large set of metrics, including the famous CK:
 
 - *CBO (Coupling between objects)*: Counts the number of dependencies a class has.
 The tools checks for any type used in the entire class (field declaration, method
@@ -50,11 +50,37 @@ empty lines.
 version of metric, which is not reliable. LCOM-HS can be better (hopefully, you will
 send us a pull request). 
 
+- *Quantity of returns*: The number of `return` instructions.
+
+- *Quantity of loops*: The number of loops (i.e., for, while, do while, enhanced for).
+
+- *Quantity of comparisons*: The number of comparisons (i.e., ==).
+
+- *Quantity of try/catches*: The number of try/catches
+
+- *Quantity of parenthesized expressions*: The number of expressions inside parenthesis.
+
+- *String literals*: The number of string literals (e.g., `"John Doe"`). Repeated strings count as many times as they appear. 
+
+- *Quantity of Number*: The number of numbers (i.e., int, long, double, float) literals.
+
+- *Quantity of Math Operations*: The number of math operations (times, divide, remainder, plus, minus, left shit, right shift).
+
+- *Quantity of Variables*: Number of declared variables.
+
+- *Max nested blocks*: The highest number of blocks nested together.
+
+- *Quantity of Anonymous classes, subclasses, and lambda expressions*. The name says it all.
+
+- *Number of unique words*. Number of unique words in the source code. See `WordCounter` class for details on the
+implementation.  
+
+- *Usage of each variable*. How much each variable was used inside each method.
+
+- *Usage of each field*. How much each field was used inside each method.
+			
 (In a previous version, it calculated NOC (Number of Children), but it doesn't do it anymore,
 as it requires too much memory.)
-
-The tool also prints some classLevelMetrics at method level: number of parameters, number of return 
-instructions, number of variables, number of times each variable is used, WMC, CBO, RFC.
 
 # How to use the standalone version
 

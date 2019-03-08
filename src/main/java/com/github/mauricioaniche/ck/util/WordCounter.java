@@ -3,7 +3,7 @@ package com.github.mauricioaniche.ck.util;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class WordUtils {
+public class WordCounter {
 
 	private static Set<String> javaKeywords;
 

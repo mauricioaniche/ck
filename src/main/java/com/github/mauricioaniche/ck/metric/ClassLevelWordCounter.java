@@ -1,7 +1,7 @@
 package com.github.mauricioaniche.ck.metric;
 
 import com.github.mauricioaniche.ck.CKClassResult;
-import com.github.mauricioaniche.ck.util.WordUtils;
+import com.github.mauricioaniche.ck.util.WordCounter;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
@@ -17,7 +17,7 @@ public class ClassLevelWordCounter extends ASTVisitor implements ClassLevelMetri
 		if(visitedTypeAlready) return super.visit(node);
 
 		String classSourceCode = node.toString();
-		this.qtyOfUniqueWords = WordUtils.wordsIn(classSourceCode).size();
+		this.qtyOfUniqueWords = WordCounter.wordsIn(classSourceCode).size();
 
 		visitedTypeAlready = true;
 		return super.visit(node);
