@@ -2,6 +2,7 @@ package com.github.mauricioaniche.ck.metric;
 
 import com.github.mauricioaniche.ck.CKClassResult;
 import com.github.mauricioaniche.ck.CKMethodResult;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -31,5 +32,15 @@ public class DebugTest extends BaseTest {
 			}
 		}
 		System.out.println(ck);
+	}
+
+	// This class contains a method with a huge javadoc, and then the LOC was getting too big for
+	// a very small method. We use a better way to count LOC now, ignoring java comments.
+	@Test
+	public void commonsCsvClass2() {
+		CKClassResult ck = report.get("org.apache.commons.csv.CSVFormat");
+
+//		ck.getMethods().forEach(x -> System.out.println(x.getMethodName()));
+		Assert.assertEquals(3, ck.getMethod("isLineBreak/1[char]").get().getLoc()));
 	}
 }
