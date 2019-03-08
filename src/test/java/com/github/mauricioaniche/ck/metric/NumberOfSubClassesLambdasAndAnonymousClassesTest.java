@@ -24,10 +24,29 @@ public class NumberOfSubClassesLambdasAndAnonymousClassesTest extends BaseTest {
 		Assert.assertEquals(1, a.getLambdasQty());
 		Assert.assertEquals(3, a.getSubClassesQty());
 
+		Assert.assertEquals(0, a.getMethod("m1/0").get().getAnonymousClassesQty());
+		Assert.assertEquals(0, a.getMethod("m1/0").get().getLambdasQty());
+		Assert.assertEquals(0, a.getMethod("m1/0").get().getSubClassesQty());
+
+		Assert.assertEquals(0, a.getMethod("m2/0").get().getAnonymousClassesQty());
+		Assert.assertEquals(0, a.getMethod("m2/0").get().getLambdasQty());
+		Assert.assertEquals(0, a.getMethod("m2/0").get().getSubClassesQty());
+
 		Assert.assertEquals(1, a.getMethod("m3/0").get().getAnonymousClassesQty());
+		Assert.assertEquals(0, a.getMethod("m3/0").get().getLambdasQty());
+		Assert.assertEquals(0, a.getMethod("m3/0").get().getSubClassesQty());
+
 		Assert.assertEquals(1, a.getMethod("m4/0").get().getLambdasQty());
+		Assert.assertEquals(0, a.getMethod("m4/0").get().getAnonymousClassesQty());
+		Assert.assertEquals(0, a.getMethod("m4/0").get().getSubClassesQty());
+
+
 		Assert.assertEquals(1, a.getMethod("m5/0").get().getAnonymousClassesQty());
-		Assert.assertEquals(1, a.getMethod("m5/0").get().getAnonymousClassesQty());
+		Assert.assertEquals(0, a.getMethod("m5/0").get().getLambdasQty());
+		Assert.assertEquals(0, a.getMethod("m5/0").get().getSubClassesQty());
+
 		Assert.assertEquals(1, a.getMethod("m6/0").get().getSubClassesQty());
+		Assert.assertEquals(0, a.getMethod("m6/0").get().getLambdasQty());
+		Assert.assertEquals(0, a.getMethod("m6/0").get().getAnonymousClassesQty());
 	}
 }
