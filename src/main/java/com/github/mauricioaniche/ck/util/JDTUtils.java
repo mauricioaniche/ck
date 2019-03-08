@@ -1,5 +1,6 @@
 package com.github.mauricioaniche.ck.util;
 
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
@@ -34,5 +35,20 @@ public class JDTUtils {
 				(parameterCount > 0 ? String.join(",", parameterTypes) : ""),
 				(parameterCount > 0 ? "]" : "")
 		);
+	}
+
+	/**
+	 * If the method has a body, we can get the starting line of the method, ignoring any possible
+	 * Javadoc at the top of it.
+	 * If there's no body, JDT doesn't create a 'body', and thus, we can't get its starting position; thus,
+	 * we fall back to the starting position of the methoddeclarationnode, which can contain the javadoc.
+	 * This seems like an exceptional case, though.
+	 * TODO: better ideas are welcome.
+	 */
+
+	public static int getStartLine(CompilationUnit cu, MethodDeclaration node) {
+		return node.getBody() != null ?
+				cu.getLineNumber(node.getBody().getStartPosition()) :
+				cu.getLineNumber(node.getStartPosition());
 	}
 }

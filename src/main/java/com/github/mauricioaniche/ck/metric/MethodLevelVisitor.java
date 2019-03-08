@@ -1,6 +1,7 @@
 package com.github.mauricioaniche.ck.metric;
 
 import com.github.mauricioaniche.ck.CKMethodResult;
+import com.github.mauricioaniche.ck.util.JDTUtils;
 import org.apache.commons.io.IOUtils;
 import org.eclipse.jdt.core.dom.*;
 
@@ -36,7 +37,7 @@ public class MethodLevelVisitor extends ASTVisitor {
 		methods.put(currentMethodName, currentMethod);
 
 		currentMethod.setLoc(calculate(IOUtils.toInputStream(node.toString())));
-		currentMethod.setStartLine(cu.getLineNumber(node.getStartPosition()));
+		currentMethod.setStartLine(JDTUtils.getStartLine(cu, node));
 
 		try {
 			currentMetricsToRun = metrics.call();
