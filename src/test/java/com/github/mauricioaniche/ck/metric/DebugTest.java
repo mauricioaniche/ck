@@ -40,7 +40,6 @@ public class DebugTest extends BaseTest {
 	public void commonsCsvClass2() {
 		CKClassResult ck = report.get("org.apache.commons.csv.CSVFormat");
 
-//		ck.getMethods().forEach(x -> System.out.println(x.getMethodName()));
-		Assert.assertEquals(3, ck.getMethod("isLineBreak/1[char]").get().getLoc()));
+		Assert.assertEquals(3, ck.getMethod("isLineBreak/1[char]").get().getLoc());
 	}
 }
