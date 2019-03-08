@@ -41,6 +41,6 @@ public class DebugTest extends BaseTest {
 		CKClassResult ck = report.get("org.apache.commons.csv.CSVFormat");
 
 		Assert.assertEquals(3, ck.getMethod("isLineBreak/1[char]").get().getLoc());
-		System.out.println(ck.getMethod("isLineBreak/1[char]").get().getStartLine());
+		Assert.assertEquals(635, ck.getMethod("isLineBreak/1[char]").get().getStartLine());
 	}
 }
