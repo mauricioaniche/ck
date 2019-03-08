@@ -7,7 +7,7 @@ import org.eclipse.jdt.core.dom.*;
 public class NumberOfSubClassesLambdasAndAnonymousClasses extends ASTVisitor implements ClassLevelMetric, MethodLevelMetric {
 
 	private int anonymousClassesQty = 0;
-	private int subClassesQty = -1;
+	private int subClassesQty = 0;
 	private int lambdasQty = 0;
 
 	public boolean visit(TypeDeclaration node) {
@@ -33,7 +33,7 @@ public class NumberOfSubClassesLambdasAndAnonymousClasses extends ASTVisitor imp
 	@Override
 	public void setResult(CKClassResult result) {
 		result.setAnonymousClassesQty(anonymousClassesQty);
-		result.setSubClassesQty(subClassesQty);
+		result.setSubClassesQty(subClassesQty - 1);
 		result.setLambdasQty(lambdasQty);
 
 	}

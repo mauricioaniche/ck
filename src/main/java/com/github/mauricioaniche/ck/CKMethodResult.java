@@ -194,12 +194,24 @@ public class CKMethodResult {
 		this.anonymousClassesQty = anonymousClassesQty;
 	}
 
+	public int getAnonymousClassesQty() {
+		return anonymousClassesQty;
+	}
+
 	public void setSubClassesQty(int subClassesQty) {
 		this.subClassesQty = subClassesQty;
 	}
 
+	public int getSubClassesQty() {
+		return subClassesQty;
+	}
+
 	public void setLambdasQty(int lambdasQty) {
 		this.lambdasQty = lambdasQty;
+	}
+
+	public int getLambdasQty() {
+		return lambdasQty;
 	}
 
 	public void setUniqueWordsQty(int uniqueWordsQty) {
