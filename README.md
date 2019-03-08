@@ -17,19 +17,11 @@ In order to make it happen, classes must exist in the project (i.e. if a class
 depends upon X which relies in a jar/dependency file, and X depends upon other
 classes, DIT is counted as 2). 
 
-- *NOF (Number of fields)*: Counts the number of fields in a class, no matter
-its modifiers.
+- *Number of fields*: Counts the number of fields. Specific numbers for
+total number of fields, static, public, private, protected, default, final, and synchronized fields.
 
-- *NOPF (Number of public fields)*: Counts only the public fields.
-
-- *NOSF*: Counts only the static fields.
-
-- *NOM (Number of methods)*: Counts the number of methods, no matter its
-modifiers.
-
-- *NOPM (Number of public methods)*: Counts only the public methods.
-
-- *NOSM (Number of static methods):* Counts only the static methods.
+- *Number of methods*: Counts the number of methods. Specific numbers for
+total number of methods, static, public, abstract, private, protected, default, final, and synchronized methods.
 
 - *NOSI (Number of static invocations)*: Counts the number of invocations
 to static methods. It can only count the ones that can be resolved by the

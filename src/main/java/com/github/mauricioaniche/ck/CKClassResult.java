@@ -13,13 +13,6 @@ public class CKClassResult {
 	private int cbo;
 	private int lcom;
 	private int rfc;
-	private int nom;
-	private int nopm;
-	private int nosm;
-
-	private int nof;
-	private int nopf;
-	private int nosf;
 
 	private int nosi;
 	private int loc;
@@ -42,6 +35,24 @@ public class CKClassResult {
 	private int subClassesQty;
 	private int lambdasQty;
 	private int uniqueWordsQty;
+	private int numberOfMethods;
+	private int numberOfStaticMethods;
+	private int numberOfPublicMethods;
+	private int numberOfPrivateMethods;
+	private int numberOfProtectedMethods;
+	private int numberOfDefaultMethods;
+	private int numberOfAbstractMethods;
+	private int numberOfFinalMethods;
+	private int numberOfSynchronizedMethods;
+	private int numberOfFields;
+	private int numberOfStaticFields;
+	private int numberOfPublicFields;
+	private int numberOfPrivateFields;
+	private int numberOfProtectedFields;
+	private int numberOfDefaultFields;
+	private int numberOfAbstractFields;
+	private int numberOfFinalFields;
+	private int numberOfSynchronizedFields;
 
 	public CKClassResult(String file, String className, String type) {
 		this.file = file;
@@ -121,57 +132,6 @@ public class CKClassResult {
 	
 	public int getRfc() {
 		return rfc;
-	}
-
-	public void setNom(int nom) {
-		this.nom = nom;
-	}
-	public int getNom() {
-		return nom;
-	}
-	
-	public String getType() {
-		return type;
-	}
-
-	public int getNopm() {
-		return nopm;
-	}
-
-	public void setNopm(int nopm) {
-		this.nopm = nopm;
-	}
-
-	public int getNosm() {
-		return nosm;
-	}
-
-	public void setNosm(int nosm) {
-		this.nosm = nosm;
-	}
-
-	public int getNof() {
-		return nof;
-	}
-
-	public void setNof(int nof) {
-		this.nof = nof;
-	}
-
-	public int getNopf() {
-		return nopf;
-	}
-
-	public void setNopf(int nopf) {
-		this.nopf = nopf;
-	}
-
-	public int getNosf() {
-		return nosf;
-	}
-
-	public void setNosf(int nosf) {
-		this.nosf = nosf;
 	}
 	
 	public int getNosi() {
@@ -337,4 +297,143 @@ public class CKClassResult {
 		return uniqueWordsQty;
 	}
 
+	public void setNumberOfMethods(int numberOfMethods) {
+		this.numberOfMethods = numberOfMethods;
+	}
+
+	public int getNumberOfMethods() {
+		return numberOfMethods;
+	}
+
+	public void setNumberOfStaticMethods(int numberOfStaticMethods) {
+		this.numberOfStaticMethods = numberOfStaticMethods;
+	}
+
+	public int getNumberOfStaticMethods() {
+		return numberOfStaticMethods;
+	}
+
+	public void setNumberOfPublicMethods(int numberOfPublicMethods) {
+		this.numberOfPublicMethods = numberOfPublicMethods;
+	}
+
+	public int getNumberOfPublicMethods() {
+		return numberOfPublicMethods;
+	}
+
+	public void setNumberOfPrivateMethods(int numberOfPrivateMethods) {
+		this.numberOfPrivateMethods = numberOfPrivateMethods;
+	}
+
+	public int getNumberOfPrivateMethods() {
+		return numberOfPrivateMethods;
+	}
+
+	public void setNumberOfProtectedMethods(int numberOfProtectedMethods) {
+		this.numberOfProtectedMethods = numberOfProtectedMethods;
+	}
+
+	public int getNumberOfProtectedMethods() {
+		return numberOfProtectedMethods;
+	}
+
+	public void setNumberOfDefaultMethods(int numberOfDefaultMethods) {
+		this.numberOfDefaultMethods = numberOfDefaultMethods;
+	}
+
+	public int getNumberOfDefaultMethods() {
+		return numberOfDefaultMethods;
+	}
+
+	public void setNumberOfAbstractMethods(int numberOfAbstractMethods) {
+		this.numberOfAbstractMethods = numberOfAbstractMethods;
+	}
+
+	public int getNumberOfAbstractMethods() {
+		return numberOfAbstractMethods;
+	}
+
+	public void setNumberOfFinalMethods(int numberOfFinalMethods) {
+		this.numberOfFinalMethods = numberOfFinalMethods;
+	}
+
+	public int getNumberOfFinalMethods() {
+		return numberOfFinalMethods;
+	}
+
+	public void setNumberOfSynchronizedMethods(int numberOfSynchronizedMethods) {
+		this.numberOfSynchronizedMethods = numberOfSynchronizedMethods;
+	}
+
+	public int getNumberOfSynchronizedMethods() {
+		return numberOfSynchronizedMethods;
+	}
+
+	public void setNumberOfFields(int numberOfFields) {
+		this.numberOfFields = numberOfFields;
+	}
+
+	public int getNumberOfFields() {
+		return numberOfFields;
+	}
+
+	public void setNumberOfStaticFields(int numberOfStaticFields) {
+		this.numberOfStaticFields = numberOfStaticFields;
+	}
+
+	public int getNumberOfStaticFields() {
+		return numberOfStaticFields;
+	}
+
+	public void setNumberOfPublicFields(int numberOfPublicFields) {
+		this.numberOfPublicFields = numberOfPublicFields;
+	}
+
+	public int getNumberOfPublicFields() {
+		return numberOfPublicFields;
+	}
+
+	public void setNumberOfPrivateFields(int numberOfPrivateFields) {
+		this.numberOfPrivateFields = numberOfPrivateFields;
+	}
+
+	public int getNumberOfPrivateFields() {
+		return numberOfPrivateFields;
+	}
+
+	public void setNumberOfProtectedFields(int numberOfProtectedFields) {
+		this.numberOfProtectedFields = numberOfProtectedFields;
+	}
+
+	public int getNumberOfProtectedFields() {
+		return numberOfProtectedFields;
+	}
+
+	public void setNumberOfDefaultFields(int numberOfDefaultFields) {
+		this.numberOfDefaultFields = numberOfDefaultFields;
+	}
+
+	public int getNumberOfDefaultFields() {
+		return numberOfDefaultFields;
+	}
+
+	public void setNumberOfFinalFields(int numberOfFinalFields) {
+		this.numberOfFinalFields = numberOfFinalFields;
+	}
+
+	public int getNumberOfFinalFields() {
+		return numberOfFinalFields;
+	}
+
+	public void setNumberOfSynchronizedFields(int numberOfSynchronizedFields) {
+		this.numberOfSynchronizedFields = numberOfSynchronizedFields;
+	}
+
+	public int getNumberOfSynchronizedFields() {
+		return numberOfSynchronizedFields;
+	}
+
+	public String getType() {
+		return type;
+	}
 }

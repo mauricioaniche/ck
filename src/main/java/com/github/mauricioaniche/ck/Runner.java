@@ -17,7 +17,9 @@ public class Runner {
 		String path = args[0];
 
 		PrintStream classOutput = new PrintStream("class.csv");
-		classOutput.println("file,class,type,cbo,wmc,dit,rfc,lcom,nom,nopm,nosm,nof,nopf,nosf,nosi,loc,returnQty,loopQty,comparisonsQty," +
+		classOutput.println("file,class,type,cbo,wmc,dit,rfc,lcom,totalMethods,staticMethods,publicMethods,privateMethods,protectedMethods," +
+				"defaultMethods,abstractMethods,finalMethods,synchronizedMethods,totalFields,staticFields,publicFields,privateFields," +
+				"protectedFields,defaultFields,finalFields,synchronizedFields,nosi,loc,returnQty,loopQty,comparisonsQty," +
 				"tryCatchQty,parenthesizedExpsQty,stringLiteralsQty,numbersQty,assignmentsQty,mathOperationsQty,variablesQty," +
 				"maxNestedBlocks,anonymousClassesQty,subClassesQty,lambdasQty,uniqueWordsQty");
 
@@ -44,12 +46,23 @@ public class Runner {
 				result.getDit() + "," +
 				result.getRfc() + "," +
 				result.getLcom() + "," +
-				result.getNom() + "," +
-				result.getNopm() + "," +
-				result.getNosm() + "," +
-				result.getNof() + "," +
-				result.getNopf() + "," +
-				result.getNosf() + "," +
+				result.getNumberOfMethods() + "," +
+				result.getNumberOfStaticMethods() + "," +
+				result.getNumberOfPublicMethods() + "," +
+				result.getNumberOfPrivateMethods() + "," +
+				result.getNumberOfProtectedMethods() + "," +
+				result.getNumberOfDefaultMethods() + "," +
+				result.getNumberOfAbstractMethods() + "," +
+				result.getNumberOfFinalMethods() + "," +
+				result.getNumberOfSynchronizedMethods() + "," +
+				result.getNumberOfFields() + "," +
+				result.getNumberOfStaticFields() + "," +
+				result.getNumberOfPublicFields() + "," +
+				result.getNumberOfPrivateFields() + "," +
+				result.getNumberOfProtectedFields() + "," +
+				result.getNumberOfDefaultFields() + "," +
+				result.getNumberOfFinalFields() + "," +
+				result.getNumberOfSynchronizedFields() + "," +
 				result.getNosi() + "," +
 				result.getLoc() + "," +
 				result.getReturnQty() + "," +

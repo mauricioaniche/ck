@@ -19,18 +19,18 @@ public class MethodsTest extends BaseTest {
 	@Test
 	public void all() {
 		CKClassResult a = report.get("methods.Methods");
-		Assert.assertEquals(5, a.getNom());
+		Assert.assertEquals(5, a.getNumberOfMethods());
 	}
 
 	@Test
 	public void allPublic() {
 		CKClassResult a = report.get("methods.Methods");
-		Assert.assertEquals(2, a.getNopm());
+		Assert.assertEquals(2, a.getNumberOfPublicMethods());
 	}
 
 	@Test
 	public void allStatic() {
 		CKClassResult a = report.get("methods.Methods");
-		Assert.assertEquals(2, a.getNosm());
+		Assert.assertEquals(2, a.getNumberOfStaticMethods());
 	}
 }

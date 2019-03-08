@@ -21,18 +21,18 @@ public class FieldsTest extends BaseTest {
 	@Test
 	public void all() {
 		CKClassResult a = report.get("fields.Fields");
-		Assert.assertEquals(5, a.getNof());
+		Assert.assertEquals(5, a.getNumberOfFields());
 	}
 
 	@Test
 	public void allPublic() {
 		CKClassResult a = report.get("fields.Fields");
-		Assert.assertEquals(2, a.getNopf());
+		Assert.assertEquals(2, a.getNumberOfPublicFields());
 	}
 
 	@Test
 	public void allStatic() {
 		CKClassResult a = report.get("fields.Fields");
-		Assert.assertEquals(2, a.getNosf());
+		Assert.assertEquals(2, a.getNumberOfStaticFields());
 	}
 }
