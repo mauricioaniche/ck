@@ -42,5 +42,7 @@ public class DebugTest extends BaseTest {
 
 		Assert.assertEquals(3, ck.getMethod("isLineBreak/1[char]").get().getLoc());
 		Assert.assertEquals(635, ck.getMethod("isLineBreak/1[char]").get().getStartLine());
+
+		Assert.assertEquals(1575, ck.getMethod("withAllowMissingColumnNames/1[boolean]").get().getStartLine());
 	}
 }
