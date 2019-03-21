@@ -97,6 +97,8 @@ new CK().calculate(path, result -> {
 }
 ```
 
+Add it to your POM.xml: https://mvnrepository.com/artifact/com.github.mauricioaniche/ck
+
 # Why is it called CK?
 
 Because the tool was born to just calculate the CK classLevelMetrics, but it grew beyond
