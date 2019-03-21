@@ -4,9 +4,9 @@
 	<artifactId>ck</artifactId>
 	<packaging>jar</packaging>
 	<version>0.3.0-SNAPSHOT</version>
-	<name>CK classLevelMetrics calculator</name>
+	<name>CK calculator</name>
 	<url>http://www.mauricioaniche.com</url>
-	<description>CK classLevelMetrics</description>
+	<description>Java code metrics calculator</description>
 
 	<licenses>
 		<license>
