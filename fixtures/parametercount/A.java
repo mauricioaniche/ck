@@ -29,4 +29,9 @@ class A {
 		a = a + 1;
 		a = a / 10;
 	}
+
+	public void e(final B a, int b) {
+		a = new B();
+		a.m1();
+	}
 }

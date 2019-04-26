@@ -1,13 +1,17 @@
 package com.github.mauricioaniche.ck.metric;
 
+import com.github.mauricioaniche.ck.ASTDebugger;
 import com.github.mauricioaniche.ck.CKClassResult;
+import com.github.mauricioaniche.ck.CKMethodResult;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-public class ParameterCountTest  extends BaseTest{
+public class ParameterCountTest extends BaseTest{
 
 	private static Map<String, CKClassResult> report;
 
@@ -48,5 +52,11 @@ public class ParameterCountTest  extends BaseTest{
 		Map<String, Integer> variablesUsageB = a.getMethod("d/2[int,int]").get().getVariablesUsage();
 		Assert.assertEquals(new Integer(4), variablesUsageB.get("a"));
 		Assert.assertEquals(new Integer(0), variablesUsageB.get("b"));
+
+		Map<String, Integer> variablesUsageC = a.getMethod("e/2[pcount.B,int]").get().getVariablesUsage();
+		Assert.assertEquals(new Integer(2), variablesUsageC.get("a"));
+		Assert.assertEquals(new Integer(0), variablesUsageC.get("b"));
+
 	}
+
 }
