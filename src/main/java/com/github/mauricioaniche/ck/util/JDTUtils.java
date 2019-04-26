@@ -21,10 +21,16 @@ public class JDTUtils {
 				SingleVariableDeclaration parameter = (SingleVariableDeclaration) p0;
 
 				ITypeBinding binding = parameter.getType().resolveBinding();
+
+				String v;
 				if(binding == null)
-					parameterTypes.add(parameter.getType().toString());
+					v = parameter.getType().toString();
 				else
-					parameterTypes.add(binding.getQualifiedName());
+					v = binding.getQualifiedName();
+
+				if(parameter.isVarargs()) v+="[]";
+
+				parameterTypes.add(v);
 			}
 		}
 
