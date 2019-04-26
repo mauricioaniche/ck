@@ -58,7 +58,10 @@ public class MetricsExecutor extends FileASTRequestor {
 			log.info(result);
 			notifier.notify(result);
 		} catch(Exception e) {
-			if(result!=null) result.error();
+			if(result!=null) {
+				result.error(e);
+				notifier.notify(result);
+			}
 			log.error("error in " + sourceFilePath, e);
 		}
 	}

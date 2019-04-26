@@ -50,9 +50,9 @@ public class CKClassResult {
 	private int numberOfPrivateFields;
 	private int numberOfProtectedFields;
 	private int numberOfDefaultFields;
-	private int numberOfAbstractFields;
 	private int numberOfFinalFields;
 	private int numberOfSynchronizedFields;
+	private String errorMessage;
 
 	public CKClassResult(String file, String className, String type) {
 		this.file = file;
@@ -155,8 +155,9 @@ public class CKClassResult {
 		return error;
 	}
 	
-	public void error() {
+	public void error(Exception e) {
 		this.error = true;
+		this.errorMessage = e.getMessage();
 	}
 
 	@Override
@@ -435,5 +436,9 @@ public class CKClassResult {
 
 	public String getType() {
 		return type;
+	}
+
+	public String getErrorMessage() {
+		return errorMessage;
 	}
 }
