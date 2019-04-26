@@ -23,6 +23,5 @@ public class BadGenericsTest extends BaseTest {
 		CKClassResult r = report.get("bg.BG");
 		Assert.assertTrue(r.isError());
 		Assert.assertTrue(r.getErrorMessage().contains("already visited"));
-
 	}
 }
