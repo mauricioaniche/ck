@@ -23,7 +23,7 @@ public class JDTUtils {
 				ITypeBinding binding = parameter.getType().resolveBinding();
 
 				String v;
-				if(binding == null)
+				if(binding == null || binding.isRecovered())
 					v = parameter.getType().toString();
 				else
 					v = binding.getQualifiedName();
