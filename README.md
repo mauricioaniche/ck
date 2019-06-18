@@ -74,7 +74,36 @@ implementation.
 (In a previous version, it calculated NOC (Number of Children), but it doesn't do it anymore,
 as it requires too much memory.)
 
+# Java Syntax Support
+
+This tool uses Eclipse's JDT Core library under the hood for AST
+construction. Currently the compliance version is set to Java 11.
+
+Need support for a newer language version? The process of adding it is
+very straightforward, considering contributing a PR:
+
+1. Add a failing unit test case showcasing at least one of the syntax
+features present in the new version you want to provide support.
+2. Update the Eclipse JDT Core dependency in the `pom.xml` file. You may
+use a repository browser like
+[MVN Repository](https://mvnrepository.com/artifact/org.eclipse.jdt/org.eclipse.jdt.core)
+to ease this process.
+3. Also in the `pom.xml` file, update the `source` and `target`
+properties of the Maven Compiler plugin accordingly.
+4. Adjust the following lines in `CK.java`:
+    ```
+    [...]
+    ASTParser parser = ASTParser.newParser(AST.JLS11);
+    [...]
+    JavaCore.setComplianceOptions(JavaCore.VERSION_11, options);
+    [...]
+    ```
+5. Check if the failing unit test case you added in the first step is
+now green. Then submit a PR.
+
 # How to use the standalone version
+
+You need at least Java 11 to be able to compile and run this tool.
 
 To use the _latest version_ (which you should), clone the project and generate a JAR. A simple
 `mvn clean compile assembly:single` generates the single JAR file for you (see your _target_ folder).

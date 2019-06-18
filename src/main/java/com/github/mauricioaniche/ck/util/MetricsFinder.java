@@ -7,7 +7,6 @@ import org.reflections.Reflections;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class MetricsFinder {
 
@@ -22,7 +21,7 @@ public class MetricsFinder {
 		try {
 			ArrayList<MethodLevelMetric> metrics = new ArrayList<>();
 			for (Class<? extends MethodLevelMetric> aClass : methodLevelClasses) {
-				metrics.add(aClass.newInstance());
+				metrics.add(aClass.getDeclaredConstructor().newInstance());
 			}
 
 			return metrics;
@@ -49,7 +48,7 @@ public class MetricsFinder {
 		try {
 			ArrayList<ClassLevelMetric> metrics = new ArrayList<>();
 			for (Class<? extends ClassLevelMetric> aClass : classLevelClasses) {
-				metrics.add(aClass.newInstance());
+				metrics.add(aClass.getDeclaredConstructor().newInstance());
 			}
 
 			return metrics;

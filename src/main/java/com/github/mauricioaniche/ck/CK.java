@@ -65,13 +65,13 @@ public class CK {
 
 		for(List<String> partition : partitions) {
 			log.debug("Next partition");
-			ASTParser parser = ASTParser.newParser(AST.JLS8);
+			ASTParser parser = ASTParser.newParser(AST.JLS11);
 			
 			parser.setResolveBindings(true);
 			parser.setBindingsRecovery(true);
 			
-			Map<?, ?> options = JavaCore.getOptions();
-			JavaCore.setComplianceOptions(JavaCore.VERSION_1_8, options);
+			Map<String, String> options = JavaCore.getOptions();
+			JavaCore.setComplianceOptions(JavaCore.VERSION_11, options);
 			parser.setCompilerOptions(options);
 			parser.setEnvironment(null, srcDirs, null, true);
 			parser.createASTs(partition.toArray(new String[partition.size()]), null, new String[0], storage, null);
