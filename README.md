@@ -144,6 +144,8 @@ Then, you can:
 * compile : `mvn clean compile`
 * test    : `mvn test`
 
+Note that you can optionally use the bundled Maven Wrapper to
+automatically download Maven for you, e.g: `./mvnw clean compile`.
 
 # License
 
