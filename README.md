@@ -149,4 +149,4 @@ automatically download Maven for you, e.g: `./mvnw clean compile`.
 
 # License
 
-This software is licensed under the Apache 2.0 License.
+This software is licensed under the [Apache 2.0 License](LICENSE).
