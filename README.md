@@ -108,6 +108,14 @@ You need at least Java 11 to be able to compile and run this tool.
 To use the _latest version_ (which you should), clone the project and generate a JAR. A simple
 `mvn clean compile assembly:single` generates the single JAR file for you (see your _target_ folder).
 
+_PS. In case you face `ERROR - Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.8.1:compile ...` change maven-compiler-plugin to the Java version that you have_
+_Example:_
+`<configuration>
+    <source>11</source> <!-- change to 1.8 -->
+    <target>11</target> <!-- change to 1.8 -->
+</configuration>`
+
+
 Then, just run:
 ```
 java -jar ck-x.x.x-SNAPSHOT-jar-with-dependencies.jar <project dir>
