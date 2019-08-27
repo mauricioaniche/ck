@@ -18,11 +18,11 @@ public class ResultWriter {
             "privateFields", "protectedFields", "defaultFields", "finalFields", "synchronizedFields", "nosi", "loc",
             "returnQty", "loopQty", "comparisonsQty", "tryCatchQty", "parenthesizedExpsQty", "stringLiteralsQty",
             "numbersQty", "assignmentsQty", "mathOperationsQty", "variablesQty", "maxNestedBlocks",
-            "anonymousClassesQty", "subClassesQty", "lambdasQty", "uniqueWordsQty" };
+            "anonymousClassesQty", "subClassesQty", "lambdasQty", "uniqueWordsQty", "modifiers" };
     private static final String[] METHOD_HEADER = { "file", "class", "method", "line", "cbo", "wmc", "rfc", "loc",
             "returns", "variables", "parameters", "startLine", "loopQty", "comparisonsQty", "tryCatchQty",
             "parenthesizedExpsQty", "stringLiteralsQty", "numbersQty", "assignmentsQty", "mathOperationsQty",
-            "maxNestedBlocks", "anonymousClassesQty", "subClassesQty", "lambdasQty", "uniqueWordsQty" };
+            "maxNestedBlocks", "anonymousClassesQty", "subClassesQty", "lambdasQty", "uniqueWordsQty", "modifiers" };
     private static final String[] VAR_FIELD_HEADER = { "file", "class", "method", "variable", "usage" };
 
     private CSVPrinter classPrinter;
@@ -76,7 +76,7 @@ public class ResultWriter {
                 result.getParenthesizedExpsQty(), result.getStringLiteralsQty(), result.getNumbersQty(),
                 result.getAssignmentsQty(), result.getMathOperationsQty(), result.getVariablesQty(),
                 result.getMaxNestedBlocks(), result.getAnonymousClassesQty(), result.getSubClassesQty(),
-                result.getLambdasQty(), result.getUniqueWordsQty());
+                result.getLambdasQty(), result.getUniqueWordsQty(), result.getModifiers());
 
         for (CKMethodResult method : result.getMethods()) {
             this.methodPrinter.printRecord(result.getFile(), result.getClassName(), method.getMethodName(),
@@ -86,7 +86,7 @@ public class ResultWriter {
                     method.getParenthesizedExpsQty(), method.getStringLiteralsQty(), method.getNumbersQty(),
                     method.getAssignmentsQty(), method.getMathOperationsQty(), method.getMaxNestedBlocks(),
                     method.getAnonymousClassesQty(), method.getSubClassesQty(), method.getLambdasQty(),
-                    method.getUniqueWordsQty());
+                    method.getUniqueWordsQty(), method.getModifiers());
 
             for (Map.Entry<String, Integer> entry : method.getVariablesUsage().entrySet()) {
                 this.variablePrinter.printRecord(result.getFile(), result.getClassName(), method.getMethodName(),

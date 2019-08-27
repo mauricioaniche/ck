@@ -53,13 +53,24 @@ public class CKClassResult {
 	private int numberOfFinalFields;
 	private int numberOfSynchronizedFields;
 	private String errorMessage;
+	private int modifiers;
 
-	public CKClassResult(String file, String className, String type) {
+	public CKClassResult(String file, String className, String type, int modifiers) {
 		this.file = file;
 		this.className = className;
 		this.type = type;
 		this.methods = new HashSet<>();
-		
+		this.modifiers = modifiers;
+	}
+	
+	
+	/**
+	 * public/static/private and other java.lang.reflect.Modifier modifiers
+	 * 
+	 * @return
+	 */
+	public int getModifiers() {
+		return modifiers;
 	}
 	
 	public String getFile() {
