@@ -16,23 +16,40 @@ public class ModifiersTest extends BaseTest {
 
 
 	private static Map<String, CKClassResult> report;
-	static Map<String, Integer> modifiersByMethod ;
-	private static CKClassResult a;
+	private static Map<String, Integer> modifiersByMethod;
+	private static CKClassResult classResult;
 	
 	@BeforeClass
 	public static void setUp() {
 		report = run(fixturesDir() + "/modifiers");
-		a = report.get("modifiers.ClassWithModifiers");
-		modifiersByMethod = a.getMethods().stream().collect(Collectors.toMap(x -> x.getMethodName(), x->x.getModifiers()));
+		classResult = report.get("modifiers.ClassWithModifiers");
+		modifiersByMethod = classResult.getMethods().stream().collect(Collectors.toMap(x -> x.getMethodName(), x->x.getModifiers()));
 	}
+	
+	
 	@Test
 	public void testClassIsAbstract() {
-		assertTrue(Modifier.isAbstract(a.getModifiers()));
+		assertTrue(Modifier.isAbstract(classResult.getModifiers()));
 	}
 	
 	@Test
 	public void testFinalMethod() {
 		assertTrue(Modifier.isFinal(modifiersByMethod.get("finalMethod/0")));
+	}
+
+	@Test
+	public void testAbstractMethod() {
+		assertTrue(Modifier.isAbstract(modifiersByMethod.get("abstractMethod/0")));
+	}
+
+	@Test
+	public void testPrivateMethod() {
+		assertTrue(Modifier.isPrivate(modifiersByMethod.get("privateMethod/0")));
+	}
+
+	@Test
+	public void testNativeMethod() {
+		assertTrue(Modifier.isNative(modifiersByMethod.get("nativeRun/0")));
 	}
 
 }
