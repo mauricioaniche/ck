@@ -67,6 +67,7 @@ public class CKClassResult {
 	/**
 	 * public/static/private and other java.lang.reflect.Modifier modifiers
 	 * 
+	 * @see java.lang.reflect.Modifier to decode int
 	 * @return
 	 */
 	public int getModifiers() {

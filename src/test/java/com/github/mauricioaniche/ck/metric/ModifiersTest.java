@@ -2,13 +2,13 @@ package com.github.mauricioaniche.ck.metric;
 
 import com.github.mauricioaniche.ck.CKClassResult;
 
-import javassist.Modifier;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
 
+import java.lang.reflect.Modifier;
 import java.util.Map;
 import java.util.stream.Collectors;
 

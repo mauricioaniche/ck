@@ -67,9 +67,12 @@ send us a pull request).
 - *Number of unique words*. Number of unique words in the source code. See `WordCounter` class for details on the
 implementation.  
 
+- *modifiers*. public/abstract/private/protected/native modifiers of classes/methods. Can be decoded using `java.lang.reflect.Modifier`.  
+
 - *Usage of each variable*. How much each variable was used inside each method.
 
 - *Usage of each field*. How much each field was used inside each method.
+
 			
 (In a previous version, it calculated NOC (Number of Children), but it doesn't do it anymore,
 as it requires too much memory.)
