@@ -138,6 +138,19 @@ You may use the CK maven plugin, developed by @jazzmuesli: https://github.com/ja
 
 Because the tool was born to just calculate the CK classLevelMetrics, but it grew beyond
 my expectations... Life is funny!
+
+# How to cite?
+
+Please, use the following bibtex entry:
+
+```
+@manual{
+  title={Java code metrics calculator (CK)},
+  author={Maurício Aniche},
+  year={2015},
+  note={Available in https://github.com/mauricioaniche/ck/}
+}
+```
   
 # How to Contribute
 
