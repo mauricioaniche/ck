@@ -130,6 +130,10 @@ new CK().calculate(path, result -> {
 
 Add it to your POM.xml: https://mvnrepository.com/artifact/com.github.mauricioaniche/ck
 
+# Maven support
+
+You may use the CK maven plugin, developed by @jazzmuesli: https://github.com/jazzmuesli/ck-mvn-plugin.
+
 # Why is it called CK?
 
 Because the tool was born to just calculate the CK classLevelMetrics, but it grew beyond
