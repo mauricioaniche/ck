@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
 
-import java.lang.reflect.Modifier;
+import org.eclipse.jdt.core.dom.Modifier;
 import java.util.Map;
 import java.util.stream.Collectors;
 

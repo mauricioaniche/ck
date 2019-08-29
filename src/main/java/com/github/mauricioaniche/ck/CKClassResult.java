@@ -65,9 +65,9 @@ public class CKClassResult {
 	
 	
 	/**
-	 * public/static/private and other java.lang.reflect.Modifier modifiers
+	 * public/static/private and other org.eclipse.jdt.core.dom.Modifier modifiers
 	 * 
-	 * @see java.lang.reflect.Modifier to decode int
+	 * @see org.eclipse.jdt.core.dom.Modifier to decode int
 	 * @return
 	 */
 	public int getModifiers() {

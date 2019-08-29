@@ -67,7 +67,7 @@ send us a pull request).
 - *Number of unique words*. Number of unique words in the source code. See `WordCounter` class for details on the
 implementation.  
 
-- *modifiers*. public/abstract/private/protected/native modifiers of classes/methods. Can be decoded using `java.lang.reflect.Modifier`.  
+- *modifiers*. public/abstract/private/protected/native modifiers of classes/methods. Can be decoded using `org.eclipse.jdt.core.dom.Modifier`.  
 
 - *Usage of each variable*. How much each variable was used inside each method.
 
