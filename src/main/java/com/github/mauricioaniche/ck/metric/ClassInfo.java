@@ -9,6 +9,7 @@ public class ClassInfo extends ASTVisitor {
 
 	private String className;
 	private String type;
+	private int modifiers;
 
 	@Override
 	public boolean visit(TypeDeclaration node) {
@@ -17,14 +18,19 @@ public class ClassInfo extends ASTVisitor {
 		
 		if(node.isInterface()) type = "interface";
 		else type = "class";
-		
+		this.modifiers = node.getModifiers();
 		return false;
+	}
+	
+	public int getModifiers() {
+		return modifiers;
 	}
 
 	@Override
 	public boolean visit(EnumDeclaration node) {
 		type = "enum";
 		getFullClassName(node.resolveBinding());
+		this.modifiers = node.getModifiers();
 		return false;
 	}
 	

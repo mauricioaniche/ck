@@ -33,7 +33,7 @@ public class MethodLevelVisitor extends ASTVisitor {
 	public boolean visit(MethodDeclaration node) {
 		currentMethodName = getMethodFullName(node);
 
-		currentMethod = new CKMethodResult(currentMethodName);
+		currentMethod = new CKMethodResult(currentMethodName, node.getModifiers());
 		if(methods.containsKey(currentMethodName))
 			throw new RuntimeException("Method " + currentMethodName + " already visited. This might happen when methods have same name and types only differ because of generics.");
 

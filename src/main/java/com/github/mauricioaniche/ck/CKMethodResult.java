@@ -27,11 +27,23 @@ public class CKMethodResult {
 	private int lambdasQty;
 	private int uniqueWordsQty;
 	private Map<String, Integer> fieldUsage;
+	private int modifiers;
 
-	public CKMethodResult(String methodName) {
+	public CKMethodResult(String methodName, int modifiers) {
 		this.methodName = methodName;
+		this.modifiers = modifiers;
 	}
 
+	/**
+	 * public/static/private and other org.eclipse.jdt.core.dom.Modifier modifiers
+	 * 
+	 * @see org.eclipse.jdt.core.dom.Modifier to decode int
+	 * @return
+	 */
+	public int getModifiers() {
+		return modifiers;
+	}
+	
 	public void setCbo(int cbo) {
 		this.cbo = cbo;
 	}

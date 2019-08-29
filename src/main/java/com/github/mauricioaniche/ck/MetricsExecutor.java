@@ -38,7 +38,7 @@ public class MetricsExecutor extends FileASTRequestor {
 			cu.accept(info);
 			if(info.getClassName()==null) return;
 		
-			result = new CKClassResult(sourceFilePath, info.getClassName(), info.getType());
+			result = new CKClassResult(sourceFilePath, info.getClassName(), info.getType(), info.getModifiers());
 			
 			int loc = calculate(new FileInputStream(sourceFilePath));
 			result.setLoc(loc);
