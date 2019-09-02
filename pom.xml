@@ -3,10 +3,15 @@
 	<groupId>com.github.mauricioaniche</groupId>
 	<artifactId>ck</artifactId>
 	<packaging>jar</packaging>
-	<version>0.3.2-SNAPSHOT</version>
+	<version>0.3.3-SNAPSHOT</version>
 	<name>CK calculator</name>
 	<url>http://www.mauricioaniche.com</url>
 	<description>Java code metrics calculator</description>
+
+	<properties>
+	    <maven.javadoc.skip>true</maven.javadoc.skip>
+	    <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
+	</properties>
 
 	<licenses>
 		<license>
