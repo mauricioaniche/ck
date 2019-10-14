@@ -21,7 +21,7 @@ public class FieldsTest extends BaseTest {
 	@Test
 	public void all() {
 		CKClassResult a = report.get("fields.Fields");
-		Assert.assertEquals(5, a.getNumberOfFields());
+		Assert.assertEquals(8, a.getNumberOfFields());
 	}
 
 	@Test
@@ -33,6 +33,26 @@ public class FieldsTest extends BaseTest {
 	@Test
 	public void allStatic() {
 		CKClassResult a = report.get("fields.Fields");
-		Assert.assertEquals(2, a.getNumberOfStaticFields());
+		Assert.assertEquals(3, a.getNumberOfStaticFields());
+	}
+
+
+	@Test
+	public void allPrivate() {
+		CKClassResult a = report.get("fields.Fields");
+		Assert.assertEquals(4, a.getNumberOfPrivateFields());
+	}
+
+
+	@Test
+	public void allDefault() {
+		CKClassResult a = report.get("fields.Fields");
+		Assert.assertEquals(2, a.getNumberOfDefaultFields());
+	}
+
+	@Test
+	public void allSynchronized() {
+		CKClassResult a = report.get("fields.Fields");
+		Assert.assertEquals(1, a.getNumberOfSynchronizedFields());
 	}
 }

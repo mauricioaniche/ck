@@ -21,25 +21,32 @@ public class NumberOfFields extends ASTVisitor implements ClassLevelMetric {
 	public boolean visit(FieldDeclaration node) {
 		fields++;
 
-		if(Modifier.isStatic(node.getModifiers()))
-			staticFields++;
 
-		if(Modifier.isPublic(node.getModifiers()))
+		boolean isPublic = Modifier.isPublic(node.getModifiers());
+		boolean isPrivate = Modifier.isPrivate(node.getModifiers());
+		boolean isProtected = Modifier.isProtected(node.getModifiers());
+
+		if(isPublic)
 			publicFields++;
-
-		if(Modifier.isPrivate(node.getModifiers()))
+		else if(isPrivate)
 			privateFields++;
-
-		if(Modifier.isProtected(node.getModifiers()))
+		else if(isProtected)
 			protectedFields++;
-
-		if(Modifier.isDefault(node.getModifiers()))
+		else
 			defaultFields++;
 
-		if(Modifier.isFinal(node.getModifiers()))
+		// other characteristics rather than visibility
+		boolean isStatic = Modifier.isStatic(node.getModifiers());
+		boolean isFinal = Modifier.isFinal(node.getModifiers());
+		boolean isSynchronized = Modifier.isSynchronized(node.getModifiers());
+		
+		if(isStatic)
+			staticFields++;
+
+		if(isFinal)
 			finalFields++;
 
-		if(Modifier.isSynchronized(node.getModifiers()))
+		if(isSynchronized)
 			synchronizedFields++;
 
 		return false;
