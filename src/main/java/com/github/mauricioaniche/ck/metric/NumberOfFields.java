@@ -33,7 +33,7 @@ public class NumberOfFields extends ASTVisitor implements ClassLevelMetric {
 		if(Modifier.isProtected(node.getModifiers()))
 			protectedFields++;
 
-		if(Modifier.isDefault(node.getModifiers()))
+		if(node.getModifiers() == 0)
 			defaultFields++;
 
 		if(Modifier.isFinal(node.getModifiers()))

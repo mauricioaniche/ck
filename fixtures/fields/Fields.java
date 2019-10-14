@@ -7,5 +7,9 @@ public class Fields {
 	public double c;
 	private static String d;
 	public static int e;
+
+	int f;
+
+	private synchronized int j;
 	
 }
