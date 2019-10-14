@@ -8,11 +8,6 @@
 	<url>http://www.mauricioaniche.com</url>
 	<description>Java code metrics calculator</description>
 
-	<properties>
-	    <maven.javadoc.skip>true</maven.javadoc.skip>
-	    <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
-	</properties>
-
 	<licenses>
 		<license>
 			<name>Apache License, Version 2.0</name>
@@ -115,11 +110,11 @@
 		<plugins>
 
 			<plugin>
-			    <groupId>org.apache.maven.plugins</groupId>
-			    <artifactId>maven-javadoc-plugin</artifactId>
-			    <configuration>
-			      <additionalparam>-Xdoclint:none</additionalparam>
-			    </configuration>
+            	<groupId>org.apache.maven.plugins</groupId>
+            	<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<additionalparam>-Xdoclint:none</additionalparam>
+				</configuration>
 			</plugin>
 
 			<plugin>
@@ -176,7 +171,7 @@
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
+				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>3.1.0</version>
 				<executions>
 					<execution>
