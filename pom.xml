@@ -3,7 +3,7 @@
 	<groupId>com.github.mauricioaniche</groupId>
 	<artifactId>ck</artifactId>
 	<packaging>jar</packaging>
-	<version>0.3.2-SNAPSHOT</version>
+	<version>0.3.2</version>
 	<name>CK calculator</name>
 	<url>http://www.mauricioaniche.com</url>
 	<description>Java code metrics calculator</description>
@@ -33,7 +33,7 @@
 		<url>http://github.com/mauricioaniche/ck</url>
 		<connection>scm:git:git://github.com/mauricioaniche/ck</connection>
 		<developerConnection>scm:git:git@github.com:mauricioaniche/ck.git</developerConnection>
-		<tag>HEAD</tag>
+		<tag>ck-0.3.2</tag>
 	</scm>
 
 	<dependencies>
