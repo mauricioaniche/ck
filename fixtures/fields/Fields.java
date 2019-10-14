@@ -9,6 +9,7 @@ public class Fields {
 	public static int e;
 
 	int f;
+	static int k;
 
 	private synchronized int j;
 	

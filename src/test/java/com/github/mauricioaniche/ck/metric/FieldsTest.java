@@ -21,7 +21,7 @@ public class FieldsTest extends BaseTest {
 	@Test
 	public void all() {
 		CKClassResult a = report.get("fields.Fields");
-		Assert.assertEquals(7, a.getNumberOfFields());
+		Assert.assertEquals(8, a.getNumberOfFields());
 	}
 
 	@Test
@@ -33,7 +33,7 @@ public class FieldsTest extends BaseTest {
 	@Test
 	public void allStatic() {
 		CKClassResult a = report.get("fields.Fields");
-		Assert.assertEquals(2, a.getNumberOfStaticFields());
+		Assert.assertEquals(3, a.getNumberOfStaticFields());
 	}
 
 
@@ -47,7 +47,7 @@ public class FieldsTest extends BaseTest {
 	@Test
 	public void allDefault() {
 		CKClassResult a = report.get("fields.Fields");
-		Assert.assertEquals(1, a.getNumberOfDefaultFields());
+		Assert.assertEquals(2, a.getNumberOfDefaultFields());
 	}
 
 	@Test
