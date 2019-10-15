@@ -77,6 +77,8 @@ implementation.
 (In a previous version, it calculated NOC (Number of Children), but it doesn't do it anymore,
 as it requires too much memory.)
 
+_Note:_ For now, CK completely ignores/skips inner classes. Feel free to open a PR and improve it!
+
 # Java Syntax Support
 
 This tool uses Eclipse's JDT Core library under the hood for AST
