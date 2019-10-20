@@ -7,5 +7,10 @@ public class Methods {
 	public double c() {}
 	private static String d() {}
 	public static int e() {}
+
+	int f() {}
+	protected double g() {}
+
+	public synchronized int h() {}
 	
 }

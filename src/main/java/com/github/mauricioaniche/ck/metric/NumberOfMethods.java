@@ -22,28 +22,37 @@ public class NumberOfMethods extends ASTVisitor implements ClassLevelMetric {
 	public boolean visit(MethodDeclaration node) {
 		methods++;
 
-		if(Modifier.isStatic(node.getModifiers()))
-			staticMethods++;
+		// visibility
+		boolean isPublic = Modifier.isPublic(node.getModifiers());
+		boolean isPrivate = Modifier.isPrivate(node.getModifiers());
+		boolean isProtected = Modifier.isProtected(node.getModifiers());
 
-		if(Modifier.isPublic(node.getModifiers()))
+		if(isPublic)
 			publicMethods++;
-
-		if(Modifier.isPrivate(node.getModifiers()))
+		else if(isPrivate)
 			privateMethods++;
-
-		if(Modifier.isProtected(node.getModifiers()))
+		else if(isProtected)
 			protectedMethods++;
-
-		if(Modifier.isDefault(node.getModifiers()))
+		else
 			defaultMethods++;
 
-		if(Modifier.isAbstract(node.getModifiers()))
+		// other characteristics
+
+		boolean isFinal = Modifier.isFinal(node.getModifiers());
+		boolean isSynchronized = Modifier.isSynchronized(node.getModifiers());
+		boolean isAbstract = Modifier.isAbstract(node.getModifiers());
+		boolean isStatic = Modifier.isStatic(node.getModifiers());
+
+		if(isStatic)
+			staticMethods++;
+
+		if(isAbstract)
 			abstractMethods++;
 
-		if(Modifier.isFinal(node.getModifiers()))
+		if(isFinal)
 			finalMethods++;
 
-		if(Modifier.isSynchronized(node.getModifiers()))
+		if(isSynchronized)
 			synchronizedMethods++;
 
 		return false;
