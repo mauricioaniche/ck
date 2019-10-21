@@ -1,6 +1,7 @@
 # CK
 
 [![Build Status](https://travis-ci.org/mauricioaniche/ck.svg?branch=master)](https://travis-ci.org/mauricioaniche/ck)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.mauricioaniche/ck/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.mauricioaniche/ck)
 
 CK calculates class-level and metric-level code metrics in Java projects by means
 of static analysis (i.e. no need for compiled code). Currently, it contains
@@ -73,7 +74,7 @@ implementation.
 
 - *Usage of each field*. How much each field was used inside each method.
 
-			
+      
 (In a previous version, it calculated NOC (Number of Children), but it doesn't do it anymore,
 as it requires too much memory.)
 
@@ -135,9 +136,20 @@ new CK().calculate(path, result -> {
 
 Add it to your POM.xml: https://mvnrepository.com/artifact/com.github.mauricioaniche/ck
 
-# Maven support
+# Maven
 
-You may use the CK maven plugin, developed by @jazzmuesli: https://github.com/jazzmuesli/ck-mvn-plugin.
+Use the following snippet in your pom.xml. Update X.Y.Z with the most recent version of the tool (check mvnrepository.com or the badge at the beginning of this README file):
+
+```
+<!-- https://mvnrepository.com/artifact/com.github.mauricioaniche/ck -->
+<dependency>
+    <groupId>com.github.mauricioaniche</groupId>
+    <artifactId>ck</artifactId>
+    <version>X.Y.Z</version>
+</dependency>
+```
+
+You also may use the CK maven plugin, developed by @jazzmuesli, which automatically runs CK in your project. Very useful to developers: https://github.com/jazzmuesli/ck-mvn-plugin.
 
 # Why is it called CK?
 
