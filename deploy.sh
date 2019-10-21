@@ -1,1 +1,1 @@
-mvn clean -Dmaven.javadoc.skip=true -DskipTests -Darguments=-DskipTests release:prepare release:perform
+mvn clean release:prepare release:perform
