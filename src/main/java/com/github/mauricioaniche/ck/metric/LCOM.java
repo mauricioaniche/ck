@@ -49,11 +49,6 @@ public class LCOM extends ASTVisitor implements ClassLevelMetric {
 	}
 	
 	@Override
-	public void execute(CompilationUnit cu, CKClassResult number) {
-		cu.accept(new IgnoreSubClasses(this));
-	}
-
-	@Override
 	public void setResult(CKClassResult result) {
 		
 		/*

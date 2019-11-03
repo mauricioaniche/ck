@@ -2,7 +2,8 @@ package com.github.mauricioaniche.ck.metric;
 
 import com.github.mauricioaniche.ck.CKClassResult;
 import com.github.mauricioaniche.ck.CKMethodResult;
-import org.eclipse.jdt.core.dom.*;
+import org.eclipse.jdt.core.dom.ASTVisitor;
+import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 
 public class NumberOfVariables extends ASTVisitor implements ClassLevelMetric, MethodLevelMetric {
 	private int qty = 0;
@@ -15,12 +16,6 @@ public class NumberOfVariables extends ASTVisitor implements ClassLevelMetric, M
 	public boolean visit(VariableDeclarationFragment node) {
 		qty++;
 		return super.visit(node);
-	}
-
-
-	@Override
-	public void execute(CompilationUnit cu, CKClassResult result) {
-		cu.accept(new IgnoreSubClasses(this));
 	}
 
 	@Override

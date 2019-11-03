@@ -61,9 +61,9 @@ public class CKClassResult {
 		this.type = type;
 		this.methods = new HashSet<>();
 		this.modifiers = modifiers;
+		this.methods = new HashSet<>();
 	}
-	
-	
+
 	/**
 	 * public/static/private and other org.eclipse.jdt.core.dom.Modifier modifiers
 	 * 
@@ -178,8 +178,8 @@ public class CKClassResult {
 	}
 
 
-	public void setMethods(Map<String, CKMethodResult> methods) {
-		this.methods = new HashSet<>(methods.values());
+	public void addMethod(CKMethodResult method) {
+		this.methods.add(method);
 	}
 
 	public Set<CKMethodResult> getMethods() {

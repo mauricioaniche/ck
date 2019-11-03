@@ -1,6 +1,5 @@
 package com.github.mauricioaniche.ck;
 
-import com.github.mauricioaniche.ck.CKClassResult;
 import com.github.mauricioaniche.ck.metric.ClassLevelMetric;
 import org.eclipse.jdt.core.dom.*;
 
@@ -372,11 +371,6 @@ public class ASTDebugger extends ASTVisitor implements ClassLevelMetric {
 	}
 
 
-
-	@Override
-	public void execute(CompilationUnit cu, CKClassResult result) {
-		cu.accept(this);
-	}
 
 	@Override
 	public void setResult(CKClassResult result) {

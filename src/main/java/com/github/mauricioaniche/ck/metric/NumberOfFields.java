@@ -2,7 +2,6 @@ package com.github.mauricioaniche.ck.metric;
 
 import com.github.mauricioaniche.ck.CKClassResult;
 import org.eclipse.jdt.core.dom.ASTVisitor;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.Modifier;
 
@@ -50,11 +49,6 @@ public class NumberOfFields extends ASTVisitor implements ClassLevelMetric {
 			synchronizedFields++;
 
 		return false;
-	}
-
-	@Override
-	public void execute(CompilationUnit cu, CKClassResult number) {
-		cu.accept(new IgnoreSubClasses(this));
 	}
 
 	@Override

@@ -35,11 +35,6 @@ public class NumberOfLoops extends ASTVisitor implements ClassLevelMetric, Metho
 	}
 
 	@Override
-	public void execute(CompilationUnit cu, CKClassResult number) {
-		cu.accept(new IgnoreSubClasses(this));
-	}
-
-	@Override
 	public void setResult(CKClassResult result) {
 		result.setLoopQty(qty);
 	}

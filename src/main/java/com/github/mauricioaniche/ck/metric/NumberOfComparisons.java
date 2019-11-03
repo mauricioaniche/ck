@@ -2,7 +2,8 @@ package com.github.mauricioaniche.ck.metric;
 
 import com.github.mauricioaniche.ck.CKClassResult;
 import com.github.mauricioaniche.ck.CKMethodResult;
-import org.eclipse.jdt.core.dom.*;
+import org.eclipse.jdt.core.dom.ASTVisitor;
+import org.eclipse.jdt.core.dom.InfixExpression;
 
 public class NumberOfComparisons extends ASTVisitor implements ClassLevelMetric, MethodLevelMetric {
 
@@ -21,11 +22,6 @@ public class NumberOfComparisons extends ASTVisitor implements ClassLevelMetric,
 	@Override
 	public void setResult(CKMethodResult result) {
 		result.setComparisonsQty(qty);
-	}
-
-	@Override
-	public void execute(CompilationUnit cu, CKClassResult number) {
-		cu.accept(new IgnoreSubClasses(this));
 	}
 
 	@Override

@@ -51,11 +51,6 @@ public class RFC extends ASTVisitor implements ClassLevelMetric, MethodLevelMetr
 	}
 	
 	@Override
-	public void execute(CompilationUnit cu, CKClassResult number) {
-		cu.accept(new IgnoreSubClasses(this));
-	}
-
-	@Override
 	public void setResult(CKClassResult result) {
 		result.setRfc(methodInvocations.size());
 	}
