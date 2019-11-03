@@ -166,7 +166,6 @@ public class CKClassVisitor extends ASTVisitor {
 
 
 	public boolean visit(AnonymousClassDeclaration node) {
-
 		// there might be metrics that use it
 		// (even before an anonymous class is created)
 		classes.peek().classLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.visit(node));
