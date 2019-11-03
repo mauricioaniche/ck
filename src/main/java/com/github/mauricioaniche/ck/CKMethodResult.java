@@ -28,10 +28,12 @@ public class CKMethodResult {
 	private int lambdasQty;
 	private int uniqueWordsQty;
 	private Map<String, Integer> fieldUsage;
+	private boolean isConstructor;
 	private int modifiers;
 
-	public CKMethodResult(String methodName, int modifiers) {
+	public CKMethodResult(String methodName, boolean isConstructor, int modifiers) {
 		this.methodName = methodName;
+		this.isConstructor = isConstructor;
 		this.modifiers = modifiers;
 	}
 
@@ -241,6 +243,10 @@ public class CKMethodResult {
 
 	public Map<String, Integer> getFieldUsage() {
 		return fieldUsage;
+	}
+
+	public boolean isConstructor() {
+		return isConstructor;
 	}
 
 	@Override

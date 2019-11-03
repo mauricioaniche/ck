@@ -124,8 +124,9 @@ public class CKClassVisitor extends ASTVisitor {
 			return false;
 
 		String currentMethodName = JDTUtils.getMethodFullName(binding);
+		boolean isConstructor = node.isConstructor();
 
-		CKMethodResult currentMethod = new CKMethodResult(currentMethodName, node.getModifiers());
+		CKMethodResult currentMethod = new CKMethodResult(currentMethodName, isConstructor, node.getModifiers());
 		currentMethod.setLoc(calculate(IOUtils.toInputStream(node.toString())));
 		currentMethod.setStartLine(JDTUtils.getStartLine(cu, node));
 
