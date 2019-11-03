@@ -78,31 +78,6 @@ public class CKClassResult {
 		return file;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((file == null) ? 0 : file.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		CKClassResult other = (CKClassResult) obj;
-		if (file == null) {
-			if (other.file != null)
-				return false;
-		} else if (!file.equals(other.file))
-			return false;
-		return true;
-	}
-
 	public int getDit() {
 		return dit;
 	}
@@ -452,5 +427,20 @@ public class CKClassResult {
 
 	public String getErrorMessage() {
 		return errorMessage;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		CKClassResult that = (CKClassResult) o;
+		return file.equals(that.file) &&
+				className.equals(that.className) &&
+				type.equals(that.type);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(file, className, type);
 	}
 }

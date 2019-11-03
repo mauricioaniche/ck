@@ -18,6 +18,7 @@ public class NumberOfSubClassesLambdasAndAnonymousClassesTest extends BaseTest {
 
 	@Test
 	public void count() {
+		System.out.println(report);
 		CKClassResult a = report.get("subclasses.MessyClass");
 
 		Assert.assertEquals(2, a.getAnonymousClassesQty());

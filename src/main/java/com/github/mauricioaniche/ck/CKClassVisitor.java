@@ -61,6 +61,14 @@ public class CKClassVisitor extends ASTVisitor {
 			return false;
 		}
 
+		// there might be metrics that use it
+		// (even before an anonymous class is created)
+		if(!classes.isEmpty()) {
+			classes.peek().classLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.visit(node));
+			if (!classes.peek().methods.isEmpty())
+				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.visit(node));
+		}
+
 		// build a CKClassResult based on the current type
 		// declaration we are visiting
 		String className = binding.getBinaryName();
@@ -91,6 +99,9 @@ public class CKClassVisitor extends ASTVisitor {
 
 	@Override
 	public void endVisit(TypeDeclaration node) {
+
+		// let's first visit any metrics that might make use of this endVisit
+		classes.peek().classLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.endVisit(node));
 
 		boolean success = typeVisits.pop();
 
@@ -130,13 +141,20 @@ public class CKClassVisitor extends ASTVisitor {
 		// and there might be metrics that also use the methoddeclaration node.
 		// so, let's call them
 		classes.peek().classLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.visit(node));
-		classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.visit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.visit(node));
 
 		return true;
 	}
 
 	@Override
 	public void endVisit(MethodDeclaration node) {
+
+		// let's first invoke the metrics, because they might use this node
+		classes.peek().classLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+
+		// remove the method from the stack
 		MethodInTheStack completedMethod = classes.peek().methods.pop();
 
 		// persist the data of the visitors in the CKMethodResult
@@ -148,6 +166,13 @@ public class CKClassVisitor extends ASTVisitor {
 
 
 	public boolean visit(AnonymousClassDeclaration node) {
+
+		// there might be metrics that use it
+		// (even before an anonymous class is created)
+		classes.peek().classLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.visit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.visit(node));
+
 		// we give the anonymous class a 'class$AnonymousN' name
 		String anonClassName = classes.peek().result.getClassName() + "$Anonymous" + ++anonymousNumber;
 		CKClassResult currentClass = new CKClassResult(sourceFilePath, anonClassName, "anonymous", -1);
@@ -165,10 +190,19 @@ public class CKClassVisitor extends ASTVisitor {
 		classes.push(classInTheStack);
 		typeVisits.push(true);
 
+		// and there might be metrics that also use the methoddeclaration node.
+		// so, let's call them
+		classes.peek().classLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.visit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.visit(node));
+
 		return true;
 	}
 
 	public void endVisit(AnonymousClassDeclaration node) {
+
+		classes.peek().classLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+
 		boolean success = typeVisits.pop();
 
 		if(success) {
