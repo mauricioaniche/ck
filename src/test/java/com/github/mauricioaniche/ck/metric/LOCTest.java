@@ -30,7 +30,7 @@ public class LOCTest extends BaseTest {
 		Assert.assertEquals(10, sc2.getLoc());
 
 		CKClassResult an1 = report.get("subclasses.MessyClass$Anonymous1");
-		Assert.assertEquals(6, sc2.getLoc());
+		Assert.assertEquals(6, an1.getLoc());
 	}
 	
 }
