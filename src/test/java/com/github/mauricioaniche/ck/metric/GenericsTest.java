@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import java.util.Map;
 
-public class BadGenericsTest extends BaseTest {
+public class GenericsTest extends BaseTest {
 
 	private static Map<String, CKClassResult> report;
 
