@@ -37,7 +37,7 @@ but different types.
 of branch instructions in a class.
 
 - *LOC (Lines of code)*: It counts the lines of count, ignoring
-empty lines.
+empty lines. The number of lines here might be a bit different from the original file, as we use JDT's internal representation of the source code to calculate it.
 
 - *LCOM (Lack of Cohesion of Methods)*: Calculates LCOM metric. This is the very first
 version of metric, which is not reliable. LCOM-HS can be better (hopefully, you will
@@ -78,9 +78,54 @@ implementation.
 (In a previous version, it calculated NOC (Number of Children), but it doesn't do it anymore,
 as it requires too much memory.)
 
-_Note:_ For now, CK completely ignores/skips inner classes. Feel free to open a PR and improve it!
+Note: CK separates classes, subclasses, and anonymous classes. LOC is the only metric that is not completely isolated from the others, e.g., if A has a declaration of a subclass B, then LOC(A) = LOC(class A) + LOC(subclass B).
 
-# Java Syntax Support
+# How to use the standalone version
+
+You need at least Java 11 to be able to compile and run this tool.
+
+To use the _latest version_ (which you should), clone the project and generate a JAR. A simple
+`mvn clean compile assembly:single` generates the single JAR file for you (see your _target_ folder).
+
+>_PS. In case you face `ERROR - Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.8.1:compile ...` change maven-compiler-plugin to the Java version that you have._
+
+Then, just run:
+```
+java -jar ck-x.x.x-SNAPSHOT-jar-with-dependencies.jar <project dir>
+```
+
+The tool will generate three csv files: class, method, and variable levels.
+
+
+# How to integrate it in my Java app
+
+Learn by example. See `Runner.java` class. In a nutshell:
+
+```
+new CK().calculate(path, result -> {
+    // process each 'result' here
+}
+```
+
+# Maven
+
+See the most recent version of the library in the badge at the beginning of this README, or at https://mvnrepository.com/artifact/com.github.mauricioaniche/ck.
+
+Use the following snippet in your pom.xml. Update X.Y.Z with the most recent version of the tool (check mvnrepository.com or the badge at the beginning of this README file):
+
+```
+<!-- https://mvnrepository.com/artifact/com.github.mauricioaniche/ck -->
+<dependency>
+    <groupId>com.github.mauricioaniche</groupId>
+    <artifactId>ck</artifactId>
+    <version>X.Y.Z</version>
+</dependency>
+```
+
+You also may use the CK maven plugin, developed by @jazzmuesli, which automatically runs CK in your project. Very useful to developers: https://github.com/jazzmuesli/ck-mvn-plugin.
+
+
+# Supporting a new version of Java
 
 This tool uses Eclipse's JDT Core library under the hood for AST
 construction. Currently the compliance version is set to Java 11.
@@ -107,49 +152,6 @@ properties of the Maven Compiler plugin accordingly.
 5. Check if the failing unit test case you added in the first step is
 now green. Then submit a PR.
 
-# How to use the standalone version
-
-You need at least Java 11 to be able to compile and run this tool.
-
-To use the _latest version_ (which you should), clone the project and generate a JAR. A simple
-`mvn clean compile assembly:single` generates the single JAR file for you (see your _target_ folder).
-
->_PS. In case you face `ERROR - Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.8.1:compile ...` change maven-compiler-plugin to the Java version that you have._
-
-Then, just run:
-```
-java -jar ck-x.x.x-SNAPSHOT-jar-with-dependencies.jar <project dir>
-```
-
-The tool will generate three csv files (one for classLevelMetrics at class level, method level, and variable level).
-
-
-# How to integrate it in my Java app
-
-Learn by example. See `Runner.java` class. In a nutshell:
-
-```
-new CK().calculate(path, result -> {
-    // process each 'result' here
-}
-```
-
-Add it to your POM.xml: https://mvnrepository.com/artifact/com.github.mauricioaniche/ck
-
-# Maven
-
-Use the following snippet in your pom.xml. Update X.Y.Z with the most recent version of the tool (check mvnrepository.com or the badge at the beginning of this README file):
-
-```
-<!-- https://mvnrepository.com/artifact/com.github.mauricioaniche/ck -->
-<dependency>
-    <groupId>com.github.mauricioaniche</groupId>
-    <artifactId>ck</artifactId>
-    <version>X.Y.Z</version>
-</dependency>
-```
-
-You also may use the CK maven plugin, developed by @jazzmuesli, which automatically runs CK in your project. Very useful to developers: https://github.com/jazzmuesli/ck-mvn-plugin.
 
 # Why is it called CK?
 
