@@ -14,7 +14,7 @@ import java.util.concurrent.Callable;
 
 import static com.github.mauricioaniche.ck.util.LOCCalculator.calculate;
 
-public class CKClassVisitor extends ASTVisitor {
+public class CKVisitor extends ASTVisitor {
 
 	private String sourceFilePath;
 	private Stack<Boolean> typeVisits;
@@ -42,7 +42,7 @@ public class CKClassVisitor extends ASTVisitor {
 	private Callable<List<ClassLevelMetric>> classLevelMetrics;
 	private Callable<List<MethodLevelMetric>> methodLevelMetrics;
 
-	public CKClassVisitor(String sourceFilePath, CompilationUnit cu, Callable<List<ClassLevelMetric>> classLevelMetrics, Callable<List<MethodLevelMetric>> methodLevelMetrics) {
+	public CKVisitor(String sourceFilePath, CompilationUnit cu, Callable<List<ClassLevelMetric>> classLevelMetrics, Callable<List<MethodLevelMetric>> methodLevelMetrics) {
 		this.sourceFilePath = sourceFilePath;
 		this.cu = cu;
 		this.classLevelMetrics = classLevelMetrics;

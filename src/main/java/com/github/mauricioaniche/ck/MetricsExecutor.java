@@ -30,7 +30,7 @@ public class MetricsExecutor extends FileASTRequestor {
 			CompilationUnit cu) {
 		
 		try {
-			CKClassVisitor visitor = new CKClassVisitor(sourceFilePath, cu, classLevelMetrics, methodLevelMetrics);
+			CKVisitor visitor = new CKVisitor(sourceFilePath, cu, classLevelMetrics, methodLevelMetrics);
 
 			cu.accept(visitor);
 			Set<CKClassResult> collectedClasses = visitor.getCollectedClasses();
