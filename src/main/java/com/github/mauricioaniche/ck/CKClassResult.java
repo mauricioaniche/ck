@@ -17,8 +17,6 @@ public class CKClassResult {
 	private int nosi;
 	private int loc;
 	
-	private boolean error;
-
 	private Set<CKMethodResult> methods;
 	private int returnQty;
 	private int loopQty;
@@ -52,7 +50,6 @@ public class CKClassResult {
 	private int numberOfDefaultFields;
 	private int numberOfFinalFields;
 	private int numberOfSynchronizedFields;
-	private String errorMessage;
 	private int modifiers;
 
 	public CKClassResult(String file, String className, String type, int modifiers) {
@@ -61,9 +58,9 @@ public class CKClassResult {
 		this.type = type;
 		this.methods = new HashSet<>();
 		this.modifiers = modifiers;
+		this.methods = new HashSet<>();
 	}
-	
-	
+
 	/**
 	 * public/static/private and other org.eclipse.jdt.core.dom.Modifier modifiers
 	 * 
@@ -76,31 +73,6 @@ public class CKClassResult {
 	
 	public String getFile() {
 		return file;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((file == null) ? 0 : file.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		CKClassResult other = (CKClassResult) obj;
-		if (file == null) {
-			if (other.file != null)
-				return false;
-		} else if (!file.equals(other.file))
-			return false;
-		return true;
 	}
 
 	public int getDit() {
@@ -163,23 +135,14 @@ public class CKClassResult {
 	}
 
 
-	public boolean isError() {
-		return error;
-	}
-	
-	public void error(Exception e) {
-		this.error = true;
-		this.errorMessage = e.getMessage();
-	}
-
 	@Override
 	public String toString() {
 		return "CKClassResult [file=" + file + ", className=" + className + "]";
 	}
 
 
-	public void setMethods(Map<String, CKMethodResult> methods) {
-		this.methods = new HashSet<>(methods.values());
+	public void addMethod(CKMethodResult method) {
+		this.methods.add(method);
 	}
 
 	public Set<CKMethodResult> getMethods() {
@@ -450,7 +413,18 @@ public class CKClassResult {
 		return type;
 	}
 
-	public String getErrorMessage() {
-		return errorMessage;
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		CKClassResult that = (CKClassResult) o;
+		return file.equals(that.file) &&
+				className.equals(that.className) &&
+				type.equals(that.type);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(file, className, type);
 	}
 }

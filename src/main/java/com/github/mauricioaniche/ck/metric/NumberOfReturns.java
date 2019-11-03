@@ -3,7 +3,6 @@ package com.github.mauricioaniche.ck.metric;
 import com.github.mauricioaniche.ck.CKClassResult;
 import com.github.mauricioaniche.ck.CKMethodResult;
 import org.eclipse.jdt.core.dom.ASTVisitor;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.ReturnStatement;
 
 public class NumberOfReturns extends ASTVisitor implements ClassLevelMetric, MethodLevelMetric {
@@ -18,10 +17,6 @@ public class NumberOfReturns extends ASTVisitor implements ClassLevelMetric, Met
 	public boolean visit(ReturnStatement node) {
 		qty++;
 		return super.visit(node);
-	}
-
-	public void execute(CompilationUnit cu, CKClassResult number) {
-		cu.accept(new IgnoreSubClasses(this));
 	}
 
 	@Override

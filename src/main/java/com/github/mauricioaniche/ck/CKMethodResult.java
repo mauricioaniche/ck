@@ -1,6 +1,7 @@
 package com.github.mauricioaniche.ck;
 
 import java.util.Map;
+import java.util.Objects;
 
 public class CKMethodResult {
 	private int cbo;
@@ -27,10 +28,12 @@ public class CKMethodResult {
 	private int lambdasQty;
 	private int uniqueWordsQty;
 	private Map<String, Integer> fieldUsage;
+	private boolean isConstructor;
 	private int modifiers;
 
-	public CKMethodResult(String methodName, int modifiers) {
+	public CKMethodResult(String methodName, boolean isConstructor, int modifiers) {
 		this.methodName = methodName;
+		this.isConstructor = isConstructor;
 		this.modifiers = modifiers;
 	}
 
@@ -240,5 +243,23 @@ public class CKMethodResult {
 
 	public Map<String, Integer> getFieldUsage() {
 		return fieldUsage;
+	}
+
+	public boolean isConstructor() {
+		return isConstructor;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		CKMethodResult that = (CKMethodResult) o;
+		return startLine == that.startLine &&
+				methodName.equals(that.methodName);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(methodName, startLine);
 	}
 }

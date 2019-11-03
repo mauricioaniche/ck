@@ -1,16 +1,14 @@
 package com.github.mauricioaniche.ck;
 
-import java.io.FileInputStream;
-import java.util.List;
-import java.util.concurrent.Callable;
-
-import com.github.mauricioaniche.ck.metric.*;
+import com.github.mauricioaniche.ck.metric.ClassLevelMetric;
+import com.github.mauricioaniche.ck.metric.MethodLevelMetric;
 import org.apache.log4j.Logger;
-import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.FileASTRequestor;
 
-import static com.github.mauricioaniche.ck.util.LOCCalculator.calculate;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.Callable;
 
 public class MetricsExecutor extends FileASTRequestor {
 
@@ -31,37 +29,17 @@ public class MetricsExecutor extends FileASTRequestor {
 	public void acceptAST(String sourceFilePath, 
 			CompilationUnit cu) {
 		
-		CKClassResult result = null;
-		
 		try {
-			ClassInfo info = new ClassInfo();
-			cu.accept(info);
-			if(info.getClassName()==null) return;
-		
-			result = new CKClassResult(sourceFilePath, info.getClassName(), info.getType(), info.getModifiers());
-			
-			int loc = calculate(new FileInputStream(sourceFilePath));
-			result.setLoc(loc);
+			CKVisitor visitor = new CKVisitor(sourceFilePath, cu, classLevelMetrics, methodLevelMetrics);
 
-			// calculate class level classLevelMetrics
-			for(ClassLevelMetric visitor : classLevelMetrics.call()) {
-				visitor.execute(cu, result);
-				visitor.setResult(result);
+			cu.accept(visitor);
+			Set<CKClassResult> collectedClasses = visitor.getCollectedClasses();
+
+			for (CKClassResult collectedClass : collectedClasses) {
+				log.info(collectedClass);
+				notifier.notify(collectedClass);
 			}
-
-			// calculate metric level classLevelMetrics
-			MethodLevelVisitor methodLevelVisitor = new MethodLevelVisitor(methodLevelMetrics, cu);
-			ASTVisitor astVisitor = new IgnoreSubClasses(methodLevelVisitor);
-			cu.accept(astVisitor);
-			result.setMethods(methodLevelVisitor.getMap());
-
-			log.info(result);
-			notifier.notify(result);
 		} catch(Exception e) {
-			if(result!=null) {
-				result.error(e);
-				notifier.notify(result);
-			}
 			log.error("error in " + sourceFilePath, e);
 		}
 	}

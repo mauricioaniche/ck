@@ -3,7 +3,6 @@ package com.github.mauricioaniche.ck.metric;
 import com.github.mauricioaniche.ck.CKClassResult;
 import com.github.mauricioaniche.ck.util.WordCounter;
 import org.eclipse.jdt.core.dom.ASTVisitor;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 public class ClassLevelWordCounter extends ASTVisitor implements ClassLevelMetric {
@@ -22,11 +21,6 @@ public class ClassLevelWordCounter extends ASTVisitor implements ClassLevelMetri
 		visitedTypeAlready = true;
 		return super.visit(node);
 
-	}
-
-	@Override
-	public void execute(CompilationUnit cu, CKClassResult result) {
-		cu.accept(new IgnoreSubClasses(this));
 	}
 
 	@Override

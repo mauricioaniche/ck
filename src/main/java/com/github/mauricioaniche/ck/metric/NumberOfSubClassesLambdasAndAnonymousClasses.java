@@ -26,11 +26,6 @@ public class NumberOfSubClassesLambdasAndAnonymousClasses extends ASTVisitor imp
 	}
 
 	@Override
-	public void execute(CompilationUnit cu, CKClassResult result) {
-		cu.accept(this);
-	}
-
-	@Override
 	public void setResult(CKClassResult result) {
 		result.setAnonymousClassesQty(anonymousClassesQty);
 		result.setSubClassesQty(subClassesQty - 1);

@@ -3,7 +3,6 @@ package com.github.mauricioaniche.ck.metric;
 import com.github.mauricioaniche.ck.CKClassResult;
 import com.github.mauricioaniche.ck.CKMethodResult;
 import org.eclipse.jdt.core.dom.ASTVisitor;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.InfixExpression;
 
 import java.util.Arrays;
@@ -32,11 +31,6 @@ public class NumberOfMathOperators extends ASTVisitor implements ClassLevelMetri
 	@Override
 	public void setResult(CKMethodResult result) {
 		result.setMathOperationsQty(qty);
-	}
-
-	@Override
-	public void execute(CompilationUnit cu, CKClassResult number) {
-		cu.accept(new IgnoreSubClasses(this));
 	}
 
 	@Override

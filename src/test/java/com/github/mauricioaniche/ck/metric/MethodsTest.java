@@ -1,6 +1,7 @@
 package com.github.mauricioaniche.ck.metric;
 
 import com.github.mauricioaniche.ck.CKClassResult;
+import com.github.mauricioaniche.ck.CKMethodResult;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -64,5 +65,21 @@ public class MethodsTest extends BaseTest {
 		CKClassResult a = report.get("methods.Methods2");
 		Assert.assertEquals(2, a.getNumberOfMethods());
 		Assert.assertEquals(1, a.getNumberOfAbstractMethods());
+	}
+
+	@Test
+	public void constructors() {
+		CKClassResult a = report.get("methods.Methods3");
+		Assert.assertEquals(3, a.getNumberOfMethods());
+		Assert.assertEquals(3, a.getMethods().size());
+
+		CKMethodResult m1 = a.getMethods().stream().filter(x -> x.getMethodName().equals("Methods3/0")).findFirst().get();
+		Assert.assertTrue(m1.isConstructor());
+
+		CKMethodResult m2 = a.getMethods().stream().filter(x -> x.getMethodName().equals("Methods3/1[int]")).findFirst().get();
+		Assert.assertTrue(m2.isConstructor());
+
+		CKMethodResult m3 = a.getMethods().stream().filter(x -> x.getMethodName().equals("a/0")).findFirst().get();
+		Assert.assertFalse(m3.isConstructor());
 	}
 }

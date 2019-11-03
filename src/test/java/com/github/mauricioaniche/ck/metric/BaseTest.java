@@ -1,14 +1,12 @@
 package com.github.mauricioaniche.ck.metric;
 
+import com.github.mauricioaniche.ck.ASTDebugger;
 import com.github.mauricioaniche.ck.CK;
 import com.github.mauricioaniche.ck.CKClassResult;
-import com.github.mauricioaniche.ck.CKNotifier;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.Callable;
 
 abstract class BaseTest {
@@ -20,6 +18,10 @@ abstract class BaseTest {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	protected static Map<String, CKClassResult> runDebug(String dir) {
+		return run(dir, () -> Arrays.asList(new ASTDebugger()), () -> Collections.emptyList());
 	}
 
 	protected static Map<String, CKClassResult> run(String dir) {

@@ -1,7 +1,10 @@
 package com.github.mauricioaniche.ck.metric;
 
 import com.github.mauricioaniche.ck.CKClassResult;
-import org.eclipse.jdt.core.dom.*;
+import org.eclipse.jdt.core.dom.ASTVisitor;
+import org.eclipse.jdt.core.dom.IMethodBinding;
+import org.eclipse.jdt.core.dom.MethodInvocation;
+import org.eclipse.jdt.core.dom.Modifier;
 
 public class NOSI extends ASTVisitor implements ClassLevelMetric {
 
@@ -21,9 +24,4 @@ public class NOSI extends ASTVisitor implements ClassLevelMetric {
 		result.setNosi(count);
 	}
 
-	@Override
-	public void execute(CompilationUnit cu, CKClassResult number) {
-		cu.accept(new IgnoreSubClasses(this));
-	}
-	
 }
