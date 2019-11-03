@@ -13,15 +13,20 @@ public class BadGenericsTest extends BaseTest {
 
 	@BeforeClass
 	public static void setUp() {
-		report = run(fixturesDir() + "/badgenerics");
+		report = run(fixturesDir() + "/generics");
 	}
 
-	// we can't really differentiate methods with same name and types that
-	// only differ because of the generic type
 	@Test
-	public void exception() {
-		CKClassResult r = report.get("bg.BG");
-		Assert.assertTrue(r.isError());
-		Assert.assertTrue(r.getErrorMessage().contains("already visited"));
+	public void genericMethods() {
+		CKClassResult r = report.get("bg.Generics");
+		Assert.assertEquals(2, r.getMethods().size());
+
+		// method names are the same, but starting line is different
+		Assert.assertEquals(1, r.getMethods().stream()
+				.filter(x -> x.getMethodName().equals("notEmpty/3[T,java.lang.String,java.lang.Object[]]") && x.getStartLine() == 9).count());
+
+		Assert.assertEquals(1, r.getMethods().stream()
+				.filter(x -> x.getMethodName().equals("notEmpty/3[T,java.lang.String,java.lang.Object[]]") && x.getStartLine() == 13).count());
+
 	}
 }
