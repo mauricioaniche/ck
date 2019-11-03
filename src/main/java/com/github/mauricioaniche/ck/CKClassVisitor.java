@@ -81,6 +81,10 @@ public class CKClassVisitor extends ASTVisitor {
 		classes.push(classInTheStack);
 		typeVisits.push(true);
 
+		// there might be class level metrics that use the TypeDeclaration
+		// so, let's run them
+		classes.peek().classLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.visit(node));
+
 		return true;
 	}
 
