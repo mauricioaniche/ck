@@ -62,7 +62,7 @@ public class CKClassVisitor extends ASTVisitor {
 		}
 
 		// there might be metrics that use it
-		// (even before an anonymous class is created)
+		// (even before a class is declared)
 		if(!classes.isEmpty()) {
 			classes.peek().classLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.visit(node));
 			if (!classes.peek().methods.isEmpty())
@@ -200,6 +200,66 @@ public class CKClassVisitor extends ASTVisitor {
 
 	public void endVisit(AnonymousClassDeclaration node) {
 
+		classes.peek().classLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+
+		boolean success = typeVisits.pop();
+
+		if(success) {
+			ClassInTheStack completedClass = classes.pop();
+
+			// persist the results of the class level metrics in the result
+			completedClass.classLevelMetrics.forEach(m -> m.setResult(completedClass.result));
+
+			// we are done processing this class, so now let's
+			// store it in the collected classes set
+			collectedClasses.add(completedClass.result);
+		}
+	}
+
+	public boolean visit(EnumDeclaration node) {
+		ITypeBinding binding = node.resolveBinding();
+		if(binding == null)
+			return false;
+
+		// there might be metrics that use it
+		// (even before a enum is declared)
+		if(!classes.isEmpty()) {
+			classes.peek().classLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.visit(node));
+			if (!classes.peek().methods.isEmpty())
+				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.visit(node));
+		}
+
+		// build a CKClassResult based on the current type
+		// declaration we are visiting
+		String className = binding.getBinaryName();
+		String type = "enum";
+		int modifiers = node.getModifiers();
+		CKClassResult currentClass = new CKClassResult(sourceFilePath, className, type, modifiers);
+		currentClass.setLoc((int) JDTUtils.countLoc(node));
+
+		// create a set of visitors, just for the current class
+		List<ClassLevelMetric> classLevelMetrics = instantiateClassLevelMetricVisitors();
+
+		// store everything in a 'class in the stack' data structure
+		ClassInTheStack classInTheStack = new ClassInTheStack();
+		classInTheStack.result = currentClass;
+		classInTheStack.classLevelMetrics = classLevelMetrics;
+
+		// push it to the stack, so we know the current class we are visiting
+		classes.push(classInTheStack);
+		typeVisits.push(true);
+
+		// there might be class level metrics that use the TypeDeclaration
+		// so, let's run them
+		classes.peek().classLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.visit(node));
+
+		return true;
+
+	}
+
+	@Override
+	public void endVisit(EnumDeclaration node) {
+		// let's first visit any metrics that might make use of this endVisit
 		classes.peek().classLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.endVisit(node));
 
 		boolean success = typeVisits.pop();
@@ -492,16 +552,6 @@ public class CKClassVisitor extends ASTVisitor {
 	}
 
 	public boolean visit(EnumConstantDeclaration node) {
-		if(!classes.isEmpty()) {
-			classes.peek().classLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.visit(node));
-			if(!classes.peek().methods.isEmpty())
-				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.visit(node));
-		}
-		return true;
-
-	}
-
-	public boolean visit(EnumDeclaration node) {
 		if(!classes.isEmpty()) {
 			classes.peek().classLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.visit(node));
 			if(!classes.peek().methods.isEmpty())
