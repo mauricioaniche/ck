@@ -17,8 +17,6 @@ public class CKClassResult {
 	private int nosi;
 	private int loc;
 	
-	private boolean error;
-
 	private Set<CKMethodResult> methods;
 	private int returnQty;
 	private int loopQty;
@@ -52,7 +50,6 @@ public class CKClassResult {
 	private int numberOfDefaultFields;
 	private int numberOfFinalFields;
 	private int numberOfSynchronizedFields;
-	private String errorMessage;
 	private int modifiers;
 
 	public CKClassResult(String file, String className, String type, int modifiers) {
@@ -137,15 +134,6 @@ public class CKClassResult {
 		this.loc = loc;
 	}
 
-
-	public boolean isError() {
-		return error;
-	}
-	
-	public void error(Exception e) {
-		this.error = true;
-		this.errorMessage = e.getMessage();
-	}
 
 	@Override
 	public String toString() {
@@ -423,10 +411,6 @@ public class CKClassResult {
 
 	public String getType() {
 		return type;
-	}
-
-	public String getErrorMessage() {
-		return errorMessage;
 	}
 
 	@Override

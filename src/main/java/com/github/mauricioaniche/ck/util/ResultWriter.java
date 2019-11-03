@@ -1,14 +1,13 @@
 package com.github.mauricioaniche.ck.util;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Map;
-
+import com.github.mauricioaniche.ck.CKClassResult;
+import com.github.mauricioaniche.ck.CKMethodResult;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 
-import com.github.mauricioaniche.ck.CKClassResult;
-import com.github.mauricioaniche.ck.CKMethodResult;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Map;
 
 public class ResultWriter {
 
@@ -19,7 +18,7 @@ public class ResultWriter {
             "returnQty", "loopQty", "comparisonsQty", "tryCatchQty", "parenthesizedExpsQty", "stringLiteralsQty",
             "numbersQty", "assignmentsQty", "mathOperationsQty", "variablesQty", "maxNestedBlocks",
             "anonymousClassesQty", "subClassesQty", "lambdasQty", "uniqueWordsQty", "modifiers" };
-    private static final String[] METHOD_HEADER = { "file", "class", "method", "line", "cbo", "wmc", "rfc", "loc",
+    private static final String[] METHOD_HEADER = { "file", "class", "method", "constructor", "line", "cbo", "wmc", "rfc", "loc",
             "returns", "variables", "parameters", "startLine", "loopQty", "comparisonsQty", "tryCatchQty",
             "parenthesizedExpsQty", "stringLiteralsQty", "numbersQty", "assignmentsQty", "mathOperationsQty",
             "maxNestedBlocks", "anonymousClassesQty", "subClassesQty", "lambdasQty", "uniqueWordsQty", "modifiers" };
@@ -59,10 +58,6 @@ public class ResultWriter {
      * @throws IOException If output files cannot be written to
      */
     public void printResult(CKClassResult result) throws IOException {
-        if (result.isError()) {
-            return;
-        }
-
         this.classPrinter.printRecord(result.getFile(), result.getClassName(), result.getType(), result.getCbo(),
                 result.getWmc(), result.getDit(), result.getRfc(), result.getLcom(), result.getNumberOfMethods(),
                 result.getNumberOfStaticMethods(), result.getNumberOfPublicMethods(),
@@ -80,6 +75,7 @@ public class ResultWriter {
 
         for (CKMethodResult method : result.getMethods()) {
             this.methodPrinter.printRecord(result.getFile(), result.getClassName(), method.getMethodName(),
+                    method.isConstructor(),
                     method.getStartLine(), method.getCbo(), method.getWmc(), method.getRfc(), method.getLoc(),
                     method.getReturnQty(), method.getVariablesQty(), method.getParametersQty(), method.getStartLine(),
                     method.getLoopQty(), method.getComparisonsQty(), method.getTryCatchQty(),
