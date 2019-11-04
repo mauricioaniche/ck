@@ -21,4 +21,12 @@ class Comparison {
 	public void m3() {
 		int a = 1;
 	}
+
+	public void m4() {
+		int a = 1;
+
+		if(a != 1) {
+			System.out.println("Yay!");
+		}
+	}
 }

@@ -20,11 +20,12 @@ public class NumberOfComparisonsTest extends BaseTest {
 	public void count() {
 		CKClassResult a = report.get("comparison.Comparison");
 
-		Assert.assertEquals(3, a.getComparisonsQty());
+		Assert.assertEquals(4, a.getComparisonsQty());
 
 		Assert.assertEquals(2, a.getMethod("m1/0").get().getComparisonsQty());
 		Assert.assertEquals(1, a.getMethod("m2/0").get().getComparisonsQty());
 		Assert.assertEquals(0, a.getMethod("m3/0").get().getComparisonsQty());
+		Assert.assertEquals(1, a.getMethod("m4/0").get().getComparisonsQty());
 
 	}
 }

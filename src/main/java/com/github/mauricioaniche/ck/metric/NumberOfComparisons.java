@@ -15,6 +15,9 @@ public class NumberOfComparisons extends ASTVisitor implements ClassLevelMetric,
 		if(node.getOperator() == InfixExpression.Operator.EQUALS)
 			qty++;
 
+		if(node.getOperator() == InfixExpression.Operator.NOT_EQUALS)
+			qty++;
+
 		return super.visit(node);
 
 	}

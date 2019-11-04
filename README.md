@@ -47,7 +47,8 @@ send us a pull request).
 
 - *Quantity of loops*: The number of loops (i.e., for, while, do while, enhanced for).
 
-- *Quantity of comparisons*: The number of comparisons (i.e., ==).
+- *Quantity of comparisons*: The number of comparisons (i.e., == and !=). Note: != is only
+available in 0.4.2+.
 
 - *Quantity of try/catches*: The number of try/catches
 
