@@ -7,6 +7,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.Map;
+import java.util.Optional;
 
 public class MethodsTest extends BaseTest {
 
@@ -81,5 +82,14 @@ public class MethodsTest extends BaseTest {
 
 		CKMethodResult m3 = a.getMethods().stream().filter(x -> x.getMethodName().equals("a/0")).findFirst().get();
 		Assert.assertFalse(m3.isConstructor());
+	}
+
+	@Test
+	public void staticInitializer() {
+		CKClassResult a = report.get("methods.StaticInitializer");
+
+		Optional<CKMethodResult> init = a.getMethod("(initializer)");
+		Assert.assertTrue(init.isPresent());
+		Assert.assertEquals(1, init.get().getLoopQty());
 	}
 }

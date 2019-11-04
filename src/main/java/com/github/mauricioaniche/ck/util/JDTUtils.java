@@ -22,6 +22,12 @@ public class JDTUtils {
 				cu.getLineNumber(node.getStartPosition());
 	}
 
+	public static int getStartLine(CompilationUnit cu, Initializer node) {
+		return node.getBody() != null ?
+				cu.getLineNumber(node.getBody().getStartPosition()) :
+				cu.getLineNumber(node.getStartPosition());
+	}
+
 	public static String getMethodFullName(IMethodBinding node) {
 		String methodName = node.getName();
 

@@ -217,6 +217,51 @@ public class CKVisitor extends ASTVisitor {
 		}
 	}
 
+	// static blocks
+	public boolean visit(Initializer node) {
+
+		String currentMethodName = "(initializer)";
+
+		CKMethodResult currentMethod = new CKMethodResult(currentMethodName, false, node.getModifiers());
+		currentMethod.setLoc(calculate(IOUtils.toInputStream(node.toString())));
+		currentMethod.setStartLine(JDTUtils.getStartLine(cu, node));
+
+		// let's instantiate method level visitors for this current method
+		List<MethodLevelMetric> methodLevelMetrics = instantiateMethodLevelMetricVisitors();
+
+		// we add it to the current class we are visiting
+		MethodInTheStack methodInTheStack = new MethodInTheStack();
+		methodInTheStack.result = currentMethod;
+		methodInTheStack.methodLevelMetrics = methodLevelMetrics;
+		classes.peek().methods.push(methodInTheStack);
+
+		// and there might be metrics that also use the methoddeclaration node.
+		// so, let's call them
+		classes.peek().classLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.visit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.visit(node));
+
+		return true;
+	}
+
+	@Override
+	public void endVisit(Initializer node) {
+
+		// let's first invoke the metrics, because they might use this node
+		classes.peek().classLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+
+		// remove the method from the stack
+		MethodInTheStack completedMethod = classes.peek().methods.pop();
+
+		// persist the data of the visitors in the CKMethodResult
+		completedMethod.methodLevelMetrics.forEach(m -> m.setResult(completedMethod.result));
+
+		// store its final version in the current class
+		classes.peek().result.addMethod(completedMethod.result);
+	}
+
+
 	public boolean visit(EnumDeclaration node) {
 		ITypeBinding binding = node.resolveBinding();
 		if(binding == null)
@@ -633,16 +678,6 @@ public class CKVisitor extends ASTVisitor {
 	}
 
 	public boolean visit(InfixExpression node) {
-		if(!classes.isEmpty()) {
-			classes.peek().classLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.visit(node));
-			if(!classes.peek().methods.isEmpty())
-				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.visit(node));
-		}
-		return true;
-
-	}
-
-	public boolean visit(Initializer node) {
 		if(!classes.isEmpty()) {
 			classes.peek().classLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.visit(node));
 			if(!classes.peek().methods.isEmpty())
