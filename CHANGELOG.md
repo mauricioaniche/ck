@@ -1,3 +1,8 @@
+# 0.4.2 (under development)
+
+- The 'number of comparisons' operator now also counts !=. Before that,
+it would only count ==. 
+
 # 0.4.1
 
 - Add support for static initializers as methods. In 0.4.0, an exception
