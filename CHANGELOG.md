@@ -1,6 +1,6 @@
 # CK changelog
 
-## 0.4.2 (under development)
+## 0.4.2
 
 * FEATURE: The 'number of comparisons' operator now also counts !=.
 Before that, it would only count ==.
