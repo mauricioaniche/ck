@@ -58,7 +58,7 @@ public class RealWorldClassesTest extends BaseTest {
 		// the assertion below should be 2. It's 1 because binding fails.
 		// we need the JARs here to solve the bindings correctly.
 		Assert.assertEquals(1, b.getNumberOfMethods());
-		
+
 		CKClassResult c = report.get("com.hry.spring.grpc.simple.GreeterGrpc$GreeterBlockingStub");
 		Assert.assertNotNull(c);
 	}
