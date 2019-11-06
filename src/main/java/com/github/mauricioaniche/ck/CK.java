@@ -1,20 +1,19 @@
 package com.github.mauricioaniche.ck;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Callable;
-
-import com.github.mauricioaniche.ck.metric.*;
+import com.github.mauricioaniche.ck.metric.ClassLevelMetric;
+import com.github.mauricioaniche.ck.metric.MethodLevelMetric;
 import com.github.mauricioaniche.ck.util.FileUtils;
 import com.github.mauricioaniche.ck.util.MetricsFinder;
+import com.google.common.collect.Lists;
 import org.apache.log4j.Logger;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 
-import com.google.common.collect.Lists;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Callable;
 
 public class CK {
 
@@ -54,9 +53,17 @@ public class CK {
 	}
 
 	public void calculate(String path, CKNotifier notifier) {
+		this.calculate(path, false, notifier);
+	}
+
+	public void calculate(String path, boolean useJars, CKNotifier notifier) {
 		String[] srcDirs = FileUtils.getAllDirs(path);
 		String[] javaFiles = FileUtils.getAllJavaFiles(path);
+		String[] allDependencies = useJars ? FileUtils.getAllJars(path) : null;
+
 		log.info("Found " + javaFiles.length + " java files");
+		if(useJars)
+			log.info("Found " + allDependencies.length + " jar dependencies");
 		
 		MetricsExecutor storage = new MetricsExecutor(classLevelMetrics, methodLevelMetrics, notifier);
 		
@@ -73,7 +80,7 @@ public class CK {
 			Map<String, String> options = JavaCore.getOptions();
 			JavaCore.setComplianceOptions(JavaCore.VERSION_11, options);
 			parser.setCompilerOptions(options);
-			parser.setEnvironment(null, srcDirs, null, true);
+			parser.setEnvironment(allDependencies, srcDirs, null, true);
 			parser.createASTs(partition.toArray(new String[partition.size()]), null, new String[0], storage, null);
 		}
 		

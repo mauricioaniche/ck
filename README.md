@@ -81,34 +81,39 @@ as it requires too much memory.)
 
 Note: CK separates classes, subclasses, and anonymous classes. LOC is the only metric that is not completely isolated from the others, e.g., if A has a declaration of a subclass B, then LOC(A) = LOC(class A) + LOC(subclass B).
 
-# How to use the standalone version
+## How to use the standalone version
 
 You need at least Java 11 to be able to compile and run this tool.
 
 To use the _latest version_ (which you should), clone the project and generate a JAR. A simple
 `mvn clean compile assembly:single` generates the single JAR file for you (see your _target_ folder).
 
->_PS. In case you face `ERROR - Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.8.1:compile ...` change maven-compiler-plugin to the Java version that you have._
-
 Then, just run:
 ```
-java -jar ck-x.x.x-SNAPSHOT-jar-with-dependencies.jar <project dir>
+java -jar ck-x.x.x-SNAPSHOT-jar-with-dependencies.jar <project dir> <use jars:true|false>
 ```
+
+Project dir refers to the directory where CK can find all the source code to be parsed.
+Ck will recursively look for .java files. CK can use the dependencies of the project
+as to improve its precision. The 'use jars' parameters tells CK to look for any .jar files
+in the directory and use them to better resolve types.
 
 The tool will generate three csv files: class, method, and variable levels.
 
+>_PS. In case you face `ERROR - Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.8.1:compile ...` change maven-compiler-plugin to the Java version that you have._
 
-# How to integrate it in my Java app
+## How to integrate it in my Java app
 
 Learn by example. See `Runner.java` class. In a nutshell:
 
 ```
-new CK().calculate(path, result -> {
+boolean useJars = true;
+new CK().calculate(path, useJars, result -> {
     // process each 'result' here
 }
 ```
 
-# Maven
+## Maven
 
 See the most recent version of the library in the badge at the beginning of this README, or at https://mvnrepository.com/artifact/com.github.mauricioaniche/ck.
 
@@ -126,7 +131,7 @@ Use the following snippet in your pom.xml. Update X.Y.Z with the most recent ver
 You also may use the CK maven plugin, developed by @jazzmuesli, which automatically runs CK in your project. Very useful to developers: https://github.com/jazzmuesli/ck-mvn-plugin.
 
 
-# Supporting a new version of Java
+## Supporting a new version of Java
 
 This tool uses Eclipse's JDT Core library under the hood for AST
 construction. Currently the compliance version is set to Java 11.
@@ -154,12 +159,12 @@ properties of the Maven Compiler plugin accordingly.
 now green. Then submit a PR.
 
 
-# Why is it called CK?
+## Why is it called CK?
 
 Because the tool was born to just calculate the CK classLevelMetrics, but it grew beyond
 my expectations... Life is funny!
 
-# How to cite?
+## How to cite?
 
 Please, use the following bibtex entry:
 
@@ -172,20 +177,10 @@ Please, use the following bibtex entry:
 }
 ```
   
-# How to Contribute
+## How to Contribute
 
-```
-git clone https://github.com/mauricioaniche/ck.git
-```
+Just submit a PR! :)
 
-Then, you can:
-
-* compile : `mvn clean compile`
-* test    : `mvn test`
-
-Note that you can optionally use the bundled Maven Wrapper to
-automatically download Maven for you, e.g: `./mvnw clean compile`.
-
-# License
+## License
 
 This software is licensed under the [Apache 2.0 License](LICENSE).

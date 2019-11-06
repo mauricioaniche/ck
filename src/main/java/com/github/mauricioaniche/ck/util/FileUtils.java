@@ -1,55 +1,49 @@
 package com.github.mauricioaniche.ck.util;
 
-import java.io.File;
-import java.util.ArrayList;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 
 public class FileUtils {
 
 	public static String[] getAllDirs(String path) {
-		ArrayList<String> dirs = new ArrayList<String>();
-		getAllDirs(path, dirs);
-		
-		String[] ar = new String[dirs.size()];
-		ar = dirs.toArray(ar);
-		return ar;
-	}
-	
-	private static void getAllDirs(String path, ArrayList<String> dirs) {
-		
-		File f = new File(path);
-		if(f.getName().equals(".git")) return;
-		
-		for(File inside : f.listFiles()) {
-			if(inside.isDirectory()) {
-				String newDir = inside.getAbsolutePath();
-				dirs.add(newDir);
-				getAllDirs(newDir, dirs);
-			}
+		try {
+			return Files.walk(Paths.get(path))
+					.filter(Files::isDirectory)
+					.filter(x -> !x.toAbsolutePath().toString().contains(".git"))
+					.map(x -> x.toAbsolutePath().toString())
+					.toArray(String[]::new);
+		} catch(Exception e) {
+			throw new RuntimeException(e);
 		}
 	}
 
 	public static String[] getAllJavaFiles(String path) {
-		ArrayList<String> files = new ArrayList<String>();
-		getAllJavaFiles(path, files);
-		
-		String[] ar = new String[files.size()];
-		ar = files.toArray(ar);
-		return ar;
+
+		try {
+			return Files.walk(Paths.get(path))
+					.filter(Files::isRegularFile)
+					.filter(x -> !x.toAbsolutePath().toString().contains(".git"))
+					.filter(x -> x.toAbsolutePath().toString().toLowerCase().endsWith("java"))
+					.map(x -> x.toAbsolutePath().toString())
+					.toArray(String[]::new);
+		} catch(Exception e) {
+			throw new RuntimeException(e);
+		}
+
 	}
-	
-	private static void getAllJavaFiles(String path, ArrayList<String> files) {
-		
-		File f = new File(path);
-		if(f.getName().equals(".git")) return;
-		
-		for(File inside : f.listFiles()) {
-			if(inside.isDirectory()) {
-				String newDir = inside.getAbsolutePath();
-				getAllJavaFiles(newDir, files);
-			} else if(inside.getAbsolutePath().toLowerCase().endsWith(".java")) {
-				files.add(inside.getAbsolutePath());
-			}
+
+	public static String[] getAllJars(String path) {
+
+		try {
+			return Files.walk(Paths.get(path))
+					.filter(Files::isRegularFile)
+					.filter(x -> !x.toAbsolutePath().toString().contains(".git"))
+					.filter(x -> x.toAbsolutePath().toString().toLowerCase().endsWith("jar"))
+					.map(x -> x.toAbsolutePath().toString())
+					.toArray(String[]::new);
+		} catch(Exception e) {
+			throw new RuntimeException(e);
 		}
 	}
 	
