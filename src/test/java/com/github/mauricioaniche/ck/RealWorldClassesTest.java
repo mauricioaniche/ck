@@ -38,9 +38,28 @@ public class RealWorldClassesTest extends BaseTest {
 		Assert.assertEquals(3, a.getNumberOfMethods());
 	}
 
+	// this was crashing, also related to the bug explained in the
+	// 'factoryFinder' test. Test a bit redundant.
 	@Test
 	public void xmlOutputFactory() {
 		CKClassResult a = report.get("javax.xml.stream.XMLOutputFactory");
 		Assert.assertEquals(14, a.getNumberOfMethods());
+	}
+
+	// this was crashing, also related to the bug explained in the
+	// 'factoryFinder' test. Test a bit redundant.
+	@Test
+	public void greeterGrpc() {
+		CKClassResult a = report.get("com.hry.spring.grpc.simple.GreeterGrpc");
+		Assert.assertNotNull(a);
+		CKClassResult b = report.get("com.hry.spring.grpc.simple.GreeterGrpc$GreeterImplBase");
+		Assert.assertNotNull(b);
+
+		// the assertion below should be 2. It's 1 because binding fails.
+		// we need the JARs here to solve the bindings correctly.
+		Assert.assertEquals(1, b.getNumberOfMethods());
+		
+		CKClassResult c = report.get("com.hry.spring.grpc.simple.GreeterGrpc$GreeterBlockingStub");
+		Assert.assertNotNull(c);
 	}
 }
