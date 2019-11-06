@@ -14,6 +14,8 @@ resolve bindings.
 it then uses the information available at the class only (in 0.4.x versions before
 this one, if binding failed, CK would not process that class/method).
 
+* FEATURE: When collecting java files, CK always ignores .git directories.
+
 ## 0.4.1
 
 * FEATURE/FIX: Add support for static initializers as methods. In 0.4.0, an exception
