@@ -52,6 +52,39 @@ public class JDTUtils {
 		);
 	}
 
+	public static String getMethodFullName(MethodDeclaration node) {
+		String methodName = node.getName().getFullyQualifiedName();
+
+		int parameterCount = node.parameters()==null ? 0 : node.parameters().size();
+		List<String> parameterTypes = new ArrayList<>();
+
+		if(parameterCount > 0) {
+			for(Object p0 : node.parameters()) {
+				SingleVariableDeclaration parameter = (SingleVariableDeclaration) p0;
+
+				ITypeBinding binding = parameter.getType().resolveBinding();
+
+				String v;
+				if(binding == null || binding.isRecovered())
+					v = parameter.getType().toString();
+				else
+					v = binding.getQualifiedName();
+
+				if(parameter.isVarargs()) v+="[]";
+
+				parameterTypes.add(v);
+			}
+		}
+
+		return String.format("%s/%d%s%s%s",
+				methodName,
+				parameterCount,
+				(parameterCount > 0 ? "[" : ""),
+				(parameterCount > 0 ? String.join(",", parameterTypes) : ""),
+				(parameterCount > 0 ? "]" : "")
+		);
+	}
+
 	public static long countLoc(ASTNode type) {
 		return type.toString().chars().filter(x -> x == '\n').count() + 1;
 	}

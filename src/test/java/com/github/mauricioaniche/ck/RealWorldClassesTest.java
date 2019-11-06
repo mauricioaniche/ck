@@ -46,8 +46,11 @@ public class RealWorldClassesTest extends BaseTest {
 		Assert.assertEquals(14, a.getNumberOfMethods());
 	}
 
-	// this was crashing, also related to the bug explained in the
-	// 'factoryFinder' test. Test a bit redundant.
+	// the number of methods assertion below should be 2.
+	// Before, CK was returning 1, because a resolveBinding was failing.
+	// We need the JARs here to solve the bindings correctly.
+	// CK now tries binding first and, if it fails, it resorts
+	// to the information you can get at the class only.
 	@Test
 	public void greeterGrpc() {
 		CKClassResult a = report.get("com.hry.spring.grpc.simple.GreeterGrpc");
@@ -55,9 +58,7 @@ public class RealWorldClassesTest extends BaseTest {
 		CKClassResult b = report.get("com.hry.spring.grpc.simple.GreeterGrpc$GreeterImplBase");
 		Assert.assertNotNull(b);
 
-		// the assertion below should be 2. It's 1 because binding fails.
-		// we need the JARs here to solve the bindings correctly.
-		Assert.assertEquals(1, b.getNumberOfMethods());
+		Assert.assertEquals(2, b.getNumberOfMethods());
 
 		CKClassResult c = report.get("com.hry.spring.grpc.simple.GreeterGrpc$GreeterBlockingStub");
 		Assert.assertNotNull(c);
