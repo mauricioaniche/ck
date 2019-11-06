@@ -29,9 +29,13 @@ public class CKVisitor extends ASTVisitor {
 		CKClassResult result;
 		List<ClassLevelMetric> classLevelMetrics;
 		Stack<MethodInTheStack> methods;
+		Stack<Boolean> methodVisits;
+
 
 		ClassInTheStack() {
+
 			methods = new Stack<>();
+			methodVisits = new Stack<>();
 		}
 	}
 	private Stack<ClassInTheStack> classes;
@@ -48,9 +52,8 @@ public class CKVisitor extends ASTVisitor {
 		this.classLevelMetrics = classLevelMetrics;
 		this.methodLevelMetrics = methodLevelMetrics;
 		this.classes = new Stack<>();
-		this.typeVisits = new Stack<>();
 		this.collectedClasses = new HashSet<>();
-
+		this.typeVisits = new Stack<>();
 	}
 
 	@Override
@@ -120,8 +123,10 @@ public class CKVisitor extends ASTVisitor {
 	public boolean visit(MethodDeclaration node) {
 
 		IMethodBinding binding = node.resolveBinding();
-		if(binding == null)
+		if(binding == null) {
+			classes.peek().methodVisits.push(false);
 			return false;
+		}
 
 		String currentMethodName = JDTUtils.getMethodFullName(binding);
 		boolean isConstructor = node.isConstructor();
@@ -138,6 +143,7 @@ public class CKVisitor extends ASTVisitor {
 		methodInTheStack.result = currentMethod;
 		methodInTheStack.methodLevelMetrics = methodLevelMetrics;
 		classes.peek().methods.push(methodInTheStack);
+		classes.peek().methodVisits.push(true);
 
 		// and there might be metrics that also use the methoddeclaration node.
 		// so, let's call them
@@ -150,19 +156,23 @@ public class CKVisitor extends ASTVisitor {
 
 	@Override
 	public void endVisit(MethodDeclaration node) {
+		Boolean success = classes.peek().methodVisits.pop();
 
-		// let's first invoke the metrics, because they might use this node
-		classes.peek().classLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.endVisit(node));
-		classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(success) {
 
-		// remove the method from the stack
-		MethodInTheStack completedMethod = classes.peek().methods.pop();
+			// let's first invoke the metrics, because they might use this node
+			classes.peek().classLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.endVisit(node));
 
-		// persist the data of the visitors in the CKMethodResult
-		completedMethod.methodLevelMetrics.forEach(m -> m.setResult(completedMethod.result));
+			// remove the method from the stack
+			MethodInTheStack completedMethod = classes.peek().methods.pop();
 
-		// store its final version in the current class
-		classes.peek().result.addMethod(completedMethod.result);
+			// persist the data of the visitors in the CKMethodResult
+			completedMethod.methodLevelMetrics.forEach(m -> m.setResult(completedMethod.result));
+
+			// store its final version in the current class
+			classes.peek().result.addMethod(completedMethod.result);
+		}
 	}
 
 
