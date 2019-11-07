@@ -21,5 +21,11 @@ public class BindingsTest extends BaseTest {
 		CKClassResult a = report.get("bind.BindingFail1");
 		Assert.assertNotNull(a);
 	}
-	
+
+	@Test
+	public void fullNameEvenWhenTypesAreNotAvailableNotEvenInImports() {
+		CKClassResult a = report.get("bind.BindingFail2");
+		Assert.assertNotNull(a);
+	}
+
 }
