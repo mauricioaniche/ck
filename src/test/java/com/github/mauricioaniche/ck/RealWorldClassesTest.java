@@ -85,4 +85,11 @@ public class RealWorldClassesTest extends BaseTest {
 		Assert.assertEquals(3, a.getNumberOfFields());
 	}
 
+	// one more test case for the same case above. Redundant.
+	@Test
+	public void quotedQualityCSV() {
+		CKClassResult a = report.get("com.firefly.codec.http2.model.QuotedQualityCSV");
+		Assert.assertNotNull(a);
+	}
+
 }
