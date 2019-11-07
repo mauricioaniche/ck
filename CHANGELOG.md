@@ -1,6 +1,6 @@
 # CK changelog
 
-## 0.4.3 (under development)
+## 0.4.3
 
 * FIX: Lambda expressions declared in field initialization used to crash
 CK. In this version, lambda expressions are considered part of the class
