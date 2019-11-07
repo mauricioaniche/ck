@@ -7,6 +7,10 @@ CK. In this version, lambda expressions are considered part of the class
 and the method it is embedded; in other words, lambda expressions, differently
 from anonymous classes, are not considered "classes".
 
+* FIX/FEATURE: The CBO metric now tries to capture as much as coupling possible
+even when the binding fails. Moreover, it also fixes a small NPE that was occurring
+when one of the resolveBinding failed.
+
 ## 0.4.2
 
 * FEATURE: The 'number of comparisons' operator now also counts !=.

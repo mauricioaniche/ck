@@ -65,4 +65,10 @@ public class CBOTest extends BaseTest {
 		Assert.assertEquals(2, b.getMethod("am4/0").get().getCbo());
 
 	}
+
+	@Test
+	public void fullOfNonResolvedTypes() {
+		CKClassResult b = report.get("cbo.NotResolved");
+		Assert.assertEquals(5, b.getCbo());
+	}
 }
