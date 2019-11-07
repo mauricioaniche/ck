@@ -65,6 +65,10 @@ available in 0.4.2+.
 - *Max nested blocks*: The highest number of blocks nested together.
 
 - *Quantity of Anonymous classes, subclasses, and lambda expressions*. The name says it all.
+Note that whenever an anonymous class or a subclass is declared, it becomes an
+"entire new class", e.g., CK generates A.B and A.B$C, C being a subclass inside A.B.
+However, lambda expressions are not considered classes, and thus, are part of the
+class/method they are embedded into.
 
 - *Number of unique words*. Number of unique words in the source code. See `WordCounter` class for details on the
 implementation.  

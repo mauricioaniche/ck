@@ -75,4 +75,14 @@ public class RealWorldClassesTest extends BaseTest {
 		Assert.assertNotNull(c);
 	}
 
+	// this was crashing because of a lambda expression in a field.
+	// fix: consider the lambda as part of the class and/OR method it is embedded.
+	@Test
+	public void abstractSimpleHandler() {
+		CKClassResult a = report.get("com.firefly.net.tcp.AbstractSimpleHandler");
+		Assert.assertNotNull(a);
+		Assert.assertEquals(3, a.getNumberOfMethods());
+		Assert.assertEquals(3, a.getNumberOfFields());
+	}
+
 }

@@ -1,5 +1,12 @@
 # CK changelog
 
+## 0.4.3 (under development)
+
+* FIX: Lambda expressions declared in field initialization used to crash
+CK. In this version, lambda expressions are considered part of the class
+and the method it is embedded; in other words, lambda expressions, differently
+from anonymous classes, are not considered "classes".
+
 ## 0.4.2
 
 * FEATURE: The 'number of comparisons' operator now also counts !=.
