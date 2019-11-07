@@ -16,6 +16,36 @@ public class RealWorldClassesTest extends BaseTest {
 		report = run(fixturesDir() + "/real-world");
 	}
 
+
+	// This class was breaking, because CSVParser had anonymous types.
+	// FIX was to ignore whenever an anonymous class, subclass, or lambda expression appears.
+	@Test
+	public void commonsCsvClass() {
+
+		CKClassResult ck = report.get("debug.CSVParser");
+
+		for (CKMethodResult CKMethodResult : ck.getMethods()) {
+			System.out.println(CKMethodResult.getMethodName());
+
+			for (Map.Entry<String, Integer> entry : CKMethodResult.getVariablesUsage().entrySet()) {
+				System.out.println("- variable: " + entry.getKey());
+			}
+		}
+		System.out.println(ck);
+	}
+
+	// This class contains a method with a huge javadoc, and then the LOC was getting too big for
+	// a very small method. We use a better way to count LOC now, ignoring java comments.
+	@Test
+	public void commonsCsvClass2() {
+		CKClassResult ck = report.get("org.apache.commons.csv.CSVFormat");
+
+		Assert.assertEquals(3, ck.getMethod("isLineBreak/1[char]").get().getLoc());
+		Assert.assertEquals(635, ck.getMethod("isLineBreak/1[char]").get().getStartLine());
+
+		Assert.assertEquals(1575, ck.getMethod("withAllowMissingColumnNames/1[boolean]").get().getStartLine());
+	}
+
 	// this one always worked
 	@Test
 	public void xmlInputFactory() {
