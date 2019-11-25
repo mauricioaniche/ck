@@ -1,5 +1,9 @@
 # CK changelog
 
+## 0.4.4
+
+* Compiling CK with JDK 8 compatibility (instead of Java 11)
+
 ## 0.4.3
 
 * FIX: Lambda expressions declared in field initialization used to crash
@@ -36,9 +40,6 @@ as "(initializer)"
 ## 0.4.0
 
 * FEATURE: Better support for classes. sub-classes, and anonymous classes.
-
-## 0.3.x
-
 * FEATURE: Support for Java 11
 * FEATURE: Metrics at method and variable levels.
 
