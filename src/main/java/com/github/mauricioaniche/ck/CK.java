@@ -60,10 +60,6 @@ public class CK {
 	}
 
 	public void calculate(String path, CKNotifier notifier) {
-		this.calculate(path, false, notifier);
-	}
-
-	public void calculate(String path, boolean useJars, CKNotifier notifier) {
 		String[] srcDirs = FileUtils.getAllDirs(path);
 		String[] javaFiles = FileUtils.getAllJavaFiles(path);
 		String[] allDependencies = useJars ? FileUtils.getAllJars(path) : null;
