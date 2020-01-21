@@ -20,7 +20,7 @@ public class Runner {
 		
 		ResultWriter writer = new ResultWriter("class.csv", "method.csv", "variable.csv", "field.csv");
 		
-		new CK().calculate(path, useJars, result -> {
+		new CK(useJars).calculate(path, result -> {
 			try {
 			    writer.printResult(result);
 			} catch (IOException e) {

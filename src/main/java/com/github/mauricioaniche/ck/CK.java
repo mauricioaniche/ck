@@ -37,19 +37,26 @@ public class CK {
 
 	private static Logger log = Logger.getLogger(CK.class);
 
+	private boolean useJars;
 	Callable<List<ClassLevelMetric>> classLevelMetrics;
 	Callable<List<MethodLevelMetric>> methodLevelMetrics;
 
-	public CK(Callable<List<ClassLevelMetric>> classLevelMetrics, Callable<List<MethodLevelMetric>> methodLevelMetrics) {
+	public CK(boolean useJars, Callable<List<ClassLevelMetric>> classLevelMetrics, Callable<List<MethodLevelMetric>> methodLevelMetrics) {
+		this.useJars = useJars;
 		this.classLevelMetrics = classLevelMetrics;
 		this.methodLevelMetrics = methodLevelMetrics;
 	}
 
-	public CK() {
+	public CK(boolean useJars) {
 		MetricsFinder finder = new MetricsFinder();
-
 		this.classLevelMetrics = () -> finder.allClassLevelMetrics();
 		this.methodLevelMetrics = () -> finder.allMethodLevelMetrics();
+
+		this.useJars = useJars;
+	}
+
+	public CK() {
+		this(false);
 	}
 
 	public void calculate(String path, CKNotifier notifier) {
