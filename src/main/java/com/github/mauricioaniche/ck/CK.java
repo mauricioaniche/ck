@@ -17,11 +17,12 @@ import java.util.concurrent.Callable;
 
 public class CK {
 
-	private int maxAtOnce;
+	private final boolean variablesAndFields;
+	private final int maxAtOnce;
+	private final boolean useJars;
 	
 	private static Logger log = Logger.getLogger(CK.class);
 
-	private boolean useJars;
 	Callable<List<ClassLevelMetric>> classLevelMetrics;
 	Callable<List<MethodLevelMetric>> methodLevelMetrics;
 
@@ -31,23 +32,26 @@ public class CK {
 		this.classLevelMetrics = classLevelMetrics;
 		this.methodLevelMetrics = methodLevelMetrics;
 		this.maxAtOnce = 100;
+		this.variablesAndFields = true;
 	}
 
 
-	public CK(boolean useJars, int maxAtOnce) {
+	public CK(boolean useJars, int maxAtOnce, boolean variablesAndFields) {
 		MetricsFinder finder = new MetricsFinder();
 		this.classLevelMetrics = () -> finder.allClassLevelMetrics();
-		this.methodLevelMetrics = () -> finder.allMethodLevelMetrics();
+		this.methodLevelMetrics = () -> finder.allMethodLevelMetrics(variablesAndFields);
 
 		this.useJars = useJars;
 		if(maxAtOnce == 0)
 			this.maxAtOnce = getMaxPartitionBasedOnMemory();
 		else
 			this.maxAtOnce = maxAtOnce;
+
+		this.variablesAndFields = variablesAndFields;
 	}
 
 	public CK() {
-		this(false, 0);
+		this(false, 0, true);
 	}
 
 	public void calculate(String path, CKNotifier notifier) {

@@ -1,6 +1,5 @@
 package com.github.mauricioaniche.ck.metric;
 
-import com.github.mauricioaniche.ck.CKClassResult;
 import com.github.mauricioaniche.ck.CKMethodResult;
 import org.eclipse.jdt.core.dom.*;
 
@@ -9,6 +8,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+@VariableOrFieldMetric
 public class MethodLevelFieldUsageCount extends ASTVisitor implements MethodLevelMetric {
 	private Set<String> declaredFields;
 	private Map<String, Integer> occurrences;

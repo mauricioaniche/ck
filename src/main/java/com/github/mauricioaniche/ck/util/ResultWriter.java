@@ -23,6 +23,7 @@ public class ResultWriter {
             "parenthesizedExpsQty", "stringLiteralsQty", "numbersQty", "assignmentsQty", "mathOperationsQty",
             "maxNestedBlocks", "anonymousClassesQty", "subClassesQty", "lambdasQty", "uniqueWordsQty", "modifiers" };
     private static final String[] VAR_FIELD_HEADER = { "file", "class", "method", "variable", "usage" };
+    private final boolean variablesAndFields;
 
     private CSVPrinter classPrinter;
     private CSVPrinter methodPrinter;
@@ -39,15 +40,19 @@ public class ResultWriter {
      * @param fieldFile    Output file for field metrics
      * @throws IOException If headers cannot be written
      */
-    public ResultWriter(String classFile, String methodFile, String variableFile, String fieldFile) throws IOException {
+    public ResultWriter(String classFile, String methodFile, String variableFile, String fieldFile, boolean variablesAndFields) throws IOException {
         FileWriter classOut = new FileWriter(classFile);
         this.classPrinter = new CSVPrinter(classOut, CSVFormat.DEFAULT.withHeader(CLASS_HEADER));
         FileWriter methodOut = new FileWriter(methodFile);
         this.methodPrinter = new CSVPrinter(methodOut, CSVFormat.DEFAULT.withHeader(METHOD_HEADER));
-        FileWriter variableOut = new FileWriter(variableFile);
-        this.variablePrinter = new CSVPrinter(variableOut, CSVFormat.DEFAULT.withHeader(VAR_FIELD_HEADER));
-        FileWriter fieldOut = new FileWriter(fieldFile);
-        this.fieldPrinter = new CSVPrinter(fieldOut, CSVFormat.DEFAULT.withHeader(VAR_FIELD_HEADER));
+
+        this.variablesAndFields = variablesAndFields;
+        if(variablesAndFields) {
+            FileWriter variableOut = new FileWriter(variableFile);
+            this.variablePrinter = new CSVPrinter(variableOut, CSVFormat.DEFAULT.withHeader(VAR_FIELD_HEADER));
+            FileWriter fieldOut = new FileWriter(fieldFile);
+            this.fieldPrinter = new CSVPrinter(fieldOut, CSVFormat.DEFAULT.withHeader(VAR_FIELD_HEADER));
+        }
     }
 
     /**
@@ -84,14 +89,16 @@ public class ResultWriter {
                     method.getAnonymousClassesQty(), method.getSubClassesQty(), method.getLambdasQty(),
                     method.getUniqueWordsQty(), method.getModifiers());
 
-            for (Map.Entry<String, Integer> entry : method.getVariablesUsage().entrySet()) {
-                this.variablePrinter.printRecord(result.getFile(), result.getClassName(), method.getMethodName(),
-                        entry.getKey(), entry.getValue());
-            }
+            if(variablesAndFields) {
+                for (Map.Entry<String, Integer> entry : method.getVariablesUsage().entrySet()) {
+                    this.variablePrinter.printRecord(result.getFile(), result.getClassName(), method.getMethodName(),
+                            entry.getKey(), entry.getValue());
+                }
 
-            for (Map.Entry<String, Integer> entry : method.getFieldUsage().entrySet()) {
-                this.fieldPrinter.printRecord(result.getFile(), result.getClassName(), method.getMethodName(),
-                        entry.getKey(), entry.getValue());
+                for (Map.Entry<String, Integer> entry : method.getFieldUsage().entrySet()) {
+                    this.fieldPrinter.printRecord(result.getFile(), result.getClassName(), method.getMethodName(),
+                            entry.getKey(), entry.getValue());
+                }
             }
         }
     }
@@ -107,9 +114,11 @@ public class ResultWriter {
         this.classPrinter.close();
         this.methodPrinter.flush();
         this.methodPrinter.close();
-        this.variablePrinter.flush();
-        this.variablePrinter.close();
-        this.fieldPrinter.flush();
-        this.fieldPrinter.close();
+        if(variablesAndFields) {
+            this.variablePrinter.flush();
+            this.variablePrinter.close();
+            this.fieldPrinter.flush();
+            this.fieldPrinter.close();
+        }
     }
 }

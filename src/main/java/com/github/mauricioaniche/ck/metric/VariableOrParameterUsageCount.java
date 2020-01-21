@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+@VariableOrFieldMetric
 public class VariableOrParameterUsageCount extends ASTVisitor implements MethodLevelMetric {
 	private Set<String> declaredVariables;
 	private Map<String, Integer> occurrences;

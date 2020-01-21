@@ -2,21 +2,23 @@ package com.github.mauricioaniche.ck.util;
 
 import com.github.mauricioaniche.ck.metric.ClassLevelMetric;
 import com.github.mauricioaniche.ck.metric.MethodLevelMetric;
+import com.github.mauricioaniche.ck.metric.VariableOrFieldMetric;
 import org.reflections.Reflections;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class MetricsFinder {
 
 	private static Set<Class<? extends MethodLevelMetric>> methodLevelClasses = null;
 	private static Set<Class<? extends ClassLevelMetric>> classLevelClasses = null;
 
-	public List<MethodLevelMetric> allMethodLevelMetrics() {
+	public List<MethodLevelMetric> allMethodLevelMetrics(boolean variablesAndFields) {
 
 		if(methodLevelClasses == null)
-			loadMethodLevelClasses();
+			loadMethodLevelClasses(variablesAndFields);
 
 		try {
 			ArrayList<MethodLevelMetric> metrics = new ArrayList<>();
@@ -30,10 +32,12 @@ public class MetricsFinder {
 		}
 	}
 
-	private void loadMethodLevelClasses() {
+	private void loadMethodLevelClasses(boolean variablesAndFields) {
 		try {
 			Reflections reflections = new Reflections("com.github.mauricioaniche.ck.metric");
 			methodLevelClasses = reflections.getSubTypesOf(MethodLevelMetric.class);
+			if(!variablesAndFields)
+				methodLevelClasses = methodLevelClasses.stream().filter(x -> !x.isAnnotationPresent(VariableOrFieldMetric.class)).collect(Collectors.toSet());
 		} catch(Exception e) {
 			throw new RuntimeException("Could not find method level metrics. Something is really wrong", e);
 		}

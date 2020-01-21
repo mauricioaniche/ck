@@ -9,7 +9,7 @@ public class Runner {
 	public static void main(String[] args) throws IOException {
 
 		if (args == null || args.length < 1) {
-			System.out.println("Usage java -jar ck.jar <path to project> <use Jars=true|false> <max files per partition, 0=automatic selection>");
+			System.out.println("Usage java -jar ck.jar <path to project> <use Jars=true|false> <max files per partition, 0=automatic selection> <print variables and fields metrics? True|False>");
 			System.exit(1);
 		}
 
@@ -25,9 +25,15 @@ public class Runner {
 		if(args.length >= 3)
 			maxAtOnce = Integer.parseInt(args[2]);
 
-		ResultWriter writer = new ResultWriter("class.csv", "method.csv", "variable.csv", "field.csv");
+		// variables and field results?
+		boolean variablesAndFields = true;
+		if(args.length >= 4)
+			variablesAndFields = Boolean.parseBoolean(args[3]);
+
+
+		ResultWriter writer = new ResultWriter("class.csv", "method.csv", "variable.csv", "field.csv", variablesAndFields);
 		
-		new CK(useJars, maxAtOnce).calculate(path, result -> {
+		new CK(useJars, maxAtOnce, variablesAndFields).calculate(path, result -> {
 			try {
 			    writer.printResult(result);
 			} catch (IOException e) {
