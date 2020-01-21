@@ -17,7 +17,6 @@ import java.util.concurrent.Callable;
 
 public class CK {
 
-	private final boolean variablesAndFields;
 	private final int maxAtOnce;
 	private final boolean useJars;
 	
@@ -32,7 +31,6 @@ public class CK {
 		this.classLevelMetrics = classLevelMetrics;
 		this.methodLevelMetrics = methodLevelMetrics;
 		this.maxAtOnce = 100;
-		this.variablesAndFields = true;
 	}
 
 
@@ -46,8 +44,6 @@ public class CK {
 			this.maxAtOnce = getMaxPartitionBasedOnMemory();
 		else
 			this.maxAtOnce = maxAtOnce;
-
-		this.variablesAndFields = variablesAndFields;
 	}
 
 	public CK() {
