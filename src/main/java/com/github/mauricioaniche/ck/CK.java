@@ -17,46 +17,37 @@ import java.util.concurrent.Callable;
 
 public class CK {
 
-	private static final int MAX_AT_ONCE;
+	private int maxAtOnce;
 	
-	static {
-		String jdtMax = System.getProperty("jdt.max");
-		if(jdtMax!=null) {
-			MAX_AT_ONCE = Integer.parseInt(jdtMax);
-		} else {
-			long maxMemory= Runtime.getRuntime().maxMemory() / (1 << 20); // in MiB
-			
-			if      (maxMemory >= 2000) MAX_AT_ONCE= 400;
-			else if (maxMemory >= 1500) MAX_AT_ONCE= 300;
-			else if (maxMemory >= 1000) MAX_AT_ONCE= 200;
-			else if (maxMemory >=  500) MAX_AT_ONCE= 100;
-			else                        MAX_AT_ONCE=  25;
-		}
-	}
-
-
 	private static Logger log = Logger.getLogger(CK.class);
 
 	private boolean useJars;
 	Callable<List<ClassLevelMetric>> classLevelMetrics;
 	Callable<List<MethodLevelMetric>> methodLevelMetrics;
 
-	public CK(boolean useJars, Callable<List<ClassLevelMetric>> classLevelMetrics, Callable<List<MethodLevelMetric>> methodLevelMetrics) {
-		this.useJars = useJars;
+	// mostly for testing purposes
+	public CK(Callable<List<ClassLevelMetric>> classLevelMetrics, Callable<List<MethodLevelMetric>> methodLevelMetrics) {
+		this.useJars = false;
 		this.classLevelMetrics = classLevelMetrics;
 		this.methodLevelMetrics = methodLevelMetrics;
+		this.maxAtOnce = 100;
 	}
 
-	public CK(boolean useJars) {
+
+	public CK(boolean useJars, int maxAtOnce) {
 		MetricsFinder finder = new MetricsFinder();
 		this.classLevelMetrics = () -> finder.allClassLevelMetrics();
 		this.methodLevelMetrics = () -> finder.allMethodLevelMetrics();
 
 		this.useJars = useJars;
+		if(maxAtOnce == 0)
+			this.maxAtOnce = getMaxPartitionBasedOnMemory();
+		else
+			this.maxAtOnce = maxAtOnce;
 	}
 
 	public CK() {
-		this(false);
+		this(false, 0);
 	}
 
 	public void calculate(String path, CKNotifier notifier) {
@@ -70,8 +61,8 @@ public class CK {
 		
 		MetricsExecutor storage = new MetricsExecutor(classLevelMetrics, methodLevelMetrics, notifier);
 		
-		List<List<String>> partitions = Lists.partition(Arrays.asList(javaFiles), MAX_AT_ONCE);
-		log.debug("Max partition size: " + MAX_AT_ONCE + ", total partitions=" + partitions.size());
+		List<List<String>> partitions = Lists.partition(Arrays.asList(javaFiles), maxAtOnce);
+		log.debug("Max partition size: " + maxAtOnce + ", total partitions=" + partitions.size());
 
 		for(List<String> partition : partitions) {
 			log.debug("Next partition");
@@ -89,5 +80,16 @@ public class CK {
 		
 		log.info("Finished parsing");
     }
+
+	private int getMaxPartitionBasedOnMemory() {
+		long maxMemory= Runtime.getRuntime().maxMemory() / (1 << 20); // in MiB
+
+		if      (maxMemory >= 2000) return 400;
+		else if (maxMemory >= 1500) return 300;
+		else if (maxMemory >= 1000) return 200;
+		else if (maxMemory >=  500) return 100;
+		else                        return 25;
+	}
+
 
 }
