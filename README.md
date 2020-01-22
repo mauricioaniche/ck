@@ -71,7 +71,11 @@ However, lambda expressions are not considered classes, and thus, are part of th
 class/method they are embedded into.
 
 - *Number of unique words*. Number of unique words in the source code. See `WordCounter` class for details on the
-implementation.  
+implementation.
+
+- *Number of Log Statements*. Number of log statements in the source code. The counting is based on the following regex:
+`line.matches(".*\\.(info|warn|debug|error)\\(.*") || line.matches(".*log(ger)?\\..*");`.
+See `NumberOfLogStatements.java` for more info.
 
 - *modifiers*. public/abstract/private/protected/native modifiers of classes/methods. Can be decoded using `org.eclipse.jdt.core.dom.Modifier`.  
 
