@@ -87,20 +87,24 @@ Note: CK separates classes, subclasses, and anonymous classes. LOC is the only m
 
 ## How to use the standalone version
 
-You need at least Java 11 to be able to compile and run this tool.
+You need at least Java 8 to be able to compile and run this tool.
 
 To use the _latest version_ (which you should), clone the project and generate a JAR. A simple
 `mvn clean compile assembly:single` generates the single JAR file for you (see your _target_ folder).
 
 Then, just run:
 ```
-java -jar ck-x.x.x-SNAPSHOT-jar-with-dependencies.jar <project dir> <use jars:true|false>
+java -jar ck-x.x.x-SNAPSHOT-jar-with-dependencies.jar <project dir> <use jars:true|false> <max files per partition, 0=automatic selection> <variables and fields metrics? True|False>
 ```
 
-Project dir refers to the directory where CK can find all the source code to be parsed.
+`Project dir` refers to the directory where CK can find all the source code to be parsed.
 Ck will recursively look for .java files. CK can use the dependencies of the project
-as to improve its precision. The 'use jars' parameters tells CK to look for any .jar files
-in the directory and use them to better resolve types.
+as to improve its precision. The `use jars` parameters tells CK to look for any .jar files
+in the directory and use them to better resolve types. `Max files per partition` tells JDT the size
+of the batch to process. Let us decide that for you and start with 0; if problems happen (i.e., 
+out of memory) you think of tuning it. Finally, `variables and field metrics` indicates to CK whether
+you want metrics at variable- and field-levels too. They are highly fine-grained and produce a lot of output;
+you should skip it if you only need metrics at class or method level.
 
 The tool will generate three csv files: class, method, and variable levels.
 
@@ -108,14 +112,7 @@ The tool will generate three csv files: class, method, and variable levels.
 
 ## How to integrate it in my Java app
 
-Learn by example. See `Runner.java` class. In a nutshell:
-
-```
-boolean useJars = true;
-new CK().calculate(path, useJars, result -> {
-    // process each 'result' here
-}
-```
+Learn by example. See `Runner.java` class.
 
 ## Maven
 
