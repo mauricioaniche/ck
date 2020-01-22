@@ -30,6 +30,7 @@ public class CKMethodResult {
 	private Map<String, Integer> fieldUsage;
 	private boolean isConstructor;
 	private int modifiers;
+	private int logStatementsQty;
 
 	public CKMethodResult(String methodName, boolean isConstructor, int modifiers) {
 		this.methodName = methodName;
@@ -39,14 +40,14 @@ public class CKMethodResult {
 
 	/**
 	 * public/static/private and other org.eclipse.jdt.core.dom.Modifier modifiers
-	 * 
+	 *
 	 * @see org.eclipse.jdt.core.dom.Modifier to decode int
 	 * @return
 	 */
 	public int getModifiers() {
 		return modifiers;
 	}
-	
+
 	public void setCbo(int cbo) {
 		this.cbo = cbo;
 	}
@@ -247,6 +248,14 @@ public class CKMethodResult {
 
 	public boolean isConstructor() {
 		return isConstructor;
+	}
+
+	public int getLogStatementsQty() {
+		return logStatementsQty;
+	}
+
+	public void setLogStatementsQty(int logStatementsQty) {
+		this.logStatementsQty = logStatementsQty;
 	}
 
 	@Override

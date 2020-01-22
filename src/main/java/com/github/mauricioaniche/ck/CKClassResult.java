@@ -51,6 +51,7 @@ public class CKClassResult {
 	private int numberOfFinalFields;
 	private int numberOfSynchronizedFields;
 	private int modifiers;
+	private int numberOfLogStatements;
 
 	public CKClassResult(String file, String className, String type, int modifiers) {
 		this.file = file;
@@ -411,6 +412,14 @@ public class CKClassResult {
 
 	public String getType() {
 		return type;
+	}
+
+	public void setLogStatementsQty(int numberOfLogStatements) {
+		this.numberOfLogStatements = numberOfLogStatements;
+	}
+
+	public int getNumberOfLogStatements() {
+		return numberOfLogStatements;
 	}
 
 	@Override
