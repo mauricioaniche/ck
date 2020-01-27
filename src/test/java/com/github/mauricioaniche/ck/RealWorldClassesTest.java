@@ -122,4 +122,14 @@ public class RealWorldClassesTest extends BaseTest {
 		Assert.assertNotNull(a);
 	}
 
+	@Test
+	public void beanificationTestCase() {
+		Assert.assertTrue(report.keySet().contains("org.apache.commons.beanutils2.BeanificationTestCase$1TestIndependenceThread"));
+
+		CKClassResult a = report.get("org.apache.commons.beanutils2.BeanificationTestCase$1TestIndependenceThread");
+		Assert.assertNotNull(a);
+
+		Assert.assertEquals(3, a.getNumberOfMethods());
+	}
+
 }
