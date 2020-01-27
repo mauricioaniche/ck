@@ -23,6 +23,7 @@ total number of fields, static, public, private, protected, default, final, and 
 
 - *Number of methods*: Counts the number of methods. Specific numbers for
 total number of methods, static, public, abstract, private, protected, default, final, and synchronized methods.
+Constructor methods also count here.
 
 - *NOSI (Number of static invocations)*: Counts the number of invocations
 to static methods. It can only count the ones that can be resolved by the
