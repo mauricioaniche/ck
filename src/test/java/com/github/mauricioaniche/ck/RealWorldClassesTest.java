@@ -6,6 +6,8 @@ import org.junit.Test;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class RealWorldClassesTest extends BaseTest {
 
@@ -131,6 +133,27 @@ public class RealWorldClassesTest extends BaseTest {
 
 		Assert.assertEquals(3, a.getNumberOfMethods());
 		Assert.assertEquals("subclass", a.getType());
+	}
+
+	// this one contains subclasses
+	@Test
+	public void csvParser2() {
+		CKClassResult class1 = report.get("org.apache.commons.csv.CSVParser2");
+		CKClassResult class2 = report.get("org.apache.commons.csv.CSVParser2$CSVRecordIterator");
+
+		Assert.assertNotNull(class1);
+		Assert.assertNotNull(class2);
+
+		Assert.assertEquals(4, class2.getMethods().size());
+
+		Set<String> allMethodsInC2 = class2.getMethods().stream().map(x -> x.getMethodName()).collect(Collectors.toSet());
+		Assert.assertTrue(allMethodsInC2.contains("hasNext/0"));
+		Assert.assertTrue(allMethodsInC2.contains("getNextRecord/0"));
+		Assert.assertTrue(allMethodsInC2.contains("next/0"));
+		Assert.assertTrue(allMethodsInC2.contains("remove/0"));
+
+		Set<String> allMethodsInC1 = class1.getMethods().stream().map(x -> x.getMethodName()).collect(Collectors.toSet());
+		Assert.assertTrue(allMethodsInC1.contains("createHeaderMap/0"));
 	}
 
 }
