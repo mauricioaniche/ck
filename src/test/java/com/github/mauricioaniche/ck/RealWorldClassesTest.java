@@ -9,6 +9,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static org.eclipse.jdt.core.dom.Modifier.isStatic;
+
 public class RealWorldClassesTest extends BaseTest {
 
 	private static Map<String, CKClassResult> report;
@@ -154,6 +156,32 @@ public class RealWorldClassesTest extends BaseTest {
 
 		Set<String> allMethodsInC1 = class1.getMethods().stream().map(x -> x.getMethodName()).collect(Collectors.toSet());
 		Assert.assertTrue(allMethodsInC1.contains("createHeaderMap/0"));
+	}
+
+	// one more long class with static subclasses
+	// just double checking it finds all the subclasses
+	@Test
+	public void executorUtils() {
+		CKClassResult class1 = report.get("org.apache.commons.lang.functor.ExecutorUtils");
+		Assert.assertNotNull(class1);
+		Assert.assertFalse(isStatic(class1.getModifiers()));
+
+		CKClassResult class2 = report.get("org.apache.commons.lang.functor.ExecutorUtils$ChainedExecutor");
+		Assert.assertNotNull(class2);
+		Assert.assertTrue(isStatic(class2.getModifiers()));
+
+		CKClassResult class3 = report.get("org.apache.commons.lang.functor.ExecutorUtils$SwitchExecutor");
+		Assert.assertNotNull(class3);
+		Assert.assertTrue(isStatic(class3.getModifiers()));
+
+		CKClassResult class4 = report.get("org.apache.commons.lang.functor.ExecutorUtils$ForExecutor");
+		Assert.assertNotNull(class4);
+		Assert.assertTrue(isStatic(class4.getModifiers()));
+
+		CKClassResult class5 = report.get("org.apache.commons.lang.functor.ExecutorUtils$WhileExecutor");
+		Assert.assertNotNull(class5);
+		Assert.assertTrue(isStatic(class5.getModifiers()));
+
 	}
 
 }
