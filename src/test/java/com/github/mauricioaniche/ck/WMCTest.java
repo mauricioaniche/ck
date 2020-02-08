@@ -36,4 +36,14 @@ public class WMCTest extends BaseTest {
 		CKClassResult c = report.get("wmc.CC3");
 		Assert.assertEquals(11, c.getMethod("m1/0").get().getWmc());
 	}
+
+	@Test
+	public void doNotCountSubClassesCode() {
+		CKClassResult c = report.get("wmc.CC4");
+		Assert.assertEquals(11, c.getMethod("m1/0").get().getWmc());
+		Assert.assertEquals(11, c.getWmc());
+
+		CKClassResult c2 = report.get("wmc.CC4$1MethodInner");
+		Assert.assertEquals(3, c2.getMethod("print/0").get().getWmc());
+	}
 }
