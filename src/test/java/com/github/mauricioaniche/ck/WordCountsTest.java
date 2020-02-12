@@ -46,14 +46,15 @@ public class WordCountsTest extends BaseTest {
 		Assert.assertEquals(13, w2.getUniqueWordsQty());
 	}
 
-	// This is a known issue.
-	// Currently, the number of unique words includes words that exist in sub-classes that are inside
-	// the method and the class.
-	// Issue #34 is open and looking for someone...
+	// related to issue #34
 	@Test
 	public void subclasses() {
-		// This +4 should disappear once the issue is implemented
-		Assert.assertEquals(10+4, w3.getUniqueWordsQty());
-		Assert.assertEquals(7+4, w3.getMethod("m2/0").get().getUniqueWordsQty());
+		Assert.assertEquals(7, w3.getMethod("m2/0").get().getUniqueWordsQty());
+		Assert.assertEquals(10, w3.getUniqueWordsQty());
+
+		// numbers in the subclass
+		CKClassResult subclass = report.get("wordcounts.WordCounts3$1X");
+		Assert.assertEquals(3, subclass.getMethod("xxx/0").get().getUniqueWordsQty());
+		Assert.assertEquals(4, subclass.getUniqueWordsQty());
 	}
 }

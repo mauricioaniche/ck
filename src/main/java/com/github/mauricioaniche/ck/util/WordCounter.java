@@ -121,4 +121,14 @@ public class WordCounter {
 		words.add(remainingWord);
 		return words;
 	}
+
+
+	public static String removeSpacesAndIdentation(String toString) {
+		return toString
+				.trim()
+				.replace("\t", " ")
+				.replace("\n", " ")
+				.replaceAll(" +", " ");
+	}
+
 }
