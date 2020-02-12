@@ -26,4 +26,10 @@ class WordCounts3 {
 
 		String superLongVariableName = "John";
 	}
+
+	static class Y {
+		public void yyy() {
+			int dog = 1;
+		}
+	}
 }

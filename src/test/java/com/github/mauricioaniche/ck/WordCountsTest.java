@@ -56,5 +56,9 @@ public class WordCountsTest extends BaseTest {
 		CKClassResult subclass = report.get("wordcounts.WordCounts3$1X");
 		Assert.assertEquals(3, subclass.getMethod("xxx/0").get().getUniqueWordsQty());
 		Assert.assertEquals(4, subclass.getUniqueWordsQty());
+
+		CKClassResult subclass2 = report.get("wordcounts.WordCounts3$Y");
+		Assert.assertEquals(2, subclass2.getMethod("yyy/0").get().getUniqueWordsQty());
+		Assert.assertEquals(3, subclass2.getUniqueWordsQty());
 	}
 }
