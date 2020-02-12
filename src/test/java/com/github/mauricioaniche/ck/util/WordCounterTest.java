@@ -50,4 +50,11 @@ public class WordCounterTest {
 		}
 	}
 
+	@Test
+	public void mixOfCamelCase_and_underscore() {
+		Set<String> words = WordCounter.wordsIn("longName_likeThis");
+
+		Assert.assertEquals(4, words.size());
+	}
+
 }

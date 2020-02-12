@@ -85,10 +85,6 @@ public class WordCounter {
 				.replace("/", " ")
 				.replace("-", " ")
 				.replace(";", " ")
-
-
-
-
 				.split(" ");
 
 		List<String> strings = Arrays.stream(cleanString).filter(word -> !javaKeywords.contains(word))

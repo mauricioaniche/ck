@@ -71,8 +71,11 @@ Note that whenever an anonymous class or a subclass is declared, it becomes an
 However, lambda expressions are not considered classes, and thus, are part of the
 class/method they are embedded into.
 
-- *Number of unique words*. Number of unique words in the source code. See `WordCounter` class for details on the
-implementation.
+- *Number of unique words*. Number of unique words in the source code. At method level, it only uses the method body as input. At class level,
+it uses the entire body of the class as metrics.
+The algorithm basically counts the number of words in a method/class, after removing Java keywords. Names are split based on camel case and underline (e.g., longName_likeThis becomes four words).
+Note that, given it sees the class as text, if a class contains a sub-class, the number of unique words will also include the number of words in the subclass.
+See `WordCounter` class for details on the implementation.
 
 - *Number of Log Statements*. Number of log statements in the source code. The counting is based on the following regex:
 `line.matches(".*\\.(info|warn|debug|error)\\(.*") || line.matches(".*log(ger)?\\..*");`.
