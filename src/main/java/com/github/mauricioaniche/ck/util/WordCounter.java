@@ -126,6 +126,7 @@ public class WordCounter {
 	public static String removeSpacesAndIdentation(String toString) {
 		return toString
 				.trim()
+				.replace("\r", " ")
 				.replace("\t", " ")
 				.replace("\n", " ")
 				.replaceAll(" +", " ");
