@@ -1199,6 +1199,49 @@ public class CKVisitor extends ASTVisitor {
 			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.endVisit(node));
 	}
 
+	@Override
+	public void endVisit(ConditionalExpression node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+	public void endVisit(ForStatement node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+	public void endVisit(EnhancedForStatement node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+	public void endVisit(DoStatement node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+	public void endVisit(WhileStatement node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+	public void endVisit(SwitchCase node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+	public void endVisit(IfStatement node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
 	// TODO: add all other endVisit blocks
 
 }

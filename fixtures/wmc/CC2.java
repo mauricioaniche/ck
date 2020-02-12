@@ -17,10 +17,13 @@ public class CC2 {
 	}
 	
 	public void m2() {
-		int i=0;
-		while(i < 10) {
-			a++;
-			i++;
+		int b = 10;
+		switch(a) {
+			case 1:
+				a++;
+				break;
+			case b:
+				a+=2;
 		}
 	}
 }
