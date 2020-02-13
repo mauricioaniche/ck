@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import java.util.*;
 
-public class ParameterCountTest extends BaseTest{
+public class VariableOrParameterUsageCountTest extends BaseTest{
 
 	private static Map<String, CKClassResult> report;
 

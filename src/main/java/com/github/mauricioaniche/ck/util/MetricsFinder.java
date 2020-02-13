@@ -6,6 +6,7 @@ import com.github.mauricioaniche.ck.metric.VariableOrFieldMetric;
 import org.reflections.Reflections;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -37,7 +38,7 @@ public class MetricsFinder {
 			Reflections reflections = new Reflections("com.github.mauricioaniche.ck.metric");
 			methodLevelClasses = reflections.getSubTypesOf(MethodLevelMetric.class);
 			if(!variablesAndFields)
-				methodLevelClasses = methodLevelClasses.stream().filter(x -> !x.isAnnotationPresent(VariableOrFieldMetric.class)).collect(Collectors.toSet());
+				methodLevelClasses = methodLevelClasses.stream().filter(x -> !Arrays.asList(x.getInterfaces()).contains(VariableOrFieldMetric.class)).collect(Collectors.toSet());
 		} catch(Exception e) {
 			throw new RuntimeException("Could not find method level metrics. Something is really wrong", e);
 		}

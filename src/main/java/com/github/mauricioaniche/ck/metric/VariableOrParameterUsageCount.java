@@ -10,8 +10,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-@VariableOrFieldMetric
-public class VariableOrParameterUsageCount implements CKASTVisitor, MethodLevelMetric {
+public class VariableOrParameterUsageCount implements CKASTVisitor, MethodLevelMetric, VariableOrFieldMetric {
 	private Set<String> declaredVariables;
 	private Map<String, Integer> occurrences;
 
