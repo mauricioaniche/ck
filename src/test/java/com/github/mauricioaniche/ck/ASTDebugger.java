@@ -1,373 +1,374 @@
 package com.github.mauricioaniche.ck;
 
+import com.github.mauricioaniche.ck.metric.CKASTVisitor;
 import com.github.mauricioaniche.ck.metric.ClassLevelMetric;
 import org.eclipse.jdt.core.dom.*;
 
-public class ASTDebugger extends ASTVisitor implements ClassLevelMetric {
+public class ASTDebugger implements CKASTVisitor, ClassLevelMetric {
 
 
-	public boolean visit(AnnotationTypeDeclaration node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(AnnotationTypeDeclaration node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(AnnotationTypeMemberDeclaration node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(AnnotationTypeMemberDeclaration node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(AnonymousClassDeclaration node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(AnonymousClassDeclaration node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(ArrayAccess node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(ArrayAccess node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(ArrayCreation node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(ArrayCreation node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(ArrayInitializer node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(ArrayInitializer node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(ArrayType node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(ArrayType node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(AssertStatement node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(AssertStatement node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(Assignment node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(Assignment node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(Block node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(Block node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(BlockComment node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(BlockComment node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(BooleanLiteral node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(BooleanLiteral node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(BreakStatement node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(BreakStatement node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(CastExpression node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(CastExpression node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(CatchClause node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(CatchClause node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(CharacterLiteral node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(CharacterLiteral node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(ClassInstanceCreation node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(ClassInstanceCreation node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(CompilationUnit node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(CompilationUnit node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(ConditionalExpression node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(ConditionalExpression node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(ConstructorInvocation node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(ConstructorInvocation node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(ContinueStatement node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(ContinueStatement node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(CreationReference node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(CreationReference node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(Dimension node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(Dimension node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(DoStatement node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(DoStatement node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(EmptyStatement node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(EmptyStatement node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(EnhancedForStatement node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(EnhancedForStatement node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(EnumConstantDeclaration node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(EnumConstantDeclaration node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(EnumDeclaration node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(EnumDeclaration node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(ExpressionMethodReference node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(ExpressionMethodReference node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(ExpressionStatement node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(ExpressionStatement node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(FieldAccess node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(FieldAccess node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(FieldDeclaration node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(FieldDeclaration node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(ForStatement node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(ForStatement node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(IfStatement node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(IfStatement node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(ImportDeclaration node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(ImportDeclaration node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(InfixExpression node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(InfixExpression node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(Initializer node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(Initializer node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(InstanceofExpression node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(InstanceofExpression node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(IntersectionType node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(IntersectionType node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(LabeledStatement node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(LabeledStatement node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(LambdaExpression node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(LambdaExpression node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(LineComment node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(LineComment node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(MarkerAnnotation node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(MarkerAnnotation node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(MemberRef node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(MemberRef node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(MemberValuePair node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(MemberValuePair node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(MethodRef node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(MethodRef node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(MethodRefParameter node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(MethodRefParameter node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(MethodDeclaration node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(MethodDeclaration node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(MethodInvocation node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(MethodInvocation node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(Modifier node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(Modifier node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(NameQualifiedType node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(NameQualifiedType node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(NormalAnnotation node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(NormalAnnotation node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(NullLiteral node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(NullLiteral node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(NumberLiteral node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(NumberLiteral node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(PackageDeclaration node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(PackageDeclaration node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(ParameterizedType node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(ParameterizedType node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(ParenthesizedExpression node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(ParenthesizedExpression node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(PostfixExpression node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(PostfixExpression node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(PrefixExpression node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(PrefixExpression node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(PrimitiveType node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(PrimitiveType node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(QualifiedName node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(QualifiedName node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(QualifiedType node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(QualifiedType node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(ReturnStatement node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(ReturnStatement node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(SimpleName node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(SimpleName node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(SimpleType node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(SimpleType node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(SingleMemberAnnotation node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(SingleMemberAnnotation node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(SingleVariableDeclaration node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(SingleVariableDeclaration node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(StringLiteral node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(StringLiteral node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(SuperConstructorInvocation node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(SuperConstructorInvocation node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(SuperFieldAccess node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(SuperFieldAccess node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(SuperMethodInvocation node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(SuperMethodInvocation node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(SuperMethodReference node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(SuperMethodReference node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(SwitchCase node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(SwitchCase node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(SwitchStatement node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(SwitchStatement node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(SynchronizedStatement node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(SynchronizedStatement node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(TagElement node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(TagElement node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(TextElement node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(TextElement node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(ThisExpression node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(ThisExpression node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(ThrowStatement node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(ThrowStatement node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(TryStatement node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(TryStatement node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(TypeDeclaration node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(TypeDeclaration node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(TypeDeclarationStatement node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(TypeDeclarationStatement node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(TypeLiteral node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(TypeLiteral node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(TypeMethodReference node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(TypeMethodReference node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(TypeParameter node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(TypeParameter node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(UnionType node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(UnionType node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(VariableDeclarationExpression node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(VariableDeclarationExpression node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(VariableDeclarationStatement node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(VariableDeclarationStatement node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(VariableDeclarationFragment node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(VariableDeclarationFragment node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(WhileStatement node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(WhileStatement node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
-	public boolean visit(WildcardType node) {
-		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString()); return true;
+	public void visit(WildcardType node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
 
 
