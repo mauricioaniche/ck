@@ -2,16 +2,14 @@ package com.github.mauricioaniche.ck.metric;
 
 import com.github.mauricioaniche.ck.CKClassResult;
 import com.github.mauricioaniche.ck.CKMethodResult;
-import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.TryStatement;
 
-public class NumberOfTryCatches extends ASTVisitor implements ClassLevelMetric, MethodLevelMetric {
+public class NumberOfTryCatches implements CKASTVisitor, ClassLevelMetric, MethodLevelMetric {
 
 	private int qty = 0;
 
-	public boolean visit(TryStatement node) {
+	public void visit(TryStatement node) {
 		qty++;
-		return true;
 	}
 
 	@Override

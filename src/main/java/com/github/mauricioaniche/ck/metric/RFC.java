@@ -7,15 +7,13 @@ import org.eclipse.jdt.core.dom.*;
 import java.util.HashSet;
 import java.util.List;
 
-public class RFC extends ASTVisitor implements ClassLevelMetric, MethodLevelMetric {
+public class RFC implements CKASTVisitor, ClassLevelMetric, MethodLevelMetric {
 
 	private HashSet<String> methodInvocations = new HashSet<String>();
 
-	public boolean visit(MethodInvocation node) {
+	public void visit(MethodInvocation node) {
 		IMethodBinding binding = node.resolveMethodBinding();
 		count(node.getName()  + "/" + arguments(node.arguments()), binding);
-		
-		return super.visit(node);
 	}
 
 	private String arguments(List<?> arguments) {
@@ -32,11 +30,9 @@ public class RFC extends ASTVisitor implements ClassLevelMetric, MethodLevelMetr
 		}
 	}
 	
-	public boolean visit(SuperMethodInvocation node) {
+	public void visit(SuperMethodInvocation node) {
 		IMethodBinding binding = node.resolveMethodBinding();
 		count(node.getName()  + "/" + arguments(node.arguments()), binding);
-		
-		return super.visit(node);
 	}
 
 	private String getMethodName(IMethodBinding binding) {

@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class LCOM extends ASTVisitor implements ClassLevelMetric {
+public class LCOM implements CKASTVisitor, ClassLevelMetric {
 
 	ArrayList<TreeSet<String>> methods = new ArrayList<TreeSet<String>>();
 	Set<String> declaredFields;
@@ -17,23 +17,21 @@ public class LCOM extends ASTVisitor implements ClassLevelMetric {
 		this.declaredFields = new HashSet<String>();
 	}
 	
-	public boolean visit(FieldDeclaration node) {
+	public void visit(FieldDeclaration node) {
 		
 		for(Object o : node.fragments()) {
 			VariableDeclarationFragment vdf = (VariableDeclarationFragment) o;
 			declaredFields.add(vdf.getName().toString());
 		}
 		
-		return super.visit(node);
 	}
 	
-	public boolean visit(SimpleName node) {
+	public void visit(SimpleName node) {
 		String name = node.getFullyQualifiedName();
 		if(declaredFields.contains(name)) {
 			acessed(name);
 		}
 		
-		return super.visit(node);
 	}
 
 	private void acessed(String name) {
@@ -42,10 +40,9 @@ public class LCOM extends ASTVisitor implements ClassLevelMetric {
 		}
 	}
 	
-	public boolean visit(MethodDeclaration node) {
+	public void visit(MethodDeclaration node) {
 		methods.add(new TreeSet<String>());
 		
-		return super.visit(node);
 	}
 	
 	@Override

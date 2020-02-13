@@ -4,12 +4,12 @@ import com.github.mauricioaniche.ck.CKClassResult;
 import com.github.mauricioaniche.ck.CKMethodResult;
 import org.eclipse.jdt.core.dom.*;
 
-public class NumberOfLogStatements extends ASTVisitor implements MethodLevelMetric, ClassLevelMetric {
+public class NumberOfLogStatements implements CKASTVisitor, MethodLevelMetric, ClassLevelMetric {
 
     private int qty = 0;
 
     @Override
-    public boolean visit(MethodInvocation node) {
+    public void visit(MethodInvocation node) {
         ASTNode parentNode = node.getParent();
         if (parentNode instanceof ExpressionStatement) {
             ExpressionStatement expr = (ExpressionStatement) parentNode;
@@ -18,7 +18,6 @@ public class NumberOfLogStatements extends ASTVisitor implements MethodLevelMetr
                 qty++;
             }
         }
-        return super.visit(node);
     }
 
     private boolean isLogStatement(String line) {

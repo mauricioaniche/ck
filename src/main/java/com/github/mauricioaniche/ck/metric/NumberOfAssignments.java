@@ -2,26 +2,22 @@ package com.github.mauricioaniche.ck.metric;
 
 import com.github.mauricioaniche.ck.CKClassResult;
 import com.github.mauricioaniche.ck.CKMethodResult;
-import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.Assignment;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 
-public class NumberOfAssignments extends ASTVisitor implements ClassLevelMetric, MethodLevelMetric {
+public class NumberOfAssignments implements CKASTVisitor, ClassLevelMetric, MethodLevelMetric {
 
 	private int qty = 0;
 
 	@Override
-	public boolean visit(Assignment node) {
+	public void visit(Assignment node) {
 		qty++;
-		return super.visit(node);
 	}
 
 	@Override
-	public boolean visit(VariableDeclarationFragment node) {
+	public void visit(VariableDeclarationFragment node) {
 		if(node.getInitializer()!=null)
 			qty++;
-
-		return super.visit(node);
 	}
 
 	@Override

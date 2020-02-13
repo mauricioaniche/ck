@@ -1,11 +1,10 @@
 package com.github.mauricioaniche.ck.metric;
 
 import com.github.mauricioaniche.ck.CKClassResult;
-import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.Modifier;
 
-public class NumberOfFields extends ASTVisitor implements ClassLevelMetric {
+public class NumberOfFields implements CKASTVisitor, ClassLevelMetric {
 
 	private int fields;
 	private int staticFields;
@@ -17,7 +16,7 @@ public class NumberOfFields extends ASTVisitor implements ClassLevelMetric {
 	private int synchronizedFields;
 
 	@Override
-	public boolean visit(FieldDeclaration node) {
+	public void visit(FieldDeclaration node) {
 		fields++;
 
 
@@ -48,7 +47,6 @@ public class NumberOfFields extends ASTVisitor implements ClassLevelMetric {
 		if(isSynchronized)
 			synchronizedFields++;
 
-		return false;
 	}
 
 	@Override

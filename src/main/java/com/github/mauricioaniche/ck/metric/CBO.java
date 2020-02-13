@@ -9,54 +9,47 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class CBO extends ASTVisitor implements ClassLevelMetric, MethodLevelMetric {
+public class CBO implements CKASTVisitor, ClassLevelMetric, MethodLevelMetric {
 
 	private Set<String> coupling = new HashSet<String>();
 
 	@Override
-	public boolean visit(VariableDeclarationStatement node) {
+	public void visit(VariableDeclarationStatement node) {
 		coupleTo(node.getType());
-		return super.visit(node);
 	}
 
 	@Override
-	public boolean visit(ClassInstanceCreation node) {
+	public void visit(ClassInstanceCreation node) {
 		coupleTo(node.getType());
-		return super.visit(node);
 	}
 
 	@Override
-	public boolean visit(ArrayCreation node) {
+	public void visit(ArrayCreation node) {
 		coupleTo(node.getType());
-		return super.visit(node);
 	}
 
 	@Override
-	public boolean visit(FieldDeclaration node) {
+	public void visit(FieldDeclaration node) {
 		coupleTo(node.getType());
-		return super.visit(node);
 	}
 
-	public boolean visit(ReturnStatement node) {
+	public void visit(ReturnStatement node) {
 		if (node.getExpression() != null) {
 			coupleTo(node.getExpression().resolveTypeBinding());
 		}
-		return super.visit(node);
 	}
 
 	@Override
-	public boolean visit(TypeLiteral node) {
+	public void visit(TypeLiteral node) {
 		coupleTo(node.getType());
-		return super.visit(node);
 	}
 	
-	public boolean visit(ThrowStatement node) {
+	public void visit(ThrowStatement node) {
 		if(node.getExpression()!=null)
 			coupleTo(node.getExpression().resolveTypeBinding());
-		return super.visit(node);
 	}
 
-	public boolean visit(TypeDeclaration node) {
+	public void visit(TypeDeclaration node) {
 		ITypeBinding resolvedType = node.resolveBinding();
 
 		if(resolvedType!=null) {
@@ -73,10 +66,9 @@ public class CBO extends ASTVisitor implements ClassLevelMetric, MethodLevelMetr
 			list.forEach(x -> coupleTo(x));
 		}
 
-		return super.visit(node);
 	}
 
-	public boolean visit(MethodDeclaration node) {
+	public void visit(MethodDeclaration node) {
 
 		IMethodBinding resolvedMethod = node.resolveBinding();
 		if (resolvedMethod != null) {
@@ -92,51 +84,44 @@ public class CBO extends ASTVisitor implements ClassLevelMetric, MethodLevelMetr
 			list.forEach(x -> coupleTo(x.getName()));
 		}
 
-		return super.visit(node);
 	}
 
 	@Override
-	public boolean visit(CastExpression node) {
+	public void visit(CastExpression node) {
 		coupleTo(node.getType());
 
-		return super.visit(node);
 	}
 
 	@Override
-	public boolean visit(InstanceofExpression node) {
+	public void visit(InstanceofExpression node) {
 
 		coupleTo(node.getRightOperand());
 		coupleTo(node.getLeftOperand().resolveTypeBinding());
 
-		return super.visit(node);
 	}
 
 	@Override
-	public boolean visit(MethodInvocation node) {
+	public void visit(MethodInvocation node) {
 
 		IMethodBinding binding = node.resolveMethodBinding();
 		if(binding!=null)
 			coupleTo(binding.getDeclaringClass());
 
-		return super.visit(node);
 	}
 
-	public boolean visit(NormalAnnotation node) {
+	public void visit(NormalAnnotation node) {
 		coupleTo(node);
-		return super.visit(node);
 	}
 
-	public boolean visit(MarkerAnnotation node) {
+	public void visit(MarkerAnnotation node) {
 		coupleTo(node);
-		return super.visit(node);
 	}
 
-	public boolean visit(SingleMemberAnnotation node) {
+	public void visit(SingleMemberAnnotation node) {
 		coupleTo(node);
-		return super.visit(node);
 	}
 
-	public boolean visit(ParameterizedType node) {
+	public void visit(ParameterizedType node) {
 		ITypeBinding binding = node.resolveBinding();
 		if (binding != null) {
 
@@ -149,7 +134,6 @@ public class CBO extends ASTVisitor implements ClassLevelMetric, MethodLevelMetr
 			coupleTo(node.getType());
 		}
 
-		return super.visit(node);
 	}
 	private void coupleTo(Annotation type) {
 		ITypeBinding resolvedType = type.resolveTypeBinding();

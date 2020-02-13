@@ -4,31 +4,27 @@ import com.github.mauricioaniche.ck.CKClassResult;
 import com.github.mauricioaniche.ck.CKMethodResult;
 import org.eclipse.jdt.core.dom.*;
 
-public class NumberOfSubClassesLambdasAndAnonymousClasses extends ASTVisitor implements ClassLevelMetric, MethodLevelMetric {
+public class NumberOfSubClassesLambdasAndAnonymousClasses implements CKASTVisitor, ClassLevelMetric, MethodLevelMetric {
 
 	private int anonymousClassesQty = 0;
 	private int subClassesQty = 0;
 	private int lambdasQty = 0;
 
-	public boolean visit(TypeDeclaration node) {
+	public void visit(TypeDeclaration node) {
 		subClassesQty++;
-		return super.visit(node);
 	}
 
-	public boolean visit(EnumDeclaration node) {
+	public void visit(EnumDeclaration node) {
 		// we count enum as class declaration!
 		subClassesQty++;
-		return super.visit(node);
 	}
 
-	public boolean visit(LambdaExpression node) {
+	public void visit(LambdaExpression node) {
 		lambdasQty++;
-		return super.visit(node);
 	}
 
-	public boolean visit(AnonymousClassDeclaration node) {
+	public void visit(AnonymousClassDeclaration node) {
 		anonymousClassesQty++;
-		return super.visit(node);
 	}
 
 	@Override

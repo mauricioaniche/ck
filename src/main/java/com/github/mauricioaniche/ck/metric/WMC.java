@@ -7,7 +7,7 @@ import org.eclipse.jdt.core.dom.*;
 
 import java.util.*;
 
-public class WMC extends ASTVisitor implements ClassLevelMetric, MethodLevelMetric {
+public class WMC implements CKASTVisitor, ClassLevelMetric, MethodLevelMetric {
 
 	protected int cc = 0;
 	// this stack helps us in knowing whether we could evaluate InfixExpressions or not
@@ -17,72 +17,60 @@ public class WMC extends ASTVisitor implements ClassLevelMetric, MethodLevelMetr
 	private LinkedList<ASTNode> stack = new LinkedList<>();
 
 	@Override
-	public boolean visit(MethodDeclaration node) {
+	public void visit(MethodDeclaration node) {
 
 		// plus 1 for the method itself
 		increaseCc();
-
-		return super.visit(node);
 	}
 
     @Override
-    public boolean visit(ForStatement node) {
+    public void visit(ForStatement node) {
 	    increaseCCFromExpression(node.getExpression());
 
     	stack.push(node);
-
-    	return super.visit(node);
     }
 
 	@Override
-    public boolean visit(EnhancedForStatement node) {
+    public void visit(EnhancedForStatement node) {
 	    increaseCCFromExpression(node.getExpression());
 
 	    stack.push(node);
-
-    	return super.visit(node);
     }
     
     @Override
-    public boolean visit(ConditionalExpression node) {
+    public void visit(ConditionalExpression node) {
 
 		increaseCCFromExpression(node.getExpression());
 
 		stack.push(node);
-
-    	return super.visit(node);
     }
     
     @Override
-    public boolean visit(DoStatement node) {
+    public void visit(DoStatement node) {
 	    increaseCCFromExpression(node.getExpression());
 
 	    stack.push(node);
-    	return super.visit(node);
     }
 
     @Override
-    public boolean visit(WhileStatement node) {
+    public void visit(WhileStatement node) {
 	    increaseCCFromExpression(node.getExpression());
 
 	    stack.push(node);
-    	return super.visit(node);
     }
     
     @Override
-    public boolean visit(SwitchCase node) {
+    public void visit(SwitchCase node) {
 
 		if(!node.isDefault()) {
 			increaseCCFromExpression(node.getExpression());
 		}
 
 	    stack.push(node);
-
-    	return super.visit(node);
     }
 
 	@Override
-	public boolean visit(InfixExpression node) {
+	public void visit(InfixExpression node) {
 
 		if(stack.isEmpty()) {
 			Set<InfixExpression.Operator> operatorsToConsider = new HashSet<InfixExpression.Operator>() {{
@@ -97,29 +85,23 @@ public class WMC extends ASTVisitor implements ClassLevelMetric, MethodLevelMetr
 			if (operatorsToConsider.contains(node.getOperator()))
 				increaseCc();
 		}
-
-		return super.visit(node);
 	}
-    
+
     @Override
-    public boolean visit(Initializer node) {
+    public void visit(Initializer node) {
     	increaseCc();
-    	return super.visit(node);
     }
 
 
     @Override
-    public boolean visit(CatchClause node) {
+    public void visit(CatchClause node) {
     	increaseCc();
-    	return super.visit(node);
     }
 
-    public boolean visit(IfStatement node) {
+    public void visit(IfStatement node) {
 
 	    increaseCCFromExpression(node.getExpression());
 	    stack.push(node);
-
-    	return super.visit(node);
     }
 
 	@Override

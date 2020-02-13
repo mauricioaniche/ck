@@ -6,7 +6,7 @@ import org.eclipse.jdt.core.dom.*;
 
 import java.util.Stack;
 
-public class NumberOfMaxNestedBlock extends ASTVisitor implements ClassLevelMetric, MethodLevelMetric {
+public class NumberOfMaxNestedBlock implements CKASTVisitor, ClassLevelMetric, MethodLevelMetric {
 
 	private int current = 0;
 	private int max = 0;
@@ -15,7 +15,7 @@ public class NumberOfMaxNestedBlock extends ASTVisitor implements ClassLevelMetr
 	private Stack<Boolean> nodes = new Stack<>();
 
 	@Override
-	public boolean visit(Block node) {
+	public void visit(Block node) {
 
 		// we always do a +1 if we see a block, with the exception of
 		// a switch case, as we do the +1 in the block.
@@ -30,11 +30,10 @@ public class NumberOfMaxNestedBlock extends ASTVisitor implements ClassLevelMetr
 		}
 
 		currentNode.push(node);
-		return super.visit(node);
 	}
 
 	@Override
-	public boolean visit(ForStatement node) {
+	public void visit(ForStatement node) {
 		currentNode.push(node);
 
 		boolean containsBlock = containsBlock(node.getBody());
@@ -45,11 +44,10 @@ public class NumberOfMaxNestedBlock extends ASTVisitor implements ClassLevelMetr
 			nodes.push(false);
 		}
 
-		return super.visit(node);
 	}
 
 	@Override
-	public boolean visit(EnhancedForStatement node) {
+	public void visit(EnhancedForStatement node) {
 
 		currentNode.push(node);
 
@@ -61,11 +59,10 @@ public class NumberOfMaxNestedBlock extends ASTVisitor implements ClassLevelMetr
 			nodes.push(false);
 		}
 
-		return super.visit(node);
 	}
 
 	@Override
-	public boolean visit(DoStatement node) {
+	public void visit(DoStatement node) {
 		currentNode.push(node);
 
 		boolean containsBlock = containsBlock(node.getBody());
@@ -76,11 +73,10 @@ public class NumberOfMaxNestedBlock extends ASTVisitor implements ClassLevelMetr
 			nodes.push(false);
 		}
 
-		return super.visit(node);
 	}
 
 	@Override
-	public boolean visit(WhileStatement node) {
+	public void visit(WhileStatement node) {
 		currentNode.push(node);
 
 		boolean containsBlock = containsBlock(node.getBody());
@@ -90,31 +86,24 @@ public class NumberOfMaxNestedBlock extends ASTVisitor implements ClassLevelMetr
 		} else {
 			nodes.push(false);
 		}
-
-
-
-		return super.visit(node);
 	}
 
 	@Override
-	public boolean visit(SwitchStatement node) {
+	public void visit(SwitchStatement node) {
 
 		currentNode.push(node);
 		nodes.push(true);
 		plusOne();
-
-		return super.visit(node);
 	}
 
 	@Override
-	public boolean visit(SwitchCase node) {
+	public void visit(SwitchCase node) {
 		currentNode.push(node);
-		return super.visit(node);
 	}
 
 
 	@Override
-	public boolean visit(CatchClause node) {
+	public void visit(CatchClause node) {
 
 		currentNode.push(node);
 
@@ -126,12 +115,9 @@ public class NumberOfMaxNestedBlock extends ASTVisitor implements ClassLevelMetr
 			nodes.push(false);
 		}
 
-
-
-		return super.visit(node);
 	}
 
-	public boolean visit(IfStatement node) {
+	public void visit(IfStatement node) {
 
 		currentNode.push(node);
 
@@ -142,8 +128,6 @@ public class NumberOfMaxNestedBlock extends ASTVisitor implements ClassLevelMetr
 		} else {
 			nodes.push(false);
 		}
-
-		return super.visit(node);
 	}
 
 

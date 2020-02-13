@@ -2,12 +2,11 @@ package com.github.mauricioaniche.ck.metric;
 
 import com.github.mauricioaniche.ck.CKClassResult;
 import com.github.mauricioaniche.ck.CKMethodResult;
-import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.InfixExpression;
 
 import java.util.Arrays;
 
-public class NumberOfMathOperators extends ASTVisitor implements ClassLevelMetric, MethodLevelMetric {
+public class NumberOfMathOperators implements CKASTVisitor, ClassLevelMetric, MethodLevelMetric {
 
 	private int qty = 0;
 
@@ -19,12 +18,10 @@ public class NumberOfMathOperators extends ASTVisitor implements ClassLevelMetri
 	};
 
 	@Override
-	public boolean visit(InfixExpression node) {
+	public void visit(InfixExpression node) {
 
 		if( Arrays.stream(operators).anyMatch(node.getOperator()::equals))
 			qty++;
-
-		return super.visit(node);
 
 	}
 

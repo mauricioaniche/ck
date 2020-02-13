@@ -1,7 +1,6 @@
 package com.github.mauricioaniche.ck.metric;
 
 import com.github.mauricioaniche.ck.CKMethodResult;
-import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
@@ -12,7 +11,7 @@ import java.util.Map;
 import java.util.Set;
 
 @VariableOrFieldMetric
-public class VariableOrParameterUsageCount extends ASTVisitor implements MethodLevelMetric {
+public class VariableOrParameterUsageCount implements CKASTVisitor, MethodLevelMetric {
 	private Set<String> declaredVariables;
 	private Map<String, Integer> occurrences;
 
@@ -26,18 +25,16 @@ public class VariableOrParameterUsageCount extends ASTVisitor implements MethodL
 		result.setVariablesUsage(occurrences);
 	}
 
-	public boolean visit(VariableDeclarationFragment node) {
+	public void visit(VariableDeclarationFragment node) {
 		declaredVariables.add(node.getName().toString());
-		return super.visit(node);
 
 	}
 
-	public boolean visit(SingleVariableDeclaration node) {
+	public void visit(SingleVariableDeclaration node) {
 		declaredVariables.add(node.getName().toString());
-		return super.visit(node);
 	}
 
-	public boolean visit(SimpleName node) {
+	public void visit(SimpleName node) {
 		if(declaredVariables.contains(node.toString())) {
 			String var = node.getIdentifier();
 			if (!occurrences.containsKey(var))
@@ -45,8 +42,6 @@ public class VariableOrParameterUsageCount extends ASTVisitor implements MethodL
 
 			occurrences.put(var, occurrences.get(var) + 1);
 		}
-
-		return super.visit(node);
 	}
 
 }

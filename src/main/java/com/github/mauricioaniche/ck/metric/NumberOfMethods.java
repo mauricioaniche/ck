@@ -1,11 +1,10 @@
 package com.github.mauricioaniche.ck.metric;
 
 import com.github.mauricioaniche.ck.CKClassResult;
-import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.Modifier;
 
-public class NumberOfMethods extends ASTVisitor implements ClassLevelMetric {
+public class NumberOfMethods implements CKASTVisitor, ClassLevelMetric {
 
 	private int methods;
 	private int staticMethods;
@@ -18,7 +17,7 @@ public class NumberOfMethods extends ASTVisitor implements ClassLevelMetric {
 	private int synchronizedMethods;
 
 	@Override
-	public boolean visit(MethodDeclaration node) {
+	public void visit(MethodDeclaration node) {
 		methods++;
 
 		// visibility
@@ -53,8 +52,6 @@ public class NumberOfMethods extends ASTVisitor implements ClassLevelMetric {
 
 		if(isSynchronized)
 			synchronizedMethods++;
-
-		return false;
 	}
 
 	@Override

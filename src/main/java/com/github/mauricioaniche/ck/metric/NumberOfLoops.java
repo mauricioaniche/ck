@@ -4,28 +4,24 @@ import com.github.mauricioaniche.ck.CKClassResult;
 import com.github.mauricioaniche.ck.CKMethodResult;
 import org.eclipse.jdt.core.dom.*;
 
-public class NumberOfLoops extends ASTVisitor implements ClassLevelMetric, MethodLevelMetric {
+public class NumberOfLoops implements CKASTVisitor, ClassLevelMetric, MethodLevelMetric {
 
 	private int qty = 0;
 
-	public boolean visit(EnhancedForStatement node) {
+	public void visit(EnhancedForStatement node) {
 		qty++;
-		return super.visit(node);
 	}
 
-	public boolean visit(DoStatement node) {
+	public void visit(DoStatement node) {
 		qty++;
-		return super.visit(node);
 	}
 
-	public boolean visit(WhileStatement node) {
+	public void visit(WhileStatement node) {
 		qty++;
-		return super.visit(node);
 	}
 
-	public boolean visit(ForStatement node) {
+	public void visit(ForStatement node) {
 		qty++;
-		return super.visit(node);
 	}
 
 	@Override

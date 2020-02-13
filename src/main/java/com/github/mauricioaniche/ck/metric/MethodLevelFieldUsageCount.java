@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 @VariableOrFieldMetric
-public class MethodLevelFieldUsageCount extends ASTVisitor implements MethodLevelMetric {
+public class MethodLevelFieldUsageCount implements CKASTVisitor, MethodLevelMetric {
 	private Set<String> declaredFields;
 	private Map<String, Integer> occurrences;
 	private Set<String> variables;
@@ -21,33 +21,26 @@ public class MethodLevelFieldUsageCount extends ASTVisitor implements MethodLeve
 		this.variables = new HashSet<>();
 	}
 
-	public boolean visit(MethodDeclaration node) {
+	public void visit(MethodDeclaration node) {
 
 		IMethodBinding binding = node.resolveBinding();
 		if(binding==null)
-			return super.visit(node);
+			return;
 
 		IVariableBinding[] fields = binding.getDeclaringClass().getDeclaredFields();
 
 		for (IVariableBinding field : fields) {
 			declaredFields.add(field.getName().toString());
 		}
-		return false;
 	}
 
-	public boolean visit(FieldDeclaration node) {
-		return false;
-	}
-
-	public boolean visit(VariableDeclarationFragment node) {
+	public void visit(VariableDeclarationFragment node) {
 		String var = node.getName().toString();
 		variables.add(var);
-		return false;
 	}
 
-	public boolean visit(FieldAccess node) {
+	public void visit(FieldAccess node) {
 		isFieldAccess = true;
-		return super.visit(node);
 	}
 
 	public void endVisit(FieldAccess node) {
@@ -64,7 +57,7 @@ public class MethodLevelFieldUsageCount extends ASTVisitor implements MethodLeve
 		occurrences.put(var, occurrences.get(var) + 1);
 	}
 
-	public boolean visit(SimpleName node) {
+	public void visit(SimpleName node) {
 
 		String var = node.getIdentifier();
 
@@ -78,7 +71,6 @@ public class MethodLevelFieldUsageCount extends ASTVisitor implements MethodLeve
 			plusOne(var);
 		}
 
-		return super.visit(node);
 	}
 
 	@Override
