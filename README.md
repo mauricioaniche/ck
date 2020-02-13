@@ -69,7 +69,12 @@ available in 0.4.2+.
 Note that whenever an anonymous class or a subclass is declared, it becomes an
 "entire new class", e.g., CK generates A.B and A.B$C, C being a subclass inside A.B.
 However, lambda expressions are not considered classes, and thus, are part of the
-class/method they are embedded into.
+class/method they are embedded into. A class or a method only has the number of sub-classes
+that are declared at its level, e.g., a sub-class that is declared inside a method M2,
+that is inside an anonymous
+class A, that is declared inside a method M, that finally is declared inside a class C,
+will not count in class C, but only in method M2 (first-level method it is embodied),
+and anonymous class A (first-level class it is embodied).
 
 - *Number of unique words*. Number of unique words in the source code. At method level, it only uses the method body as input. At class level,
 it uses the entire body of the class as metrics.

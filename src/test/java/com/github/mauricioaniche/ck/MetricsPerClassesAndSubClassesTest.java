@@ -18,7 +18,7 @@ public class MetricsPerClassesAndSubClassesTest extends BaseTest {
 	@Test
 	public void metricsPerClass() {
 
-		Assert.assertEquals(6, report.values().size());
+		Assert.assertEquals(9, report.values().size());
 
 		CKClassResult a = report.get("subclasses.MessyClass");
 		Assert.assertEquals(6, a.getNumberOfMethods());
@@ -44,6 +44,14 @@ public class MetricsPerClassesAndSubClassesTest extends BaseTest {
 		CKClassResult an2 = report.get("subclasses.MessyClass$Anonymous2");
 		Assert.assertEquals(2, an2.getNumberOfMethods());
 		Assert.assertEquals("anonymous", an2.getType());
+
+
+		CKClassResult ysc2 = report.get("subclasses.SC2");
+		Assert.assertEquals("class", ysc2.getType());
+		CKClassResult ysc2a = report.get("subclasses.SC2$Anonymous1");
+		Assert.assertEquals("anonymous", ysc2a.getType());
+		CKClassResult ysc2x = report.get("subclasses.SC2$1$1X");
+		Assert.assertEquals("subclass", ysc2x.getType());
 
 	}
 
