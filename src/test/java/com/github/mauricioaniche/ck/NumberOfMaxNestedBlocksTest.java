@@ -86,4 +86,12 @@ public class NumberOfMaxNestedBlocksTest extends BaseTest {
 
 		Assert.assertEquals(2, a.getMaxNestedBlocks());
 	}
+
+	// Basic enums do not have nested blocks
+	@Test
+	public void enums() {
+		CKClassResult a = report.get("nestedblocks.SimpleEnum");
+
+		Assert.assertEquals(0, a.getMaxNestedBlocks());
+	}
 }

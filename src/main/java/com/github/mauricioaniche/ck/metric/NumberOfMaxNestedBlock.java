@@ -193,11 +193,13 @@ public class NumberOfMaxNestedBlock implements CKASTVisitor, ClassLevelMetric, M
 
 	@Override
 	public void setResult(CKMethodResult result) {
-		result.setMaxNestedBlocks(max - 1); // -1 because the method block is considered a block.
+		// -1 because the method block is considered a block.
+		// and we avoid 0, that can happen in case of enums
+		result.setMaxNestedBlocks(Math.max(0, max - 1));
 	}
 
 	@Override
 	public void setResult(CKClassResult result) {
-		result.setMaxNestedBlocks(max - 1);
+		result.setMaxNestedBlocks(Math.max(0, max - 1));
 	}
 }
