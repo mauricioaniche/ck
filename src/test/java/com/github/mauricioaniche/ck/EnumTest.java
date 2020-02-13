@@ -28,6 +28,13 @@ public class EnumTest extends BaseTest {
 
 	}
 
+	@Test
+	public void maxNestedDepth() {
+		CKClassResult b = report.get("enumd.EnumDecl2");
+		Assert.assertEquals(1, b.getMethod("url/0").get().getMaxNestedBlocks());
+		Assert.assertEquals(4, b.getMethod("m2/0").get().getMaxNestedBlocks());
+	}
+
 
 
 }
