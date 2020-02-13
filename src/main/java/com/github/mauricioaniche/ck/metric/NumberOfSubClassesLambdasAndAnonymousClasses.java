@@ -15,6 +15,12 @@ public class NumberOfSubClassesLambdasAndAnonymousClasses extends ASTVisitor imp
 		return super.visit(node);
 	}
 
+	public boolean visit(EnumDeclaration node) {
+		// we count enum as class declaration!
+		subClassesQty++;
+		return super.visit(node);
+	}
+
 	public boolean visit(LambdaExpression node) {
 		lambdasQty++;
 		return super.visit(node);
@@ -28,7 +34,7 @@ public class NumberOfSubClassesLambdasAndAnonymousClasses extends ASTVisitor imp
 	@Override
 	public void setResult(CKClassResult result) {
 		result.setAnonymousClassesQty(anonymousClassesQty);
-		result.setSubClassesQty(subClassesQty - 1);
+		result.setSubClassesQty(subClassesQty - 1); // -1 as it counts its own class here
 		result.setLambdasQty(lambdasQty);
 
 	}

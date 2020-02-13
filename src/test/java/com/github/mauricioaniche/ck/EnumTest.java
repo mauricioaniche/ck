@@ -35,6 +35,20 @@ public class EnumTest extends BaseTest {
 		Assert.assertEquals(4, b.getMethod("m2/0").get().getMaxNestedBlocks());
 	}
 
+	@Test
+	public void subclasses() {
+		CKClassResult b = report.get("enumd.EnumDecl3");
+
+		Assert.assertEquals(1, b.getMethod("getX/0").get().getSubClassesQty());
+		Assert.assertEquals(2, b.getSubClassesQty());
+
+		CKClassResult sc = report.get("enumd.EnumDecl3$1Other");
+		Assert.assertEquals(4, sc.getNumberOfMethods());
+		Assert.assertEquals(3, sc.getMethod("x1/0").get().getWmc());
+		Assert.assertEquals(2, sc.getMethod("x1/0").get().getVariablesQty());
+
+	}
+
 
 
 }
