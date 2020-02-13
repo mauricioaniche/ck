@@ -93,6 +93,13 @@
 			<artifactId>commons-csv</artifactId>
 			<version>1.7</version>
 		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.pitest/pitest-maven -->
+		<dependency>
+			<groupId>org.pitest</groupId>
+			<artifactId>pitest-maven</artifactId>
+			<version>1.4.11</version>
+		</dependency>
 	</dependencies>
 
 	<distributionManagement>
@@ -108,6 +115,20 @@
 
 	<build>
 		<plugins>
+
+			<plugin>
+				<groupId>org.pitest</groupId>
+				<artifactId>pitest-maven</artifactId>
+				<version>1.4.11</version>
+				<configuration>
+					<targetClasses>
+						<param>com.github.mauricioaniche.ck.metric.*</param>
+					</targetClasses>
+					<targetTests>
+						<param>com.github.mauricioaniche.ck.*</param>
+					</targetTests>
+				</configuration>
+			</plugin>
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
