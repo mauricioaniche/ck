@@ -24,6 +24,66 @@ public class NumberOfMaxNestedBlocksTest extends BaseTest {
 		Assert.assertEquals(5, a.getMethod("m1/0").get().getMaxNestedBlocks());
 		Assert.assertEquals(2, a.getMethod("m2/0").get().getMaxNestedBlocks());
 		Assert.assertEquals(0, a.getMethod("m3/0").get().getMaxNestedBlocks());
+	}
 
+	@Test
+	public void blocksWithNoClearOpenBracket() {
+		CKClassResult a = report.get("nestedblocks.NestedBlocks2");
+
+		Assert.assertEquals(5, a.getMethod("m1/0").get().getMaxNestedBlocks());
+		Assert.assertEquals(2, a.getMethod("m2/0").get().getMaxNestedBlocks());
+		Assert.assertEquals(0, a.getMethod("m3/0").get().getMaxNestedBlocks());
+
+		Assert.assertEquals(5, a.getMaxNestedBlocks());
+	}
+
+	@Test
+	public void loops() {
+		CKClassResult a = report.get("nestedblocks.NestedBlocks3");
+
+		Assert.assertEquals(5, a.getMethod("m1/0").get().getMaxNestedBlocks());
+
+		Assert.assertEquals(5, a.getMaxNestedBlocks());
+	}
+
+	@Test
+	public void switchCases() {
+		CKClassResult a = report.get("nestedblocks.NestedBlocks4");
+
+		Assert.assertEquals(4, a.getMethod("m1/0").get().getMaxNestedBlocks());
+		Assert.assertEquals(4, a.getMethod("m2/0").get().getMaxNestedBlocks());
+
+		Assert.assertEquals(4, a.getMaxNestedBlocks());
+	}
+
+	@Test
+	public void blocksJustBecause() {
+		CKClassResult a = report.get("nestedblocks.NestedBlocks5");
+
+		Assert.assertEquals(3, a.getMethod("m1/0").get().getMaxNestedBlocks());
+
+		Assert.assertEquals(3, a.getMaxNestedBlocks());
+	}
+
+	@Test
+	public void tryCatch() {
+		CKClassResult a = report.get("nestedblocks.NestedBlocks6");
+
+		Assert.assertEquals(3, a.getMethod("m1/0").get().getMaxNestedBlocks());
+		Assert.assertEquals(6, a.getMethod("m2/0").get().getMaxNestedBlocks());
+
+
+		Assert.assertEquals(6, a.getMaxNestedBlocks());
+	}
+
+	@Test
+	public void useSynchronized() {
+		CKClassResult a = report.get("nestedblocks.NestedBlocks7");
+
+		Assert.assertEquals(2, a.getMethod("m1/0").get().getMaxNestedBlocks());
+		Assert.assertEquals(2, a.getMethod("m1/0").get().getMaxNestedBlocks());
+
+
+		Assert.assertEquals(2, a.getMaxNestedBlocks());
 	}
 }
