@@ -65,12 +65,12 @@ available in 0.4.2+.
 
 - *Max nested blocks*: The highest number of blocks nested together.
 
-- *Quantity of Anonymous classes, subclasses, and lambda expressions*. The name says it all.
-Note that whenever an anonymous class or a subclass is declared, it becomes an
-"entire new class", e.g., CK generates A.B and A.B$C, C being a subclass inside A.B.
+- *Quantity of Anonymous classes, inner classes, and lambda expressions*. The name says it all.
+Note that whenever an anonymous class or an inner class is declared, it becomes an
+"entire new class", e.g., CK generates A.B and A.B$C, C being an inner class inside A.B.
 However, lambda expressions are not considered classes, and thus, are part of the
-class/method they are embedded into. A class or a method only has the number of sub-classes
-that are declared at its level, e.g., a sub-class that is declared inside a method M2,
+class/method they are embedded into. A class or a method only has the number of inner classes
+that are declared at its level, e.g., an inner class that is declared inside a method M2,
 that is inside an anonymous
 class A, that is declared inside a method M, that finally is declared inside a class C,
 will not count in class C, but only in method M2 (first-level method it is embodied),
@@ -95,7 +95,7 @@ See `NumberOfLogStatements.java` for more info.
 (In a previous version, it calculated NOC (Number of Children), but it doesn't do it anymore,
 as it requires too much memory.)
 
-Note: CK separates classes, subclasses, and anonymous classes. LOC is the only metric that is not completely isolated from the others, e.g., if A has a declaration of a subclass B, then LOC(A) = LOC(class A) + LOC(subclass B).
+Note: CK separates classes, inner classes, and anonymous classes. LOC is the only metric that is not completely isolated from the others, e.g., if A has a declaration of an inner class B, then LOC(A) = LOC(class A) + LOC(inner class B).
 
 ## How to use the standalone version
 

@@ -24,7 +24,7 @@ public class CKMethodResult {
 	private int mathOperationsQty;
 	private int maxNestedBlocks;
 	private int anonymousClassesQty;
-	private int subClassesQty;
+	private int innerClassesQty;
 	private int lambdasQty;
 	private int uniqueWordsQty;
 	private Map<String, Integer> fieldUsage;
@@ -214,12 +214,12 @@ public class CKMethodResult {
 		return anonymousClassesQty;
 	}
 
-	public void setSubClassesQty(int subClassesQty) {
-		this.subClassesQty = subClassesQty;
+	public void setInnerClassesQty(int innerClassesQty) {
+		this.innerClassesQty = innerClassesQty;
 	}
 
-	public int getSubClassesQty() {
-		return subClassesQty;
+	public int getInnerClassesQty() {
+		return innerClassesQty;
 	}
 
 	public void setLambdasQty(int lambdasQty) {

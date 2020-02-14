@@ -1,4 +1,4 @@
-package subclasses;
+package innerclasses;
 
 class SC2 {
 	public void m1() {

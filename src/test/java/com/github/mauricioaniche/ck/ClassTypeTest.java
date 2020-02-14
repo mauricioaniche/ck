@@ -27,7 +27,7 @@ public class ClassTypeTest extends BaseTest {
 		Assert.assertEquals("class", a.getType());
 
 		CKClassResult b = report.get("classtypes.A$B");
-		Assert.assertEquals("subclass", b.getType());
+		Assert.assertEquals("innerclass", b.getType());
 
 		CKClassResult mathOperation = report.get("classtypes.MathOperation");
 		Assert.assertEquals("interface", mathOperation.getType());

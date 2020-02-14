@@ -1,11 +1,11 @@
-package subclasses;
+package innerclasses;
 
 class MessyClass {
 	
 	private int a;
 	private int b;
 
-	class SubClass1 {
+	class InnerClass1 {
 		public void m1() {
 			int x = 0;
 			int y = 0;
@@ -21,7 +21,7 @@ class MessyClass {
 		public void m2() {}
 	}
 
-	static class SubClass2 {
+	static class InnerClass2 {
 		public void m1() {
 			int a = a + 10;
 		}
@@ -77,7 +77,7 @@ class MessyClass {
 	}
 
 	public void m6() {
-		class SubClass3 {
+		class InnerClass3 {
 			public void m1();
 		};
 

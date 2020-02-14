@@ -134,7 +134,7 @@ public class RealWorldClassesTest extends BaseTest {
 		Assert.assertNotNull(a);
 
 		Assert.assertEquals(3, a.getNumberOfMethods());
-		Assert.assertEquals("subclass", a.getType());
+		Assert.assertEquals("innerclass", a.getType());
 	}
 
 	// this one contains subclasses

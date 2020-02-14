@@ -30,7 +30,7 @@ public class CKClassResult {
 	private int variablesQty;
 	private int maxNestedBlocks;
 	private int anonymousClassesQty;
-	private int subClassesQty;
+	private int innerClassesQty;
 	private int lambdasQty;
 	private int uniqueWordsQty;
 	private int numberOfMethods;
@@ -250,12 +250,12 @@ public class CKClassResult {
 		return anonymousClassesQty;
 	}
 
-	public void setSubClassesQty(int subClassesQty) {
-		this.subClassesQty = subClassesQty;
+	public void setInnerClassesQty(int innerClassesQty) {
+		this.innerClassesQty = innerClassesQty;
 	}
 
-	public int getSubClassesQty() {
-		return subClassesQty;
+	public int getInnerClassesQty() {
+		return innerClassesQty;
 	}
 
 	public void setLambdasQty(int lambdasQty) {
