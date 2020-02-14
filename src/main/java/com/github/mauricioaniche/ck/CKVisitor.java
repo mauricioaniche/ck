@@ -1187,74 +1187,600 @@ public class CKVisitor extends ASTVisitor {
 	// End visits
 
 	@Override
+	public void endVisit(AnnotationTypeMemberDeclaration) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(ArrayAccess node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(ArrayCreation node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(ArrayInitializer node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(ArrayType node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(AssertStatement node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(Assignment node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
 	public void endVisit(Block node) {
 		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
 		if(!classes.peek().methods.isEmpty())
 			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
 	}
 
-	@Override
-	public void endVisit(FieldAccess node) {
+		@Override
+	public void endVisit(BlockComment node) {
 		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
 		if(!classes.peek().methods.isEmpty())
 			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
 	}
 
-	@Override
-	public void endVisit(ConditionalExpression node) {
+		@Override
+	public void endVisit(BooleanLiteral node) {
 		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
 		if(!classes.peek().methods.isEmpty())
 			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
 	}
 
-	public void endVisit(ForStatement node) {
+		@Override
+	public void endVisit(BreakStatement node) {
 		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
 		if(!classes.peek().methods.isEmpty())
 			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
 	}
 
-	public void endVisit(EnhancedForStatement node) {
+		@Override
+	public void endVisit(CastExpression node) {
 		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
 		if(!classes.peek().methods.isEmpty())
 			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
 	}
 
-	public void endVisit(DoStatement node) {
-		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
-		if(!classes.peek().methods.isEmpty())
-			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
-	}
-
-	public void endVisit(WhileStatement node) {
-		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
-		if(!classes.peek().methods.isEmpty())
-			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
-	}
-
-	public void endVisit(SwitchCase node) {
-		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
-		if(!classes.peek().methods.isEmpty())
-			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
-	}
-
-	public void endVisit(IfStatement node) {
-		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
-		if(!classes.peek().methods.isEmpty())
-			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
-	}
-
-	public void endVisit(SwitchStatement node) {
-		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
-		if(!classes.peek().methods.isEmpty())
-			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
-	}
-
+		@Override
 	public void endVisit(CatchClause node) {
 		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
 		if(!classes.peek().methods.isEmpty())
 			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
 	}
 
-	// TODO: add all other endVisit blocks
+		@Override
+	public void endVisit(CharacterLiteral node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(ClassInstanceCreation node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(CompilationUnit node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(ConditionalExpression node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(Block node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(ConstructorInvocation node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(ContinueStatement node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(CreationReference node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(Dimension node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(DoStatement node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(EmptyStatement node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(EnhancedForStatement node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(EnumConstantDeclaration node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(ExpressionMethodReference node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(ExpressionStatement node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(FieldAccess node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(FieldDeclaration node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(ForStatement node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(IfStatement node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(ImportDeclaration node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(InfixExpression node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(InstanceofExpression node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(IntersectionType node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(LabeledStatement node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(LambdaExpression node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(LineComment node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(MarkerAnnotation node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(MemberRef node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(MemberValuePair node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(MethodRef node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(MethodRefParameter node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(MethodInvocation node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(Modifier node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(NameQualifiedType node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(NormalAnnotation node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(NullLiteral node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(NumberLiteral node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(PackageDeclaration node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(ParameterizedType node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(ParenthesizedExpression node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(PostfixExpression node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(PrefixExpression node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(PrimitiveType node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(QualifiedName node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(QualifiedType node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(ReturnStatement node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(SimpleName node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(SimpleType node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(SingleMemberAnnotation node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(SingleVariableDeclaration node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(StringLiteral node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(SuperConstructorInvocation node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(SuperFieldAcess node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(SuperMethodInvocation node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(SuperMethodReference node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(SwitchCase node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(SwtichStatement node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(SynchronizedStatemente node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(TagElement node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(TextElement node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(ThisExpression node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(ThrowStatement node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(TryStatement node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(TypeDeclarationStatement node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(TypeLiteral node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(TypeMethodReference node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(TypeParameter node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(UnionType node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(VariableDeclarationExpression node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(VariableDeclarationFragment node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+		@Override
+	public void endVisit(WhileStatement node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+
+		@Override
+	public void endVisit(WildcardType node) {
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		if(!classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
 
 }
