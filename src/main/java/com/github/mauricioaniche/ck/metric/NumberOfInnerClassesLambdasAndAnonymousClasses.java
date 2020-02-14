@@ -4,7 +4,7 @@ import com.github.mauricioaniche.ck.CKClassResult;
 import com.github.mauricioaniche.ck.CKMethodResult;
 import org.eclipse.jdt.core.dom.*;
 
-public class NumberOfSubClassesLambdasAndAnonymousClasses implements CKASTVisitor, ClassLevelMetric, MethodLevelMetric {
+public class NumberOfInnerClassesLambdasAndAnonymousClasses implements CKASTVisitor, ClassLevelMetric, MethodLevelMetric {
 
 	private int anonymousClassesQty = 0;
 	private int innerClassesQty = 0;

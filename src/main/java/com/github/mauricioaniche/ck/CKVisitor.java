@@ -319,7 +319,7 @@ public class CKVisitor extends ASTVisitor {
 	}
 
 	private String getTypeOfTheUnit(TypeDeclaration node) {
-		return node.isInterface() ? "interface" : (classes.isEmpty() ? "class" : "subclass");
+		return node.isInterface() ? "interface" : (classes.isEmpty() ? "class" : "innerclass");
 	}
 
 	// -------------------------------------------------------

@@ -17,11 +17,11 @@ public class ResultWriter {
             "privateFields", "protectedFields", "defaultFields", "finalFields", "synchronizedFields", "nosi", "loc",
             "returnQty", "loopQty", "comparisonsQty", "tryCatchQty", "parenthesizedExpsQty", "stringLiteralsQty",
             "numbersQty", "assignmentsQty", "mathOperationsQty", "variablesQty", "maxNestedBlocks",
-            "anonymousClassesQty", "subClassesQty", "lambdasQty", "uniqueWordsQty", "modifiers", "logStatementsQty" };
+            "anonymousClassesQty", "innerClassesQty", "lambdasQty", "uniqueWordsQty", "modifiers", "logStatementsQty" };
     private static final String[] METHOD_HEADER = { "file", "class", "method", "constructor", "line", "cbo", "wmc", "rfc", "loc",
             "returns", "variables", "parameters", "startLine", "loopQty", "comparisonsQty", "tryCatchQty",
             "parenthesizedExpsQty", "stringLiteralsQty", "numbersQty", "assignmentsQty", "mathOperationsQty",
-            "maxNestedBlocks", "anonymousClassesQty", "subClassesQty", "lambdasQty", "uniqueWordsQty", "modifiers", "logStatementsQty" };
+            "maxNestedBlocks", "anonymousClassesQty", "innerClassesQty", "lambdasQty", "uniqueWordsQty", "modifiers", "logStatementsQty" };
     private static final String[] VAR_FIELD_HEADER = { "file", "class", "method", "variable", "usage" };
     private final boolean variablesAndFields;
 
@@ -75,7 +75,7 @@ public class ResultWriter {
                 result.getLoopQty(), result.getComparisonsQty(), result.getTryCatchQty(),
                 result.getParenthesizedExpsQty(), result.getStringLiteralsQty(), result.getNumbersQty(),
                 result.getAssignmentsQty(), result.getMathOperationsQty(), result.getVariablesQty(),
-                result.getMaxNestedBlocks(), result.getAnonymousClassesQty(), result.getSubClassesQty(),
+                result.getMaxNestedBlocks(), result.getAnonymousClassesQty(), result.getInnerClassesQty(),
                 result.getLambdasQty(), result.getUniqueWordsQty(), result.getModifiers(), result.getNumberOfLogStatements());
 
         for (CKMethodResult method : result.getMethods()) {
@@ -86,7 +86,7 @@ public class ResultWriter {
                     method.getLoopQty(), method.getComparisonsQty(), method.getTryCatchQty(),
                     method.getParenthesizedExpsQty(), method.getStringLiteralsQty(), method.getNumbersQty(),
                     method.getAssignmentsQty(), method.getMathOperationsQty(), method.getMaxNestedBlocks(),
-                    method.getAnonymousClassesQty(), method.getSubClassesQty(), method.getLambdasQty(),
+                    method.getAnonymousClassesQty(), method.getInnerClassesQty(), method.getLambdasQty(),
                     method.getUniqueWordsQty(), method.getModifiers(), method.getLogStatementsQty());
 
             if(variablesAndFields) {
