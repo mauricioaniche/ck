@@ -9,10 +9,9 @@ value is calculated based on the amount of free memory available.
 way less output.
 * New metric: Number of log statements in a method.
 * Better documentation on "Number of Methods" metrics: Constructor methods are counted here.
-* Enhancements on "max nested block depth" and "word count".
-* Bug fixes related to sub-classes, e.g., subclasses inside enums, and some classes had
--1 as number of sub-classes.
-* Bug fix related to resolving an inexisting generic class when calculating CBO
+* Enhancements on the implementations of "max nested block depth" and "word count".
+* Bub fix: Number of inner classes and max nested block depth were returning -1 in specific cases.
+* Bug fix: resolving an inexisting generic class when calculating CBO
 * Add Pitest as test dependency of the project.
 * Refactorings: metrics now implement CKASTVisitor instead of JDT's ASTVisitor directly,
 variable and field metrics are now indicated by means of an interface and not an annotation.

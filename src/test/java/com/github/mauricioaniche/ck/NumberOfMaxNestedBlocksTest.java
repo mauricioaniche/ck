@@ -94,4 +94,12 @@ public class NumberOfMaxNestedBlocksTest extends BaseTest {
 
 		Assert.assertEquals(0, a.getMaxNestedBlocks());
 	}
+
+	// based on issue #40
+	@Test
+	public void classesWithNoMethods() {
+		CKClassResult a = report.get("nestedblocks.NestedBlocks8");
+
+		Assert.assertEquals(0, a.getMaxNestedBlocks());
+	}
 }

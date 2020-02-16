@@ -44,10 +44,10 @@ public class NumberOfInnerClassesLambdasAndAnonymousClasses implements CKASTVisi
 
 	@Override
 	public void setResult(CKClassResult result) {
+		// the -1 there is because the main type under analysis here is counted as +1.
 		result.setAnonymousClassesQty(anonymousClassesQty - (firstFound.equals("anonymous")?1:0));
 		result.setInnerClassesQty(innerClassesQty - (firstFound.equals("type") || firstFound.equals("enum")?1:0));
 		result.setLambdasQty(lambdasQty - (firstFound.equals("lambda")?1:0));
-
 	}
 
 	@Override
