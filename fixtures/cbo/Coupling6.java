@@ -7,3 +7,11 @@ public class Coupling6 {
 public class Coupling61 {
 	private Box2<Integer> integerBox = new Box2<Integer>();
 }
+
+public class Coupling62 {
+	private Box2<A> integerBox = new Box2<A>();
+}
+
+public class Coupling63 {
+	private Box<A> integerBox = new Box<A>();
+}
