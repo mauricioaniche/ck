@@ -12,6 +12,7 @@ way less output.
 * Enhancements on "max nested block depth" and "word count".
 * Bug fixes related to sub-classes, e.g., subclasses inside enums, and some classes had
 -1 as number of sub-classes.
+* Bug fix related to resolving an inexisting generic class when calculating CBO
 * Add Pitest as test dependency of the project.
 * Refactorings: metrics now implement CKASTVisitor instead of JDT's ASTVisitor directly,
 variable and field metrics are now indicated by means of an interface and not an annotation.
