@@ -15,6 +15,7 @@ way less output.
 * Add Pitest as test dependency of the project.
 * Refactorings: metrics now implement CKASTVisitor instead of JDT's ASTVisitor directly,
 variable and field metrics are now indicated by means of an interface and not an annotation.
+* SubClass was renamed to innerClass. Subclass was definitely the wrong name.
 * Lots of new tests.
 
 ## 0.4.4
