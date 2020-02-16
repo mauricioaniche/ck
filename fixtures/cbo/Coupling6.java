@@ -20,3 +20,6 @@ public class Coupling64 {
 	private Box<XX> integerBox = new Box<XX>();
 }
 
+public class Coupling65 {
+	private Box<A> integerBox = new Box<A>();
+}

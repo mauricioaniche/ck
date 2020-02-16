@@ -88,5 +88,8 @@ public class CBOTest extends BaseTest {
 		CKClassResult f = report.get("cbo.Coupling64");
 		Assert.assertEquals(2, f.getCbo());
 
+		CKClassResult g = report.get("cbo.Coupling65");
+		Assert.assertEquals(2, g.getCbo());
+
 	}
 }
