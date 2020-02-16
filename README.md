@@ -120,7 +120,6 @@ you should skip it if you only need metrics at class or method level.
 
 The tool will generate three csv files: class, method, and variable levels.
 
->_PS. In case you face `ERROR - Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.8.1:compile ...` change maven-compiler-plugin to the Java version that you have._
 
 ## How to integrate it in my Java app
 
