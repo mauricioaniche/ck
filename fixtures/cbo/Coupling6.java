@@ -15,3 +15,8 @@ public class Coupling62 {
 public class Coupling63 {
 	private Box<A> integerBox = new Box<A>();
 }
+
+public class Coupling64 {
+	private Box<XX> integerBox = new Box<XX>();
+}
+

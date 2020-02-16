@@ -236,6 +236,7 @@ public class CBO implements CKASTVisitor, ClassLevelMetric, MethodLevelMetric {
 	@Override
 	public void setResult(CKClassResult result) {
 		clean();
+		System.out.println("classes " + coupling);
 		result.setCbo(getValue());
 	}
 
