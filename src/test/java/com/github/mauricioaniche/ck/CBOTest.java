@@ -8,7 +8,6 @@ import java.util.Map;
 
 public class CBOTest extends BaseTest {
 
-
 	private static Map<String, CKClassResult> report;
 
 	@BeforeClass
@@ -63,7 +62,6 @@ public class CBOTest extends BaseTest {
 		Assert.assertEquals(1, b.getMethod("am2/0").get().getCbo());
 		Assert.assertEquals(1, b.getMethod("am3/0").get().getCbo());
 		Assert.assertEquals(2, b.getMethod("am4/0").get().getCbo());
-
 	}
 
 	@Test
@@ -77,5 +75,8 @@ public class CBOTest extends BaseTest {
 	public void couplingWithGenericsAndJavaType() {
 		CKClassResult b = report.get("cbo.Coupling6");
 		Assert.assertEquals(1, b.getCbo());
+
+		CKClassResult c = report.get("cbo.Coupling61");
+		Assert.assertEquals(1, c.getCbo());
 	}
 }

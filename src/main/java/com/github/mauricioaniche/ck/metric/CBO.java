@@ -194,17 +194,35 @@ public class CBO implements CKASTVisitor, ClassLevelMetric, MethodLevelMetric {
 	}
 
 	private void coupleTo(ITypeBinding binding) {
+
 		if (binding == null)
 			return;
 		if (binding.isWildcardType())
+			return;
+		if (binding.isNullType())
 			return;
 
 		String type = binding.getQualifiedName();
 		if (type.equals("null"))
 			return;
 
-		if (!isFromJava(type) && !binding.isPrimitive())
-			addToSet(type.replace("[]", ""));
+		if (isFromJava(type) || binding.isPrimitive())
+			return;
+
+
+		String cleanedType = cleanClassName(type);
+		addToSet(cleanedType);
+	}
+
+	private String cleanClassName(String type) {
+		// remove possible array(s) in the class name
+		String cleanedType = type.replace("[]", "").replace("\\$", ".");
+
+		// remove generics declaration, let's stype with the type
+		if(cleanedType.contains("<"))
+			cleanedType = cleanedType.substring(0, cleanedType.indexOf("<"));
+
+		return cleanedType;
 	}
 
 	private boolean isFromJava(String type) {
