@@ -71,4 +71,11 @@ public class CBOTest extends BaseTest {
 		CKClassResult b = report.get("cbo.NotResolved");
 		Assert.assertEquals(5, b.getCbo());
 	}
+
+	// based on issue #43
+	@Test
+	public void couplingWithGenericsAndJavaType() {
+		CKClassResult b = report.get("cbo.Coupling6");
+		Assert.assertEquals(1, b.getCbo());
+	}
 }
