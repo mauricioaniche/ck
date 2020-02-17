@@ -47,4 +47,18 @@ public class RFCTest extends BaseTest {
 		Assert.assertEquals(1, a.getMethod("m3/0").get().getRfc());
 
 	}
+
+	@Test
+	public void noMethodInvocation(){
+		CKClassResult a = report.get("rfc.RFC4");
+		Assert.assertEquals(0, a.getRfc());
+	}
+
+	@Test
+	public void functionalInterface(){
+		CKClassResult a = report.get("rfc.RFC5");
+		Assert.assertEquals(3, a.getRfc());
+
+	}
+
 }
