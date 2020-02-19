@@ -17,5 +17,13 @@ class Variables {
 
 	public void m3() {
 
+        byte typeByte = 357;
+        short typeShort = 35712;
+        char typeChar = 'J';
+        float typeFloat = 3.5f;
+        double typeDouble = 3.57;
+        int typeInt = 3571235712;
+        long typeLong = 35712357123571235712;
+        boolean typeBooleano = true;
 	}
 }
