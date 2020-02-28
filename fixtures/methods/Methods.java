@@ -14,7 +14,7 @@ public class Methods {
 	public synchronized int h() {}
 
 	public final void display(){
-		System.out.println("Hello welcome to Tutorialspoint");
+		System.out.println("display");
 	}
 	
 }
