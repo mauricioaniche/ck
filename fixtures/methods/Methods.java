@@ -12,5 +12,9 @@ public class Methods {
 	protected double g() {}
 
 	public synchronized int h() {}
+
+	public final void display(){
+		System.out.println("display");
+	}
 	
 }
