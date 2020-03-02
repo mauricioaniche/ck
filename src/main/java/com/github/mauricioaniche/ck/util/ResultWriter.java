@@ -19,7 +19,7 @@ public class ResultWriter {
             "numbersQty", "assignmentsQty", "mathOperationsQty", "variablesQty", "maxNestedBlocks",
             "anonymousClassesQty", "innerClassesQty", "lambdasQty", "uniqueWordsQty", "modifiers", "logStatementsQty" };
     private static final String[] METHOD_HEADER = { "file", "class", "method", "constructor", "line", "cbo", "wmc", "rfc", "loc",
-            "returns", "variables", "parameters", "startLine", "loopQty", "comparisonsQty", "tryCatchQty",
+            "returns", "variables", "parameters", "loopQty", "comparisonsQty", "tryCatchQty",
             "parenthesizedExpsQty", "stringLiteralsQty", "numbersQty", "assignmentsQty", "mathOperationsQty",
             "maxNestedBlocks", "anonymousClassesQty", "innerClassesQty", "lambdasQty", "uniqueWordsQty", "modifiers", "logStatementsQty" };
     private static final String[] VAR_FIELD_HEADER = { "file", "class", "method", "variable", "usage" };
@@ -82,7 +82,7 @@ public class ResultWriter {
             this.methodPrinter.printRecord(result.getFile(), result.getClassName(), method.getMethodName(),
                     method.isConstructor(),
                     method.getStartLine(), method.getCbo(), method.getWmc(), method.getRfc(), method.getLoc(),
-                    method.getReturnQty(), method.getVariablesQty(), method.getParametersQty(), method.getStartLine(),
+                    method.getReturnQty(), method.getVariablesQty(), method.getParametersQty(),
                     method.getLoopQty(), method.getComparisonsQty(), method.getTryCatchQty(),
                     method.getParenthesizedExpsQty(), method.getStringLiteralsQty(), method.getNumbersQty(),
                     method.getAssignmentsQty(), method.getMathOperationsQty(), method.getMaxNestedBlocks(),
