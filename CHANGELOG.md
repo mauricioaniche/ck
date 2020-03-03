@@ -16,6 +16,7 @@ way less output.
 * Refactorings: metrics now implement CKASTVisitor instead of JDT's ASTVisitor directly,
 variable and field metrics are now indicated by means of an interface and not an annotation.
 * SubClass was renamed to innerClass. Subclass was definitely the wrong name.
+* Fix a bug in the CSV generator: it was printing the line number of the method twice.
 * Lots of new tests.
 
 ## 0.4.4
