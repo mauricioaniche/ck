@@ -2,9 +2,8 @@
 
 ## 0.5.1
 
-* The number of lines of code is now more precise and standard to all the elements. Before, the method that
-calculated LOC at class-level was different from the ones at method-level, inner classes, static initializers, etc.
-Now, the best calculation method is reused everywhere.
+* The number of lines of code is now more precise and standard to all the elements. Now, LOC is actually
+SLOC (i.e., it does not empty lines or comments).
 
 ## 0.5.0
 
