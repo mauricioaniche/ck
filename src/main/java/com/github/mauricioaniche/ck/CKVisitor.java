@@ -70,7 +70,7 @@ public class CKVisitor extends ASTVisitor {
 		String type = getTypeOfTheUnit(node);
 		int modifiers = node.getModifiers();
 		CKClassResult currentClass = new CKClassResult(sourceFilePath, className, type, modifiers);
-		currentClass.setLoc((int) JDTUtils.countLoc(node));
+		currentClass.setLoc(calculate(node.toString()));
 
 		// create a set of visitors, just for the current class
 		List<ClassLevelMetric> classLevelMetrics = instantiateClassLevelMetricVisitors();
@@ -115,7 +115,7 @@ public class CKVisitor extends ASTVisitor {
 		boolean isConstructor = node.isConstructor();
 
 		CKMethodResult currentMethod = new CKMethodResult(currentMethodName, isConstructor, node.getModifiers());
-		currentMethod.setLoc(calculate(IOUtils.toInputStream(node.toString())));
+		currentMethod.setLoc(calculate(node.toString()));
 		currentMethod.setStartLine(JDTUtils.getStartLine(cu, node));
 
 		// let's instantiate method level visitors for this current method
@@ -164,7 +164,7 @@ public class CKVisitor extends ASTVisitor {
 		// we give the anonymous class a 'class$AnonymousN' name
 		String anonClassName = classes.peek().result.getClassName() + "$Anonymous" + ++anonymousNumber;
 		CKClassResult currentClass = new CKClassResult(sourceFilePath, anonClassName, "anonymous", -1);
-		currentClass.setLoc((int) JDTUtils.countLoc(node));
+		currentClass.setLoc(calculate(node.toString()));
 
 		// create a set of visitors, just for the current class
 		List<ClassLevelMetric> classLevelMetrics = instantiateClassLevelMetricVisitors();
@@ -206,7 +206,7 @@ public class CKVisitor extends ASTVisitor {
 		String currentMethodName = "(initializer)";
 
 		CKMethodResult currentMethod = new CKMethodResult(currentMethodName, false, node.getModifiers());
-		currentMethod.setLoc(calculate(IOUtils.toInputStream(node.toString())));
+		currentMethod.setLoc(calculate(node.toString()));
 		currentMethod.setStartLine(JDTUtils.getStartLine(cu, node));
 
 		// let's instantiate method level visitors for this current method
@@ -262,7 +262,7 @@ public class CKVisitor extends ASTVisitor {
 		String type = "enum";
 		int modifiers = node.getModifiers();
 		CKClassResult currentClass = new CKClassResult(sourceFilePath, className, type, modifiers);
-		currentClass.setLoc((int) JDTUtils.countLoc(node));
+		currentClass.setLoc(calculate(node.toString()));
 
 		// create a set of visitors, just for the current class
 		List<ClassLevelMetric> classLevelMetrics = instantiateClassLevelMetricVisitors();

@@ -38,7 +38,8 @@ but different types.
 of branch instructions in a class.
 
 - *LOC (Lines of code)*: It counts the lines of count, ignoring
-empty lines. The number of lines here might be a bit different from the original file, as we use JDT's internal representation of the source code to calculate it.
+empty lines and comments (i.e., it's Source Lines of Code, or SLOC).
+The number of lines here might be a bit different from the original file, as we use JDT's internal representation of the source code to calculate it.
 
 - *LCOM (Lack of Cohesion of Methods)*: Calculates LCOM metric. This is the very first
 version of metric, which is not reliable. LCOM-HS can be better (hopefully, you will

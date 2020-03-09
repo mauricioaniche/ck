@@ -85,8 +85,4 @@ public class JDTUtils {
 		);
 	}
 
-	public static long countLoc(ASTNode type) {
-		return type.toString().chars().filter(x -> x == '\n').count() + 1;
-	}
-
 }
