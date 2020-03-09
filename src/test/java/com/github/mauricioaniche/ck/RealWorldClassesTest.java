@@ -184,4 +184,15 @@ public class RealWorldClassesTest extends BaseTest {
 
 	}
 
+	// check whether the kerberosChallenge method is detected
+	// in one of the versions of the project, it identifies the method with a wrong arity.
+	// TODO: find this version.
+	@Test
+	public void asyncHttpClient_1() {
+		CKClassResult class1 = report.get("org.asynchttpclient.netty.handler.intercept.Unauthorized401Interceptor");
+		System.out.println(class1.getMethods());
+
+		CKMethodResult method = class1.getMethod("kerberosChallenge/3[org.asynchttpclient.netty.handler.intercept.Realm,org.asynchttpclient.netty.handler.intercept.Request,org.asynchttpclient.netty.handler.intercept.HttpHeaders]").get();
+		Assert.assertNotNull(method);
+	}
 }
