@@ -28,4 +28,12 @@ public class GenericsTest extends BaseTest {
 				.filter(x -> x.getMethodName().equals("notEmpty/3[T,java.lang.String,java.lang.Object[]]") && x.getStartLine() == 13).count());
 
 	}
+
+	@Test
+	public void noGenericsInClassName() {
+		CKClassResult r = report.get("bg.Generics2");
+
+		Assert.assertNotNull(r);
+
+	}
 }
