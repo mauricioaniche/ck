@@ -1,5 +1,8 @@
-package com.github.mauricioaniche.ck;
+package com.github.mauricioaniche.ck.realworld;
 
+import com.github.mauricioaniche.ck.BaseTest;
+import com.github.mauricioaniche.ck.CKClassResult;
+import com.github.mauricioaniche.ck.CKMethodResult;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -28,7 +31,7 @@ public class RealWorldClassesTest extends BaseTest {
 
 		CKClassResult ck = report.get("debug.CSVParser");
 
-		for (CKMethodResult CKMethodResult : ck.getMethods()) {
+		for (com.github.mauricioaniche.ck.CKMethodResult CKMethodResult : ck.getMethods()) {
 			System.out.println(CKMethodResult.getMethodName());
 
 			for (Map.Entry<String, Integer> entry : CKMethodResult.getVariablesUsage().entrySet()) {
@@ -190,9 +193,17 @@ public class RealWorldClassesTest extends BaseTest {
 	@Test
 	public void asyncHttpClient_1() {
 		CKClassResult class1 = report.get("org.asynchttpclient.netty.handler.intercept.Unauthorized401Interceptor");
-		System.out.println(class1.getMethods());
 
 		CKMethodResult method = class1.getMethod("kerberosChallenge/3[org.asynchttpclient.netty.handler.intercept.Realm,org.asynchttpclient.netty.handler.intercept.Request,org.asynchttpclient.netty.handler.intercept.HttpHeaders]").get();
 		Assert.assertNotNull(method);
 	}
+
+	@Test
+	public void asyncHttpClient_2() {
+		CKClassResult class1 = report.get("com.ning.http.client.providers.NettyAsyncHttpProvider");
+		System.out.println(class1.getMethods());
+
+		Assert.assertNotNull(class1.getMethod("doConnect/3[com.ning.http.client.providers.Request,com.ning.http.client.providers.AsyncHandler<T>,com.ning.http.client.providers.NettyResponseFuture<T>]"));
+	}
+
 }

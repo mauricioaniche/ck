@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.Callable;
 
-abstract class BaseTest {
+public abstract class BaseTest {
 
 	protected static String fixturesDir() {
 		try {
