@@ -103,7 +103,7 @@ public class MethodsTest extends BaseTest {
 
         Optional<CKMethodResult> init2 = a.getMethod("(initializer 2)");
         Assert.assertTrue(init2.isPresent());
-        Assert.assertEquals(0, init1.get().getLoopQty());
+        Assert.assertEquals(0, init2.get().getLoopQty());
     }
 
     @Test
