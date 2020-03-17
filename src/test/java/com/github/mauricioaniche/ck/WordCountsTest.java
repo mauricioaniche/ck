@@ -37,7 +37,7 @@ public class WordCountsTest extends BaseTest {
 	public void countStaticInitializer() {
 		Assert.assertEquals(1, w2.getMethod("m1/0").get().getUniqueWordsQty());
 		Assert.assertEquals(7, w2.getMethod("m2/0").get().getUniqueWordsQty());
-		Assert.assertEquals(3, w2.getMethod("(initializer)").get().getUniqueWordsQty());
+		Assert.assertEquals(3, w2.getMethod("(initializer 1)").get().getUniqueWordsQty());
 	}
 
 	@Test

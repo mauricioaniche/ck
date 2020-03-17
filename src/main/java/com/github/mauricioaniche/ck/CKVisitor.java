@@ -4,7 +4,6 @@ import com.github.mauricioaniche.ck.metric.CKASTVisitor;
 import com.github.mauricioaniche.ck.metric.ClassLevelMetric;
 import com.github.mauricioaniche.ck.metric.MethodLevelMetric;
 import com.github.mauricioaniche.ck.util.JDTUtils;
-import org.apache.commons.io.IOUtils;
 import org.eclipse.jdt.core.dom.*;
 
 import java.util.HashSet;
@@ -19,6 +18,7 @@ public class CKVisitor extends ASTVisitor {
 
 	private String sourceFilePath;
 	private int anonymousNumber;
+	private int initializerNumber;
 
 	class MethodInTheStack {
 		CKMethodResult result;
@@ -203,7 +203,7 @@ public class CKVisitor extends ASTVisitor {
 	// static blocks
 	public boolean visit(Initializer node) {
 
-		String currentMethodName = "(initializer)";
+		String currentMethodName = "(initializer " + (++initializerNumber) + ")";
 
 		CKMethodResult currentMethod = new CKMethodResult(currentMethodName, false, node.getModifiers());
 		currentMethod.setLoc(calculate(node.toString()));

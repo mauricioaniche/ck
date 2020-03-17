@@ -86,9 +86,24 @@ public class MethodsTest extends BaseTest {
     public void staticInitializer() {
         CKClassResult a = report.get("methods.StaticInitializer");
 
-        Optional<CKMethodResult> init = a.getMethod("(initializer)");
+        Optional<CKMethodResult> init = a.getMethod("(initializer 1)");
         Assert.assertTrue(init.isPresent());
         Assert.assertEquals(1, init.get().getLoopQty());
+    }
+
+    // there can be multiple static initializers in a single class
+    // see https://github.com/mauricioaniche/ck/issues/53
+    @Test
+    public void multipleStaticInitializer() {
+        CKClassResult a = report.get("methods.StaticInitializer2");
+
+        Optional<CKMethodResult> init1 = a.getMethod("(initializer 1)");
+        Assert.assertTrue(init1.isPresent());
+        Assert.assertEquals(1, init1.get().getLoopQty());
+
+        Optional<CKMethodResult> init2 = a.getMethod("(initializer 2)");
+        Assert.assertTrue(init2.isPresent());
+        Assert.assertEquals(0, init1.get().getLoopQty());
     }
 
     @Test

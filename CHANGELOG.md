@@ -1,5 +1,10 @@
 # CK changelog
 
+## 0.5.2
+
+* Initializer methods are now called as "(initializer X)", where X is the number of the
+initializer. See issue #53.
+
 ## 0.5.1
 
 * The number of lines of code is now more precise and standard to all the elements. Now, LOC is actually
