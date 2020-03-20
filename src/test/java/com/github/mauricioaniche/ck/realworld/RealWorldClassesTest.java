@@ -206,4 +206,12 @@ public class RealWorldClassesTest extends BaseTest {
 		Assert.assertNotNull(class1.getMethod("doConnect/3[com.ning.http.client.providers.Request,com.ning.http.client.providers.AsyncHandler<T>,com.ning.http.client.providers.NettyResponseFuture<T>]"));
 	}
 
+	// illustrates the example of https://github.com/mauricioaniche/ck/issues/54
+	// still to be implemented
+	@Test
+	public void hectorPolicyManager_betterNamesForAnonymousClasses() {
+		CKClassResult class1 = report.get("net.retakethe.policyauction.data.impl.HectorPolicyManagerImpl");
+		CKClassResult anonymousClass = report.get("net.retakethe.policyauction.data.impl.HectorPolicyManagerImpl$Anonymous1");
+	}
+
 }
