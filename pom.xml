@@ -31,7 +31,7 @@
 
 	<scm>
 		<url>http://github.com/mauricioaniche/ck</url>
-		<connection>scm:git:git://github.com/mauricioaniche/ck</connection>
+		<connection>scm:git:git://github.com/mauricioaniche/ck.git</connection>
 		<developerConnection>scm:git:git@github.com:mauricioaniche/ck.git</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
