@@ -5,7 +5,10 @@ import com.github.mauricioaniche.ck.metric.MethodLevelMetric;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 
 public abstract class BaseTest {
@@ -22,7 +25,7 @@ public abstract class BaseTest {
   }
 
   protected static Map<String, CKClassResult> runDebug(String dir) {
-    return run(dir, () -> Arrays.asList(new ASTDebugger()), () -> Collections.emptyList());
+    return run(dir, () -> Collections.singletonList(new ASTDebugger()), Collections::emptyList);
   }
 
   protected static Map<String, CKClassResult> run(String dir) {
