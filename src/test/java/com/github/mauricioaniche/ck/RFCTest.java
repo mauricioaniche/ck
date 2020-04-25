@@ -68,17 +68,17 @@ public class RFCTest extends BaseTest {
   }
 
   @Test
-  @DisplayName("Count the number of method invocations in a build class")
+  @DisplayName("Count the number of method invocations in a sequence of calls")
   public void test1() {
     CKClassResult a = report.get("rfc.RFC6");
     Assertions.assertEquals(4, a.getRfc());
   }
 
   @Test
-  @DisplayName("Count the number of method invocations in a stream")
+  @DisplayName("Count the number of method reference invocations")
   public void test2() {
     CKClassResult a = report.get("rfc.RFC7");
     Assertions.assertEquals(5, a.getMethod("m1/0").get().getRfc());
-    Assertions.assertEquals(7, a.getMethod("m2/0").get().getRfc());
+    Assertions.assertEquals(8, a.getMethod("m2/0").get().getRfc());
   }
 }
