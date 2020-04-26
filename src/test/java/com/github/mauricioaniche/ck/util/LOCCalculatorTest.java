@@ -1,7 +1,7 @@
 package com.github.mauricioaniche.ck.util;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class LOCCalculatorTest {
 
@@ -16,7 +16,7 @@ public class LOCCalculatorTest {
 		sb.append("}\r\n");
 
 		int loc = LOCCalculator.calculate(sb.toString());
-		Assert.assertEquals(5, loc);
+		Assertions.assertEquals(5, loc);
 	}
 
 	@Test
@@ -30,7 +30,7 @@ public class LOCCalculatorTest {
 
 
 		int loc = LOCCalculator.calculate(sb.toString());
-		Assert.assertEquals(5, loc);
+		Assertions.assertEquals(5, loc);
 	}
 
 	@Test
@@ -46,7 +46,7 @@ public class LOCCalculatorTest {
 
 
 		int loc = LOCCalculator.calculate(sb.toString());
-		Assert.assertEquals(5, loc);
+		Assertions.assertEquals(5, loc);
 	}
 
 	@Test
@@ -62,7 +62,7 @@ public class LOCCalculatorTest {
 
 
 		int loc = LOCCalculator.calculate(sb.toString());
-		Assert.assertEquals(5, loc);
+		Assertions.assertEquals(5, loc);
 	}
 
 	@Test
@@ -82,7 +82,7 @@ public class LOCCalculatorTest {
 
 
 		int loc = LOCCalculator.calculate(sb.toString());
-		Assert.assertEquals(5, loc);
+		Assertions.assertEquals(5, loc);
 	}
 
 	@Test
@@ -96,7 +96,7 @@ public class LOCCalculatorTest {
 
 
 		int loc = LOCCalculator.calculate(sb.toString());
-		Assert.assertEquals(5, loc);
+		Assertions.assertEquals(5, loc);
 	}
 
 	@Test
@@ -110,7 +110,7 @@ public class LOCCalculatorTest {
 
 
 		int loc = LOCCalculator.calculate(sb.toString());
-		Assert.assertEquals(5, loc);
+		Assertions.assertEquals(5, loc);
 	}
 
 	@Test
@@ -125,7 +125,7 @@ public class LOCCalculatorTest {
 
 
 		int loc = LOCCalculator.calculate(sb.toString());
-		Assert.assertEquals(5, loc);
+		Assertions.assertEquals(5, loc);
 	}
 
 	@Test
@@ -141,7 +141,7 @@ public class LOCCalculatorTest {
 
 
 		int loc = LOCCalculator.calculate(sb.toString());
-		Assert.assertEquals(6, loc);
+		Assertions.assertEquals(6, loc);
 	}
 
 	@Test
@@ -154,7 +154,7 @@ public class LOCCalculatorTest {
 		sb.append("}");
 
 		int loc = LOCCalculator.calculate(sb.toString());
-		Assert.assertEquals(5, loc);
+		Assertions.assertEquals(5, loc);
 	}
 
 
@@ -175,7 +175,7 @@ public class LOCCalculatorTest {
 		sb.append("\r\n");
 
 		int loc = LOCCalculator.calculate(sb.toString());
-		Assert.assertEquals(5, loc);
+		Assertions.assertEquals(5, loc);
 	}
 
 

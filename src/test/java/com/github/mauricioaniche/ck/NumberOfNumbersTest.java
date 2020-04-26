@@ -1,8 +1,8 @@
 package com.github.mauricioaniche.ck;
 
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
@@ -10,7 +10,7 @@ public class NumberOfNumbersTest extends BaseTest {
 
 	private static Map<String, CKClassResult> report;
 
-	@BeforeClass
+	@BeforeAll
 	public static void setUp() {
 		report = run(fixturesDir() + "/numbers");
 	}
@@ -19,10 +19,10 @@ public class NumberOfNumbersTest extends BaseTest {
 	public void count() {
 		CKClassResult a = report.get("numbers.Numbers");
 
-		Assert.assertEquals(5, a.getNumbersQty());
+		Assertions.assertEquals(5, a.getNumbersQty());
 
-		Assert.assertEquals(5, a.getMethod("m1/0").get().getNumbersQty());
-		Assert.assertEquals(0, a.getMethod("m2/0").get().getNumbersQty());
+		Assertions.assertEquals(5, a.getMethod("m1/0").get().getNumbersQty());
+		Assertions.assertEquals(0, a.getMethod("m2/0").get().getNumbersQty());
 
 	}
 }

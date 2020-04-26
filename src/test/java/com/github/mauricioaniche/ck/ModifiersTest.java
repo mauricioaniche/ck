@@ -1,10 +1,10 @@
 package com.github.mauricioaniche.ck;
 
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.eclipse.jdt.core.dom.Modifier;
 import java.util.Map;
@@ -17,7 +17,7 @@ public class ModifiersTest extends BaseTest {
 	private static Map<String, Integer> modifiersByMethod;
 	private static CKClassResult classResult;
 	
-	@BeforeClass
+	@BeforeAll
 	public static void setUp() {
 		report = run(fixturesDir() + "/modifiers");
 		classResult = report.get("modifiers.ClassWithModifiers");

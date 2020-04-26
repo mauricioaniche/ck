@@ -1,7 +1,7 @@
 package com.github.mauricioaniche.ck.util;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.Set;
 
@@ -12,11 +12,11 @@ public class WordCounterTest {
 		String sourceCode = "a b c d r$ a@ h^";
 
 		Set<String> words = WordCounter.wordsIn(sourceCode);
-		Assert.assertEquals(4, words.size());
-		Assert.assertTrue(words.contains("a"));
-		Assert.assertTrue(words.contains("b"));
-		Assert.assertTrue(words.contains("c"));
-		Assert.assertTrue(words.contains("d"));
+		Assertions.assertEquals(4, words.size());
+		Assertions.assertTrue(words.contains("a"));
+		Assertions.assertTrue(words.contains("b"));
+		Assertions.assertTrue(words.contains("c"));
+		Assertions.assertTrue(words.contains("d"));
 	}
 
 	@Test
@@ -29,11 +29,11 @@ public class WordCounterTest {
 				"\n} }";
 
 		Set<String> words = WordCounter.wordsIn(sourceCode);
-		Assert.assertEquals(4, words.size());
-		Assert.assertTrue(words.contains("Test"));
-		Assert.assertTrue(words.contains("metodo"));
-		Assert.assertTrue(words.contains("taxes"));
-		Assert.assertTrue(words.contains("interests"));
+		Assertions.assertEquals(4, words.size());
+		Assertions.assertTrue(words.contains("Test"));
+		Assertions.assertTrue(words.contains("metodo"));
+		Assertions.assertTrue(words.contains("taxes"));
+		Assertions.assertTrue(words.contains("interests"));
 
 	}
 
@@ -42,11 +42,11 @@ public class WordCounterTest {
 		String sourceCode = "thisIsABigWord another_word_like_this now_weMix";
 		Set<String> words = WordCounter.wordsIn(sourceCode);
 
-		Assert.assertEquals(11, words.size());
+		Assertions.assertEquals(11, words.size());
 
 		String[] expected = new String[] { "A", "Big", "Word", "like", "another", "now", "this", "Is", "word", "Mix", "we"};
 		for (String expectedString : expected) {
-			Assert.assertTrue(words.contains(expectedString));
+			Assertions.assertTrue(words.contains(expectedString));
 		}
 	}
 
@@ -54,7 +54,7 @@ public class WordCounterTest {
 	public void mixOfCamelCase_and_underscore() {
 		Set<String> words = WordCounter.wordsIn("longName_likeThis");
 
-		Assert.assertEquals(4, words.size());
+		Assertions.assertEquals(4, words.size());
 	}
 
 }

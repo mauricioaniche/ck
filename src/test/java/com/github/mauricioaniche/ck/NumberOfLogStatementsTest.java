@@ -1,17 +1,17 @@
 package com.github.mauricioaniche.ck;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class NumberOfLogStatementsTest extends BaseTest {
 
     private static Map<String, CKClassResult> report;
 
-    @BeforeClass
+    @BeforeAll
     public static void setUp() {
         report = run(fixturesDir() + "/logs");
     }
