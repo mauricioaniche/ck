@@ -6,19 +6,15 @@ import org.eclipse.jdt.core.dom.*;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class RFC implements CKASTVisitor, ClassLevelMetric, MethodLevelMetric {
 
-	private HashSet<String> methodInvocations = new HashSet<String>();
+	private final HashSet<String> methodInvocations = new HashSet<String>();
 
 	public void visit(MethodInvocation node) {
 		IMethodBinding binding = node.resolveMethodBinding();
 		count(node.getName()  + "/" + arguments(node.arguments()), binding);
-	}
-
-	private String arguments(List<?> arguments) {
-		if(arguments==null || arguments.isEmpty()) return "0";
-		return "" + arguments.size();
 	}
 
 	private void count(String methodName, IMethodBinding binding) {
@@ -29,21 +25,35 @@ public class RFC implements CKASTVisitor, ClassLevelMetric, MethodLevelMetric {
 			methodInvocations.add(methodName);
 		}
 	}
-	
+
+	private String arguments(List<?> arguments) {
+		if(arguments==null || arguments.isEmpty()) return "0";
+		return "" + arguments.size();
+	}
+
+	private String getMethodName(IMethodBinding binding) {
+		ITypeBinding[] args = binding.getParameterTypes();
+		String argumentList = Stream.of(args).map(ITypeBinding::getName).reduce("", (s, s2) -> s + s2);;
+		String method =
+				binding.getDeclaringClass().getQualifiedName()
+						+ "."
+						+ binding.getName()
+						+ "/"
+						+ binding.getTypeArguments().length
+						+ "["
+						+ argumentList
+						+ "]";
+		return method;
+	}
+
 	public void visit(SuperMethodInvocation node) {
 		IMethodBinding binding = node.resolveMethodBinding();
 		count(node.getName()  + "/" + arguments(node.arguments()), binding);
 	}
 
-	private String getMethodName(IMethodBinding binding) {
-		
-		String argumentList = "";
-		ITypeBinding[] args = binding.getParameterTypes();
-		for(ITypeBinding arg : args) {
-			argumentList += arg.getName();
-		}
-		String method = binding.getDeclaringClass().getQualifiedName() + "." + binding.getName() + "/" + binding.getTypeArguments().length + "[" + argumentList + "]";
-		return method;
+	public void visit(ExpressionMethodReference node) {
+		IMethodBinding binding = node.resolveMethodBinding();
+		count(node.getName().toString(), binding);
 	}
 	
 	@Override
