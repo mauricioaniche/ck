@@ -1,8 +1,8 @@
 package com.github.mauricioaniche.ck;
 
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
@@ -10,7 +10,7 @@ public class MethodsDetailsTest extends BaseTest{
 
 	private static Map<String, CKClassResult> report;
 
-	@BeforeClass
+	@BeforeAll
 	public static void setUp() {
 		report = run(fixturesDir() + "/details-methods");
 	}
@@ -18,40 +18,40 @@ public class MethodsDetailsTest extends BaseTest{
 	@Test
 	public void loc() {
 		CKClassResult a = report.get("methods2.A1");
-		Assert.assertEquals(6, a.getMethod("a/0").get().getLoc());
-		Assert.assertEquals(2, a.getMethod("b/0").get().getLoc());
+		Assertions.assertEquals(6, a.getMethod("a/0").get().getLoc());
+		Assertions.assertEquals(2, a.getMethod("b/0").get().getLoc());
 	}
 
 	@Test
 	public void parameterQty() {
 		CKClassResult a = report.get("methods2.A1");
-		Assert.assertEquals(3, a.getMethod("c/3[int,int,methods2.A]").get().getParametersQty());
-		Assert.assertEquals(0, a.getMethod("a/0").get().getParametersQty());
+		Assertions.assertEquals(3, a.getMethod("c/3[int,int,methods2.A]").get().getParametersQty());
+		Assertions.assertEquals(0, a.getMethod("a/0").get().getParametersQty());
 	}
 
 	@Test
 	public void variableQty() {
 		CKClassResult a = report.get("methods2.A1");
-		Assert.assertEquals(5, a.getMethod("a/0").get().getVariablesQty());
-		Assert.assertEquals(1, a.getMethod("c/3[int,int,methods2.A]").get().getVariablesQty());
-		Assert.assertEquals(0, a.getMethod("b/0").get().getVariablesQty());
+		Assertions.assertEquals(5, a.getMethod("a/0").get().getVariablesQty());
+		Assertions.assertEquals(1, a.getMethod("c/3[int,int,methods2.A]").get().getVariablesQty());
+		Assertions.assertEquals(0, a.getMethod("b/0").get().getVariablesQty());
 	}
 
 	@Test
 	public void returnQty() {
 		CKClassResult a = report.get("methods2.A1");
-		Assert.assertEquals(0, a.getMethod("c/3[int,int,methods2.A]").get().getReturnQty());
-		Assert.assertEquals(0, a.getMethod("a/0").get().getReturnQty());
-		Assert.assertEquals(3, a.getMethod("d/0").get().getReturnQty());
-		Assert.assertEquals(1, a.getMethod("e/0").get().getReturnQty());
+		Assertions.assertEquals(0, a.getMethod("c/3[int,int,methods2.A]").get().getReturnQty());
+		Assertions.assertEquals(0, a.getMethod("a/0").get().getReturnQty());
+		Assertions.assertEquals(3, a.getMethod("d/0").get().getReturnQty());
+		Assertions.assertEquals(1, a.getMethod("e/0").get().getReturnQty());
 	}
 
 	@Test
 	public void lineNumber() {
 		CKClassResult a = report.get("methods2.A1");
-		Assert.assertEquals(18, a.getMethod("c/3[int,int,methods2.A]").get().getStartLine());
-		Assert.assertEquals(5, a.getMethod("a/0").get().getStartLine());
-		Assert.assertEquals(22, a.getMethod("d/0").get().getStartLine());
-		Assert.assertEquals(29, a.getMethod("e/0").get().getStartLine());
+		Assertions.assertEquals(18, a.getMethod("c/3[int,int,methods2.A]").get().getStartLine());
+		Assertions.assertEquals(5, a.getMethod("a/0").get().getStartLine());
+		Assertions.assertEquals(22, a.getMethod("d/0").get().getStartLine());
+		Assertions.assertEquals(29, a.getMethod("e/0").get().getStartLine());
 	}
 }

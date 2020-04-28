@@ -1,8 +1,8 @@
 package com.github.mauricioaniche.ck;
 
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
@@ -10,7 +10,7 @@ public class RFCTest extends BaseTest {
 
 	private static Map<String, CKClassResult> report;
 
-	@BeforeClass
+	@BeforeAll
 	public static void setUp() {
 		report = run(fixturesDir() + "/rfc");
 	}
@@ -18,46 +18,46 @@ public class RFCTest extends BaseTest {
 	@Test
 	public void countMethodInvocations() {
 		CKClassResult a = report.get("rfc.GO");
-		Assert.assertEquals(3, a.getRfc());
+		Assertions.assertEquals(3, a.getRfc());
 	}
 
 	@Test
 	public void countSuperInvocations() {
 		CKClassResult a = report.get("rfc.GO3");
-		Assert.assertEquals(2, a.getRfc());
+		Assertions.assertEquals(2, a.getRfc());
 	}
 
 	@Test
 	public void notPossibleToDifferentiateTypesWithStaticAnalysis() {
 		CKClassResult a = report.get("rfc.RFC3");
-		Assert.assertEquals(1, a.getRfc());
+		Assertions.assertEquals(1, a.getRfc());
 	}
 
 	@Test
 	public void doesNotCountConstructorInvocations() {
 		CKClassResult a = report.get("rfc.RFC2");
-		Assert.assertEquals(0, a.getRfc());
+		Assertions.assertEquals(0, a.getRfc());
 	}
 
 	@Test
 	public void methodLevel() {
 		CKClassResult a = report.get("rfc.GO");
-		Assert.assertEquals(2, a.getMethod("m1/0").get().getRfc());
-		Assert.assertEquals(0, a.getMethod("m2/1[int]").get().getRfc());
-		Assert.assertEquals(1, a.getMethod("m3/0").get().getRfc());
+		Assertions.assertEquals(2, a.getMethod("m1/0").get().getRfc());
+		Assertions.assertEquals(0, a.getMethod("m2/1[int]").get().getRfc());
+		Assertions.assertEquals(1, a.getMethod("m3/0").get().getRfc());
 
 	}
 
 	@Test
 	public void noMethodInvocation(){
 		CKClassResult a = report.get("rfc.RFC4");
-		Assert.assertEquals(0, a.getRfc());
+		Assertions.assertEquals(0, a.getRfc());
 	}
 
 	@Test
 	public void functionalInterface(){
 		CKClassResult a = report.get("rfc.RFC5");
-		Assert.assertEquals(3, a.getRfc());
+		Assertions.assertEquals(3, a.getRfc());
 
 	}
 

@@ -1,8 +1,8 @@
 package com.github.mauricioaniche.ck;
 
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
@@ -10,7 +10,7 @@ public class BindingsTest extends BaseTest {
 
 	private static Map<String, CKClassResult> report;
 
-	@BeforeClass
+	@BeforeAll
 	public static void setUp() {
 		report = run(fixturesDir() + "/bindings");
 	}
@@ -19,13 +19,13 @@ public class BindingsTest extends BaseTest {
 	@Test
 	public void fullNameEvenWhenTypesAreNotAvailable() {
 		CKClassResult a = report.get("bind.BindingFail1");
-		Assert.assertNotNull(a);
+		Assertions.assertNotNull(a);
 	}
 
 	@Test
 	public void fullNameEvenWhenTypesAreNotAvailableNotEvenInImports() {
 		CKClassResult a = report.get("bind.BindingFail2");
-		Assert.assertNotNull(a);
+		Assertions.assertNotNull(a);
 	}
 
 }
