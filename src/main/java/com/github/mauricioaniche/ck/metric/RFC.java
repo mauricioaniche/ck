@@ -2,11 +2,11 @@ package com.github.mauricioaniche.ck.metric;
 
 import com.github.mauricioaniche.ck.CKClassResult;
 import com.github.mauricioaniche.ck.CKMethodResult;
+import com.github.mauricioaniche.ck.util.JDTUtils;
 import org.eclipse.jdt.core.dom.*;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Stream;
 
 public class RFC implements CKASTVisitor, ClassLevelMetric, MethodLevelMetric {
 
@@ -18,32 +18,17 @@ public class RFC implements CKASTVisitor, ClassLevelMetric, MethodLevelMetric {
 	}
 
 	private void count(String methodName, IMethodBinding binding) {
-		if(binding!=null) {
-			String method = getMethodName(binding);
-			methodInvocations.add(method);
-		} else {
+		if(binding == null) {
 			methodInvocations.add(methodName);
+			return;
 		}
+		String method = JDTUtils.getMethodFullName(binding);
+		methodInvocations.add(method);
 	}
 
 	private String arguments(List<?> arguments) {
 		if(arguments==null || arguments.isEmpty()) return "0";
 		return "" + arguments.size();
-	}
-
-	private String getMethodName(IMethodBinding binding) {
-		ITypeBinding[] args = binding.getParameterTypes();
-		String argumentList = Stream.of(args).map(ITypeBinding::getName).reduce("", (s, s2) -> s + s2);;
-		String method =
-				binding.getDeclaringClass().getQualifiedName()
-						+ "."
-						+ binding.getName()
-						+ "/"
-						+ binding.getTypeArguments().length
-						+ "["
-						+ argumentList
-						+ "]";
-		return method;
 	}
 
 	public void visit(SuperMethodInvocation node) {
