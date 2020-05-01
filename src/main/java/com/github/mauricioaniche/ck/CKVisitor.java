@@ -1184,7 +1184,7 @@ public class CKVisitor extends ASTVisitor {
 	}
 
 	// we only visit if we found a type already.
-	// this means we'll never invoke it for a class javadoc!
+	// TODO: understand what happens with a javadoc in a class. Will the TypeDeclaration come first?
 	public boolean visit(Javadoc node) {
 		if(!classes.isEmpty()) {
 			classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.visit(node));
