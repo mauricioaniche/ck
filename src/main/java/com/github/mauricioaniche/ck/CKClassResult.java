@@ -436,4 +436,5 @@ public class CKClassResult {
 	public int hashCode() {
 		return Objects.hash(file, className, type);
 	}
+
 }
