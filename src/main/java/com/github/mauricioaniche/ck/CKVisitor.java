@@ -1183,6 +1183,18 @@ public class CKVisitor extends ASTVisitor {
 
 	}
 
+	// we only visit if we found a type already.
+	// TODO: understand what happens with a javadoc in a class. Will the TypeDeclaration come first?
+	public boolean visit(Javadoc node) {
+		if(!classes.isEmpty()) {
+			classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.visit(node));
+			if(!classes.peek().methods.isEmpty())
+				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.visit(node));
+		}
+		return true;
+
+	}
+
 	// ---------------------------------------------
 	// End visits
 
@@ -1253,6 +1265,14 @@ public class CKVisitor extends ASTVisitor {
 		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
 		if(!classes.peek().methods.isEmpty())
 			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
+
+	public void endVisit(Javadoc node) {
+		if(!classes.empty()) {
+			classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+			if (!classes.peek().methods.isEmpty())
+				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		}
 	}
 
 	// TODO: add all other endVisit blocks

@@ -87,6 +87,8 @@ See `WordCounter` class for details on the implementation.
 `line.matches(".*\\.(info|warn|debug|error)\\(.*") || line.matches(".*log(ger)?\\..*");`.
 See `NumberOfLogStatements.java` for more info.
 
+- *Has Javadoc*. Boolean indicating whether a method has javadoc. (Only at method-level for now) 
+
 - *modifiers*. public/abstract/private/protected/native modifiers of classes/methods. Can be decoded using `org.eclipse.jdt.core.dom.Modifier`.  
 
 - *Usage of each variable*. How much each variable was used inside each method.
