@@ -54,6 +54,9 @@ public class CKClassResult {
 	private int modifiers;
 	private int numberOfLogStatements;
 
+	private float tightClassCohesion;
+	private float looseClassCohesion;
+
 	public CKClassResult(String file, String className, String type, int modifiers) {
 		this.file = file;
 		this.className = className;
@@ -425,6 +428,22 @@ public class CKClassResult {
 
 	public int getNumberOfLogStatements() {
 		return numberOfLogStatements;
+	}
+
+	public float getTightClassCohesion() {
+		return tightClassCohesion;
+	}
+
+	public float getLooseClassCohesion() {
+		return looseClassCohesion;
+	}
+
+	public void setTightClassCohesion(float tightClassCohesion) {
+		this.tightClassCohesion = tightClassCohesion;
+	}
+
+	public void setLooseClassCohesion(float looseClassCohesion) {
+		this.looseClassCohesion = looseClassCohesion;
 	}
 
 	@Override

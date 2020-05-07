@@ -58,7 +58,7 @@ class FieldUsage {
 
 	public int m8() {
 		FieldUsage2 f2 = new FieldUsage2();
-		return b + f2.a + f2.x;
+		return b + f2.a;
 	}
 
 	public int m9() {

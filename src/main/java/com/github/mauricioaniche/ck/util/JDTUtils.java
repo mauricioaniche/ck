@@ -1,7 +1,6 @@
 package com.github.mauricioaniche.ck.util;
 
 import org.eclipse.jdt.core.dom.*;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

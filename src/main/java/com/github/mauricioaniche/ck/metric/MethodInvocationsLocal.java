@@ -4,6 +4,7 @@ import com.github.mauricioaniche.ck.CKClassResult;
 import com.github.mauricioaniche.ck.CKMethodResult;
 import com.google.common.collect.Sets;
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -14,34 +15,34 @@ public class MethodInvocationsLocal implements CKASTVisitor, ClassLevelMetric {
     //Explored contains all previously explored invocations
     //Invocations contains all direct method invocations of interest
     //The algorithm is a depth first search
-    private Set<String> invocations(String invokedMethod, Set<String> explored, HashMap<String, Set<String>> invocations){
-        explored.add(invokedMethod);
-
+    private Map<String, Set<String>> invocations(String invokedMethod, Map<String, Set<String>> explored, HashMap<String, Set<String>> invocations){
         //only explore local method invocations that were not previously explored
+        Set<String> exploredKeys = explored.keySet();
         Set<String> nextInvocations = invocations.get(invokedMethod).stream()
-                .filter(invoked -> !explored.contains(invoked))
+                .filter(invoked -> !exploredKeys.contains(invoked) && !invoked.equals(invokedMethod))
                 .collect(Collectors.toSet());
-        for (String nextInvocation : nextInvocations){
-            explored.addAll(invocations(nextInvocation, explored, invocations));
+        if(nextInvocations.size() > 0){
+            explored.put(invokedMethod, nextInvocations);
+
+            for (String nextInvocation : nextInvocations){
+                explored = invocations(nextInvocation, explored, invocations);
+            }
         }
+
         //Stops when all invocations are explored: there are no more invocations to be explored
         return explored;
     }
 
     //Generate an indirect method invocations map
     //Method contains all methods of interest
-    //Invocations contains all direct method invocations of interest
-    private HashMap<String, Set<String>> invocationsIndirect(Set<CKMethodResult> methods, HashMap<String, Set<String>> methodInvocationsLocal){
-        HashMap<String, Set<String>> methodInvocationsIndirectLocal = new HashMap<>();
+    //Invocations contains all indirect method invocations of interest with the calling method
+    private HashMap<String, Map<String, Set<String>>> invocationsIndirect(Set<CKMethodResult> methods, HashMap<String, Set<String>> methodInvocationsLocal){
+        HashMap<String, Map<String, Set<String>>> methodInvocationsIndirectLocal = new HashMap<>();
 
         //extract all indirect local invocations for all methods in the current class
         for (CKMethodResult method : methods){
             //extract all local invocations for the current method
-            Set<String> localInvocations =  invocations(method.getQualifiedMethodName(), Sets.newHashSet(ArrayUtils.EMPTY_STRING_ARRAY), methodInvocationsLocal);
-            //remove the method itself and all direct invocations
-            localInvocations.remove(method.getQualifiedMethodName());
-            localInvocations.removeAll(methodInvocationsLocal.get(method.getQualifiedMethodName()));
-
+            Map<String, Set<String>> localInvocations =  invocations(method.getQualifiedMethodName(), new HashMap(), methodInvocationsLocal);
             methodInvocationsIndirectLocal.put(method.getQualifiedMethodName(), localInvocations);
         }
         return methodInvocationsIndirectLocal;
@@ -70,7 +71,7 @@ public class MethodInvocationsLocal implements CKASTVisitor, ClassLevelMetric {
             method.setMethodInvocationLocal(methodInvocationsLocal.get(method.getQualifiedMethodName()));
         }
 
-        HashMap<String, Set<String>> methodInvocationsIndirectLocal = invocationsIndirect(methods, methodInvocationsLocal);
+        HashMap<String, Map<String, Set<String>>> methodInvocationsIndirectLocal = invocationsIndirect(methods, methodInvocationsLocal);
         for (CKMethodResult method : methods){
             method.setMethodInvocationsIndirectLocal(methodInvocationsIndirectLocal.get(method.getQualifiedMethodName()));
         }
