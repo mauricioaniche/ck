@@ -59,7 +59,6 @@ public class RFCTest extends BaseTest {
 		Assertions.assertEquals(0, a.getRfc());
 	}
 
-	//  TODO Should be 2 method invocations, "fobj.dummyFun(5);" and "z()"
 	@Test
 	@DisplayName("Counts the number of functional method invocation")
 	public void functionalInterface() {

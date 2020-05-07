@@ -85,4 +85,16 @@ public class JDTUtils {
 		);
 	}
 
+    public static String getMethodFullName(MethodInvocation methodInvocation) {
+        return methodInvocation.getName() + "/" + arguments(methodInvocation.arguments());
+    }
+
+    private static String arguments(List<?> arguments) {
+        if (arguments == null || arguments.isEmpty()) return "0";
+        return "" + arguments.size();
+    }
+
+    public static String getMethodFullName(ExpressionMethodReference methodReference) {
+        return methodReference.getName().toString();
+    }
 }

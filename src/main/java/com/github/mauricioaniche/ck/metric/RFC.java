@@ -6,39 +6,32 @@ import com.github.mauricioaniche.ck.util.JDTUtils;
 import org.eclipse.jdt.core.dom.*;
 
 import java.util.HashSet;
-import java.util.List;
+import java.util.Set;
 
 public class RFC implements CKASTVisitor, ClassLevelMetric, MethodLevelMetric {
 
-	private final HashSet<String> methodInvocations = new HashSet<String>();
+	private final Set<String> methodInvocations = new HashSet<String>();
 
 	public void visit(MethodInvocation node) {
 		IMethodBinding binding = node.resolveMethodBinding();
-		count(node.getName()  + "/" + arguments(node.arguments()), binding);
+		String methodName = binding != null ? JDTUtils.getMethodFullName(binding) : JDTUtils.getMethodFullName(node);
+		count(methodName);
 	}
 
-	private void count(String methodName, IMethodBinding binding) {
-		if(binding == null) {
-			methodInvocations.add(methodName);
-			return;
-		}
-		String method = JDTUtils.getMethodFullName(binding);
-		methodInvocations.add(method);
-	}
-
-	private String arguments(List<?> arguments) {
-		if(arguments==null || arguments.isEmpty()) return "0";
-		return "" + arguments.size();
+	private void count(String methodName) {
+		methodInvocations.add(methodName);
 	}
 
 	public void visit(SuperMethodInvocation node) {
 		IMethodBinding binding = node.resolveMethodBinding();
-		count(node.getName()  + "/" + arguments(node.arguments()), binding);
+		String methodName = JDTUtils.getMethodFullName(binding);
+		count(methodName);
 	}
 
 	public void visit(ExpressionMethodReference node) {
 		IMethodBinding binding = node.resolveMethodBinding();
-		count(node.getName().toString(), binding);
+		String methodName = binding != null ? JDTUtils.getMethodFullName(binding) : JDTUtils.getMethodFullName(node);
+		count(methodName);
 	}
 	
 	@Override
