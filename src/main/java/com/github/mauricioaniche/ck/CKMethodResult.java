@@ -261,6 +261,8 @@ public class CKMethodResult {
 		return fieldUsage;
 	}
 
+	public Set<String> getFieldsAccessed() { return fieldUsage.keySet(); }
+
 	public boolean isConstructor() {
 		return isConstructor;
 	}

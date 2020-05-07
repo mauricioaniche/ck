@@ -50,7 +50,7 @@ class FieldUsage {
 	public int m7() {
 		return a + b;
 	}
-
+	
 	public int m8() {
 		FieldUsage2 f2 = new FieldUsage2();
 		return b + f2.a + f2.x;
