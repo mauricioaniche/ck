@@ -31,6 +31,7 @@ public class CKMethodResult {
 	private boolean isConstructor;
 	private int modifiers;
 	private int logStatementsQty;
+	private boolean hasJavadoc;
 
 	public CKMethodResult(String methodName, boolean isConstructor, int modifiers) {
 		this.methodName = methodName;
@@ -258,6 +259,14 @@ public class CKMethodResult {
 		this.logStatementsQty = logStatementsQty;
 	}
 
+	public void setHasJavadoc(boolean hasJavadoc) {
+		this.hasJavadoc = hasJavadoc;
+	}
+
+	public boolean getHasJavadoc() {
+		return hasJavadoc;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -271,4 +280,5 @@ public class CKMethodResult {
 	public int hashCode() {
 		return Objects.hash(methodName, startLine);
 	}
+
 }

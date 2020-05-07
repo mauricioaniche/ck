@@ -21,7 +21,7 @@ public class ResultWriter {
     private static final String[] METHOD_HEADER = { "file", "class", "method", "constructor", "line", "cbo", "wmc", "rfc", "loc",
             "returns", "variables", "parameters", "loopQty", "comparisonsQty", "tryCatchQty",
             "parenthesizedExpsQty", "stringLiteralsQty", "numbersQty", "assignmentsQty", "mathOperationsQty",
-            "maxNestedBlocks", "anonymousClassesQty", "innerClassesQty", "lambdasQty", "uniqueWordsQty", "modifiers", "logStatementsQty" };
+            "maxNestedBlocks", "anonymousClassesQty", "innerClassesQty", "lambdasQty", "uniqueWordsQty", "modifiers", "logStatementsQty", "hasJavaDoc" };
     private static final String[] VAR_FIELD_HEADER = { "file", "class", "method", "variable", "usage" };
     private final boolean variablesAndFields;
 
@@ -87,7 +87,7 @@ public class ResultWriter {
                     method.getParenthesizedExpsQty(), method.getStringLiteralsQty(), method.getNumbersQty(),
                     method.getAssignmentsQty(), method.getMathOperationsQty(), method.getMaxNestedBlocks(),
                     method.getAnonymousClassesQty(), method.getInnerClassesQty(), method.getLambdasQty(),
-                    method.getUniqueWordsQty(), method.getModifiers(), method.getLogStatementsQty());
+                    method.getUniqueWordsQty(), method.getModifiers(), method.getLogStatementsQty(), method.getHasJavadoc());
 
             if(variablesAndFields) {
                 for (Map.Entry<String, Integer> entry : method.getVariablesUsage().entrySet()) {
