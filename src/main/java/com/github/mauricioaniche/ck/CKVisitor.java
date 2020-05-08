@@ -110,11 +110,11 @@ public class CKVisitor extends ASTVisitor {
 	public boolean visit(MethodDeclaration node) {
 
 		IMethodBinding binding = node.resolveBinding();
-
-		String currentMethodName = binding!=null ? JDTUtils.getMethodFullName(binding) : JDTUtils.getMethodFullName(node);
+		String currentMethodName = JDTUtils.getMethodFullName(node);
+		String currentQualifiedMethodName = JDTUtils.getQualifiedMethodFullName(node);
 		boolean isConstructor = node.isConstructor();
 
-		CKMethodResult currentMethod = new CKMethodResult(currentMethodName, isConstructor, node.getModifiers());
+		CKMethodResult currentMethod = new CKMethodResult(currentMethodName, currentQualifiedMethodName, isConstructor, node.getModifiers());
 		currentMethod.setLoc(calculate(node.toString()));
 		currentMethod.setStartLine(JDTUtils.getStartLine(cu, node));
 
@@ -155,6 +155,9 @@ public class CKVisitor extends ASTVisitor {
 
 
 	public boolean visit(AnonymousClassDeclaration node) {
+		java.util.List<String> stringList = new java.util.ArrayList<>();
+		stringList = stringList.stream().map(string -> string.toString()).collect(java.util.stream.Collectors.toList());
+
 		// there might be metrics that use it
 		// (even before an anonymous class is created)
 		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.visit(node));
@@ -205,7 +208,7 @@ public class CKVisitor extends ASTVisitor {
 
 		String currentMethodName = "(initializer " + (++initializerNumber) + ")";
 
-		CKMethodResult currentMethod = new CKMethodResult(currentMethodName, false, node.getModifiers());
+		CKMethodResult currentMethod = new CKMethodResult(currentMethodName, currentMethodName, false, node.getModifiers());
 		currentMethod.setLoc(calculate(node.toString()));
 		currentMethod.setStartLine(JDTUtils.getStartLine(cu, node));
 
