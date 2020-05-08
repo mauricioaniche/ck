@@ -68,7 +68,6 @@ public class FieldUsageTest extends BaseTest {
 	public void nonLocalField() {
 		CKClassResult a = report.get("fieldusage.FieldUsage");
 		CKMethodResult m8 = a.getMethod("m8/0").get();
-		Assertions.assertEquals(1, m8.getFieldUsage().get("a").intValue());
 		Assertions.assertEquals(1, m8.getFieldUsage().get("b").intValue());
 	}
 }
