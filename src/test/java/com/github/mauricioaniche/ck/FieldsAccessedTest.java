@@ -58,4 +58,18 @@ public class FieldsAccessedTest extends BaseTest {
         CKMethodResult m7 = a.getMethod("m7/0").get();
         Assertions.assertEquals(Sets.newHashSet("a", "b"), m7.getFieldsAccessed());
     }
+
+    @Test
+    public void nonLocalTest() {
+        CKClassResult a = report.get("fieldusage.FieldUsage");
+        CKMethodResult m8 = a.getMethod("m8/0").get();
+        Assertions.assertEquals(Sets.newHashSet("a", "b"), m8.getFieldsAccessed());
+    }
+
+    @Test
+    public void localNonLocalTest() {
+        CKClassResult a = report.get("fieldusage.FieldUsage");
+        CKMethodResult m8 = a.getMethod("m8/0").get();
+        Assertions.assertEquals(Sets.newHashSet("b"), m8.getFieldsAccessedLocal());
+    }
 }

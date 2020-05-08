@@ -56,5 +56,10 @@ class FieldUsage {
 		return b + f2.a + f2.x;
 	}
 
+	public int m8() {
+		FieldUsage2 f2 = new FieldUsage2();
+		return b + f2.a;
+	}
+
 	private String xx;
 }

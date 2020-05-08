@@ -1,5 +1,8 @@
 package com.github.mauricioaniche.ck.util;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class StringUtils {
 
     // https://stackoverflow.com/questions/2850203/count-the-number-of-lines-in-a-java-string
@@ -14,5 +17,15 @@ public class StringUtils {
             lines++;
         }
         return lines;
+    }
+
+    //Use the given regex pattern to extract a single substring from the given String
+    //Returns the empty string in case of no matching
+    public static String substringRegex(String string, String regex){
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(string);
+        if(matcher.find())
+            return matcher.group();
+        return "";
     }
 }
