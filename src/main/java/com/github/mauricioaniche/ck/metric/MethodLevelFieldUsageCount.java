@@ -14,6 +14,7 @@ public class MethodLevelFieldUsageCount implements CKASTVisitor, MethodLevelMetr
 
 	private Set<String> variables;
 	private boolean isFieldAccess;
+	private boolean isQualifiedName;
 
 	public MethodLevelFieldUsageCount() {
 		declaredFields = new HashSet<>();
@@ -46,6 +47,14 @@ public class MethodLevelFieldUsageCount implements CKASTVisitor, MethodLevelMetr
 		isFieldAccess = false;
 	}
 
+	public void visit(QualifiedName node){
+		isQualifiedName = true;
+	}
+
+	public void endVisit(QualifiedName node) {
+		isQualifiedName = false;
+	}
+
 	private void plusOne(String var) {
 		if (!occurrences.containsKey(var))
 			occurrences.put(var, 0);
@@ -57,8 +66,7 @@ public class MethodLevelFieldUsageCount implements CKASTVisitor, MethodLevelMetr
 
 		boolean accessFieldUsingThis = isFieldAccess && declaredFields.contains(variableName);
 		boolean accessFieldUsingOnlyVariableName = !isFieldAccess && declaredFields.contains(variableName) && !variables.contains(variableName);
-
-		if(accessFieldUsingThis || accessFieldUsingOnlyVariableName) {
+		if((accessFieldUsingThis || accessFieldUsingOnlyVariableName) && !isQualifiedName) {
 			plusOne(variableName);
 		}
 	}

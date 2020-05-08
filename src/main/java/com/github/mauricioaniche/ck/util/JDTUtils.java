@@ -148,6 +148,7 @@ public class JDTUtils {
 	//get the simple name from the fragments of a variable or field declaration, e.g. [a=10] -> a
 	//Be aware: the function might return the empty string
 	public static String getVariableName(List<?> fragments){
+		System.out.println(fragments.get(0).getClass());
 		String first = fragments.get(0).toString();
 		if (first == null)
 			return "";

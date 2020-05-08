@@ -29,8 +29,8 @@ public class CKMethodResult {
 	private int innerClassesQty;
 	private int lambdasQty;
 	private int uniqueWordsQty;
+	//all local field accesses
 	private Map<String, Integer> fieldUsage;
-	private Map<String, Integer> fieldUsageLocal;
 	private boolean isConstructor;
 	private int modifiers;
 	private int logStatementsQty;
@@ -258,21 +258,11 @@ public class CKMethodResult {
 		this.fieldUsage = fieldUsage;
 	}
 
-	public void setFieldUsageLocal(Map<String, Integer> fieldUsageLocal) {
-		this.fieldUsageLocal = fieldUsageLocal;
-	}
-
 	public Map<String, Integer> getFieldUsage() {
 		return fieldUsage;
 	}
 
-	public Map<String, Integer> getFieldUsageLocal() {
-		return fieldUsageLocal;
-	}
-
 	public Set<String> getFieldsAccessed() { return fieldUsage.keySet(); }
-
-	public Set<String> getFieldsAccessedLocal() { return fieldUsageLocal.keySet(); }
 
 	public boolean isConstructor() {
 		return isConstructor;
