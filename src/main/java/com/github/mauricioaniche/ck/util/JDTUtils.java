@@ -95,13 +95,7 @@ public class JDTUtils {
 				parameterTypes.add(v);
 			}
 		}
-
-		return String.format("%d%s%s%s",
-				parameterCount,
-				(parameterCount > 0 ? "[" : ""),
-				(parameterCount > 0 ? String.join(",", parameterTypes) : ""),
-				(parameterCount > 0 ? "]" : "")
-		);
+		return formatSignature(parameterTypes);
 	}
 
 	//Get the signature of a method with parameter count and types, e.g. 1[int]
@@ -127,24 +121,23 @@ public class JDTUtils {
 			}
 		}
 
-		return String.format("%d%s%s%s",
-				parameterCount,
-				(parameterCount > 0 ? "[" : ""),
-				(parameterCount > 0 ? String.join(",", parameterTypes) : ""),
-				(parameterCount > 0 ? "]" : "")
-		);
+		return formatSignature(parameterTypes);
 	}
 
 	//Helper method to extract the number of arguments from an argument list used to generate the method signature for MethodInvocation nodes
 	private static String getMethodSignature(List<?> arguments, List<?> typeArguments) {
 		int argumentCount = arguments != null ? arguments.size() : 0;
 		List<String> parameterTypes = typeArguments.stream().map(object -> object.toString()).collect(Collectors.toList());
+		return formatSignature(parameterTypes);
+	}
 
+	private static String formatSignature(List<String> parameters){
+		int parameterCount = parameters.size();
 		return String.format("%d%s%s%s",
-				argumentCount,
-				(argumentCount > 0 ? "[" : ""),
-				(argumentCount > 0 ? String.join(",", parameterTypes) : ""),
-				(argumentCount > 0 ? "]" : "")
+				parameterCount,
+				(parameterCount > 0 ? "[" : ""),
+				(parameterCount > 0 ? String.join(",", parameters) : ""),
+				(parameterCount > 0 ? "]" : "")
 		);
 	}
 }

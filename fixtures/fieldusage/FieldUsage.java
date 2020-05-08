@@ -1,7 +1,7 @@
 package fieldusage;
 
 class FieldUsage {
-	
+
 
 	private int a = 10;
 	private int b = 20;
@@ -32,6 +32,28 @@ class FieldUsage {
 
 		String xxx = "Doe";
 		String y = xx + xxx;
+	}
+
+	public void m5() {
+		int a = 10;
+		FunctionInterface fobj = (int x) -> System.out.println(2 * a + b);
+	}
+
+	public void m6() {
+		if(false){
+			a = b + 10;
+		} else{
+			this.c = 20.0 + a;
+		}
+	}
+
+	public int m7() {
+		return a + b;
+	}
+
+	public int m8() {
+		FieldUsage2 f2 = new FieldUsage2();
+		return b + f2.a + f2.x;
 	}
 
 	private String xx;

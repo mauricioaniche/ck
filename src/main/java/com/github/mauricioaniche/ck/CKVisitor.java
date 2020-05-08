@@ -155,6 +155,9 @@ public class CKVisitor extends ASTVisitor {
 
 
 	public boolean visit(AnonymousClassDeclaration node) {
+		java.util.List<String> stringList = new java.util.ArrayList<>();
+		stringList = stringList.stream().map(string -> string.toString()).collect(java.util.stream.Collectors.toList());
+
 		// there might be metrics that use it
 		// (even before an anonymous class is created)
 		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.visit(node));
