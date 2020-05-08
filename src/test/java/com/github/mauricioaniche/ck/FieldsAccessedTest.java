@@ -14,6 +14,7 @@ public class FieldsAccessedTest extends BaseTest {
         report = run(fixturesDir() + "/fieldusage");
     }
 
+    //test all field accesses
     @Test
     public void fieldsAccessedBasic() {
         CKClassResult a = report.get("fieldusage.FieldUsage");
@@ -36,8 +37,8 @@ public class FieldsAccessedTest extends BaseTest {
         CKClassResult a = report.get("fieldusage.FieldUsage");
         CKMethodResult m4 = a.getMethod("m4/0").get();
         Assertions.assertEquals(Sets.newHashSet("xx"), m4.getFieldsAccessed());
-
     }
+
     @Test
     public void lambdaFunction(){
         CKClassResult a = report.get("fieldusage.FieldUsage");
@@ -66,10 +67,56 @@ public class FieldsAccessedTest extends BaseTest {
         Assertions.assertEquals(Sets.newHashSet("a", "b"), m8.getFieldsAccessed());
     }
 
+    //test local field accesses
     @Test
     public void localNonLocalTest() {
         CKClassResult a = report.get("fieldusage.FieldUsage");
         CKMethodResult m8 = a.getMethod("m8/0").get();
         Assertions.assertEquals(Sets.newHashSet("b"), m8.getFieldsAccessedLocal());
+    }
+
+    @Test
+    public void localFieldsAccessedBasic() {
+        CKClassResult a = report.get("fieldusage.FieldUsage");
+
+        //Test basic fields access
+        CKMethodResult m1 = a.getMethod("m1/0").get();
+        Assertions.assertEquals( Sets.newHashSet("a", "b"), m1.getFieldsAccessedLocal());
+
+        //Test field name overloading
+        CKMethodResult m2 = a.getMethod("m2/0").get();
+        Assertions.assertEquals(Sets.newHashSet("a"), m2.getFieldsAccessedLocal());
+
+        //Test field reference with this
+        CKMethodResult m3 = a.getMethod("m3/0").get();
+        Assertions.assertEquals(Sets.newHashSet("a"), m3.getFieldsAccessedLocal());
+    }
+
+    @Test
+    public void localFieldsThatAreDeclaredAfter() {
+        CKClassResult a = report.get("fieldusage.FieldUsage");
+        CKMethodResult m4 = a.getMethod("m4/0").get();
+        Assertions.assertEquals(Sets.newHashSet("xx"), m4.getFieldsAccessedLocal());
+    }
+
+    @Test
+    public void localLambdaFunction(){
+        CKClassResult a = report.get("fieldusage.FieldUsage");
+        CKMethodResult m5 = a.getMethod("m5/0").get();
+        Assertions.assertEquals(Sets.newHashSet("b"), m5.getFieldsAccessedLocal());
+    }
+
+    @Test
+    public void localIfBlock() {
+        CKClassResult a = report.get("fieldusage.FieldUsage");
+        CKMethodResult m6 = a.getMethod("m6/0").get();
+        Assertions.assertEquals(Sets.newHashSet("a", "b", "c"), m6.getFieldsAccessedLocal());
+    }
+
+    @Test
+    public void localReturnStatement() {
+        CKClassResult a = report.get("fieldusage.FieldUsage");
+        CKMethodResult m7 = a.getMethod("m7/0").get();
+        Assertions.assertEquals(Sets.newHashSet("a", "b"), m7.getFieldsAccessedLocal());
     }
 }

@@ -151,6 +151,6 @@ public class JDTUtils {
 		String first = fragments.get(0).toString();
 		if (first == null)
 			return "";
-		return substringRegex(first.replaceAll("\\s", ""), "^(.*?)(?=[=;])");
+		return substringRegex(first.replaceAll("\\s", ""), "^(.+?)(?=[=;]|$)");
 	}
 }

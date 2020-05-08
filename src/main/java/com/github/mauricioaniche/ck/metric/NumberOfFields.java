@@ -1,11 +1,20 @@
 package com.github.mauricioaniche.ck.metric;
 
 import com.github.mauricioaniche.ck.CKClassResult;
+import com.github.mauricioaniche.ck.CKMethodResult;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.Modifier;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import static com.github.mauricioaniche.ck.util.JDTUtils.getVariableName;
+
 public class NumberOfFields implements CKASTVisitor, ClassLevelMetric {
 
+	private Set<String> fieldNames = new HashSet<>();
 	private int fields;
 	private int staticFields;
 	private int publicFields;
@@ -19,6 +28,7 @@ public class NumberOfFields implements CKASTVisitor, ClassLevelMetric {
 	public void visit(FieldDeclaration node) {
 		fields++;
 
+		fieldNames.add(getVariableName(node.fragments()));
 
 		boolean isPublic = Modifier.isPublic(node.getModifiers());
 		boolean isPrivate = Modifier.isPrivate(node.getModifiers());
@@ -52,6 +62,7 @@ public class NumberOfFields implements CKASTVisitor, ClassLevelMetric {
 	@Override
 	public void setResult(CKClassResult result) {
 		result.setNumberOfFields(fields);
+		result.setFieldNames(fieldNames);
 		result.setNumberOfStaticFields(staticFields);
 		result.setNumberOfPublicFields(publicFields);
 		result.setNumberOfPrivateFields(privateFields);
@@ -59,5 +70,12 @@ public class NumberOfFields implements CKASTVisitor, ClassLevelMetric {
 		result.setNumberOfDefaultFields(defaultFields);
 		result.setNumberOfFinalFields(finalFields);
 		result.setNumberOfSynchronizedFields(synchronizedFields);
+
+		//filter the fieldUsage to contain only local fields and set it in the method result
+		for(CKMethodResult method : result.getMethods()){
+			Map<String, Integer> fieldUsageLocal = new HashMap<>(method.getFieldUsage());
+			fieldUsageLocal.keySet().retainAll(fieldNames);
+			method.setFieldUsageLocal(fieldUsageLocal);
+		}
 	}
 }

@@ -37,5 +37,8 @@ public class JDTUtilsTest {
         String name9 = getVariableName(Arrays.asList("a" +
                 "= 10;"));
         Assert.assertEquals("a", name9);
+
+        String name10 = getVariableName(Arrays.asList("xx"));
+        Assert.assertEquals("xx", name10);
     }
 }
