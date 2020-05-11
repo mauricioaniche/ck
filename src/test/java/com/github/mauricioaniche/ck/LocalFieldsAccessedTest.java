@@ -81,14 +81,4 @@ public class LocalFieldsAccessedTest extends BaseTest {
         CKMethodResult m10 = a.getMethod("m10/0").get();
         Assertions.assertEquals(Sets.newHashSet("a"), m10.getFieldsAccessed());
     }
-
-    @Test
-    public void sanityTest() {
-        CKClassResult a = report.get("fieldusage.NoCohesion");
-        CKMethodResult m1 = a.getMethod("m1/0").get();
-        Assertions.assertEquals(Sets.newHashSet(ArrayUtils.EMPTY_STRING_ARRAY), m1.getFieldsAccessed());
-
-        CKMethodResult m2 = a.getMethod("m2/0").get();
-        Assertions.assertEquals(Sets.newHashSet("a"), m2.getFieldsAccessed());
-    }
 }

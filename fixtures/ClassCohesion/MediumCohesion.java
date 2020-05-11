@@ -11,5 +11,6 @@ class MediumCohesion {
 
 	public void m3() {
 		a = 10;
+		m1();
 	}
 }

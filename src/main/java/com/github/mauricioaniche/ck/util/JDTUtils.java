@@ -142,10 +142,10 @@ public class JDTUtils {
 	}
 
 	//get the simple name from the fragments of a variable or field declaration, e.g. [a=10] -> a
-	//Be aware: the function might return the empty string
-	public static List<String> getVariableName(List<VariableDeclarationFragment> fragments){
-		if (fragments != null)
-			return fragments.stream().map(fragment -> fragment.getName().getIdentifier()).collect(Collectors.toList());
-		return Collections.emptyList();
+	//Be aware: the function might return the empty list, in case there are not fragments
+		public static List<String> getVariableName(List<VariableDeclarationFragment> fragments){
+			if (fragments != null)
+				return fragments.stream().map(fragment -> fragment.getName().getIdentifier()).collect(Collectors.toList());
+			return Collections.emptyList();
 	}
 }
