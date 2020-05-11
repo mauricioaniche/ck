@@ -18,14 +18,4 @@ public class StringUtils {
         }
         return lines;
     }
-
-    //Use the given regex pattern to extract a single substring from the given String
-    //Returns the empty string in case of no matching
-    public static String substringRegex(String string, String regex){
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(string);
-        if(matcher.find())
-            return matcher.group();
-        return "";
-    }
 }

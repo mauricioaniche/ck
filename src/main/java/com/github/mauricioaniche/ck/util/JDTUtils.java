@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.github.mauricioaniche.ck.util.StringUtils.substringRegex;
-
 public class JDTUtils {
 
 	/**
@@ -145,10 +143,9 @@ public class JDTUtils {
 
 	//get the simple name from the fragments of a variable or field declaration, e.g. [a=10] -> a
 	//Be aware: the function might return the empty string
-	public static String getVariableName(List<?> fragments){
-		String first = fragments.get(0).toString();
-		if (first == null)
-			return "";
-		return substringRegex(first.replaceAll("\\s", ""), "^(.+?)(?=[=;]|$)");
+	public static String getVariableName(List<VariableDeclarationFragment> fragments){
+		if(fragments.size() > 0)
+			return fragments.get(0).getName().toString();
+		return "";
 	}
 }
