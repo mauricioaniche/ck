@@ -2,15 +2,11 @@ package com.github.mauricioaniche.ck.metric;
 
 import com.github.mauricioaniche.ck.CKClassResult;
 import com.github.mauricioaniche.ck.CKMethodResult;
-import com.google.common.collect.Sets;
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
 //we ignore invocations in the super class, because they are always outside the current class and can never return
-public class MethodInvocationsLocal implements CKASTVisitor, ClassLevelMetric {
+public class MethodInvocationsLocal {
     //Recursively extract all method invocations starting with the given method
     //Explored contains all previously explored invocations
     //Invocations contains all direct method invocations of interest
@@ -62,8 +58,7 @@ public class MethodInvocationsLocal implements CKASTVisitor, ClassLevelMetric {
         return methodInvocationsLocal;
     }
 
-    @Override
-    public void setResult(CKClassResult result) {
+    public void extractInvocations(CKClassResult result) {
         //extract all direct local invocations for all methods in the current class
         Set<CKMethodResult> methods = result.getMethods();
         HashMap<String, Set<String>> methodInvocationsLocal = extractLocalInvocations(methods);

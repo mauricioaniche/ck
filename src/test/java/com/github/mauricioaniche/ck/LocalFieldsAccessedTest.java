@@ -1,6 +1,7 @@
 package com.github.mauricioaniche.ck;
 
 import com.google.common.collect.Sets;
+import org.apache.commons.lang.ArrayUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -79,5 +80,15 @@ public class LocalFieldsAccessedTest extends BaseTest {
         CKClassResult a = report.get("fieldusage.FieldUsage");
         CKMethodResult m10 = a.getMethod("m10/0").get();
         Assertions.assertEquals(Sets.newHashSet("a"), m10.getFieldsAccessed());
+    }
+
+    @Test
+    public void sanityTest() {
+        CKClassResult a = report.get("fieldusage.NoCohesion");
+        CKMethodResult m1 = a.getMethod("m1/0").get();
+        Assertions.assertEquals(Sets.newHashSet(ArrayUtils.EMPTY_STRING_ARRAY), m1.getFieldsAccessed());
+
+        CKMethodResult m2 = a.getMethod("m2/0").get();
+        Assertions.assertEquals(Sets.newHashSet("a"), m2.getFieldsAccessed());
     }
 }
