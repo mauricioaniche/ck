@@ -1,9 +1,7 @@
 package com.github.mauricioaniche.ck;
 
-import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.eclipse.jdt.core.dom.Modifier;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -53,7 +51,7 @@ public class CKMethodResult {
 		this.qualifiedMethodName = qualifiedMethodName;
 		this.isConstructor = isConstructor;
 		this.modifiers = modifiers;
-		this.isVisible = !(Modifier.isPrivate(modifiers) || Modifier.isDefault(modifiers));
+		this.isVisible = Modifier.isPublic(modifiers) || Modifier.isProtected(modifiers);
 	}
 
 	/**
