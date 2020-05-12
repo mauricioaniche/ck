@@ -24,7 +24,7 @@ public class NumberOfFields implements CKASTVisitor, ClassLevelMetric {
 	@Override
 	public void visit(FieldDeclaration node) {
 		fields++;
-		fieldNames.add(getVariableName(node.fragments()));
+		fieldNames.addAll(getVariableName(node.fragments()));
 
 		boolean isPublic = Modifier.isPublic(node.getModifiers());
 		boolean isPrivate = Modifier.isPrivate(node.getModifiers());

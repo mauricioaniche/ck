@@ -3,6 +3,7 @@ package com.github.mauricioaniche.ck.util;
 import org.eclipse.jdt.core.dom.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -143,9 +144,9 @@ public class JDTUtils {
 
 	//get the simple name from the fragments of a variable or field declaration, e.g. [a=10] -> a
 	//Be aware: the function might return the empty string
-	public static String getVariableName(List<VariableDeclarationFragment> fragments){
-		if(fragments.size() > 0)
-			return fragments.get(0).getName().toString();
-		return "";
+	public static List<String> getVariableName(List<VariableDeclarationFragment> fragments){
+		if (fragments != null)
+			return fragments.stream().map(fragment -> fragment.getName().getIdentifier()).collect(Collectors.toList());
+		return Collections.emptyList();
 	}
 }
