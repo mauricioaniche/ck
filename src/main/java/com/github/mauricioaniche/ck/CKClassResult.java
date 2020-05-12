@@ -18,6 +18,7 @@ public class CKClassResult {
 	private int loc;
 	
 	private Set<CKMethodResult> methods;
+	private Set<CKMethodResult> visibleMethods;
 	private Set<String> fieldNames;
 	private int returnQty;
 	private int loopQty;
@@ -62,8 +63,8 @@ public class CKClassResult {
 		this.className = className;
 		this.type = type;
 		this.methods = new HashSet<>();
+		this.visibleMethods= new HashSet<>();
 		this.modifiers = modifiers;
-		this.methods = new HashSet<>();
 	}
 
 	/**
@@ -145,13 +146,19 @@ public class CKClassResult {
 		return "CKClassResult [file=" + file + ", className=" + className + "]";
 	}
 
-
 	public void addMethod(CKMethodResult method) {
 		this.methods.add(method);
+		if(method.getIsVisible()){
+			visibleMethods.add(method);
+		}
 	}
 
 	public Set<CKMethodResult> getMethods() {
 		return Collections.unmodifiableSet(methods);
+	}
+
+	public Set<CKMethodResult> getVisibleMethods() {
+		return Collections.unmodifiableSet(visibleMethods);
 	}
 
 	public Optional<CKMethodResult> getMethod(String methodName) {
@@ -349,6 +356,8 @@ public class CKClassResult {
 	public void setNumberOfSynchronizedMethods(int numberOfSynchronizedMethods) {
 		this.numberOfSynchronizedMethods = numberOfSynchronizedMethods;
 	}
+
+	public int getNumberOfVisibleMethods() { return visibleMethods.size();	}
 
 	public int getNumberOfSynchronizedMethods() {
 		return numberOfSynchronizedMethods;

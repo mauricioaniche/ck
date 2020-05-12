@@ -10,10 +10,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-/*
-Calculates the tight and loose class cohesion for a class.
-For more details see: https://www.aivosto.com/project/help/pm-oo-cohesion.html#TCC_LCC
- */
+//Calculates the tight and loose class cohesion for a class.
+//For more details see: https://www.aivosto.com/project/help/pm-oo-cohesion.html#TCC_LCC
 public class TightClassCohesion implements CKASTVisitor, ClassLevelMetric {
     private HashMap<String, Set<String>> accessedFields = new HashMap<>();
 
@@ -26,7 +24,7 @@ public class TightClassCohesion implements CKASTVisitor, ClassLevelMetric {
         }
 
         HashMap<String, Set<String>> allAccessedFields = new HashMap<>();
-        for (CKMethodResult method : result.getMethods()){
+        for (CKMethodResult method : result.getVisibleMethods()){
             Set<String> allLocalFields = collectAccessedFields(method);
             allLocalFields.addAll(method.getFieldsAccessed());
             allAccessedFields.put(method.getMethodName(), allLocalFields);
@@ -52,7 +50,7 @@ public class TightClassCohesion implements CKASTVisitor, ClassLevelMetric {
 
         Set<String> allLocalFields = new HashSet<>();
         for (String invocation : allLocalInvocations){
-            Set<String> currentFields =  accessedFields.get(invocation);
+            Set<String> currentFields = accessedFields.get(invocation);
             if(currentFields != null)
                 allLocalFields.addAll(currentFields);
         }
@@ -75,7 +73,7 @@ public class TightClassCohesion implements CKASTVisitor, ClassLevelMetric {
 
         //extract all direct and indirect connections between methods from the direct connections
         HashMap<String, Set<String>> indirectConnectionsMap = new HashMap<>();
-        for (CKMethodResult method : result.getMethods()){
+        for (CKMethodResult method : result.getVisibleMethods()){
             Set<String> localConnections = extractConnections(method.getMethodName(), new HashSet<>(), directConnectionsMap);
             indirectConnectionsMap.put(method.getMethodName(), localConnections);
         }
@@ -100,9 +98,8 @@ public class TightClassCohesion implements CKASTVisitor, ClassLevelMetric {
         explored.add(currentConnection);
 
         //only explore connections that were not previously explored
-        Set<String> exploredConnections = explored;
         Set<String> nextConnections = connections.get(currentConnection).stream()
-                .filter(connection -> !exploredConnections.contains(connection))
+                .filter(connection -> !explored.contains(connection))
                 .collect(Collectors.toSet());
         explored.addAll(nextConnections);
         for (String nextConnection : nextConnections){
@@ -118,7 +115,7 @@ public class TightClassCohesion implements CKASTVisitor, ClassLevelMetric {
         methodInvocationsLocal.extractInvocations(result);
 
         //maximum number of possible connections (N * (N -1))
-        float np = result.getMethods().size() * (result.getMethods().size() -1);
+        float np = result.getVisibleMethods().size() * (result.getVisibleMethods().size() -1);
 
         //number of direct connections (number of edges in the connection graph) in this class
         Set<ImmutablePair<String, String>> directConnections = getDirectConnections(result);

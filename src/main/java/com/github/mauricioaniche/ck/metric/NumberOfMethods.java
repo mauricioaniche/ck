@@ -65,6 +65,5 @@ public class NumberOfMethods implements CKASTVisitor, ClassLevelMetric {
 		result.setNumberOfAbstractMethods(abstractMethods);
 		result.setNumberOfFinalMethods(finalMethods);
 		result.setNumberOfSynchronizedMethods(synchronizedMethods);
-
 	}
 }

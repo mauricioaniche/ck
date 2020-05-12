@@ -1,6 +1,7 @@
 package com.github.mauricioaniche.ck;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.eclipse.jdt.core.dom.Modifier;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,6 +14,7 @@ public class CKMethodResult {
 	private int wmc;
 	private String methodName;
 	private String qualifiedMethodName;
+	private boolean isVisible;
 	private int parametersQty;
 	private int returnQty;
 	private int loc;
@@ -51,6 +53,7 @@ public class CKMethodResult {
 		this.qualifiedMethodName = qualifiedMethodName;
 		this.isConstructor = isConstructor;
 		this.modifiers = modifiers;
+		this.isVisible = !(Modifier.isPrivate(modifiers) || Modifier.isDefault(modifiers));
 	}
 
 	/**
@@ -62,6 +65,8 @@ public class CKMethodResult {
 	public int getModifiers() {
 		return modifiers;
 	}
+
+	public boolean getIsVisible(){ return isVisible;}
 
 	public void setCbo(int cbo) {
 		this.cbo = cbo;
