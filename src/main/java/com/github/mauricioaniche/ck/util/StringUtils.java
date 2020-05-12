@@ -1,8 +1,5 @@
 package com.github.mauricioaniche.ck.util;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 public class StringUtils {
 
     // https://stackoverflow.com/questions/2850203/count-the-number-of-lines-in-a-java-string
