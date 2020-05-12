@@ -1,7 +1,6 @@
 package com.github.mauricioaniche.ck;
 
 import com.google.common.collect.Sets;
-import org.apache.commons.lang.ArrayUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

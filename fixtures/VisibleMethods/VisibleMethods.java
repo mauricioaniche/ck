@@ -1,7 +1,18 @@
 package VisibleMethods;
 
 class VisibleMethods {
+	class Complex2 {
+		String n = "";
 
+		public void n1() {
+			n2("Hello world");
+		}
+
+		private void n2(String in) {
+			n = in;
+			System.out.println(n);
+		}
+	}
 
 	private int a = 10;
 	private int b = 20;
@@ -63,6 +74,13 @@ class VisibleMethods {
 	}
 
 	public static void m10() {
+		java.util.List<String> stringList = new java.util.ArrayList<>();
+		stringList = stringList.stream().map(string -> m4(string, 1)).collect(java.util.stream.Collectors.toList());
+	}
+
+	public static void m11() {
+		this.a = 10;
+	} void m12() {
 		this.a = 10;
 	}
 
