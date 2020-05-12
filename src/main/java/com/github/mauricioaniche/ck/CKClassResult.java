@@ -18,6 +18,7 @@ public class CKClassResult {
 	private int loc;
 	
 	private Set<CKMethodResult> methods;
+	private Set<String> fieldNames;
 	private int returnQty;
 	private int loopQty;
 	private int comparisonsQty;
@@ -153,6 +154,10 @@ public class CKClassResult {
 	public Optional<CKMethodResult> getMethod(String methodName) {
 		return methods.stream().filter(m -> m.getMethodName().equals(methodName)).findFirst();
 	}
+
+	public void setFieldNames(Set<String> fieldNames){ this.fieldNames = fieldNames;}
+
+	public Set<String> getFieldNames(){ return fieldNames; }
 
 	public void setReturnQty(int returnQty) {
 		this.returnQty = returnQty;

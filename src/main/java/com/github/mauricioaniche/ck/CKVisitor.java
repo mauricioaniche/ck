@@ -1278,6 +1278,12 @@ public class CKVisitor extends ASTVisitor {
 		}
 	}
 
+	public void endVisit(QualifiedName node) {
+		if(!classes.empty()) {
+			classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+		}
+		if(!classes.isEmpty() && !classes.peek().methods.isEmpty())
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+	}
 	// TODO: add all other endVisit blocks
-
 }

@@ -50,10 +50,25 @@ class FieldUsage {
 	public int m7() {
 		return a + b;
 	}
+	
+	public int m8() {
+		FieldUsage2 f2 = new FieldUsage2();
+		return b + f2.a + f2.x;
+	}
 
 	public int m8() {
 		FieldUsage2 f2 = new FieldUsage2();
 		return b + f2.a + f2.x;
+	}
+
+	public int m9() {
+		FieldUsage2 f2 = new FieldUsage2();
+		f2.a = 10;
+		return f2.a;
+	}
+
+	public void m10() {
+		this.a = 10;
 	}
 
 	private String xx;

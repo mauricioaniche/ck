@@ -11,8 +11,10 @@ import java.util.Set;
 public class MethodLevelFieldUsageCount implements CKASTVisitor, MethodLevelMetric, VariableOrFieldMetric {
 	private Set<String> declaredFields;
 	private Map<String, Integer> occurrences;
+
 	private Set<String> variables;
 	private boolean isFieldAccess;
+	private boolean isQualifiedName;
 
 	public MethodLevelFieldUsageCount() {
 		declaredFields = new HashSet<>();
@@ -21,7 +23,6 @@ public class MethodLevelFieldUsageCount implements CKASTVisitor, MethodLevelMetr
 	}
 
 	public void visit(MethodDeclaration node) {
-
 		IMethodBinding binding = node.resolveBinding();
 		if(binding==null)
 			return;
@@ -29,7 +30,7 @@ public class MethodLevelFieldUsageCount implements CKASTVisitor, MethodLevelMetr
 		IVariableBinding[] fields = binding.getDeclaringClass().getDeclaredFields();
 
 		for (IVariableBinding field : fields) {
-			declaredFields.add(field.getName().toString());
+			declaredFields.add(field.getName());
 		}
 	}
 
@@ -46,30 +47,28 @@ public class MethodLevelFieldUsageCount implements CKASTVisitor, MethodLevelMetr
 		isFieldAccess = false;
 	}
 
-	private void addField(String var) {
-		if (!occurrences.containsKey(var))
-			occurrences.put(var, 0);
+	public void visit(QualifiedName node){
+		isQualifiedName = true;
+	}
+
+	public void endVisit(QualifiedName node) {
+		isQualifiedName = false;
 	}
 
 	private void plusOne(String var) {
-		addField(var);
+		if (!occurrences.containsKey(var))
+			occurrences.put(var, 0);
 		occurrences.put(var, occurrences.get(var) + 1);
 	}
 
 	public void visit(SimpleName node) {
+		String variableName = node.getIdentifier();
 
-		String var = node.getIdentifier();
-
-		if(isFieldAccess)
-			addField(var);
-
-		boolean accessFieldUsingThis = isFieldAccess && declaredFields.contains(var);
-		boolean accessFieldUsingOnlyVariableName = !isFieldAccess && declaredFields.contains(var) && !variables.contains(var);
-
-		if(accessFieldUsingThis || accessFieldUsingOnlyVariableName) {
-			plusOne(var);
+		boolean accessFieldUsingThis = isFieldAccess && declaredFields.contains(variableName);
+		boolean accessFieldUsingOnlyVariableName = !isFieldAccess && declaredFields.contains(variableName) && !variables.contains(variableName);
+		if((accessFieldUsingThis || accessFieldUsingOnlyVariableName) && !isQualifiedName) {
+			plusOne(variableName);
 		}
-
 	}
 
 	@Override

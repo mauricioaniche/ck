@@ -4,8 +4,14 @@ import com.github.mauricioaniche.ck.CKClassResult;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.Modifier;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import static com.github.mauricioaniche.ck.util.JDTUtils.getVariableName;
+
 public class NumberOfFields implements CKASTVisitor, ClassLevelMetric {
 
+	private Set<String> fieldNames = new HashSet<>();
 	private int fields;
 	private int staticFields;
 	private int publicFields;
@@ -18,7 +24,7 @@ public class NumberOfFields implements CKASTVisitor, ClassLevelMetric {
 	@Override
 	public void visit(FieldDeclaration node) {
 		fields++;
-
+		fieldNames.addAll(getVariableName(node.fragments()));
 
 		boolean isPublic = Modifier.isPublic(node.getModifiers());
 		boolean isPrivate = Modifier.isPrivate(node.getModifiers());
@@ -52,6 +58,7 @@ public class NumberOfFields implements CKASTVisitor, ClassLevelMetric {
 	@Override
 	public void setResult(CKClassResult result) {
 		result.setNumberOfFields(fields);
+		result.setFieldNames(fieldNames);
 		result.setNumberOfStaticFields(staticFields);
 		result.setNumberOfPublicFields(publicFields);
 		result.setNumberOfPrivateFields(privateFields);
