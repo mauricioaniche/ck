@@ -111,18 +111,24 @@ public class TightClassCohesion implements CKASTVisitor, ClassLevelMetric {
     }
 
     public void setResult(CKClassResult result) {
-        MethodInvocationsLocal methodInvocationsLocal = new MethodInvocationsLocal();
-        methodInvocationsLocal.extractInvocations(result);
+        //in case the class does not contain any visible methods, TCC and LCC have no reasonable value, thus set it to -1
+        if(result.getVisibleMethods().size() < 1){
+            result.setTightClassCohesion(-1);
+            result.setLooseClassCohesion(-1);
+        } else {
+            MethodInvocationsLocal methodInvocationsLocal = new MethodInvocationsLocal();
+            methodInvocationsLocal.extractInvocations(result);
 
-        //maximum number of possible connections (N * (N -1))
-        float np = result.getVisibleMethods().size() * (result.getVisibleMethods().size() -1);
+            //maximum number of possible connections (N * (N -1))
+            float np = result.getVisibleMethods().size() * (result.getVisibleMethods().size() - 1);
 
-        //number of direct connections (number of edges in the connection graph) in this class
-        Set<ImmutablePair<String, String>> directConnections = getDirectConnections(result);
-        result.setTightClassCohesion(directConnections.size() / np);
+            //number of direct connections (number of edges in the connection graph) in this class
+            Set<ImmutablePair<String, String>> directConnections = getDirectConnections(result);
+            result.setTightClassCohesion(directConnections.size() / np);
 
-        //number of indirect connections in this class
-        Set<ImmutablePair<String, String>> indirectConnections = getIndirectConnections(result, directConnections);
-        result.setLooseClassCohesion((directConnections.size() + indirectConnections.size()) / np);
+            //number of indirect connections in this class
+            Set<ImmutablePair<String, String>> indirectConnections = getIndirectConnections(result, directConnections);
+            result.setLooseClassCohesion((directConnections.size() + indirectConnections.size()) / np);
+        }
     }
 }

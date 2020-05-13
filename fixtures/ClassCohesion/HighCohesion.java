@@ -7,7 +7,7 @@ class HighCohesion {
 		a = 10;
 	}
 
-	public static void m2() {
+	static void m2() {
 		a = 10;
 	}
 

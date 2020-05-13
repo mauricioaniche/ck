@@ -11,5 +11,5 @@ class NoCohesion {
 
 	private static void m3() { a = 10; }
 
-	void m4() { a = 10; }
+	private void m4() { a = 10; }
 }

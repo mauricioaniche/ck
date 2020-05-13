@@ -51,7 +51,7 @@ public class CKMethodResult {
 		this.qualifiedMethodName = qualifiedMethodName;
 		this.isConstructor = isConstructor;
 		this.modifiers = modifiers;
-		this.isVisible = Modifier.isPublic(modifiers) || Modifier.isProtected(modifiers);
+		this.isVisible = !Modifier.isPrivate(modifiers);
 	}
 
 	/**

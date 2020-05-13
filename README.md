@@ -99,10 +99,11 @@ See `NumberOfLogStatements.java` for more info.
 
 - *Usage of each variable*: How often each variable was used inside each method.
 
-- *Usage of each field*: How often each local field was used inside each method, also indirect local field accesses are detected.
+- *Usage of each field*: How often each local field was used inside each method, local field are fields within a class (subclasses are not included). Also indirect local field usages are detected, indirect local field usages include all usages of fields within the local invocation tree of a class e.g. A invokes B and B uses field a, then a is indirectly used by A.
 
 - *Method invocations*: All directly invoked methods, variations are local invocations and indirect local invocations.
       
+
 (In a previous version, it calculated NOC (Number of Children), but it doesn't do it anymore,
 as it requires too much memory.)
 
@@ -199,7 +200,7 @@ Please, use the following bibtex entry:
   note={Available in https://github.com/mauricioaniche/ck/}
 }
 ```
-  
+
 ## How to Contribute
 
 Just submit a PR! :)
