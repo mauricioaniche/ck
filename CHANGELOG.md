@@ -1,5 +1,10 @@
 # CK changelog
 
+## 0.6.0
+
+* New metrics: LCC and TCC
+* Tests migrated to JUnit 5 
+
 ## 0.5.2
 
 * Initializer methods are now called as "(initializer X)", where X is the number of the
