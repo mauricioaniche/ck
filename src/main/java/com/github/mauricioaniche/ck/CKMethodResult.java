@@ -1,5 +1,7 @@
 package com.github.mauricioaniche.ck;
 
+import org.eclipse.jdt.core.dom.Modifier;
+
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -10,6 +12,7 @@ public class CKMethodResult {
 	private int wmc;
 	private String methodName;
 	private String qualifiedMethodName;
+	private boolean isVisible;
 	private int parametersQty;
 	private int returnQty;
 	private int loc;
@@ -41,13 +44,14 @@ public class CKMethodResult {
 	//All direct invocations of methods of the same class
 	private Set<String> methodInvocationsLocal;
 	//All indirect invocations of methods of the same class
-	private Set<String> methodInvocationsIndirectLocal;
+	private Map<String, Set<String>> methodInvocationsIndirectLocal;
 
 	public CKMethodResult(String methodName, String qualifiedMethodName, boolean isConstructor, int modifiers) {
 		this.methodName = methodName;
 		this.qualifiedMethodName = qualifiedMethodName;
 		this.isConstructor = isConstructor;
 		this.modifiers = modifiers;
+		this.isVisible = !Modifier.isPrivate(modifiers);
 	}
 
 	/**
@@ -59,6 +63,8 @@ public class CKMethodResult {
 	public int getModifiers() {
 		return modifiers;
 	}
+
+	public boolean getIsVisible(){ return isVisible;}
 
 	public void setCbo(int cbo) {
 		this.cbo = cbo;
@@ -300,11 +306,11 @@ public class CKMethodResult {
 		return methodInvocationsLocal;
 	}
 
-	public void setMethodInvocationsIndirectLocal(Set<String> methodInvocationsIndirect) {
+	public void setMethodInvocationsIndirectLocal(Map<String, Set<String>> methodInvocationsIndirect) {
 		this.methodInvocationsIndirectLocal = methodInvocationsIndirect;
 	}
 
-	public Set<String> getMethodInvocationsIndirectLocal() {
+	public Map<String, Set<String>> getMethodInvocationsIndirectLocal() {
 		return methodInvocationsIndirectLocal;
 	}
 

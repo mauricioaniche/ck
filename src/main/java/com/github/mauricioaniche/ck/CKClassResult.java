@@ -18,6 +18,7 @@ public class CKClassResult {
 	private int loc;
 	
 	private Set<CKMethodResult> methods;
+	private Set<CKMethodResult> visibleMethods;
 	private Set<String> fieldNames;
 	private int returnQty;
 	private int loopQty;
@@ -54,13 +55,16 @@ public class CKClassResult {
 	private int modifiers;
 	private int numberOfLogStatements;
 
+	private float tightClassCohesion;
+	private float looseClassCohesion;
+
 	public CKClassResult(String file, String className, String type, int modifiers) {
 		this.file = file;
 		this.className = className;
 		this.type = type;
 		this.methods = new HashSet<>();
+		this.visibleMethods= new HashSet<>();
 		this.modifiers = modifiers;
-		this.methods = new HashSet<>();
 	}
 
 	/**
@@ -142,13 +146,19 @@ public class CKClassResult {
 		return "CKClassResult [file=" + file + ", className=" + className + "]";
 	}
 
-
 	public void addMethod(CKMethodResult method) {
 		this.methods.add(method);
+		if(method.getIsVisible()){
+			visibleMethods.add(method);
+		}
 	}
 
 	public Set<CKMethodResult> getMethods() {
 		return Collections.unmodifiableSet(methods);
+	}
+
+	public Set<CKMethodResult> getVisibleMethods() {
+		return Collections.unmodifiableSet(visibleMethods);
 	}
 
 	public Optional<CKMethodResult> getMethod(String methodName) {
@@ -347,6 +357,8 @@ public class CKClassResult {
 		this.numberOfSynchronizedMethods = numberOfSynchronizedMethods;
 	}
 
+	public int getNumberOfVisibleMethods() { return visibleMethods.size();	}
+
 	public int getNumberOfSynchronizedMethods() {
 		return numberOfSynchronizedMethods;
 	}
@@ -425,6 +437,22 @@ public class CKClassResult {
 
 	public int getNumberOfLogStatements() {
 		return numberOfLogStatements;
+	}
+
+	public float getTightClassCohesion() {
+		return tightClassCohesion;
+	}
+
+	public float getLooseClassCohesion() {
+		return looseClassCohesion;
+	}
+
+	public void setTightClassCohesion(float tightClassCohesion) {
+		this.tightClassCohesion = tightClassCohesion;
+	}
+
+	public void setLooseClassCohesion(float looseClassCohesion) {
+		this.looseClassCohesion = looseClassCohesion;
 	}
 
 	@Override

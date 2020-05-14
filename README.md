@@ -26,6 +26,8 @@ total number of fields, static, public, private, protected, default, final, and 
 total number of methods, static, public, abstract, private, protected, default, final, and synchronized methods.
 Constructor methods also count here.
 
+- *Number of visible methods*: Counts the number of visible methods. A method is visible if it is not private.
+
 - *NOSI (Number of static invocations)*: Counts the number of invocations
 to static methods. It can only count the ones that can be resolved by the
 JDT.
@@ -45,6 +47,10 @@ The number of lines here might be a bit different from the original file, as we 
 - *LCOM (Lack of Cohesion of Methods)*: Calculates LCOM metric. This is the very first
 version of metric, which is not reliable. LCOM-HS can be better (hopefully, you will
 send us a pull request). 
+
+- *TCC (Tight Class Cohesion)*: Measures the cohesion of a class with a value range from 0 to 1. TCC measures the cohesion of a class via direct connections between visible methods, two methods or their invocation trees access the same class variable. 
+
+- *LCC (Loose Class Cohesion)*: Similar to TCC but it further includes the number of indirect connections between visible classes for the cohesion calculation. Thus, the constraint LCC >= TCC holds always. 
 
 - *Quantity of returns*: The number of `return` instructions.
 
@@ -67,7 +73,7 @@ available in 0.4.2+.
 
 - *Max nested blocks*: The highest number of blocks nested together.
 
-- *Quantity of Anonymous classes, inner classes, and lambda expressions*. The name says it all.
+- *Quantity of Anonymous classes, inner classes, and lambda expressions*: The name says it all.
 Note that whenever an anonymous class or an inner class is declared, it becomes an
 "entire new class", e.g., CK generates A.B and A.B$C, C being an inner class inside A.B.
 However, lambda expressions are not considered classes, and thus, are part of the
@@ -78,24 +84,26 @@ class A, that is declared inside a method M, that finally is declared inside a c
 will not count in class C, but only in method M2 (first-level method it is embodied),
 and anonymous class A (first-level class it is embodied).
 
-- *Number of unique words*. Number of unique words in the source code. At method level, it only uses the method body as input. At class level,
+- *Number of unique words*: Number of unique words in the source code. At method level, it only uses the method body as input. At class level,
 it uses the entire body of the class as metrics.
 The algorithm basically counts the number of words in a method/class, after removing Java keywords. Names are split based on camel case and underline (e.g., longName_likeThis becomes four words).
 See `WordCounter` class for details on the implementation.
 
-- *Number of Log Statements*. Number of log statements in the source code. The counting is based on the following regex:
+- *Number of Log Statements*: Number of log statements in the source code. The counting is based on the following regex:
 `line.matches(".*\\.(info|warn|debug|error)\\(.*") || line.matches(".*log(ger)?\\..*");`.
 See `NumberOfLogStatements.java` for more info.
 
-- *Has Javadoc*. Boolean indicating whether a method has javadoc. (Only at method-level for now) 
+- *Has Javadoc*: Boolean indicating whether a method has javadoc. (Only at method-level for now) 
 
-- *modifiers*. public/abstract/private/protected/native modifiers of classes/methods. Can be decoded using `org.eclipse.jdt.core.dom.Modifier`.  
+- *modifiers*: public/abstract/private/protected/native modifiers of classes/methods. Can be decoded using `org.eclipse.jdt.core.dom.Modifier`.  
 
-- *Usage of each variable*. How much each variable was used inside each method.
+- *Usage of each variable*: How often each variable was used inside each method.
 
-- *Usage of each field*. How much each field was used inside each method.
+- *Usage of each field*: How often each local field was used inside each method, local field are fields within a class (subclasses are not included). Also indirect local field usages are detected, indirect local field usages include all usages of fields within the local invocation tree of a class e.g. A invokes B and B uses field a, then a is indirectly used by A.
 
+- *Method invocations*: All directly invoked methods, variations are local invocations and indirect local invocations.
       
+
 (In a previous version, it calculated NOC (Number of Children), but it doesn't do it anymore,
 as it requires too much memory.)
 
@@ -192,7 +200,7 @@ Please, use the following bibtex entry:
   note={Available in https://github.com/mauricioaniche/ck/}
 }
 ```
-  
+
 ## How to Contribute
 
 Just submit a PR! :)

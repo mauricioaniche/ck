@@ -11,15 +11,15 @@ import java.util.Map;
 
 public class ResultWriter {
 
-    private static final String[] CLASS_HEADER = { "file", "class", "type", "cbo", "wmc", "dit", "rfc", "lcom",
-            "totalMethods", "staticMethods", "publicMethods", "privateMethods", "protectedMethods", "defaultMethods",
-            "abstractMethods", "finalMethods", "synchronizedMethods", "totalFields", "staticFields", "publicFields",
-            "privateFields", "protectedFields", "defaultFields", "finalFields", "synchronizedFields", "nosi", "loc",
+    private static final String[] CLASS_HEADER = { "file", "class", "type", "cbo", "wmc", "dit", "rfc", "lcom", "tcc", "lcc",
+            "totalMethodsQty", "staticMethodsQty", "publicMethodsQty", "privateMethodsQty", "protectedMethodsQty", "defaultMethodsQty",
+            "abstractMethodsQty", "finalMethodsQty", "synchronizedMethodsQty", "totalFieldsQty", "staticFieldsQty", "publicFieldsQty",
+            "privateFieldsQty", "protectedFieldsQty", "defaultFieldsQty", "visibleFieldsQty", "finalFieldsQty", "synchronizedFieldsQty", "nosi", "loc",
             "returnQty", "loopQty", "comparisonsQty", "tryCatchQty", "parenthesizedExpsQty", "stringLiteralsQty",
-            "numbersQty", "assignmentsQty", "mathOperationsQty", "variablesQty", "maxNestedBlocks",
+            "numbersQty", "assignmentsQty", "mathOperationsQty", "variablesQty", "maxNestedBlocksQty",
             "anonymousClassesQty", "innerClassesQty", "lambdasQty", "uniqueWordsQty", "modifiers", "logStatementsQty" };
     private static final String[] METHOD_HEADER = { "file", "class", "method", "constructor", "line", "cbo", "wmc", "rfc", "loc",
-            "returns", "variables", "parameters", "loopQty", "comparisonsQty", "tryCatchQty",
+            "returnsQty", "variablesQty", "parametersQty", "methodsInvokedQty", "methodsInvokedLocalQty", "methodsInvokedIndirectLocalQty", "loopQty", "comparisonsQty", "tryCatchQty",
             "parenthesizedExpsQty", "stringLiteralsQty", "numbersQty", "assignmentsQty", "mathOperationsQty",
             "maxNestedBlocks", "anonymousClassesQty", "innerClassesQty", "lambdasQty", "uniqueWordsQty", "modifiers", "logStatementsQty", "hasJavaDoc" };
     private static final String[] VAR_FIELD_HEADER = { "file", "class", "method", "variable", "usage" };
@@ -64,10 +64,10 @@ public class ResultWriter {
      */
     public void printResult(CKClassResult result) throws IOException {
         this.classPrinter.printRecord(result.getFile(), result.getClassName(), result.getType(), result.getCbo(),
-                result.getWmc(), result.getDit(), result.getRfc(), result.getLcom(), result.getNumberOfMethods(),
+                result.getWmc(), result.getDit(), result.getRfc(), result.getLcom(), result.getTightClassCohesion(), result.getLooseClassCohesion(), result.getNumberOfMethods(),
                 result.getNumberOfStaticMethods(), result.getNumberOfPublicMethods(),
                 result.getNumberOfPrivateMethods(), result.getNumberOfProtectedMethods(),
-                result.getNumberOfDefaultMethods(), result.getNumberOfAbstractMethods(),
+                result.getNumberOfDefaultMethods(), result.getVisibleMethods().size(), result.getNumberOfAbstractMethods(),
                 result.getNumberOfFinalMethods(), result.getNumberOfSynchronizedMethods(), result.getNumberOfFields(),
                 result.getNumberOfStaticFields(), result.getNumberOfPublicFields(), result.getNumberOfPrivateFields(),
                 result.getNumberOfProtectedFields(), result.getNumberOfDefaultFields(), result.getNumberOfFinalFields(),
@@ -83,6 +83,7 @@ public class ResultWriter {
                     method.isConstructor(),
                     method.getStartLine(), method.getCbo(), method.getWmc(), method.getRfc(), method.getLoc(),
                     method.getReturnQty(), method.getVariablesQty(), method.getParametersQty(),
+                    method.getMethodInvocations().size(), method.getMethodInvocationsLocal().size(), method.getMethodInvocationsIndirectLocal().size(),
                     method.getLoopQty(), method.getComparisonsQty(), method.getTryCatchQty(),
                     method.getParenthesizedExpsQty(), method.getStringLiteralsQty(), method.getNumbersQty(),
                     method.getAssignmentsQty(), method.getMathOperationsQty(), method.getMaxNestedBlocks(),
