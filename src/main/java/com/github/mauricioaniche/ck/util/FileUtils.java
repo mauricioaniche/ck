@@ -9,7 +9,7 @@ public class FileUtils {
 		try {
 			return Files.walk(Paths.get(path))
 					.filter(Files::isDirectory)
-					.filter(x -> !x.toAbsolutePath().toString().contains(".git/"))
+					.filter(x -> !isGitDir(x.toAbsolutePath().toString()))
 					.map(x -> x.toAbsolutePath().toString())
 					.toArray(String[]::new);
 		} catch(Exception e) {
@@ -32,12 +32,17 @@ public class FileUtils {
 		try {
 			return Files.walk(Paths.get(path))
 					.filter(Files::isRegularFile)
-					.filter(x -> !x.toAbsolutePath().toString().contains(".git/"))
+					.filter(x -> !isGitDir(x.toAbsolutePath().toString()))
 					.filter(x -> x.toAbsolutePath().toString().toLowerCase().endsWith(ending))
 					.map(x -> x.toAbsolutePath().toString())
 					.toArray(String[]::new);
 		} catch(Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	//Is the given directory a git repository directory?
+	private static boolean isGitDir(String path){
+		return path.contains("/.git/");
 	}
 }
