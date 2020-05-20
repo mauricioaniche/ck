@@ -193,7 +193,7 @@ my expectations... Life is funny!
 Please, use the following bibtex entry:
 
 ```
-@manual{
+@manual{aniche-ck,
   title={Java code metrics calculator (CK)},
   author={Maurício Aniche},
   year={2015},
