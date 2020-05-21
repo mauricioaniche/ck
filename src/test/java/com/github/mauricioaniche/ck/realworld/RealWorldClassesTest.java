@@ -212,6 +212,24 @@ public class RealWorldClassesTest extends BaseTest {
 	public void hectorPolicyManager_betterNamesForAnonymousClasses() {
 		CKClassResult class1 = report.get("net.retakethe.policyauction.data.impl.HectorPolicyManagerImpl");
 		CKClassResult anonymousClass = report.get("net.retakethe.policyauction.data.impl.HectorPolicyManagerImpl$Anonymous1");
+
+		Assertions.assertNotNull(class1);
+		Assertions.assertNotNull(anonymousClass);
+	}
+
+	/**
+	 * An extra test to make sure it gets the static classes declared in here.
+	 * Trying to reproduce a bug we observed in a client.
+	 */
+	@Test
+	void ambry_ByteBufferAsyncWritableChannel() {
+		CKClassResult class1 = report.get("com.github.ambry.commons.ByteBufferAsyncWritableChannel$ChunkData");
+		Assertions.assertNotNull(class1);
+
+		Assertions.assertEquals(2, class1.getMethods().size());
+
+		Assertions.assertNotNull(class1.getMethod("ChunkData/2[java.nio.ByteBuffer,com.github.ambry.commons.Callback<java.lang.Long>]"));
+		Assertions.assertNotNull(class1.getMethod("resolveChunk/1[java.lang.Exception]"));
 	}
 
 }
