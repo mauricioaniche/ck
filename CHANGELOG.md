@@ -1,5 +1,9 @@
 # CK changelog
 
+## 0.6.1
+
+* Fix bug related to directories that had ".git" in the name
+
 ## 0.6.0
 
 * New metrics: LCC and TCC
