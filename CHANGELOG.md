@@ -1,5 +1,9 @@
 # CK changelog
 
+## 0.6.2
+
+* Fix 'null' that was returned by LCC and TCC metrics in a specific case.
+
 ## 0.6.1
 
 * Fix bug related to directories that had ".git" in the name
