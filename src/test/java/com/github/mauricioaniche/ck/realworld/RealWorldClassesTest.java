@@ -3,6 +3,7 @@ package com.github.mauricioaniche.ck.realworld;
 import com.github.mauricioaniche.ck.BaseTest;
 import com.github.mauricioaniche.ck.CKClassResult;
 import com.github.mauricioaniche.ck.CKMethodResult;
+import com.github.mauricioaniche.ck.metric.MethodLevelMetric;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -232,4 +233,19 @@ public class RealWorldClassesTest extends BaseTest {
 		Assertions.assertNotNull(class1.getMethod("resolveChunk/1[java.lang.Exception]"));
 	}
 
+	/**
+	 * Tests if the for anonymous classes and classes with no visible methods methods invocations and local method invocations are generated.
+	 * For more details see issue #65.
+	 */
+	@Test
+	public void methodInvocationsInnerClass(){
+		CKClassResult class1 = report.get("com.github.ambry.commons.ByteBufferAsyncWritableChannel$ChunkData");
+		CKMethodResult constructorMethod = class1.getMethod("ChunkData/2[java.nio.ByteBuffer,com.github.ambry.commons.Callback<java.lang.Long>]").get();
+		System.out.println(constructorMethod.getMethodInvocations());
+		System.out.println(constructorMethod.getMethodInvocationsLocal());
+
+		Assertions.assertEquals(1, constructorMethod.getMethodInvocations().size());
+		Assertions.assertEquals(0, constructorMethod.getMethodInvocationsLocal().size());
+		Assertions.assertEquals(0, constructorMethod.getMethodInvocationsIndirectLocal().size());
+	}
 }
