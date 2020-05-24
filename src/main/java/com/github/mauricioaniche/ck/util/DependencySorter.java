@@ -13,7 +13,7 @@ public class DependencySorter {
 
     public <T> List<Class<? extends T>> sort(List<Class<? extends T>> toSort) {
         // the stack will contain the final list of vertexes
-        Stack<Integer> stack = new Stack<>();
+        Stack<Integer> sortedStack = new Stack<>();
 
         // first step, we build a simple adjacent matrix
         boolean[][] adjacentMatrix = deriveAdjacentMatrix(toSort);
@@ -25,10 +25,9 @@ public class DependencySorter {
         // visit all of them, in order
         for (int i = 0; i < toSort.size(); i++)
             if (visited[i] == false)
-                topologicalSort(i, visited, adjacentMatrix, stack);
+                topologicalSort(i, visited, adjacentMatrix, sortedStack);
 
-        return stack.stream().map(i -> toSort.get(i)).collect(Collectors.toList());
-
+        return sortedStack.stream().map(i -> toSort.get(i)).collect(Collectors.toList());
     }
 
     private void topologicalSort(int v, boolean[] visited, boolean[][] adjacentMatrix, Stack<Integer> sortedStack) {
