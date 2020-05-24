@@ -1,7 +1,5 @@
 package com.github.mauricioaniche.ck;
 
-import com.github.mauricioaniche.ck.util.ResultWriter;
-
 import java.io.IOException;
 
 public class Runner {
