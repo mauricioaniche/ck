@@ -33,14 +33,23 @@ public class Runner {
 
 		ResultWriter writer = new ResultWriter("class.csv", "method.csv", "variable.csv", "field.csv", variablesAndFields);
 		
-		new CK(useJars, maxAtOnce, variablesAndFields).calculate(path, result -> {
-			try {
-			    writer.printResult(result);
-			} catch (IOException e) {
-				throw new RuntimeException(e);
+		new CK(useJars, maxAtOnce, variablesAndFields).calculate(path, new CKNotifier() {
+			@Override
+			public void notify(CKClassResult result) {
+				try {
+					writer.printResult(result);
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+			}
+
+			@Override
+			public void notifyError(String sourceFilePath, Exception e) {
+				System.err.println("Error in " + sourceFilePath);
+				e.printStackTrace(System.err);
 			}
 		});
-		
+
 		writer.flushAndClose();
 	}
 }

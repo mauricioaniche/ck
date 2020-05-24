@@ -7,27 +7,12 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.Callable;
-import java.util.stream.Collectors;
+
+import static com.github.mauricioaniche.ck.AssertResult.assertResultNotNull;
 
 public abstract class BaseTest {
-
-
-	static Set<Method> classGetters = Arrays.stream(CKClassResult.class.getMethods())
-			.filter(m -> m.getName().startsWith("get"))
-			.filter(m -> !m.getName().equals("getModifiers")) // it can be -1 if it's anonymous
-			.filter(m -> m.getParameterCount() == 0)
-			.collect(Collectors.toSet());
-
-	static Set<Method> methodGetters = Arrays.stream(CKMethodResult.class.getMethods())
-			.filter(m -> m.getName().startsWith("get"))
-			.filter(m -> !m.getName().equals("getModifiers"))
-			.filter(m -> m.getParameterCount() == 0)
-			.collect(Collectors.toSet());
-
 
 	protected Map<String, CKClassResult> report;
 
@@ -41,47 +26,30 @@ public abstract class BaseTest {
 	}
 
 	@Test
-	public void checkNulls() throws InvocationTargetException, IllegalAccessException {
+	public void checkNulls() {
 		if(report==null)
 			return;
 
 		for(String reportedClass : report.keySet()) {
 			// no nulls in getters of the class
 			CKClassResult ckClassResult = report.get(reportedClass);
-			for(Method method : classGetters) {
-				Object result = method.invoke(ckClassResult);
-				Assertions.assertNotNull(result, method.getName() + " is null");
-
-				// integer >= 0
-				if(method.getReturnType().equals(int.class)) {
-					int intResult = (int) result;
-					Assertions.assertTrue(intResult >= 0, method.getName() + " < 0");
-				}
-			}
-
-			Set<CKMethodResult> ckMethods = ckClassResult.getMethods();
-			// no nulls in getters of the class
-			for (CKMethodResult ckMethodResult : ckMethods) {
-				for(Method method : methodGetters) {
-					Object result = method.invoke(ckMethodResult);
-					Assertions.assertNotNull(result, method.getName() + " is null");
-
-					// integer >= 0
-					if(method.getReturnType().equals(int.class)) {
-						int intResult = (int) result;
-						Assertions.assertTrue(intResult >= 0, method.getName() + " < 0");
-					}
-
-				}
-			}
+			assertResultNotNull(ckClassResult);
 		}
-
-
 	}
 
 	protected static Map<String, CKClassResult> run(String dir) {
 		Map<String, CKClassResult> map = new HashMap<>();
-		new CK().calculate(dir, result -> map.put(result.getClassName(), result));
+		new CK().calculate(dir, new CKNotifier() {
+			@Override
+			public void notify(CKClassResult result) {
+				map.put(result.getClassName(), result);
+			}
+
+			@Override
+			public void notifyError(String sourceFilePath, Exception e) {
+				Assertions.fail(sourceFilePath, e);
+			}
+		});
 		return map;
 	}
 
@@ -91,7 +59,17 @@ public abstract class BaseTest {
 
 	protected static Map<String, CKClassResult> runDebug(String dir, Callable<List<ClassLevelMetric>> classLevelMetrics, Callable<List<MethodLevelMetric>> methodLevelMetrics) {
 		Map<String, CKClassResult> map = new HashMap<>();
-		new CK(classLevelMetrics, methodLevelMetrics).calculate(dir, result -> map.put(result.getClassName(), result));
+		new CK(classLevelMetrics, methodLevelMetrics).calculate(dir, new CKNotifier() {
+			@Override
+			public void notify(CKClassResult result) {
+				map.put(result.getClassName(), result);
+			}
+
+			@Override
+			public void notifyError(String sourceFilePath, Exception e) {
+				Assertions.fail(sourceFilePath, e);
+			}
+		});
 		return map;
 	}
 }
