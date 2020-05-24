@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 //Calculates the tight and loose class cohesion for a class.
 //For more details see: https://www.aivosto.com/project/help/pm-oo-cohesion.html#TCC_LCC
+@RunAfter(metrics={MethodLevelFieldUsageCount.class})
 public class TightClassCohesion implements CKASTVisitor, ClassLevelMetric {
     private HashMap<String, Set<String>> accessedFields = new HashMap<>();
 
