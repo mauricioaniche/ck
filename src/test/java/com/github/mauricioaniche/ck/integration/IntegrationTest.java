@@ -14,8 +14,6 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import static com.github.mauricioaniche.ck.AssertResult.assertResultNotNull;
 
