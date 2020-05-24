@@ -2,9 +2,7 @@ package com.github.mauricioaniche.ck;
 
 import org.eclipse.jdt.core.dom.Modifier;
 
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class CKMethodResult {
 	private int cbo;
@@ -145,6 +143,9 @@ public class CKMethodResult {
 	}
 
 	public Map<String, Integer> getVariablesUsage() {
+		if(this.variablesUsage==null)
+			this.variablesUsage = new HashMap<>();
+
 		return variablesUsage;
 	}
 
@@ -265,10 +266,18 @@ public class CKMethodResult {
 	}
 
 	public Map<String, Integer> getFieldUsage() {
+		if(this.fieldUsage==null)
+			fieldUsage = new HashMap<>();
+
 		return fieldUsage;
 	}
 
-	public Set<String> getFieldsAccessed() { return fieldUsage.keySet(); }
+	public Set<String> getFieldsAccessed() {
+		if(this.fieldUsage==null)
+			fieldUsage = new HashMap<>();
+
+		return fieldUsage.keySet();
+	}
 
 	public boolean isConstructor() {
 		return isConstructor;
@@ -295,6 +304,9 @@ public class CKMethodResult {
 	}
 
 	public Set<String> getMethodInvocations() {
+		if(methodInvocations==null)
+			methodInvocations = new HashSet<>();
+
 		return methodInvocations;
 	}
 
