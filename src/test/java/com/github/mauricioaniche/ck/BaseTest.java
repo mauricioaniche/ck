@@ -19,14 +19,14 @@ public abstract class BaseTest {
 		}
 	}
 
-	protected static Map<String, CKClassResult> runDebug(String dir) {
-		return runDebug(dir, () -> Arrays.asList(new ASTDebugger()), () -> Collections.emptyList());
-	}
-
 	protected static Map<String, CKClassResult> run(String dir) {
 		Map<String, CKClassResult> map = new HashMap<>();
 		new CK().calculate(dir, result -> map.put(result.getClassName(), result));
 		return map;
+	}
+
+	protected static Map<String, CKClassResult> runDebug(String dir) {
+		return runDebug(dir, () -> Arrays.asList(new ASTDebugger()), () -> Collections.emptyList());
 	}
 
 	protected static Map<String, CKClassResult> runDebug(String dir, Callable<List<ClassLevelMetric>> classLevelMetrics, Callable<List<MethodLevelMetric>> methodLevelMetrics) {
