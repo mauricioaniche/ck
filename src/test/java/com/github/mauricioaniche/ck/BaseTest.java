@@ -20,7 +20,7 @@ public abstract class BaseTest {
 	}
 
 	protected static Map<String, CKClassResult> runDebug(String dir) {
-		return run(dir, () -> Arrays.asList(new ASTDebugger()), () -> Collections.emptyList());
+		return runDebug(dir, () -> Arrays.asList(new ASTDebugger()), () -> Collections.emptyList());
 	}
 
 	protected static Map<String, CKClassResult> run(String dir) {
@@ -29,7 +29,7 @@ public abstract class BaseTest {
 		return map;
 	}
 
-	protected static Map<String, CKClassResult> run(String dir, Callable<List<ClassLevelMetric>> classLevelMetrics, Callable<List<MethodLevelMetric>> methodLevelMetrics) {
+	protected static Map<String, CKClassResult> runDebug(String dir, Callable<List<ClassLevelMetric>> classLevelMetrics, Callable<List<MethodLevelMetric>> methodLevelMetrics) {
 		Map<String, CKClassResult> map = new HashMap<>();
 		new CK(classLevelMetrics, methodLevelMetrics).calculate(dir, result -> map.put(result.getClassName(), result));
 		return map;
