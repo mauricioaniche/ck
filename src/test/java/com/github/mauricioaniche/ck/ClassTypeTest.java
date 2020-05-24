@@ -3,17 +3,19 @@ package com.github.mauricioaniche.ck;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ClassTypeTest extends BaseTest {
 
 	private static Map<String, CKClassResult> report;
 
 	@BeforeAll
-	public static void setUp() {
+	public void setUp() {
 		report = run(fixturesDir() + "/class-types");
 	}
 

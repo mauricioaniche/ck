@@ -1,21 +1,18 @@
 package com.github.mauricioaniche.ck;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.util.Map;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class WordCountsTest extends BaseTest {
 
-	private static Map<String, CKClassResult> report;
 	private CKClassResult w1;
 	private CKClassResult w2;
 	private CKClassResult w3;
 
 	@BeforeAll
-	public static void setUp() {
+	public void setUp() {
 		report = run(fixturesDir() + "/wordcounts");
 	}
 	

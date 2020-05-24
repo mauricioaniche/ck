@@ -3,14 +3,15 @@ package com.github.mauricioaniche.ck;
 import junit.framework.Assert;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
 import java.util.Map;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class LooseClassCohesionTest extends BaseTest {
-    private static Map<String, CKClassResult> report;
 
     @BeforeAll
-    public static void setUp() {
+    public void setUp() {
         report = run(fixturesDir() + "/ClassCohesion");
     }
 

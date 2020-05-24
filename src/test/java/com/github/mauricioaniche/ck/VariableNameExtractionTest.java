@@ -1,4 +1,4 @@
-package com.github.mauricioaniche.ck.util;
+package com.github.mauricioaniche.ck;
 
 import com.github.mauricioaniche.ck.BaseTest;
 import com.github.mauricioaniche.ck.CKClassResult;
@@ -6,14 +6,15 @@ import com.google.common.collect.Sets;
 import junit.framework.Assert;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
 import java.util.Map;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class VariableNameExtractionTest extends BaseTest {
-    private static Map<String, CKClassResult> report;
 
     @BeforeAll
-    public static void setUp() {
+    public void setUp() {
         report = run(fixturesDir() + "/VariableDeclaration");
     }
 

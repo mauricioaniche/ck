@@ -2,9 +2,11 @@ package com.github.mauricioaniche.ck;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
 import java.util.Map;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class LOCTest extends BaseTest {
 
 	@Test

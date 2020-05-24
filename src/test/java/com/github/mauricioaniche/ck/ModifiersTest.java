@@ -7,18 +7,19 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.eclipse.jdt.core.dom.Modifier;
+import org.junit.jupiter.api.TestInstance;
+
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ModifiersTest extends BaseTest {
 
-
-	private static Map<String, CKClassResult> report;
 	private static Map<String, Integer> modifiersByMethod;
 	private static CKClassResult classResult;
 	
 	@BeforeAll
-	public static void setUp() {
+	public void setUp() {
 		report = run(fixturesDir() + "/modifiers");
 		classResult = report.get("modifiers.ClassWithModifiers");
 		modifiersByMethod = classResult.getMethods().stream().collect(Collectors.toMap(x -> x.getMethodName(), x->x.getModifiers()));

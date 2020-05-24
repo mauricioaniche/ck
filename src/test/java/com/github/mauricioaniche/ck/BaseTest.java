@@ -2,6 +2,8 @@ package com.github.mauricioaniche.ck;
 
 import com.github.mauricioaniche.ck.metric.ClassLevelMetric;
 import com.github.mauricioaniche.ck.metric.MethodLevelMetric;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,6 +12,8 @@ import java.util.concurrent.Callable;
 
 public abstract class BaseTest {
 
+	protected Map<String, CKClassResult> report;
+
 	protected static String fixturesDir() {
 		try {
 			String cfgFile = new File(BaseTest.class.getResource("/").getPath() + "../../fixtures/").getCanonicalPath();
@@ -17,6 +21,11 @@ public abstract class BaseTest {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	@AfterAll
+	public void checkNulls() {
+		report = run(fixturesDir() + "/cbo");
 	}
 
 	protected static Map<String, CKClassResult> run(String dir) {

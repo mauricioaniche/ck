@@ -6,17 +6,18 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class MethodInvocationsTest extends BaseTest {
-    private static Map<String, CKClassResult> report;
     private String qualifier = "MethodInvocation.Complex1.";
 
     @BeforeAll
-    public static void setUp() {
+    public void setUp() {
         report = run(fixturesDir() + "/MethodInvocation");
     }
 

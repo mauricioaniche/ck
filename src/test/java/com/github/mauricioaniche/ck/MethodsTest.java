@@ -3,16 +3,16 @@ package com.github.mauricioaniche.ck;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
 import java.util.Map;
 import java.util.Optional;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class MethodsTest extends BaseTest {
 
-    private static Map<String, CKClassResult> report;
-
     @BeforeAll
-    public static void setUp() {
+    public void setUp() {
         report = run(fixturesDir() + "/methods");
     }
 

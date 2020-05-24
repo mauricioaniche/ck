@@ -4,13 +4,15 @@ import com.google.common.collect.Sets;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+
 import java.util.Map;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class FieldsAccessedTest extends BaseTest {
-    private static Map<String, CKClassResult> report;
 
     @BeforeAll
-    public static void setUp() {
+    public void setUp() {
         report = run(fixturesDir() + "/fieldusage");
     }
 
