@@ -6,7 +6,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 //we ignore invocations in the super class, because they are always outside the current class and can never return
-public class MethodInvocationsLocal {
+@RunAfter(metrics={RFC.class, MethodLevelFieldUsageCount.class})
+public class MethodInvocationsLocal implements CKASTVisitor, ClassLevelMetric {
     //Recursively extract all method invocations starting with the given method
     //Explored contains all previously explored invocations
     //Invocations contains all direct method invocations of interest
@@ -58,7 +59,7 @@ public class MethodInvocationsLocal {
         return methodInvocationsLocal;
     }
 
-    public void extractInvocations(CKClassResult result) {
+    public void setResult(CKClassResult result) {
         //extract all direct local invocations for all methods in the current class
         Set<CKMethodResult> methods = result.getMethods();
         HashMap<String, Set<String>> methodInvocationsLocal = extractLocalInvocations(methods);

@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 //Calculates the tight and loose class cohesion for a class.
 //For more details see: https://www.aivosto.com/project/help/pm-oo-cohesion.html#TCC_LCC
-@RunAfter(metrics={MethodLevelFieldUsageCount.class})
+@RunAfter(metrics={RFC.class, MethodLevelFieldUsageCount.class, MethodInvocationsLocal.class})
 public class TightClassCohesion implements CKASTVisitor, ClassLevelMetric {
     private HashMap<String, Set<String>> accessedFields = new HashMap<>();
 
@@ -112,9 +112,6 @@ public class TightClassCohesion implements CKASTVisitor, ClassLevelMetric {
     }
 
     public void setResult(CKClassResult result) {
-        MethodInvocationsLocal methodInvocationsLocal = new MethodInvocationsLocal();
-        methodInvocationsLocal.extractInvocations(result);
-
         //in case the class does not contain any visible methods, TCC and LCC have no reasonable value, thus set it to -1
         if(result.getVisibleMethods().size() < 1){
             result.setTightClassCohesion(-1);
