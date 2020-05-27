@@ -47,7 +47,7 @@ public class DependencySorter {
 
     private <T> boolean[][] deriveAdjacentMatrix(List<Class<? extends T>> toSort) {
 
-        final boolean[][] adjacentList = new boolean[toSort.size()][toSort.size()];
+        final boolean[][] adjacentMatrix = new boolean[toSort.size()][toSort.size()];
 
         // for each element in the list
         IntStream.range(0, toSort.size())
@@ -61,9 +61,9 @@ public class DependencySorter {
                 .forEach(p -> Arrays.stream(p.getValue())
                         .map(d -> toSort.indexOf(d))
                         .filter(d -> d != -1)
-                        .forEach(d -> adjacentList[p.getKey()][d] = true));
+                        .forEach(d -> adjacentMatrix[p.getKey()][d] = true));
 
-        return adjacentList;
+        return adjacentMatrix;
     }
 
 }
