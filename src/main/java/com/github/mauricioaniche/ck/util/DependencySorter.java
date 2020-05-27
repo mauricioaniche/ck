@@ -58,10 +58,10 @@ public class DependencySorter {
                 // for each element, for each dependency, mark it as true in the adjacent list
                 // we ignore dependencies that are not in the list (a list might contain method-level
                 // class-level dependencies, so we should ignore the ones we are not dealing with here)
-                .forEach(p -> Arrays.stream(p.getValue())
-                        .map(d -> toSort.indexOf(d))
-                        .filter(d -> d != -1)
-                        .forEach(d -> adjacencyMatrix[p.getKey()][d] = true));
+                .flatMap(p -> Arrays.stream(p.getValue())
+                        .map(d -> Pair.of(p.getKey(),toSort.indexOf(d)))
+                        .filter(d -> d.getValue() != -1))
+                .forEach(p -> adjacencyMatrix[p.getKey()][p.getValue()] = true);
 
         return adjacencyMatrix;
     }
