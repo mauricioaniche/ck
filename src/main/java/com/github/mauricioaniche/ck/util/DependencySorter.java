@@ -16,7 +16,7 @@ public class DependencySorter {
         Stack<Integer> sortedStack = new Stack<>();
 
         // first step, we build a simple adjacent matrix
-        boolean[][] adjacentMatrix = deriveAdjacentMatrix(toSort);
+        boolean[][] adjacencyMatrix = deriveAdjacencyMatrix(toSort);
 
         // the array will keep a list of nodes we visited before
         // all marked as 'not visited' at the beginning
@@ -25,29 +25,29 @@ public class DependencySorter {
         // visit all of them, in order
         for (int i = 0; i < toSort.size(); i++)
             if (visited[i] == false)
-                topologicalSort(i, visited, adjacentMatrix, sortedStack);
+                topologicalSort(i, visited, adjacencyMatrix, sortedStack);
 
         return sortedStack.stream().map(i -> toSort.get(i)).collect(Collectors.toList());
     }
 
-    private void topologicalSort(int v, boolean[] visited, boolean[][] adjacentMatrix, Stack<Integer> sortedStack) {
+    private void topologicalSort(int v, boolean[] visited, boolean[][] adjacencyMatrix, Stack<Integer> sortedStack) {
         // Mark the current node as visited
         visited[v] = true;
 
         // Visit the adjacent nodes before adding this one in the solution
-        IntStream.range(0, adjacentMatrix[v].length)
-                .filter(i -> adjacentMatrix[v][i])
+        IntStream.range(0, adjacencyMatrix[v].length)
+                .filter(i -> adjacencyMatrix[v][i])
                 .filter(i -> !visited[i])
-                .forEach(i -> topologicalSort(i, visited, adjacentMatrix, sortedStack));
+                .forEach(i -> topologicalSort(i, visited, adjacencyMatrix, sortedStack));
 
         // After visiting all adjacent nodes (and their adjacents, ...) first,
         // we can add this one to the solution
         sortedStack.push(v);
     }
 
-    private <T> boolean[][] deriveAdjacentMatrix(List<Class<? extends T>> toSort) {
+    private <T> boolean[][] deriveAdjacencyMatrix(List<Class<? extends T>> toSort) {
 
-        final boolean[][] adjacentMatrix = new boolean[toSort.size()][toSort.size()];
+        final boolean[][] adjacencyMatrix = new boolean[toSort.size()][toSort.size()];
 
         // for each element in the list
         IntStream.range(0, toSort.size())
@@ -61,9 +61,9 @@ public class DependencySorter {
                 .forEach(p -> Arrays.stream(p.getValue())
                         .map(d -> toSort.indexOf(d))
                         .filter(d -> d != -1)
-                        .forEach(d -> adjacentMatrix[p.getKey()][d] = true));
+                        .forEach(d -> adjacencyMatrix[p.getKey()][d] = true));
 
-        return adjacentMatrix;
+        return adjacencyMatrix;
     }
 
 }
