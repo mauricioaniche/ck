@@ -55,6 +55,6 @@ public class IntegrationTest {
     }
 
     private void clone(String uri) throws GitAPIException {
-        Git.cloneRepository().setDirectory(new File(tempFolder)).setURI(uri).setCloneAllBranches(true).call();
+    	try (Git git = Git.cloneRepository().setDirectory(new File(tempFolder)).setURI(uri).setCloneAllBranches(true).call()){};
     }
 }
