@@ -19,7 +19,7 @@ public class ResultWriter {
     private static final String[] METHOD_HEADER = { "file", "class", "method", "constructor", "line", "cbo", "wmc", "rfc", "loc",
             "returnsQty", "variablesQty", "parametersQty", "methodsInvokedQty", "methodsInvokedLocalQty", "methodsInvokedIndirectLocalQty", "loopQty", "comparisonsQty", "tryCatchQty",
             "parenthesizedExpsQty", "stringLiteralsQty", "numbersQty", "assignmentsQty", "mathOperationsQty",
-            "maxNestedBlocks", "anonymousClassesQty", "innerClassesQty", "lambdasQty", "uniqueWordsQty", "modifiers", "logStatementsQty", "hasJavaDoc" };
+            "maxNestedBlocksQty", "anonymousClassesQty", "innerClassesQty", "lambdasQty", "uniqueWordsQty", "modifiers", "logStatementsQty", "hasJavaDoc" };
     private static final String[] VAR_FIELD_HEADER = { "file", "class", "method", "variable", "usage" };
     private final boolean variablesAndFields;
 
