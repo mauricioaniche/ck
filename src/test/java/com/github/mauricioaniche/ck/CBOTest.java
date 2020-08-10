@@ -92,4 +92,26 @@ public class CBOTest extends BaseTest {
 		Assertions.assertEquals(2, g.getCbo());
 
 	}
+	
+	@Test
+	public void moreCouplingWithGenericsAndJavaType() {
+		CKClassResult b = report.get("cbo.Coupling7");
+		Assertions.assertEquals(1, b.getCbo());
+
+		CKClassResult c = report.get("cbo.Coupling71");
+		Assertions.assertEquals(1, c.getCbo());
+
+		CKClassResult d = report.get("cbo.Coupling72");
+		Assertions.assertEquals(2, d.getCbo());
+
+		CKClassResult e = report.get("cbo.Coupling73");
+		Assertions.assertEquals(2, e.getCbo());
+
+		CKClassResult f = report.get("cbo.Coupling74");
+		Assertions.assertEquals(2, f.getCbo());
+
+		CKClassResult g = report.get("cbo.Coupling75");
+		Assertions.assertEquals(2, g.getCbo());
+
+	}
 }
