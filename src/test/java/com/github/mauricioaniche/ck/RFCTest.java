@@ -61,4 +61,13 @@ public class RFCTest extends BaseTest {
 
 	}
 
+	@Test
+	public void countMethodArray(){
+		int [] expected = new int[5];
+		this.expected = [1,2,3,4,5];
+
+		CKClassResult a = report.get("rfc.RFCArray");
+		Assertions.assertSame(this.expected, a.getMethod("getArray/0").get().getRfc());
+	}
+
 }
