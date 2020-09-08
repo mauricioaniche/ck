@@ -50,14 +50,18 @@ public class CK {
 	}
 
 	public void calculate(String path, CKNotifier notifier) {
-		calculate(path, notifier, FileUtils.getAllJavaFiles(path));
+		String[] javaFiles = FileUtils.getAllJavaFiles(path);
+		log.info("Found " + javaFiles.length + " java files");
+
+		calculate(path, notifier, javaFiles);
 	}
 
 	public void calculate(String environment, CKNotifier notifier, String... javaFiles) {
 		String[] srcDirs = FileUtils.getAllDirs(environment);
+		log.info("Found " + srcDirs.length + " src dirs");
+
 		String[] allDependencies = useJars ? FileUtils.getAllJars(environment) : null;
 
-		log.info("Found " + javaFiles.length + " java files");
 		if(useJars)
 			log.info("Found " + allDependencies.length + " jar dependencies");
 		
