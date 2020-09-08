@@ -33,7 +33,6 @@ public class CK {
 		this.maxAtOnce = 100;
 	}
 
-
 	public CK(boolean useJars, int maxAtOnce, boolean variablesAndFields) {
 		MetricsFinder finder = new MetricsFinder();
 		this.classLevelMetrics = () -> finder.allClassLevelMetrics();
@@ -51,9 +50,12 @@ public class CK {
 	}
 
 	public void calculate(String path, CKNotifier notifier) {
-		String[] srcDirs = FileUtils.getAllDirs(path);
-		String[] javaFiles = FileUtils.getAllJavaFiles(path);
-		String[] allDependencies = useJars ? FileUtils.getAllJars(path) : null;
+		calculate(path, notifier, FileUtils.getAllJavaFiles(path));
+	}
+
+	public void calculate(String environment, CKNotifier notifier, String... javaFiles) {
+		String[] srcDirs = FileUtils.getAllDirs(environment);
+		String[] allDependencies = useJars ? FileUtils.getAllJars(environment) : null;
 
 		log.info("Found " + javaFiles.length + " java files");
 		if(useJars)
@@ -90,6 +92,5 @@ public class CK {
 		else if (maxMemory >=  500) return 100;
 		else                        return 25;
 	}
-
 
 }
