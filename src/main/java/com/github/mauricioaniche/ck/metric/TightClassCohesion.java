@@ -3,7 +3,7 @@ package com.github.mauricioaniche.ck.metric;
 import com.github.mauricioaniche.ck.CKClassResult;
 import com.github.mauricioaniche.ck.CKMethodResult;
 import com.google.common.collect.Sets;
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import java.util.HashMap;
 import java.util.HashSet;
