@@ -5,7 +5,9 @@ import com.github.mauricioaniche.ck.metric.MethodLevelMetric;
 import com.github.mauricioaniche.ck.util.FileUtils;
 import com.github.mauricioaniche.ck.util.MetricsFinder;
 import com.google.common.collect.Lists;
-import org.apache.log4j.Logger;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
@@ -20,7 +22,7 @@ public class CK {
 	private final int maxAtOnce;
 	private final boolean useJars;
 	
-	private static Logger log = Logger.getLogger(CK.class);
+	private static Logger log = LogManager.getLogger(CK.class);
 
 	Callable<List<ClassLevelMetric>> classLevelMetrics;
 	Callable<List<MethodLevelMetric>> methodLevelMetrics;

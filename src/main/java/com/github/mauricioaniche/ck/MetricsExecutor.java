@@ -2,7 +2,8 @@ package com.github.mauricioaniche.ck;
 
 import com.github.mauricioaniche.ck.metric.ClassLevelMetric;
 import com.github.mauricioaniche.ck.metric.MethodLevelMetric;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.FileASTRequestor;
 
@@ -16,7 +17,7 @@ public class MetricsExecutor extends FileASTRequestor {
 	private Callable<List<MethodLevelMetric>> methodLevelMetrics;
 	private CKNotifier notifier;
 
-	private static Logger log = Logger.getLogger(MetricsExecutor.class);
+	private static Logger log = LogManager.getLogger(MetricsExecutor.class);
 	
 	public MetricsExecutor(Callable<List<ClassLevelMetric>> classLevelMetrics, Callable<List<MethodLevelMetric>> methodLevelMetrics, CKNotifier notifier) {
 		this.classLevelMetrics = classLevelMetrics;
