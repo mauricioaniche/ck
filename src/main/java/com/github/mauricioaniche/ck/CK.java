@@ -10,10 +10,13 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 
-import java.util.Arrays;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class CK {
 
@@ -53,21 +56,25 @@ public class CK {
 		String[] javaFiles = FileUtils.getAllJavaFiles(path);
 		log.info("Found " + javaFiles.length + " java files");
 
-		calculate(path, notifier, javaFiles);
+		calculate(Paths.get(path), notifier,
+		 	Stream.of(javaFiles)
+				.map(Paths::get)
+				.toArray(Path[]::new)
+			);
 	}
 
-	public void calculate(String path, CKNotifier notifier, String... javaFiles) {
-		String[] srcDirs = FileUtils.getAllDirs(path);
+	public void calculate(Path path, CKNotifier notifier, Path... javaFiles) {
+		String[] srcDirs = FileUtils.getAllDirs(path.toString());
 		log.info("Found " + srcDirs.length + " src dirs");
 
-		String[] allDependencies = useJars ? FileUtils.getAllJars(path) : null;
+		String[] allDependencies = useJars ? FileUtils.getAllJars(path.toString()) : null;
 
 		if(useJars)
 			log.info("Found " + allDependencies.length + " jar dependencies");
 		
 		MetricsExecutor storage = new MetricsExecutor(classLevelMetrics, methodLevelMetrics, notifier);
 		
-		List<List<String>> partitions = Lists.partition(Arrays.asList(javaFiles), maxAtOnce);
+		List<List<String>> partitions = Lists.partition(Stream.of(javaFiles).map(Path::toString).collect(Collectors.toList()), maxAtOnce);
 		log.debug("Max partition size: " + maxAtOnce + ", total partitions=" + partitions.size());
 
 		for(List<String> partition : partitions) {
