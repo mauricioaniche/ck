@@ -63,7 +63,22 @@ public class CK {
 			);
 	}
 
-	public void calculate(Path path, CKNotifier notifier, Path... javaFiles) {
+	/**
+	 * Convenience method to call ck with a path rather than a string
+	 * @param path The path which contain the java class files to analyse
+	 * @param notifier Handle to process the results and handle errors
+	 */
+	public void calculate(Path path, CKNotifier notifier) {
+		calculate(path.toString(), notifier);
+	}
+
+	/**
+	 * Calculate metrics for the passed javaFilePaths. Uses path to set the environment
+	 * @param path The environment to where the source code is located
+	 * @param notifier Handle to process the results and handle errors
+	 * @param javaFilePaths The files to collect metrics of.
+	 */
+	public void calculate(Path path, CKNotifier notifier, Path... javaFilePaths) {
 		String[] srcDirs = FileUtils.getAllDirs(path.toString());
 		log.info("Found " + srcDirs.length + " src dirs");
 
@@ -73,8 +88,11 @@ public class CK {
 			log.info("Found " + allDependencies.length + " jar dependencies");
 		
 		MetricsExecutor storage = new MetricsExecutor(classLevelMetrics, methodLevelMetrics, notifier);
-		
-		List<List<String>> partitions = Lists.partition(Stream.of(javaFiles).map(Path::toString).collect(Collectors.toList()), maxAtOnce);
+
+		// Converts the paths to strings and makes the method support relative paths as well.
+		List<String> strJavaFilePaths = Stream.of(javaFilePaths).map(file -> file.isAbsolute() ? file.toString() : path.resolve(file).toString()).collect(Collectors.toList());
+
+		List<List<String>> partitions = Lists.partition(strJavaFilePaths, maxAtOnce);
 		log.debug("Max partition size: " + maxAtOnce + ", total partitions=" + partitions.size());
 
 		for(List<String> partition : partitions) {
