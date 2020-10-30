@@ -20,7 +20,7 @@ public class NumberOfLogStatements implements CKASTVisitor, MethodLevelMetric, C
      * 2. It does not support custom log levels as in http://logging.apache.org/log4j/2.x/manual/customloglevels.html
      *
      * @param line The string representation of the given statement
-     * @return <code>true</code> if
+     * @return <code>true</code> if the informed line matches a log statement
      */
     public static boolean isLogStatement(String line) {
         line = line.toLowerCase().trim();
