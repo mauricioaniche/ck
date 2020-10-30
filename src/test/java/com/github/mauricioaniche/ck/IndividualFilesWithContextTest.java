@@ -62,4 +62,10 @@ class IndividualFilesWithContextTest {
     assertEquals(55, results.size());
   }
 
+  @Test
+  void testConvenienceMethod() {
+    ck.calculate(realWorldDir, ckNotifier);
+    assertEquals(55, results.size());
+  }
+
 }
