@@ -89,9 +89,8 @@ it uses the entire body of the class as metrics.
 The algorithm basically counts the number of words in a method/class, after removing Java keywords. Names are split based on camel case and underline (e.g., longName_likeThis becomes four words).
 See `WordCounter` class for details on the implementation.
 
-- *Number of Log Statements*: Number of log statements in the source code. The counting is based on the following regex:
-`line.matches(".*\\.(info|warn|debug|error)\\(.*") || line.matches(".*log(ger)?\\..*");`.
-See `NumberOfLogStatements.java` for more info.
+- *Number of Log Statements*: Number of log statements in the source code. The counting uses REGEX compatible with SLF4J and Log4J API calls.
+See `NumberOfLogStatements.java` and the test examples (`NumberOfLogStatementsTest` and `fixtures/logs`) for more info.
 
 - *Has Javadoc*: Boolean indicating whether a method has javadoc. (Only at method-level for now) 
 
