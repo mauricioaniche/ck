@@ -10,10 +10,13 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 
-import java.util.Arrays;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class CK {
 
@@ -33,7 +36,6 @@ public class CK {
 		this.maxAtOnce = 100;
 	}
 
-
 	public CK(boolean useJars, int maxAtOnce, boolean variablesAndFields) {
 		MetricsFinder finder = new MetricsFinder();
 		this.classLevelMetrics = () -> finder.allClassLevelMetrics();
@@ -51,17 +53,46 @@ public class CK {
 	}
 
 	public void calculate(String path, CKNotifier notifier) {
-		String[] srcDirs = FileUtils.getAllDirs(path);
 		String[] javaFiles = FileUtils.getAllJavaFiles(path);
-		String[] allDependencies = useJars ? FileUtils.getAllJars(path) : null;
-
 		log.info("Found " + javaFiles.length + " java files");
+
+		calculate(Paths.get(path), notifier,
+		 	Stream.of(javaFiles)
+				.map(Paths::get)
+				.toArray(Path[]::new)
+			);
+	}
+
+	/**
+	 * Convenience method to call ck with a path rather than a string
+	 * @param path The path which contain the java class files to analyse
+	 * @param notifier Handle to process the results and handle errors
+	 */
+	public void calculate(Path path, CKNotifier notifier) {
+		calculate(path.toString(), notifier);
+	}
+
+	/**
+	 * Calculate metrics for the passed javaFilePaths. Uses path to set the environment
+	 * @param path The environment to where the source code is located
+	 * @param notifier Handle to process the results and handle errors
+	 * @param javaFilePaths The files to collect metrics of.
+	 */
+	public void calculate(Path path, CKNotifier notifier, Path... javaFilePaths) {
+		String[] srcDirs = FileUtils.getAllDirs(path.toString());
+		log.info("Found " + srcDirs.length + " src dirs");
+
+		String[] allDependencies = useJars ? FileUtils.getAllJars(path.toString()) : null;
+
 		if(useJars)
 			log.info("Found " + allDependencies.length + " jar dependencies");
 		
 		MetricsExecutor storage = new MetricsExecutor(classLevelMetrics, methodLevelMetrics, notifier);
-		
-		List<List<String>> partitions = Lists.partition(Arrays.asList(javaFiles), maxAtOnce);
+
+		// Converts the paths to strings and makes the method support relative paths as well.
+		List<String> strJavaFilePaths = Stream.of(javaFilePaths).map(file -> file.isAbsolute() ? file.toString() : path.resolve(file).toString()).collect(Collectors.toList());
+
+		List<List<String>> partitions = Lists.partition(strJavaFilePaths, maxAtOnce);
 		log.debug("Max partition size: " + maxAtOnce + ", total partitions=" + partitions.size());
 
 		for(List<String> partition : partitions) {
@@ -90,6 +121,5 @@ public class CK {
 		else if (maxMemory >=  500) return 100;
 		else                        return 25;
 	}
-
 
 }
