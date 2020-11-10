@@ -118,7 +118,7 @@ To use the _latest version_ (which you should), clone the project and generate a
 
 Then, just run:
 ```
-java -jar ck-x.x.x-SNAPSHOT-jar-with-dependencies.jar <project dir> <use jars:true|false> <max files per partition, 0=automatic selection> <variables and fields metrics? True|False>
+java -jar ck-x.x.x-SNAPSHOT-jar-with-dependencies.jar <project dir> <use jars:true|false> <max files per partition, 0=automatic selection> <variables and fields metrics? True|False> <output dir>
 ```
 
 `Project dir` refers to the directory where CK can find all the source code to be parsed.
@@ -126,9 +126,10 @@ Ck will recursively look for .java files. CK can use the dependencies of the pro
 as to improve its precision. The `use jars` parameters tells CK to look for any .jar files
 in the directory and use them to better resolve types. `Max files per partition` tells JDT the size
 of the batch to process. Let us decide that for you and start with 0; if problems happen (i.e., 
-out of memory) you think of tuning it. Finally, `variables and field metrics` indicates to CK whether
+out of memory) you think of tuning it. `Variables and field metrics` indicates to CK whether
 you want metrics at variable- and field-levels too. They are highly fine-grained and produce a lot of output;
-you should skip it if you only need metrics at class or method level.
+you should skip it if you only need metrics at class or method level. Finally, `output dir` refer to the 
+directory where CK will export the csv file with metrics from the analyzed project.
 
 The tool will generate three csv files: class, method, and variable levels.
 

@@ -1,13 +1,15 @@
 package com.github.mauricioaniche.ck;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Runner {
 
 	public static void main(String[] args) throws IOException {
 
 		if (args == null || args.length < 1) {
-			System.out.println("Usage java -jar ck.jar <path to project> <use Jars=true|false> <max files per partition, 0=automatic selection> <print variables and fields metrics? True|False>");
+			System.out.println("Usage java -jar ck.jar <path to project> <use Jars=true|false> <max files per partition, 0=automatic selection> <print variables and fields metrics? True|False> <path to save the output files>");
 			System.exit(1);
 		}
 
@@ -27,18 +29,24 @@ public class Runner {
 		boolean variablesAndFields = true;
 		if(args.length >= 4)
 			variablesAndFields = Boolean.parseBoolean(args[3]);
+		
+		// path where the output csv files will be exported
+		String outputDir = "";
+		if(args.length >= 5)
+			outputDir = args[4];
 
 
-		ResultWriter writer = new ResultWriter("class.csv", "method.csv", "variable.csv", "field.csv", variablesAndFields);
+		ResultWriter writer = new ResultWriter(outputDir + "class.csv", outputDir + "method.csv", outputDir + "variable.csv", outputDir + "field.csv", variablesAndFields);
+		
+		Map<String, CKClassResult> results = new HashMap<>();
 		
 		new CK(useJars, maxAtOnce, variablesAndFields).calculate(path, new CKNotifier() {
 			@Override
 			public void notify(CKClassResult result) {
-				try {
-					writer.printResult(result);
-				} catch (IOException e) {
-					throw new RuntimeException(e);
-				}
+				
+				// Store the metrics values from each component of the project in a HashMap
+				results.put(result.getClassName(), result);
+				
 			}
 
 			@Override
@@ -47,7 +55,12 @@ public class Runner {
 				e.printStackTrace(System.err);
 			}
 		});
-
+		
+		// Write the metrics value of each component in the csv files
+		for(Map.Entry<String, CKClassResult> entry : results.entrySet()){
+			writer.printResult(entry.getValue());
+		}
+		
 		writer.flushAndClose();
 	}
 }
