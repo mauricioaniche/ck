@@ -19,6 +19,9 @@ In order to make it happen, classes must exist in the project (i.e. if a class
 depends upon X which relies in a jar/dependency file, and X depends upon other
 classes, DIT is counted as 2). 
 
+- *NOC (Number of Children)*: It counts the number of immediate subclasses that a 
+particular class has. 
+
 - *Number of fields*: Counts the number of fields. Specific numbers for
 total number of fields, static, public, private, protected, default, final, and synchronized fields.
 
@@ -103,9 +106,6 @@ See `NumberOfLogStatements.java` for more info.
 
 - *Method invocations*: All directly invoked methods, variations are local invocations and indirect local invocations.
       
-
-(In a previous version, it calculated NOC (Number of Children), but it doesn't do it anymore,
-as it requires too much memory.)
 
 Note: CK separates classes, inner classes, and anonymous classes. LOC is the only metric that is not completely isolated from the others, e.g., if A has a declaration of an inner class B, then LOC(A) = LOC(class A) + LOC(inner class B).
 
