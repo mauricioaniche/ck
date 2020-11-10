@@ -2,6 +2,8 @@ package com.github.mauricioaniche.ck;
 
 import java.util.*;
 
+import com.github.mauricioaniche.ck.metric.NOCExtras;
+
 public class CKClassResult {
 
 	private String file;
@@ -9,6 +11,7 @@ public class CKClassResult {
 	private String type;
 
 	private int dit;
+	private int noc = -1;
 	private int wmc;
 	private int cbo;
 	private int lcom;
@@ -89,6 +92,19 @@ public class CKClassResult {
 		this.dit = dit;
 	}
 
+	public int getNoc(){
+		if (this.noc == -1){
+			NOCExtras extras = NOCExtras.getInstance();
+			this.setNoc(extras.getNocValueByName(this.className));
+		}
+			
+		return this.noc;
+	}
+	
+	public void setNoc(int noc){
+		this.noc = noc;
+	}
+	
 	public String getClassName() {
 		return className;
 	}
