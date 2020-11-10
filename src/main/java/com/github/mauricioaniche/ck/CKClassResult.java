@@ -15,6 +15,7 @@ public class CKClassResult {
 	private int wmc;
 	private int cbo;
 	private int lcom;
+	private float lcomNormalized;
 	private int rfc;
 
 	private int nosi;
@@ -132,6 +133,14 @@ public class CKClassResult {
 		return lcom;
 	}
 
+	public void setLcomNormalized(float lcomNormalized) {
+		this.lcomNormalized = lcomNormalized;
+	}
+	
+	public float getLcomNormalized() {
+		return lcomNormalized;
+	}
+	
 	public void setRfc(int rfc) {
 		this.rfc = rfc;
 	}

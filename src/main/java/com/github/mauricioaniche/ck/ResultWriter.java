@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class ResultWriter {
 
-    private static final String[] CLASS_HEADER = { "file", "class", "type", "cbo", "wmc", "dit", "noc", "rfc", "lcom", "tcc", "lcc",
+    private static final String[] CLASS_HEADER = { "file", "class", "type", "cbo", "wmc", "dit", "noc", "rfc", "lcom", "lcom*", "tcc", "lcc",
             "totalMethodsQty", "staticMethodsQty", "publicMethodsQty", "privateMethodsQty", "protectedMethodsQty", "defaultMethodsQty",
             "abstractMethodsQty", "finalMethodsQty", "synchronizedMethodsQty", "totalFieldsQty", "staticFieldsQty", "publicFieldsQty",
             "privateFieldsQty", "protectedFieldsQty", "defaultFieldsQty", "visibleFieldsQty", "finalFieldsQty", "synchronizedFieldsQty", "nosi", "loc",
@@ -62,7 +62,7 @@ public class ResultWriter {
      */
     public void printResult(CKClassResult result) throws IOException {
         this.classPrinter.printRecord(result.getFile(), result.getClassName(), result.getType(), result.getCbo(),
-                result.getWmc(), result.getDit(), result.getNoc(), result.getRfc(), result.getLcom(), result.getTightClassCohesion(), result.getLooseClassCohesion(), result.getNumberOfMethods(),
+                result.getWmc(), result.getDit(), result.getNoc(), result.getRfc(), result.getLcom(), result.getLcomNormalized(), result.getTightClassCohesion(), result.getLooseClassCohesion(), result.getNumberOfMethods(),
                 result.getNumberOfStaticMethods(), result.getNumberOfPublicMethods(),
                 result.getNumberOfPrivateMethods(), result.getNumberOfProtectedMethods(),
                 result.getNumberOfDefaultMethods(), result.getVisibleMethods().size(), result.getNumberOfAbstractMethods(),

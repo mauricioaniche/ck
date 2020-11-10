@@ -49,7 +49,16 @@ The number of lines here might be a bit different from the original file, as we 
 
 - *LCOM (Lack of Cohesion of Methods)*: Calculates LCOM metric. This is the very first
 version of metric, which is not reliable. LCOM-HS can be better (hopefully, you will
-send us a pull request). 
+send us a pull request).
+
+- *LCOM&ast; (Lack of Cohesion of Methods)*: This metric is a modified version of the current version 
+of LCOM implemented in CK Tool. LCOM&ast; is a normalized metric that computes the lack of cohesion of 
+class within a range of 0 to 1. Then, the closer to 1 the value of LCOM&ast; in a class, the less the cohesion 
+degree of this respective class. The closer to 0 the value of LCOM&ast; in a class, the most the cohesion of 
+this respective class. This implementation follows the third version of LCOM&ast; defined in [1].
+	- *Reference:* [1] Henderson-Sellers, Brian, Larry L. Constantine and Ian M. Graham. “Coupling and cohesion 
+	(towards a valid metrics suite for object-oriented analysis and design).” Object Oriented Systems 3 (1996): 
+	143-158. 
 
 - *TCC (Tight Class Cohesion)*: Measures the cohesion of a class with a value range from 0 to 1. TCC measures the cohesion of a class via direct connections between visible methods, two methods or their invocation trees access the same class variable. 
 
