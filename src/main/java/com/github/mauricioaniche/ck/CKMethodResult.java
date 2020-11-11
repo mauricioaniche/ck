@@ -2,10 +2,15 @@ package com.github.mauricioaniche.ck;
 
 import org.eclipse.jdt.core.dom.Modifier;
 
+import com.github.mauricioaniche.ck.metric.CouplingExtras;
+
 import java.util.*;
 
 public class CKMethodResult {
 	private int cbo;
+	private int cboModified = -1;
+	private int fanin = -1;
+	private int fanout = -1;
 	private int rfc;
 	private int wmc;
 	private String methodName;
@@ -66,6 +71,42 @@ public class CKMethodResult {
 
 	public void setCbo(int cbo) {
 		this.cbo = cbo;
+	}
+	
+	public void setCboModified(int cboModified) {
+		this.cboModified = cboModified;
+	}
+	
+	public int getCboModified() {
+		if(this.cboModified == -1){
+			CouplingExtras extras = CouplingExtras.getInstance();
+			this.setCboModified(extras.getValueCBOMethod(this.qualifiedMethodName));
+		}
+		return cboModified;
+	}
+	
+	public void setFanin(int fanin) {
+		this.fanin = fanin;
+	}
+	
+	public int getFanin() {
+		if(this.fanin == -1){
+			CouplingExtras extras = CouplingExtras.getInstance();
+			this.setFanin(extras.getValueFanInMethod(this.qualifiedMethodName));
+		}
+		return fanin;
+	}
+	
+	public void setFanout(int fanout) {
+		this.fanout = fanout;
+	}
+	
+	public int getFanout() {
+		if(this.fanout == -1){
+			CouplingExtras extras = CouplingExtras.getInstance();
+			this.setFanout(extras.getValueFanOutMethod(this.qualifiedMethodName));
+		}
+		return fanout;
 	}
 
 	public void setRfc(int rfc) {

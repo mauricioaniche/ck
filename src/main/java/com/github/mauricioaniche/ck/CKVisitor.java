@@ -56,14 +56,6 @@ public class CKVisitor extends ASTVisitor {
 	public boolean visit(TypeDeclaration node) {
 		ITypeBinding binding = node.resolveBinding();
 
-		// there might be metrics that use it
-		// (even before a class is declared)
-		if(!classes.isEmpty()) {
-			classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.visit(node));
-			if (!classes.peek().methods.isEmpty())
-				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.visit(node));
-		}
-
 		// build a CKClassResult based on the current type
 		// declaration we are visiting
 		String className = binding != null ? binding.getBinaryName() : node.getName().getFullyQualifiedName();
@@ -71,6 +63,15 @@ public class CKVisitor extends ASTVisitor {
 		int modifiers = node.getModifiers();
 		CKClassResult currentClass = new CKClassResult(sourceFilePath, className, type, modifiers);
 		currentClass.setLoc(calculate(node.toString()));
+		
+		// there might be metrics that use it
+		// (even before a class is declared)
+		if(!classes.isEmpty()) {			
+			classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> {((ClassLevelMetric)ast).setClassName(className); ast.visit(node);});
+			if (!classes.peek().methods.isEmpty())
+				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.visit(node));
+				
+		}
 
 		// create a set of visitors, just for the current class
 		List<ClassLevelMetric> classLevelMetrics = instantiateClassLevelMetricVisitors();
@@ -85,7 +86,7 @@ public class CKVisitor extends ASTVisitor {
 
 		// there might be class level metrics that use the TypeDeclaration
 		// so, let's run them
-		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.visit(node));
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> {((ClassLevelMetric)ast).setClassName(className); ast.visit(node);});
 
 		return true;
 	}
@@ -113,6 +114,8 @@ public class CKVisitor extends ASTVisitor {
 		String currentMethodName = JDTUtils.getMethodFullName(node);
 		String currentQualifiedMethodName = JDTUtils.getQualifiedMethodFullName(node);
 		boolean isConstructor = node.isConstructor();
+		
+		String className = ((currentQualifiedMethodName.lastIndexOf(currentMethodName) - 1) > 0) ? currentQualifiedMethodName.substring(0, (currentQualifiedMethodName.lastIndexOf(currentMethodName) - 1)) : "";
 
 		CKMethodResult currentMethod = new CKMethodResult(currentMethodName, currentQualifiedMethodName, isConstructor, node.getModifiers());
 		currentMethod.setLoc(calculate(node.toString()));
@@ -131,7 +134,7 @@ public class CKVisitor extends ASTVisitor {
 		// so, let's call them
 		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.visit(node));
 		if(!classes.peek().methods.isEmpty())
-			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.visit(node));
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> {((MethodLevelMetric)ast).setMethodName(currentQualifiedMethodName); ast.visit(node);});
 
 		return true;
 	}

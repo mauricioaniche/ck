@@ -2,6 +2,7 @@ package com.github.mauricioaniche.ck;
 
 import java.util.*;
 
+import com.github.mauricioaniche.ck.metric.CouplingExtras;
 import com.github.mauricioaniche.ck.metric.NOCExtras;
 
 public class CKClassResult {
@@ -14,6 +15,9 @@ public class CKClassResult {
 	private int noc = -1;
 	private int wmc;
 	private int cbo;
+	private int cboModified = -1;
+	private int fanin = -1;
+	private int fanout = -1;
 	private int lcom;
 	private float lcomNormalized;
 	private int rfc;
@@ -124,6 +128,46 @@ public class CKClassResult {
 
 	public void setCbo(int cbo) {
 		this.cbo = cbo;
+	}
+	
+	public int getCboModified() {
+		if(this.cboModified == -1){
+			CouplingExtras extras = CouplingExtras.getInstance();
+			this.setCboModified(extras.getValueCBOClass(this.className));
+		}
+		return cboModified;
+	}
+
+	public void setCboModified(int cboModified) {
+		this.cboModified = cboModified;
+	}
+
+	public int getFanin() {
+		
+		if(this.fanin == -1){
+			CouplingExtras extras = CouplingExtras.getInstance();
+			this.setFanin(extras.getValueFanInClass(this.className));
+		}
+		
+		return fanin;
+	}
+	
+	public void setFanin(int fanin) {
+		this.fanin = fanin;
+	}
+	
+	public int getFanout() {
+		
+		if(this.fanout == -1){
+			CouplingExtras extras = CouplingExtras.getInstance();
+			this.setFanout(extras.getValueFanOutClass(this.className));
+		}
+		
+		return fanout;
+	}
+	
+	public void setFanout(int fanout) {
+		this.fanout = fanout;
 	}
 
 	public void setLcom(int lcom) {

@@ -13,6 +13,20 @@ The tools checks for any type used in the entire class (field declaration, metho
 return types, variable declarations, etc). It ignores dependencies to Java itself
 (e.g. java.lang.String).
 
+- *CBO Modified (Coupling between objects)*: Counts the number of dependencies a class has. 
+It is very similar to the CKTool's original CBO. However, this metric considers a dependency 
+from a class as being both the references the type makes to others and the references that it 
+receives from other types.
+
+- *FAN-IN*: Counts the number of input dependencies a class has, i.e, the number of classes 
+that reference a particular class. For instance, given a class X, the fan-in of X would be the 
+number of classes that call X by referencing it as an attribute, accessing some of its attributes, 
+invoking some of its methods, etc.
+
+- *FAN-OUT*: Counts the number of output dependencies a class has, i.e, the number of other classes 
+referenced by a particular class. In other words, given a class X, the fan-out of X is the number of 
+classes called by X via attributes reference, method invocations, object instances, etc.
+
 - *DIT (Depth Inheritance Tree)*: It counts the number of "fathers" a class has.
 All classes have DIT at least 1 (everyone inherits java.lang.Object).
 In order to make it happen, classes must exist in the project (i.e. if a class

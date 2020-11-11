@@ -9,14 +9,14 @@ import java.util.Map;
 
 public class ResultWriter {
 
-    private static final String[] CLASS_HEADER = { "file", "class", "type", "cbo", "wmc", "dit", "noc", "rfc", "lcom", "lcom*", "tcc", "lcc",
+    private static final String[] CLASS_HEADER = { "file", "class", "type", "cbo", "cboModified", "fanin", "fanout", "wmc", "dit", "noc", "rfc", "lcom", "lcom*", "tcc", "lcc",
             "totalMethodsQty", "staticMethodsQty", "publicMethodsQty", "privateMethodsQty", "protectedMethodsQty", "defaultMethodsQty",
             "abstractMethodsQty", "finalMethodsQty", "synchronizedMethodsQty", "totalFieldsQty", "staticFieldsQty", "publicFieldsQty",
             "privateFieldsQty", "protectedFieldsQty", "defaultFieldsQty", "visibleFieldsQty", "finalFieldsQty", "synchronizedFieldsQty", "nosi", "loc",
             "returnQty", "loopQty", "comparisonsQty", "tryCatchQty", "parenthesizedExpsQty", "stringLiteralsQty",
             "numbersQty", "assignmentsQty", "mathOperationsQty", "variablesQty", "maxNestedBlocksQty",
             "anonymousClassesQty", "innerClassesQty", "lambdasQty", "uniqueWordsQty", "modifiers", "logStatementsQty" };
-    private static final String[] METHOD_HEADER = { "file", "class", "method", "constructor", "line", "cbo", "wmc", "rfc", "loc",
+    private static final String[] METHOD_HEADER = { "file", "class", "method", "constructor", "line", "cbo", "cboModified", "fanin", "fanout", "wmc", "rfc", "loc",
             "returnsQty", "variablesQty", "parametersQty", "methodsInvokedQty", "methodsInvokedLocalQty", "methodsInvokedIndirectLocalQty", "loopQty", "comparisonsQty", "tryCatchQty",
             "parenthesizedExpsQty", "stringLiteralsQty", "numbersQty", "assignmentsQty", "mathOperationsQty",
             "maxNestedBlocksQty", "anonymousClassesQty", "innerClassesQty", "lambdasQty", "uniqueWordsQty", "modifiers", "logStatementsQty", "hasJavaDoc" };
@@ -61,7 +61,7 @@ public class ResultWriter {
      * @throws IOException If output files cannot be written to
      */
     public void printResult(CKClassResult result) throws IOException {
-        this.classPrinter.printRecord(result.getFile(), result.getClassName(), result.getType(), result.getCbo(),
+        this.classPrinter.printRecord(result.getFile(), result.getClassName(), result.getType(), result.getCbo(), result.getCboModified(), result.getFanin(), result.getFanout(),
                 result.getWmc(), result.getDit(), result.getNoc(), result.getRfc(), result.getLcom(), result.getLcomNormalized(), result.getTightClassCohesion(), result.getLooseClassCohesion(), result.getNumberOfMethods(),
                 result.getNumberOfStaticMethods(), result.getNumberOfPublicMethods(),
                 result.getNumberOfPrivateMethods(), result.getNumberOfProtectedMethods(),
@@ -79,7 +79,7 @@ public class ResultWriter {
         for (CKMethodResult method : result.getMethods()) {
             this.methodPrinter.printRecord(result.getFile(), result.getClassName(), method.getMethodName(),
                     method.isConstructor(),
-                    method.getStartLine(), method.getCbo(), method.getWmc(), method.getRfc(), method.getLoc(),
+                    method.getStartLine(), method.getCbo(), method.getCboModified(), method.getFanin(), method.getFanout(), method.getWmc(), method.getRfc(), method.getLoc(),
                     method.getReturnQty(), method.getVariablesQty(), method.getParametersQty(),
                     method.getMethodInvocations().size(), method.getMethodInvocationsLocal().size(), method.getMethodInvocationsIndirectLocal().size(),
                     method.getLoopQty(), method.getComparisonsQty(), method.getTryCatchQty(),
