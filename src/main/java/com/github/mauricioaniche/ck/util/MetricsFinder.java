@@ -74,7 +74,7 @@ public class MetricsFinder {
 			Reflections reflections = new Reflections("com.github.mauricioaniche.ck.metric");
 			classLevelClasses = sorter.sort(new ArrayList<>(reflections.getSubTypesOf(ClassLevelMetric.class)));
 		} catch(Exception e) {
-			throw new RuntimeException("Could not find method level metrics. Something is really wrong", e);
+			throw new RuntimeException("Could not find class level metrics. Something is really wrong", e);
 		}
 	}
 
