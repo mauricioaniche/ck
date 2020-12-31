@@ -62,5 +62,6 @@ public class Runner {
 		}
 		
 		writer.flushAndClose();
+		System.out.println("Metrics extracted!!!");
 	}
 }
