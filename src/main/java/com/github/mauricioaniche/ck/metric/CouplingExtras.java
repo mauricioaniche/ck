@@ -111,7 +111,7 @@ public class CouplingExtras {
 
 			boolean theSameFullyQualifiedTypeExists = count > 0;
 			if(theSameFullyQualifiedTypeExists)
-				coupling.remove(singleQualifiedType);
+				coupling.get(componentName).remove(singleQualifiedType);
 		}
 		
 		return coupling;

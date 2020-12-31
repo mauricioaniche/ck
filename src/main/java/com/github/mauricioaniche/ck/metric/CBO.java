@@ -122,16 +122,20 @@ public class CBO implements CKASTVisitor, ClassLevelMetric, MethodLevelMetric {
 	}
 
 	public void visit(ParameterizedType node) {
-		ITypeBinding binding = node.resolveBinding();
-		if (binding != null) {
-
-			coupleTo(binding);
-
-			for (ITypeBinding types : binding.getTypeArguments()) {
-				coupleTo(types);
+		try {
+			ITypeBinding binding = node.resolveBinding();
+			if (binding != null) {
+	
+				coupleTo(binding);
+	
+				for (ITypeBinding types : binding.getTypeArguments()) {
+					coupleTo(types);
+				}
+			} else {
+				coupleTo(node.getType());
 			}
-		} else {
-			coupleTo(node.getType());
+		} catch (NullPointerException e) {
+			// TODO: handle exception
 		}
 
 	}
