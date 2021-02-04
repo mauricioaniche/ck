@@ -136,6 +136,13 @@
 						<param>com.github.mauricioaniche.ck.*</param>
 					</targetTests>
 				</configuration>
+				<dependencies>
+					<dependency>
+							<groupId>org.pitest</groupId>
+							<artifactId>pitest-junit5-plugin</artifactId>
+							<version>0.9</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 
 			<plugin>
