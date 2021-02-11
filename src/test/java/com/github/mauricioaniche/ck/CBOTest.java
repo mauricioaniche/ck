@@ -124,6 +124,6 @@ public class CBOTest extends BaseTest {
 	@Test
 	public void arrayCreation() {
 		CKClassResult a = report.get("cbo.Coupling9");
-		Assertions.assertEquals(1, a.getCbo());
+		Assertions.assertEquals(3, a.getCbo());
 	}
 }

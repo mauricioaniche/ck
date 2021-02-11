@@ -2,7 +2,7 @@ package cbo;
 
 class Coupling9 {
     public A[] RR() {
-        A[] x = new A[10];
-        return x;
+        B[] b = new C[10];
+        return b;
     }
 }
