@@ -132,4 +132,10 @@ public class CBOTest extends BaseTest {
 		CKClassResult a = report.get("cbo.Coupling10");
 		Assertions.assertEquals(2, a.getCbo());
 	}
+
+	@Test
+	public void annotationCheck() {
+		CKClassResult a = report.get("cbo.Coupling11");
+		Assertions.assertEquals(6, a.getCbo());
+	}
 }
