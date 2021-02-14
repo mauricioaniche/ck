@@ -130,10 +130,10 @@
 				<version>1.5.2</version>
 				<configuration>
 					<targetClasses>
-						<param>com.github.mauricioaniche.ck.metric.NumberOfMaxNestedBlock</param>
+						<param>com.github.mauricioaniche.ck.metric.NumberOfParenthesis</param>
 					</targetClasses>
 					<targetTests>
-						<param>com.github.mauricioaniche.ck.NumberOfMaxNestedBlocksTest</param>
+						<param>com.github.mauricioaniche.ck.NumberOfParenthesisTest</param>
 					</targetTests>
 				</configuration>
 				<dependencies>
