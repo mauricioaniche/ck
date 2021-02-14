@@ -14,4 +14,13 @@ public class CC1 {
 			a++;
 		}
 	}
+
+	public void m3() {
+		try {
+			if (a > 10) a++;
+			else a--;
+		}catch (Exception e){
+			a = 3;
+		}
+	}
 }

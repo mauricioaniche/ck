@@ -130,10 +130,10 @@
 				<version>1.5.2</version>
 				<configuration>
 					<targetClasses>
-						<param>com.github.mauricioaniche.ck.metric.NumberOfParenthesis</param>
+						<param>com.github.mauricioaniche.ck.metric.WMC</param>
 					</targetClasses>
 					<targetTests>
-						<param>com.github.mauricioaniche.ck.NumberOfParenthesisTest</param>
+						<param>com.github.mauricioaniche.ck.WMCTest</param>
 					</targetTests>
 				</configuration>
 				<dependencies>
