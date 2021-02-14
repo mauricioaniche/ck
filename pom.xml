@@ -130,10 +130,10 @@
 				<version>1.5.2</version>
 				<configuration>
 					<targetClasses>
-						<param>com.github.mauricioaniche.ck.metric.CBO</param>
+						<param>com.github.mauricioaniche.ck.metric.NumberOfMaxNestedBlock</param>
 					</targetClasses>
 					<targetTests>
-						<param>com.github.mauricioaniche.ck.CBOTest</param>
+						<param>com.github.mauricioaniche.ck.NumberOfMaxNestedBlocksTest</param>
 					</targetTests>
 				</configuration>
 				<dependencies>
