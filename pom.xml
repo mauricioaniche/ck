@@ -130,19 +130,12 @@
 				<version>1.5.2</version>
 				<configuration>
 					<targetClasses>
-						<param>com.github.mauricioaniche.ck.metric.WMC</param>
+						<param>com.github.mauricioaniche.ck.*</param>
 					</targetClasses>
 					<targetTests>
-						<param>com.github.mauricioaniche.ck.WMCTest</param>
+						<param>com.github.mauricioaniche.ck.*</param>
 					</targetTests>
 				</configuration>
-				<dependencies>
-					<dependency>
-							<groupId>org.pitest</groupId>
-							<artifactId>pitest-junit5-plugin</artifactId>
-							<version>0.9</version>
-					</dependency>
-				</dependencies>
 			</plugin>
 
 			<plugin>
