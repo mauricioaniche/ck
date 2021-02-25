@@ -22,12 +22,13 @@ public class WMCTest extends BaseTest {
 		CKClassResult b = report.get("wmc.CC2");
 		CKClassResult c = report.get("wmc.CC3");
 
-		Assertions.assertEquals(4, a.getWmc());
+		Assertions.assertEquals(7, a.getWmc());
 		Assertions.assertEquals(6, b.getWmc());
 		Assertions.assertEquals(11, c.getWmc());
 
 		Assertions.assertEquals(2, a.getMethod("m1/0").get().getWmc());
 		Assertions.assertEquals(2, a.getMethod("m2/0").get().getWmc());
+		Assertions.assertEquals(3, a.getMethod("m3/0").get().getWmc());
 		Assertions.assertEquals(3, b.getMethod("m1/0").get().getWmc());
 		Assertions.assertEquals(3, b.getMethod("m2/0").get().getWmc());
 		Assertions.assertEquals(11, c.getMethod("m1/0").get().getWmc());
