@@ -1,4 +1,4 @@
-package cbo;
+package parenthesis;
 
 public class NumberOfParenthesis {
 

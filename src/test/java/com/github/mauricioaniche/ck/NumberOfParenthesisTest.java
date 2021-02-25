@@ -15,7 +15,7 @@ public class NumberOfParenthesisTest extends BaseTest{
 
     @Test
     public void count() {
-        CKClassResult a = report.get("cbo.NumberOfParenthesis");
+        CKClassResult a = report.get("parenthesis.NumberOfParenthesis");
         Assertions.assertEquals(2, a.getParenthesizedExpsQty());
         Assertions.assertEquals(2, a.getMethod("m1/0").get().getParenthesizedExpsQty());
     }
