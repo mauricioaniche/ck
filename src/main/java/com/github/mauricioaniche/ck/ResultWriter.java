@@ -9,13 +9,62 @@ import java.util.Map;
 
 public class ResultWriter {
 
-    private static final String[] CLASS_HEADER = { "file", "class", "type", "cbo", "wmc", "dit", "rfc", "lcom", "tcc", "lcc",
-            "totalMethodsQty", "staticMethodsQty", "publicMethodsQty", "privateMethodsQty", "protectedMethodsQty", "defaultMethodsQty",
-            "abstractMethodsQty", "finalMethodsQty", "synchronizedMethodsQty", "totalFieldsQty", "staticFieldsQty", "publicFieldsQty",
-            "privateFieldsQty", "protectedFieldsQty", "defaultFieldsQty", "visibleFieldsQty", "finalFieldsQty", "synchronizedFieldsQty", "nosi", "loc",
-            "returnQty", "loopQty", "comparisonsQty", "tryCatchQty", "parenthesizedExpsQty", "stringLiteralsQty",
-            "numbersQty", "assignmentsQty", "mathOperationsQty", "variablesQty", "maxNestedBlocksQty",
-            "anonymousClassesQty", "innerClassesQty", "lambdasQty", "uniqueWordsQty", "modifiers", "logStatementsQty" };
+    private static final String[] CLASS_HEADER = {
+            "file",
+            "class",
+            "type",
+
+            /* OO Metrics */
+            "cbo",
+            "wmc",
+            "dit",
+            "rfc",
+            "lcom",
+            "tcc",
+            "lcc",
+
+            /* Method Counting */
+            "totalMethodsQty",
+            "staticMethodsQty",
+            "publicMethodsQty",
+            "privateMethodsQty",
+            "protectedMethodsQty",
+            "defaultMethodsQty",
+            "visibleMethodsQty",
+            "abstractMethodsQty",
+            "finalMethodsQty",
+            "synchronizedMethodsQty",
+
+            /* Field Counting */
+            "totalFieldsQty",
+            "staticFieldsQty",
+            "publicFieldsQty",
+            "privateFieldsQty",
+            "protectedFieldsQty",
+            "defaultFieldsQty",
+            "finalFieldsQty",
+            "synchronizedFieldsQty",
+
+            /* Others */
+            "nosi",
+            "loc",
+            "returnQty",
+            "loopQty",
+            "comparisonsQty",
+            "tryCatchQty",
+            "parenthesizedExpsQty",
+            "stringLiteralsQty",
+            "numbersQty",
+            "assignmentsQty",
+            "mathOperationsQty",
+            "variablesQty",
+            "maxNestedBlocksQty",
+            "anonymousClassesQty",
+            "innerClassesQty",
+            "lambdasQty",
+            "uniqueWordsQty",
+            "modifiers",
+            "logStatementsQty"};
     private static final String[] METHOD_HEADER = { "file", "class", "method", "constructor", "line", "cbo", "wmc", "rfc", "loc",
             "returnsQty", "variablesQty", "parametersQty", "methodsInvokedQty", "methodsInvokedLocalQty", "methodsInvokedIndirectLocalQty", "loopQty", "comparisonsQty", "tryCatchQty",
             "parenthesizedExpsQty", "stringLiteralsQty", "numbersQty", "assignmentsQty", "mathOperationsQty",
@@ -61,20 +110,62 @@ public class ResultWriter {
      * @throws IOException If output files cannot be written to
      */
     public void printResult(CKClassResult result) throws IOException {
-        this.classPrinter.printRecord(result.getFile(), result.getClassName(), result.getType(), result.getCbo(),
-                result.getWmc(), result.getDit(), result.getRfc(), result.getLcom(), result.getTightClassCohesion(), result.getLooseClassCohesion(), result.getNumberOfMethods(),
-                result.getNumberOfStaticMethods(), result.getNumberOfPublicMethods(),
-                result.getNumberOfPrivateMethods(), result.getNumberOfProtectedMethods(),
-                result.getNumberOfDefaultMethods(), result.getVisibleMethods().size(), result.getNumberOfAbstractMethods(),
-                result.getNumberOfFinalMethods(), result.getNumberOfSynchronizedMethods(), result.getNumberOfFields(),
-                result.getNumberOfStaticFields(), result.getNumberOfPublicFields(), result.getNumberOfPrivateFields(),
-                result.getNumberOfProtectedFields(), result.getNumberOfDefaultFields(), result.getNumberOfFinalFields(),
-                result.getNumberOfSynchronizedFields(), result.getNosi(), result.getLoc(), result.getReturnQty(),
-                result.getLoopQty(), result.getComparisonsQty(), result.getTryCatchQty(),
-                result.getParenthesizedExpsQty(), result.getStringLiteralsQty(), result.getNumbersQty(),
-                result.getAssignmentsQty(), result.getMathOperationsQty(), result.getVariablesQty(),
-                result.getMaxNestedBlocks(), result.getAnonymousClassesQty(), result.getInnerClassesQty(),
-                result.getLambdasQty(), result.getUniqueWordsQty(), result.getModifiers(), result.getNumberOfLogStatements());
+        this.classPrinter.printRecord(
+                result.getFile(),
+                result.getClassName(),
+                result.getType(),
+
+                /* OO Metrics */
+                result.getCbo(),
+                result.getWmc(),
+                result.getDit(),
+                result.getRfc(),
+                result.getLcom(),
+                result.getTightClassCohesion(),
+                result.getLooseClassCohesion(),
+
+                /* Method Counting */
+                result.getNumberOfMethods(),
+                result.getNumberOfStaticMethods(),
+                result.getNumberOfPublicMethods(),
+                result.getNumberOfPrivateMethods(),
+                result.getNumberOfProtectedMethods(),
+                result.getNumberOfDefaultMethods(),
+                result.getVisibleMethods().size(),
+                result.getNumberOfAbstractMethods(),
+                result.getNumberOfFinalMethods(),
+                result.getNumberOfSynchronizedMethods(),
+
+                /* Field Counting */
+                result.getNumberOfFields(),
+                result.getNumberOfStaticFields(),
+                result.getNumberOfPublicFields(),
+                result.getNumberOfPrivateFields(),
+                result.getNumberOfProtectedFields(),
+                result.getNumberOfDefaultFields(),
+                result.getNumberOfFinalFields(),
+                result.getNumberOfSynchronizedFields(),
+
+                /* Others */
+                result.getNosi(),
+                result.getLoc(),
+                result.getReturnQty(),
+                result.getLoopQty(),
+                result.getComparisonsQty(),
+                result.getTryCatchQty(),
+                result.getParenthesizedExpsQty(),
+                result.getStringLiteralsQty(),
+                result.getNumbersQty(),
+                result.getAssignmentsQty(),
+                result.getMathOperationsQty(),
+                result.getVariablesQty(),
+                result.getMaxNestedBlocks(),
+                result.getAnonymousClassesQty(),
+                result.getInnerClassesQty(),
+                result.getLambdasQty(),
+                result.getUniqueWordsQty(),
+                result.getModifiers(),
+                result.getNumberOfLogStatements());
 
         for (CKMethodResult method : result.getMethods()) {
             this.methodPrinter.printRecord(result.getFile(), result.getClassName(), method.getMethodName(),
