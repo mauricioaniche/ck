@@ -4,7 +4,7 @@
 [![Code Coverage](https://codecov.io/github/mauricioaniche/ck/coverage.svg)](https://codecov.io/gh/mauricioaniche/ck)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.mauricioaniche/ck/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.mauricioaniche/ck)
 
-CK calculates class-level and metric-level code metrics in Java projects by means
+CK calculates class-level and method-level code metrics in Java projects by means
 of static analysis (i.e. no need for compiled code). Currently, it contains
 a large set of metrics, including the famous CK:
 
