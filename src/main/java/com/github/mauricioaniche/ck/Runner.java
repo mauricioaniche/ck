@@ -37,7 +37,8 @@ public class Runner {
 				try {
 					writer.printResult(result);
 				} catch (IOException e) {
-					throw new RuntimeException(e);
+					// just print the stack trace
+					e.printStackTrace(System.err);
 				}
 			}
 
