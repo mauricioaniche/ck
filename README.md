@@ -113,7 +113,7 @@ Note: CK separates classes, inner classes, and anonymous classes. LOC is the onl
 You need at least Java 8 to be able to compile and run this tool.
 
 To use the _latest version_ (which you should), clone the project and generate a JAR. A simple
-`mvn clean compile assembly:single` generates the single JAR file for you (see your _target_ folder).
+`mvn clean compile package` generates the single JAR file for you (see your _target_ folder).
 
 Then, just run:
 ```
