@@ -67,14 +67,14 @@ public class CKVisitor extends ASTVisitor {
 		// there might be metrics that use it
 		// (even before a class is declared)
 		if(!classes.isEmpty()) {			
-			classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> {((ClassLevelMetric)ast).setClassName(className); ast.visit(node);});
+			classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.visit(node));
 			if (!classes.peek().methods.isEmpty())
 				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.visit(node));
 				
 		}
 
 		// create a set of visitors, just for the current class
-		List<ClassLevelMetric> classLevelMetrics = instantiateClassLevelMetricVisitors();
+		List<ClassLevelMetric> classLevelMetrics = instantiateClassLevelMetricVisitors(className);
 
 		// store everything in a 'class in the stack' data structure
 		ClassInTheStack classInTheStack = new ClassInTheStack();
@@ -86,7 +86,7 @@ public class CKVisitor extends ASTVisitor {
 
 		// there might be class level metrics that use the TypeDeclaration
 		// so, let's run them
-		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> {((ClassLevelMetric)ast).setClassName(className); ast.visit(node);});
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.visit(node));
 
 		return true;
 	}
@@ -122,7 +122,7 @@ public class CKVisitor extends ASTVisitor {
 		currentMethod.setStartLine(JDTUtils.getStartLine(cu, node));
 
 		// let's instantiate method level visitors for this current method
-		List<MethodLevelMetric> methodLevelMetrics = instantiateMethodLevelMetricVisitors();
+		List<MethodLevelMetric> methodLevelMetrics = instantiateMethodLevelMetricVisitors(currentQualifiedMethodName);
 
 		// we add it to the current class we are visiting
 		MethodInTheStack methodInTheStack = new MethodInTheStack();
@@ -134,7 +134,7 @@ public class CKVisitor extends ASTVisitor {
 		// so, let's call them
 		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.visit(node));
 		if(!classes.peek().methods.isEmpty())
-			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> {((MethodLevelMetric)ast).setMethodName(currentQualifiedMethodName); ast.visit(node);});
+			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.visit(node));
 
 		return true;
 	}
@@ -173,7 +173,7 @@ public class CKVisitor extends ASTVisitor {
 		currentClass.setLoc(calculate(node.toString()));
 
 		// create a set of visitors, just for the current class
-		List<ClassLevelMetric> classLevelMetrics = instantiateClassLevelMetricVisitors();
+		List<ClassLevelMetric> classLevelMetrics = instantiateClassLevelMetricVisitors(anonClassName);
 
 		// store everything in a 'class in the stack' data structure
 		ClassInTheStack classInTheStack = new ClassInTheStack();
@@ -216,7 +216,7 @@ public class CKVisitor extends ASTVisitor {
 		currentMethod.setStartLine(JDTUtils.getStartLine(cu, node));
 
 		// let's instantiate method level visitors for this current method
-		List<MethodLevelMetric> methodLevelMetrics = instantiateMethodLevelMetricVisitors();
+		List<MethodLevelMetric> methodLevelMetrics = instantiateMethodLevelMetricVisitors(currentMethodName);
 
 		// we add it to the current class we are visiting
 		MethodInTheStack methodInTheStack = new MethodInTheStack();
@@ -271,7 +271,7 @@ public class CKVisitor extends ASTVisitor {
 		currentClass.setLoc(calculate(node.toString()));
 
 		// create a set of visitors, just for the current class
-		List<ClassLevelMetric> classLevelMetrics = instantiateClassLevelMetricVisitors();
+		List<ClassLevelMetric> classLevelMetrics = instantiateClassLevelMetricVisitors(className);
 
 		// store everything in a 'class in the stack' data structure
 		ClassInTheStack classInTheStack = new ClassInTheStack();
@@ -304,17 +304,23 @@ public class CKVisitor extends ASTVisitor {
 		collectedClasses.add(completedClass.result);
 	}
 
-	private List<ClassLevelMetric> instantiateClassLevelMetricVisitors() {
+	private List<ClassLevelMetric> instantiateClassLevelMetricVisitors(String className) {
 		try {
-			return classLevelMetrics.call();
+			List<ClassLevelMetric> classes = classLevelMetrics.call();
+			classes.forEach(c -> { c.setClassName(className); });
+			return classes;
+//			return classLevelMetrics.call();
 		} catch(Exception e) {
 			throw new RuntimeException("Could not instantiate class level visitors", e);
 		}
 	}
 
-	private List<MethodLevelMetric> instantiateMethodLevelMetricVisitors() {
+	private List<MethodLevelMetric> instantiateMethodLevelMetricVisitors(String methodName) {
 		try {
-			return methodLevelMetrics.call();
+			List<MethodLevelMetric> methods = methodLevelMetrics.call();
+			methods.forEach(m -> { m.setMethodName(methodName); });
+			return methods;
+//			return methodLevelMetrics.call();
 		} catch(Exception e) {
 			throw new RuntimeException("Could not instantiate method level visitors", e);
 		}
