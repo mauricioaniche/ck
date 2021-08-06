@@ -3,7 +3,7 @@
 	<groupId>com.github.mauricioaniche</groupId>
 	<artifactId>ck</artifactId>
 	<packaging>jar</packaging>
-	<version>0.6.3-SNAPSHOT</version>
+	<version>0.6.5-SNAPSHOT</version>
 	<name>CK calculator</name>
 	<url>http://www.mauricioaniche.com</url>
 	<description>Java code metrics calculator</description>
@@ -38,14 +38,36 @@
 
 	<dependencies>
 
-		<!-- https://mvnrepository.com/artifact/org.assertj/assertj-core -->
+		<!-- test dependencies -->
 		<dependency>
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-core</artifactId>
-			<version>3.18.0</version>
+			<version>3.20.2</version>
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>org.eclipse.jgit</groupId>
+			<artifactId>org.eclipse.jgit</artifactId>
+			<version>5.12.0.202106070339-r</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>5.8.0-M1</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-params</artifactId>
+			<version>5.8.0-M1</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- main deps  -->
 		<dependency>
 			<groupId>org.reflections</groupId>
 			<artifactId>reflections</artifactId>
@@ -55,20 +77,13 @@
 		<dependency>
 			<groupId>org.eclipse.jdt</groupId>
 			<artifactId>org.eclipse.jdt.core</artifactId>
-			<version>3.23.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.eclipse.jgit</groupId>
-			<artifactId>org.eclipse.jgit</artifactId>
-			<version>5.9.0.202009080501-r</version>
-			<scope>test</scope>
+			<version>3.26.0</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-			<version>30.0-jre</version>
+			<version>30.1.1-jre</version>
 		</dependency>
 
 		<dependency>
@@ -80,13 +95,13 @@
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
-			<version>2.8.0</version>
+			<version>2.10.0</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-			<version>3.11</version>
+			<version>3.12.0</version>
 		</dependency>
 
 		<dependency>
@@ -95,20 +110,6 @@
 			<version>1.8</version>
 		</dependency>
 
-
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-engine</artifactId>
-			<version>5.7.0</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-params</artifactId>
-			<version>5.7.0</version>
-			<scope>test</scope>
-		</dependency>
 	</dependencies>
 
 	<distributionManagement>
@@ -124,6 +125,16 @@
 
 	<build>
 		<plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>11</source>
+                    <target>11</target>
+                </configuration>
+            </plugin>
+
 			<plugin>
 				<groupId>org.pitest</groupId>
 				<artifactId>pitest-maven</artifactId>
@@ -160,6 +171,14 @@
 						<descriptorRef>jar-with-dependencies</descriptorRef>
 					</descriptorRefs>
 				</configuration>
+				<executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
 			</plugin>
 
 
@@ -172,6 +191,11 @@
 						<groupId>org.apache.maven.scm</groupId>
 						<artifactId>maven-scm-provider-gitexe</artifactId>
 						<version>1.11.2</version>
+					</dependency>
+					<dependency>
+					  <groupId>org.apache.maven.scm</groupId>
+					  <artifactId>maven-scm-api</artifactId>
+					  <version>1.11.2</version>
 					</dependency>
 				</dependencies>
 			</plugin>
@@ -211,7 +235,7 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.5</version>
+				<version>0.8.7</version>
 				<executions>
 					<execution>
 						<goals>

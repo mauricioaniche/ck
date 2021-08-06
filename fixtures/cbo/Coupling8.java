@@ -1,6 +1,10 @@
 package cbo;
 
 public class Coupling8 {
+
+  public A sampleMethod() {
+      return SampleClassWithStaticMethod.sampleMethod();
+  }
 	
 	public D m1() {
 		A a = new A();

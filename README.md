@@ -4,7 +4,7 @@
 [![Code Coverage](https://codecov.io/github/mauricioaniche/ck/coverage.svg)](https://codecov.io/gh/mauricioaniche/ck)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.mauricioaniche/ck/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.mauricioaniche/ck)
 
-CK calculates class-level and metric-level code metrics in Java projects by means
+CK calculates class-level and method-level code metrics in Java projects by means
 of static analysis (i.e. no need for compiled code). Currently, it contains
 a large set of metrics, including the famous CK:
 
@@ -115,9 +115,8 @@ it uses the entire body of the class as metrics.
 The algorithm basically counts the number of words in a method/class, after removing Java keywords. Names are split based on camel case and underline (e.g., longName_likeThis becomes four words).
 See `WordCounter` class for details on the implementation.
 
-- *Number of Log Statements*: Number of log statements in the source code. The counting is based on the following regex:
-`line.matches(".*\\.(info|warn|debug|error)\\(.*") || line.matches(".*log(ger)?\\..*");`.
-See `NumberOfLogStatements.java` for more info.
+- *Number of Log Statements*: Number of log statements in the source code. The counting uses REGEX compatible with SLF4J and Log4J API calls.
+See `NumberOfLogStatements.java` and the test examples (`NumberOfLogStatementsTest` and `fixtures/logs`) for more info.
 
 - *Has Javadoc*: Boolean indicating whether a method has javadoc. (Only at method-level for now) 
 
@@ -137,7 +136,7 @@ Note: CK separates classes, inner classes, and anonymous classes. LOC is the onl
 You need at least Java 8 to be able to compile and run this tool.
 
 To use the _latest version_ (which you should), clone the project and generate a JAR. A simple
-`mvn clean compile assembly:single` generates the single JAR file for you (see your _target_ folder).
+`mvn clean compile package` generates the single JAR file for you (see your _target_ folder).
 
 Then, just run:
 ```
