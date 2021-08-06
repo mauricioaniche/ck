@@ -16,10 +16,15 @@ public class ResultWriter {
 
             /* OO Metrics */
             "cbo",
+            "cboModified",
+            "fanin",
+            "fanout",
             "wmc",
             "dit",
+            "noc",
             "rfc",
             "lcom",
+            "lcom*",
             "tcc",
             "lcc",
 
@@ -65,10 +70,42 @@ public class ResultWriter {
             "uniqueWordsQty",
             "modifiers",
             "logStatementsQty"};
-    private static final String[] METHOD_HEADER = { "file", "class", "method", "constructor", "line", "cbo", "wmc", "rfc", "loc",
-            "returnsQty", "variablesQty", "parametersQty", "methodsInvokedQty", "methodsInvokedLocalQty", "methodsInvokedIndirectLocalQty", "loopQty", "comparisonsQty", "tryCatchQty",
-            "parenthesizedExpsQty", "stringLiteralsQty", "numbersQty", "assignmentsQty", "mathOperationsQty",
-            "maxNestedBlocksQty", "anonymousClassesQty", "innerClassesQty", "lambdasQty", "uniqueWordsQty", "modifiers", "logStatementsQty", "hasJavaDoc" };
+    private static final String[] METHOD_HEADER = { 
+            "file", 
+            "class", 
+            "method", 
+            "constructor", 
+            "line", 
+            "cbo", 
+            "cboModified",
+            "fanin",
+            "fanout",
+            "wmc", 
+            "rfc", 
+            "loc",
+            "returnsQty", 
+            "variablesQty", 
+            "parametersQty", 
+            "methodsInvokedQty", 
+            "methodsInvokedLocalQty", 
+            "methodsInvokedIndirectLocalQty", 
+            "loopQty", 
+            "comparisonsQty", 
+            "tryCatchQty",
+            "parenthesizedExpsQty", 
+            "stringLiteralsQty", 
+            "numbersQty", 
+            "assignmentsQty", 
+            "mathOperationsQty",
+            "maxNestedBlocksQty", 
+            "anonymousClassesQty", 
+            "innerClassesQty", 
+            "lambdasQty", 
+            "uniqueWordsQty", 
+            "modifiers", 
+            "logStatementsQty", 
+            "hasJavaDoc" };
+                          
     private static final String[] VAR_FIELD_HEADER = { "file", "class", "method", "variable", "usage" };
     private final boolean variablesAndFields;
 
@@ -110,6 +147,7 @@ public class ResultWriter {
      * @throws IOException If output files cannot be written to
      */
     public void printResult(CKClassResult result) throws IOException {
+
         this.classPrinter.printRecord(
                 result.getFile(),
                 result.getClassName(),
@@ -117,10 +155,15 @@ public class ResultWriter {
 
                 /* OO Metrics */
                 result.getCbo(),
+                result.getCboModified(),
+                result.getFanin(),
+                result.getFanout(),
                 result.getWmc(),
                 result.getDit(),
+                result.getNoc(),
                 result.getRfc(),
                 result.getLcom(),
+                result.getLcomNormalized(),
                 result.getTightClassCohesion(),
                 result.getLooseClassCohesion(),
 
@@ -168,16 +211,41 @@ public class ResultWriter {
                 result.getNumberOfLogStatements());
 
         for (CKMethodResult method : result.getMethods()) {
-            this.methodPrinter.printRecord(result.getFile(), result.getClassName(), method.getMethodName(),
+            this.methodPrinter.printRecord(
+                    result.getFile(), 
+                    result.getClassName(), 
+                    method.getMethodName(),
                     method.isConstructor(),
-                    method.getStartLine(), method.getCbo(), method.getWmc(), method.getRfc(), method.getLoc(),
-                    method.getReturnQty(), method.getVariablesQty(), method.getParametersQty(),
-                    method.getMethodInvocations().size(), method.getMethodInvocationsLocal().size(), method.getMethodInvocationsIndirectLocal().size(),
-                    method.getLoopQty(), method.getComparisonsQty(), method.getTryCatchQty(),
-                    method.getParenthesizedExpsQty(), method.getStringLiteralsQty(), method.getNumbersQty(),
-                    method.getAssignmentsQty(), method.getMathOperationsQty(), method.getMaxNestedBlocks(),
-                    method.getAnonymousClassesQty(), method.getInnerClassesQty(), method.getLambdasQty(),
-                    method.getUniqueWordsQty(), method.getModifiers(), method.getLogStatementsQty(), method.getHasJavadoc());
+                    method.getStartLine(), 
+                    method.getCbo(), 
+                    method.getCboModified(), 
+                    method.getFanin(), 
+                    method.getFanout(), 
+                    method.getWmc(), 
+                    method.getRfc(), 
+                    method.getLoc(),
+                    method.getReturnQty(), 
+                    method.getVariablesQty(), 
+                    method.getParametersQty(),
+                    method.getMethodInvocations().size(), 
+                    method.getMethodInvocationsLocal().size(), 
+                    method.getMethodInvocationsIndirectLocal().size(),
+                    method.getLoopQty(), 
+                    method.getComparisonsQty(), 
+                    method.getTryCatchQty(),
+                    method.getParenthesizedExpsQty(), 
+                    method.getStringLiteralsQty(), 
+                    method.getNumbersQty(),
+                    method.getAssignmentsQty(), 
+                    method.getMathOperationsQty(), 
+                    method.getMaxNestedBlocks(),
+                    method.getAnonymousClassesQty(), 
+                    method.getInnerClassesQty(), 
+                    method.getLambdasQty(),
+                    method.getUniqueWordsQty(), 
+                    method.getModifiers(), 
+                    method.getLogStatementsQty(), 
+                    method.getHasJavadoc());
 
             if(variablesAndFields) {
                 for (Map.Entry<String, Integer> entry : method.getVariablesUsage().entrySet()) {

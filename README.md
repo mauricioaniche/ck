@@ -13,11 +13,28 @@ The tools checks for any type used in the entire class (field declaration, metho
 return types, variable declarations, etc). It ignores dependencies to Java itself
 (e.g. java.lang.String).
 
+- *CBO Modified (Coupling between objects)*: Counts the number of dependencies a class has. 
+It is very similar to the CKTool's original CBO. However, this metric considers a dependency 
+from a class as being both the references the type makes to others and the references that it 
+receives from other types.
+
+- *FAN-IN*: Counts the number of input dependencies a class has, i.e, the number of classes 
+that reference a particular class. For instance, given a class X, the fan-in of X would be the 
+number of classes that call X by referencing it as an attribute, accessing some of its attributes, 
+invoking some of its methods, etc.
+
+- *FAN-OUT*: Counts the number of output dependencies a class has, i.e, the number of other classes 
+referenced by a particular class. In other words, given a class X, the fan-out of X is the number of 
+classes called by X via attributes reference, method invocations, object instances, etc.
+
 - *DIT (Depth Inheritance Tree)*: It counts the number of "fathers" a class has.
 All classes have DIT at least 1 (everyone inherits java.lang.Object).
 In order to make it happen, classes must exist in the project (i.e. if a class
 depends upon X which relies in a jar/dependency file, and X depends upon other
 classes, DIT is counted as 2). 
+
+- *NOC (Number of Children)*: It counts the number of immediate subclasses that a 
+particular class has. 
 
 - *Number of fields*: Counts the number of fields. Specific numbers for
 total number of fields, static, public, private, protected, default, final, and synchronized fields.
@@ -46,7 +63,16 @@ The number of lines here might be a bit different from the original file, as we 
 
 - *LCOM (Lack of Cohesion of Methods)*: Calculates LCOM metric. This is the very first
 version of metric, which is not reliable. LCOM-HS can be better (hopefully, you will
-send us a pull request). 
+send us a pull request).
+
+- *LCOM&ast; (Lack of Cohesion of Methods)*: This metric is a modified version of the current version 
+of LCOM implemented in CK Tool. LCOM&ast; is a normalized metric that computes the lack of cohesion of 
+class within a range of 0 to 1. Then, the closer to 1 the value of LCOM&ast; in a class, the less the cohesion 
+degree of this respective class. The closer to 0 the value of LCOM&ast; in a class, the most the cohesion of 
+this respective class. This implementation follows the third version of LCOM&ast; defined in [1].
+	- *Reference:* [1] Henderson-Sellers, Brian, Larry L. Constantine and Ian M. Graham. “Coupling and cohesion 
+	(towards a valid metrics suite for object-oriented analysis and design).” Object Oriented Systems 3 (1996): 
+	143-158. 
 
 - *TCC (Tight Class Cohesion)*: Measures the cohesion of a class with a value range from 0 to 1. TCC measures the cohesion of a class via direct connections between visible methods, two methods or their invocation trees access the same class variable. 
 
@@ -103,9 +129,6 @@ See `NumberOfLogStatements.java` and the test examples (`NumberOfLogStatementsTe
 - *Method invocations*: All directly invoked methods, variations are local invocations and indirect local invocations.
       
 
-(In a previous version, it calculated NOC (Number of Children), but it doesn't do it anymore,
-as it requires too much memory.)
-
 Note: CK separates classes, inner classes, and anonymous classes. LOC is the only metric that is not completely isolated from the others, e.g., if A has a declaration of an inner class B, then LOC(A) = LOC(class A) + LOC(inner class B).
 
 ## How to use the standalone version
@@ -117,7 +140,7 @@ To use the _latest version_ (which you should), clone the project and generate a
 
 Then, just run:
 ```
-java -jar ck-x.x.x-SNAPSHOT-jar-with-dependencies.jar <project dir> <use jars:true|false> <max files per partition, 0=automatic selection> <variables and fields metrics? True|False>
+java -jar ck-x.x.x-SNAPSHOT-jar-with-dependencies.jar <project dir> <use jars:true|false> <max files per partition, 0=automatic selection> <variables and fields metrics? True|False> <output dir>
 ```
 
 `Project dir` refers to the directory where CK can find all the source code to be parsed.
@@ -125,9 +148,10 @@ Ck will recursively look for .java files. CK can use the dependencies of the pro
 as to improve its precision. The `use jars` parameters tells CK to look for any .jar files
 in the directory and use them to better resolve types. `Max files per partition` tells JDT the size
 of the batch to process. Let us decide that for you and start with 0; if problems happen (i.e., 
-out of memory) you think of tuning it. Finally, `variables and field metrics` indicates to CK whether
+out of memory) you think of tuning it. `Variables and field metrics` indicates to CK whether
 you want metrics at variable- and field-levels too. They are highly fine-grained and produce a lot of output;
-you should skip it if you only need metrics at class or method level.
+you should skip it if you only need metrics at class or method level. Finally, `output dir` refer to the 
+directory where CK will export the csv file with metrics from the analyzed project.
 
 The tool will generate three csv files: class, method, and variable levels.
 
