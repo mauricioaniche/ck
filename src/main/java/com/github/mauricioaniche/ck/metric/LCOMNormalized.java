@@ -85,7 +85,7 @@ public class LCOMNormalized implements CKASTVisitor, ClassLevelMetric {
 		 * μ(Ai) = number of methods accessing attribute Ai
 		 *  
 		 * This version of computing LCOM is based on Henderson-Sellers definition:
-		 * Henderson-Sellers, Brian, Larry L. Constantine and Ian M. Graham. “Coupling and cohesion (towards a valid metrics suite for object-oriented analysis and design).” Object Oriented Systems 3 (1996): 143-158.
+		 * Henderson-Sellers, Brian, Larry L. Constantine and Ian M. Graham. "Coupling and cohesion (towards a valid metrics suite for object-oriented analysis and design)." Object Oriented Systems 3 (1996): 143-158.
 		 */
 		
 		// formula (13) extracted from https://github.com/cqfn/jpeek/blob/master/papers/sellers96_LCOM2_LCOM3_LCOM5.pdf
