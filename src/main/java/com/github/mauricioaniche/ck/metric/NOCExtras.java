@@ -3,8 +3,6 @@ package com.github.mauricioaniche.ck.metric;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.github.mauricioaniche.ck.CKClassResult;
-
 public class NOCExtras {
 
 	private Map<String, Integer> toAdd;
@@ -13,6 +11,15 @@ public class NOCExtras {
 	private NOCExtras(){
 		toAdd = new HashMap<>();
 	}
+
+	/**
+	 * Resets the <code>NOCExtras</code> instance.
+	 * This should ONLY be used in tests so that the state of the instance does not carry over
+	 * between different test classes.
+	 */
+    public static void resetInstance() {
+        instance = null;
+    }
 	
 	public void plusOne(String clazz){
 		if(clazz.equals("java.lang.Object"))
