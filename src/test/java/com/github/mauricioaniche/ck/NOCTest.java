@@ -1,5 +1,6 @@
 package com.github.mauricioaniche.ck;
 
+import com.github.mauricioaniche.ck.metric.NOCExtras;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -10,6 +11,7 @@ public class NOCTest extends BaseTest{
 
 	@BeforeAll
 	public void setUp() {
+		NOCExtras.resetInstance();
 		report = run(fixturesDir() + "/dit");
 	}
 	
