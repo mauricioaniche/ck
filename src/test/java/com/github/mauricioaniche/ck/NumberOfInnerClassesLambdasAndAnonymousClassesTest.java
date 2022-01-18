@@ -52,7 +52,6 @@ public class NumberOfInnerClassesLambdasAndAnonymousClassesTest extends BaseTest
 	@Test
 	public void innerclassesInsideAnonymousClasses() {
 
-		System.out.println(report.keySet());
 		CKClassResult a = report.get("innerclasses.SC2");
 		// the innerclass is inside the anonymous method inside the method (two levels below...), and not the class...
 		Assertions.assertEquals(0, a.getInnerClassesQty());

@@ -25,7 +25,6 @@ public class TightClassCohesionTest extends BaseTest {
     @Test
     public void noCohesion() {
         CKClassResult ckClass = report.get("ClassCohesion.NoCohesion");
-        System.out.println(ckClass.getVisibleMethods());
         assertEquals(0f, ckClass.getTightClassCohesion(),0.0000001);
     }
 

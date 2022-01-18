@@ -33,13 +33,11 @@ public class RealWorldClassesTest extends BaseTest {
 		CKClassResult ck = report.get("debug.CSVParser");
 
 		for (com.github.mauricioaniche.ck.CKMethodResult CKMethodResult : ck.getMethods()) {
-			System.out.println(CKMethodResult.getMethodName());
 
 			for (Map.Entry<String, Integer> entry : CKMethodResult.getVariablesUsage().entrySet()) {
 				System.out.println("- variable: " + entry.getKey());
 			}
 		}
-		System.out.println(ck);
 	}
 
 	// This class contains a method with a huge javadoc, and then the LOC was getting too big for
@@ -202,7 +200,6 @@ public class RealWorldClassesTest extends BaseTest {
 	@Test
 	public void asyncHttpClient_2() {
 		CKClassResult class1 = report.get("com.ning.http.client.providers.NettyAsyncHttpProvider");
-		System.out.println(class1.getMethods());
 
 		Assertions.assertNotNull(class1.getMethod("doConnect/3[com.ning.http.client.providers.Request,com.ning.http.client.providers.AsyncHandler<T>,com.ning.http.client.providers.NettyResponseFuture<T>]"));
 	}
@@ -241,8 +238,6 @@ public class RealWorldClassesTest extends BaseTest {
 	public void methodInvocationsInnerClass(){
 		CKClassResult class1 = report.get("com.github.ambry.commons.ByteBufferAsyncWritableChannel$ChunkData");
 		CKMethodResult constructorMethod = class1.getMethod("ChunkData/2[java.nio.ByteBuffer,com.github.ambry.commons.Callback<java.lang.Long>]").get();
-		System.out.println(constructorMethod.getMethodInvocations());
-		System.out.println(constructorMethod.getMethodInvocationsLocal());
 
 		Assertions.assertEquals(1, constructorMethod.getMethodInvocations().size());
 		Assertions.assertEquals(0, constructorMethod.getMethodInvocationsLocal().size());
