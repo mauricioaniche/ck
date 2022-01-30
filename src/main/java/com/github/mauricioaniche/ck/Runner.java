@@ -1,5 +1,7 @@
 package com.github.mauricioaniche.ck;
 
+import com.github.mauricioaniche.ck.util.FileUtils;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,6 +37,11 @@ public class Runner {
 		if(args.length >= 5)
 			outputDir = args[4];
 
+    // load possible additional ignored directories
+    //noinspection ManualArrayToCollectionCopy
+    for (int i = 5; i < args.length; i++) {
+      FileUtils.IGNORED_DIRECTORIES.add(args[i]);
+    }
 
 		ResultWriter writer = new ResultWriter(outputDir + "class.csv", outputDir + "method.csv", outputDir + "variable.csv", outputDir + "field.csv", variablesAndFields);
 		
