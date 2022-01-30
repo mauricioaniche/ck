@@ -140,7 +140,7 @@ To use the _latest version_ (which you should), clone the project and generate a
 
 Then, just run:
 ```
-java -jar ck-x.x.x-SNAPSHOT-jar-with-dependencies.jar <project dir> <use jars:true|false> <max files per partition, 0=automatic selection> <variables and fields metrics? True|False> <output dir>
+java -jar ck-x.x.x-SNAPSHOT-jar-with-dependencies.jar <project dir> <use jars:true|false> <max files per partition, 0=automatic selection> <variables and fields metrics? True|False> <output dir> [ignored directories...]
 ```
 
 `Project dir` refers to the directory where CK can find all the source code to be parsed.
@@ -152,6 +152,8 @@ out of memory) you think of tuning it. `Variables and field metrics` indicates t
 you want metrics at variable- and field-levels too. They are highly fine-grained and produce a lot of output;
 you should skip it if you only need metrics at class or method level. Finally, `output dir` refer to the 
 directory where CK will export the csv file with metrics from the analyzed project.
+Optionally, you can specify any number ignored directories, separated by spaces (for example, `build/`).
+By default, `.git` and all other hidden folders are ignored.
 
 The tool will generate three csv files: class, method, and variable levels.
 
