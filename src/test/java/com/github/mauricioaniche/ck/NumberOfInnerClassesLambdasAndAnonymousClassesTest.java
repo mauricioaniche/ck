@@ -62,7 +62,7 @@ public class NumberOfInnerClassesLambdasAndAnonymousClassesTest extends BaseTest
 		Assertions.assertEquals(0, a.getMethod("m1/0").get().getInnerClassesQty());
 		Assertions.assertEquals(0, a.getMethod("m1/0").get().getLambdasQty());
 
-		CKClassResult b = report.get("innerclasses.SC2$Anonymous1");
+		CKClassResult b = report.get("innerclasses.SC2#m1$Anonymous1");
 		Assertions.assertEquals(1, b.getMethod("toString/0").get().getInnerClassesQty());
 		Assertions.assertEquals(1, b.getInnerClassesQty());
 		Assertions.assertEquals(0, b.getLambdasQty());

@@ -37,18 +37,18 @@ public class MetricsPerClassesAndInnerClassesTest extends BaseTest {
 		Assertions.assertEquals(1, sc3.getNumberOfMethods());
 		Assertions.assertEquals("innerclass", sc3.getType());
 
-		CKClassResult an1 = report.get("innerclasses.MessyClass$Anonymous1");
+		CKClassResult an1 = report.get("innerclasses.MessyClass#m3$Anonymous1");
 		Assertions.assertEquals(1, an1.getNumberOfMethods());
 		Assertions.assertEquals("anonymous", an1.getType());
 
-		CKClassResult an2 = report.get("innerclasses.MessyClass$Anonymous2");
+		CKClassResult an2 = report.get("innerclasses.MessyClass#m5$Anonymous2");
 		Assertions.assertEquals(2, an2.getNumberOfMethods());
 		Assertions.assertEquals("anonymous", an2.getType());
 
 
 		CKClassResult ysc2 = report.get("innerclasses.SC2");
 		Assertions.assertEquals("class", ysc2.getType());
-		CKClassResult ysc2a = report.get("innerclasses.SC2$Anonymous1");
+		CKClassResult ysc2a = report.get("innerclasses.SC2#m1$Anonymous1");
 		Assertions.assertEquals("anonymous", ysc2a.getType());
 		CKClassResult ysc2x = report.get("innerclasses.SC2$1$1X");
 		Assertions.assertEquals("innerclass", ysc2x.getType());
