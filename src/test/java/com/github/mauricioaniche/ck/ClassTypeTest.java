@@ -34,10 +34,10 @@ public class ClassTypeTest extends BaseTest {
 		CKClassResult mathOperation = report.get("classtypes.MathOperation");
 		Assertions.assertEquals("interface", mathOperation.getType());
 
-		CKClassResult anon1 = report.get("classtypes.A$Anonymous1");
+		CKClassResult anon1 = report.get("classtypes.A#m2$Anonymous1");
 		Assertions.assertEquals("anonymous", anon1.getType());
 
-		CKClassResult anon2 = report.get("classtypes.A$Anonymous2");
+		CKClassResult anon2 = report.get("classtypes.A#m3$Anonymous2");
 		Assertions.assertEquals("anonymous", anon2.getType());
 
 
