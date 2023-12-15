@@ -139,8 +139,15 @@ To use the _latest version_ (which you should), clone the project and generate a
 `mvn clean compile package` generates the single JAR file for you (see your _target_ folder).
 
 Then, just run:
+
 ```
-java -jar ck-x.x.x-SNAPSHOT-jar-with-dependencies.jar <project dir> <use jars:true|false> <max files per partition, 0=automatic selection> <variables and fields metrics? True|False> <output dir> [ignored directories...]
+java -jar ck-x.x.x-SNAPSHOT-jar-with-dependencies.jar \
+<project dir> \
+<use jars:true|false> \
+<max files per partition:0=automatic selection> \
+<variables and fields metrics?:true|false> \
+<output dir> \
+[ignored directories...]
 ```
 
 `Project dir` refers to the directory where CK can find all the source code to be parsed.
