@@ -1,6 +1,6 @@
 # CK
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/BrenoFariasdaSilva/ck/test.yml)
+![Build Status](https://img.shields.io/github/actions/workflow/status/BrenoFariasdaSilva/ck/test.yml)
 [![Code Coverage](https://codecov.io/github/mauricioaniche/ck/coverage.svg)](https://codecov.io/gh/mauricioaniche/ck)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.mauricioaniche/ck/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.mauricioaniche/ck)
 
