@@ -8,6 +8,7 @@ import java.util.Map;
 
 public class Runner {
 	public static Map<String,Integer> methodOccurrences = new HashMap<>();
+	public static Map<String,Integer> classOccurrences = new HashMap<>();
 	
 	public static void main(String[] args) throws IOException {
 

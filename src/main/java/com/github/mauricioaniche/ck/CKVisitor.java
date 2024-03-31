@@ -63,7 +63,7 @@ public class CKVisitor extends ASTVisitor {
 		int modifiers = node.getModifiers();
 		CKClassResult currentClass = new CKClassResult(sourceFilePath, className, type, modifiers);
 		currentClass.setLoc(calculate(node.toString()));
-		
+
 		// there might be metrics that use it
 		// (even before a class is declared)
 		if(!classes.isEmpty()) {			
@@ -487,6 +487,16 @@ public class CKVisitor extends ASTVisitor {
 	}
 
 	public boolean visit(ClassInstanceCreation node) {
+		String className;
+		if (node.getType().resolveBinding() != null) {
+			className = node.getType().resolveBinding().getQualifiedName();
+		} else {
+			className = node.getType().toString();
+		}
+
+		// Safely update the occurrences count for the class being instantiated.
+		Runner.classOccurrences.put(className, Runner.classOccurrences.getOrDefault(className, 0) + 1);
+
 		if(!classes.isEmpty()) {
 			classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.visit(node));
 			if(!classes.peek().methods.isEmpty())

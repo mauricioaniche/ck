@@ -69,7 +69,8 @@ public class ResultWriter {
             "lambdasQty",
             "uniqueWordsQty",
             "modifiers",
-            "logStatementsQty"};
+            "logStatementsQty",
+            "classOccurrences" };
     private static final String[] METHOD_HEADER = { 
             "file", 
             "class", 
@@ -148,6 +149,8 @@ public class ResultWriter {
      * @throws IOException If output files cannot be written to
      */
     public void printResult(CKClassResult result) throws IOException {
+        String classNameKey = result.getClassName();
+        Integer classOccurrencesCount = Runner.classOccurrences.getOrDefault(classNameKey, 0); // Fallback to 0 if the class name is not found
 
         this.classPrinter.printRecord(
                 result.getFile(),
@@ -209,7 +212,8 @@ public class ResultWriter {
                 result.getLambdasQty(),
                 result.getUniqueWordsQty(),
                 result.getModifiers(),
-                result.getNumberOfLogStatements());
+                result.getNumberOfLogStatements(),
+                classOccurrencesCount);
 
         for (CKMethodResult method : result.getMethods()) {
             // Extract the clean method name
