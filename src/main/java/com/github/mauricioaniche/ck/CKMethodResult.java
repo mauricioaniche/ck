@@ -48,6 +48,8 @@ public class CKMethodResult {
 	private Set<String> methodInvocationsLocal;
 	//All indirect invocations of methods of the same class
 	private Map<String, Set<String>> methodInvocationsIndirectLocal;
+	//Store the number of times a method is called/invoked
+	public static Map<String,Integer> methodOccurrences = new HashMap<>();
 
 	public CKMethodResult(String methodName, String qualifiedMethodName, boolean isConstructor, int modifiers) {
 		this.methodName = methodName;

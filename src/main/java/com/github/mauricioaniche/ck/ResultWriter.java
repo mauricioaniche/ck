@@ -104,7 +104,8 @@ public class ResultWriter {
             "uniqueWordsQty", 
             "modifiers", 
             "logStatementsQty", 
-            "hasJavaDoc" };
+            "hasJavaDoc",
+            "methodOccurrences" };
                           
     private static final String[] VAR_FIELD_HEADER = { "file", "class", "method", "variable", "usage" };
     private final boolean variablesAndFields;
@@ -211,6 +212,12 @@ public class ResultWriter {
                 result.getNumberOfLogStatements());
 
         for (CKMethodResult method : result.getMethods()) {
+            // Extract the clean method name
+            String cleanMethodName = method.getMethodName().split("/")[0];
+
+            // Calculate occurrences count for the clean method name
+            Integer occurrences = CKMethodResult.methodOccurrences.getOrDefault(cleanMethodName, 0);
+
             this.methodPrinter.printRecord(
                     result.getFile(), 
                     result.getClassName(), 
@@ -245,7 +252,8 @@ public class ResultWriter {
                     method.getUniqueWordsQty(), 
                     method.getModifiers(), 
                     method.getLogStatementsQty(), 
-                    method.getHasJavadoc());
+                    method.getHasJavadoc(),
+                    occurrences);
 
             if(variablesAndFields) {
                 for (Map.Entry<String, Integer> entry : method.getVariablesUsage().entrySet()) {
