@@ -66,6 +66,9 @@ public class CKClassResult {
 	private float tightClassCohesion;
 	private float looseClassCohesion;
 
+	// Store the number of times a class is instantiated
+	public static Map<String,Integer> classOccurrences = new HashMap<>();
+
 	public CKClassResult(String file, String className, String type, int modifiers) {
 		this.file = file;
 		this.className = className;

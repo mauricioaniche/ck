@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Runner {
-	
 	public static void main(String[] args) throws IOException {
 
 		if (args == null || args.length < 1) {
