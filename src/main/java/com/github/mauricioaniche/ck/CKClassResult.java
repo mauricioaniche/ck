@@ -66,6 +66,8 @@ public class CKClassResult {
 	private float tightClassCohesion;
 	private float looseClassCohesion;
 
+	private Map<String, Integer> methodInvocations = new HashMap<>();
+
 	public CKClassResult(String file, String className, String type, int modifiers) {
 		this.file = file;
 		this.className = className;
@@ -537,6 +539,14 @@ public class CKClassResult {
 	@Override
 	public int hashCode() {
 		return Objects.hash(file, className, type);
+	}
+
+	public void addMethodInvocation(String methodName) {
+		this.methodInvocations.merge(methodName, 1, Integer::sum);
+	}
+
+	public Map<String, Integer> getMethodInvocations() {
+		return methodInvocations;
 	}
 
 }
