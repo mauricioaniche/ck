@@ -39,6 +39,7 @@ public class ResultWriter {
             "abstractMethodsQty",
             "finalMethodsQty",
             "synchronizedMethodsQty",
+            "methodInvocations",
 
             /* Field Counting */
             "totalFieldsQty",
@@ -178,6 +179,7 @@ public class ResultWriter {
                 result.getNumberOfAbstractMethods(),
                 result.getNumberOfFinalMethods(),
                 result.getNumberOfSynchronizedMethods(),
+                result.getMethodInvocations(),
 
                 /* Field Counting */
                 result.getNumberOfFields(),
