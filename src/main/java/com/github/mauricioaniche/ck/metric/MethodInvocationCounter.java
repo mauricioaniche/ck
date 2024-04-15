@@ -12,9 +12,14 @@ public class MethodInvocationCounter implements CKASTVisitor, ClassLevelMetric {
         if (methodList == null) {
             this.methodList = "";
         }
+
         String methodName = node.toString();
-        this.methodList += methodName.substring(0, methodName.indexOf("(")) + ";";
-        System.currentTimeMillis();
+
+        if (methodName.contains("(")) {
+            methodName = methodName.substring(0, methodName.indexOf("("));
+        }
+
+        this.methodList += methodName + ";";
     }
 
     @Override
