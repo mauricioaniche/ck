@@ -164,6 +164,11 @@ For brevity, within this documentation, package prefixes such as `com.github.mau
 - **CKASTVisitor:** Implemented by metric classes in `ck.metrics`, allowing each metric to handle specific AST nodes of interest, such as method invocations and class instance creations.
 - **ClassLevelMetric** and **MethodLevelMetric:** Interfaces defining methods for collecting class-level and method-level metrics, respectively.
 
+### Results Notification and Storage
+
+- **MetricsExecutor:** After collecting metrics, it uses a Notifier design pattern to broadcast the results using the `CKNotifier` interface.
+- **Anonymous class in Runner.main:** Fills the `CKClassResult` and `CKMethodResult` with the collected data.
+- **ResultWriter:** Utilizes the collected data to generate and store results in .CSV format.
 
 ## How to use the standalone version
 
