@@ -155,6 +155,16 @@ For brevity, within this documentation, package prefixes such as `com.github.mau
 
   The `MetricsFinder` utilizes the `Reflections` library to scan and load metric collector classes at runtime, which enables the CK system to be extensible and adaptable to new metrics without requiring modifications to the core architecture. This feature is particularly useful for integrating custom metrics into the analysis process seamlessly.
 
+### Metrics Collection
+
+- **CKVisitor:** An integral component of the CK framework, `CKVisitor` extends the `ASTVisitor` class provided by the Eclipse JDT (Java Development Tools) library, enabling detailed analysis and metric collection directly from Java source code's Abstract Syntax Tree (AST).
+
+  The visitor is designed to traverse various nodes of the AST, such as types and methods, and apply specific actions at each node. It effectively manages a stack-based hierarchy of classes and methods, allowing metrics to be calculated and collected in the context of the current node's scope.
+
+- **CKASTVisitor:** Implemented by metric classes in `ck.metrics`, allowing each metric to handle specific AST nodes of interest, such as method invocations and class instance creations.
+- **ClassLevelMetric** and **MethodLevelMetric:** Interfaces defining methods for collecting class-level and method-level metrics, respectively.
+
+
 ## How to use the standalone version
 
 You need at least Java 8 to be able to compile and run this tool.
