@@ -170,6 +170,18 @@ For brevity, within this documentation, package prefixes such as `com.github.mau
 - **Anonymous class in Runner.main:** Fills the `CKClassResult` and `CKMethodResult` with the collected data.
 - **ResultWriter:** Utilizes the collected data to generate and store results in .CSV format.
 
+## Design Patterns
+
+CK framework incorporates a number of well-established design patterns to enhance modularity, extendibility, and maintainability of its codebase. These patterns enable the framework to efficiently handle complex operations such as traversing abstract syntax trees (AST), collecting metrics, and notifying results. Below are the key design patterns utilized:
+
+- **Visitor Pattern:** The `CKVisitor` and `CKASTVisitor` interfaces implement the Visitor pattern, which is pivotal in handling operations on various AST nodes without altering the classes of the elements on which it operates. This pattern is especially beneficial in scenarios where a component needs to perform distinct and unrelated operations across a class hierarchy of AST nodes. It simplifies code by externalizing operational logic into visitor objects, facilitating easy addition of new operations without modifying existing node classes. This separation of concerns leads to a more maintainable and extensible codebase, where AST node structures and operations on them are decoupled.
+
+- **Notifier Pattern:** CK adopts the Notifier pattern through the use of `CKNotifier`, which acts as a central mechanism to broadcast the results of the metrics collection to all registered observers. This pattern is crucial for creating a loosely coupled architecture where the subject (metric computation process) is independent of its observers (results processors or report generators). This enables CK to notify multiple components about the completion of metric calculations without coupling to specific components, which enhances flexibility and scalability of the system.
+
+- **Factory Pattern:** The instantiation of metric collectors is managed by `MetricsFinder`, which embodies the Factory pattern. This pattern is utilized to encapsulate the logic of instantiating specific metric collector classes based on runtime decisions. The Factory pattern simplifies the process of adding new types of metric collectors without disturbing the existing code, providing a plug-and-play architecture where new metrics can be introduced seamlessly. It also aids in maintaining separation of concerns, as the process of creating metric objects is isolated from the core logic of metric collection.
+
+By leveraging these design patterns, CK efficiently manages complexity and ensures that the framework remains robust, adaptable, and easy to extend as new requirements and metric types emerge.
+
 ## How to use the standalone version
 
 You need at least Java 8 to be able to compile and run this tool.
