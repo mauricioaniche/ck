@@ -131,6 +131,16 @@ See `NumberOfLogStatements.java` and the test examples (`NumberOfLogStatementsTe
 
 Note: CK separates classes, inner classes, and anonymous classes. LOC is the only metric that is not completely isolated from the others, e.g., if A has a declaration of an inner class B, then LOC(A) = LOC(class A) + LOC(inner class B).
 
+## Project Structure
+
+CK is a Java code metrics collection tool, streamlined into a simple structure that revolves around three primary packages:
+
+- **ck:** Contains the core classes that drive the metrics collection process.
+- **ck.metrics:** Hosts the metric definitions and implementations.
+- **ck.utils:** Utilities supporting the metrics collection process.
+
+For brevity, within this documentation, package prefixes such as `com.github.mauricioaniche.ck` are omitted.
+
 ## How to use the standalone version
 
 You need at least Java 8 to be able to compile and run this tool.
