@@ -149,6 +149,12 @@ For brevity, within this documentation, package prefixes such as `com.github.mau
 - **Runner:** The entry point of the application, housed in the `ck` package. This class processes command-line arguments to configure and launch the metrics collection process. It handles user input for the project path, JAR inclusion, file partitioning, metrics detailing, and output directory setup. `Runner` orchestrates the overall execution by initializing and utilizing the `CK` class and handling result output through `ResultWriter`.
 - **MetricsExecutor:** This class extends `FileASTRequestor`, a component of the Eclipse JDT (Java Development Tools) core. It plays a pivotal role in the CK framework by orchestrating the metrics collection process. The `MetricsExecutor` coordinates the creation of the Abstract Syntax Tree (AST) for Java source files, which is essential for analyzing and extracting code metrics.
 
+### Metrics Identification
+
+- **MetricsFinder:** This utility class, located in `ck.utils`, plays a crucial role in the dynamic identification and instantiation of metric collector classes within the CK framework. It targets classes that implement the `ClassLevelMetric` and `MethodLevelMetric` interfaces from the `metrics` package.
+
+  The `MetricsFinder` utilizes the `Reflections` library to scan and load metric collector classes at runtime, which enables the CK system to be extensible and adaptable to new metrics without requiring modifications to the core architecture. This feature is particularly useful for integrating custom metrics into the analysis process seamlessly.
+
 ## How to use the standalone version
 
 You need at least Java 8 to be able to compile and run this tool.
