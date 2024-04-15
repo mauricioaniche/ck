@@ -141,6 +141,14 @@ CK is a Java code metrics collection tool, streamlined into a simple structure t
 
 For brevity, within this documentation, package prefixes such as `com.github.mauricioaniche.ck` are omitted.
 
+## Architecture
+
+### Core Components
+
+- **CK:** The backbone class of the tool, `CK` manages the orchestration of the entire metrics collection process. It initializes metric finders, handles file partitioning based on available memory, sets up AST parsers with appropriate environment settings, and manages execution flow across different directories and JAR dependencies. It dynamically adjusts its behavior based on user inputs like `useJars`, `maxAtOnce`, and `variablesAndFields` to optimize the processing of Java files for metrics collection.
+- **Runner:** The entry point of the application, housed in the `ck` package. This class processes command-line arguments to configure and launch the metrics collection process. It handles user input for the project path, JAR inclusion, file partitioning, metrics detailing, and output directory setup. `Runner` orchestrates the overall execution by initializing and utilizing the `CK` class and handling result output through `ResultWriter`.
+- **MetricsExecutor:** This class extends `FileASTRequestor`, a component of the Eclipse JDT (Java Development Tools) core. It plays a pivotal role in the CK framework by orchestrating the metrics collection process. The `MetricsExecutor` coordinates the creation of the Abstract Syntax Tree (AST) for Java source files, which is essential for analyzing and extracting code metrics.
+
 ## How to use the standalone version
 
 You need at least Java 8 to be able to compile and run this tool.
