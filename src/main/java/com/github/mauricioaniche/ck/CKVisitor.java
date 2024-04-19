@@ -163,12 +163,18 @@ public class CKVisitor extends ASTVisitor {
 
 		// there might be metrics that use it
 		// (even before an anonymous class is created)
+		String methodName = "";
 		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.visit(node));
-		if(!classes.peek().methods.isEmpty())
+		if(!classes.peek().methods.isEmpty()) {
 			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.visit(node));
+			methodName = '#' + classes.peek().methods.peek().result.getMethodName();
+			if (methodName.contains("/")) {
+				methodName = methodName.substring(0, methodName.indexOf('/'));
+			}
+		}
 
-		// we give the anonymous class a 'class$AnonymousN' name
-		String anonClassName = classes.peek().result.getClassName() + "$Anonymous" + ++anonymousNumber;
+		// we give the anonymous class a 'class#method$AnonymousN' name
+		String anonClassName = classes.peek().result.getClassName() + methodName + "$Anonymous" + ++anonymousNumber;
 		CKClassResult currentClass = new CKClassResult(sourceFilePath, anonClassName, "anonymous", -1);
 		currentClass.setLoc(calculate(node.toString()));
 
