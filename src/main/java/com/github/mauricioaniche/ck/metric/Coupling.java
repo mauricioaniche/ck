@@ -74,6 +74,19 @@ public class Coupling implements CKASTVisitor, ClassLevelMetric, MethodLevelMetr
 		}
 	}
 
+	@Override
+	public void visit(RecordDeclaration node) {
+		if(this.className != null) {
+			ITypeBinding resolvedType = node.resolveBinding();
+
+			ITypeBinding binding = resolvedType.getSuperclass();
+			coupleTo(binding);
+			for (ITypeBinding interfaces : resolvedType.getInterfaces()) {
+				coupleTo(interfaces);
+			}
+		}
+	}
+
 	public void visit(TypeDeclaration node) {
 		if(this.className != null) {
 			ITypeBinding resolvedType = node.resolveBinding();

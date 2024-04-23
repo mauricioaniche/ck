@@ -20,5 +20,8 @@ public class VariableNameExtractionTest extends BaseTest {
     public void extractVariableNames(){
         CKClassResult a = report.get("VariableDeclaration.VariableDeclaration");
         assertEquals(Sets.newHashSet("a", "b", "c", "d", "e", "f", "g", "xx"), a.getFieldNames());
+        
+        CKClassResult b = report.get("VariableDeclaration.OneRecord");
+        assertEquals(Sets.newHashSet("aString", "aLong", "anInteger"), b.getFieldNames());
     }
 }

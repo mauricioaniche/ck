@@ -6,7 +6,6 @@ import org.eclipse.jdt.core.dom.*;
 
 public class ASTDebugger implements CKASTVisitor, ClassLevelMetric {
 
-
 	public void visit(AnnotationTypeDeclaration node) {
 		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
@@ -254,6 +253,10 @@ public class ASTDebugger implements CKASTVisitor, ClassLevelMetric {
 	public void visit(QualifiedType node) {
 		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
+	
+	public void visit(RecordDeclaration node) {
+		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
+	}
 
 	public void visit(ReturnStatement node) {
 		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
@@ -370,8 +373,6 @@ public class ASTDebugger implements CKASTVisitor, ClassLevelMetric {
 	public void visit(WildcardType node) {
 		System.out.println("-- " + node.getClass().getSimpleName()); System.out.println(node.toString());
 	}
-
-
 
 	@Override
 	public void setResult(CKClassResult result) {
