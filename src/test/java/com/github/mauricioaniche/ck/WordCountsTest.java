@@ -10,6 +10,7 @@ public class WordCountsTest extends BaseTest {
 	private CKClassResult w1;
 	private CKClassResult w2;
 	private CKClassResult w3;
+	private CKClassResult w4;
 
 	@BeforeAll
 	public void setUp() {
@@ -21,12 +22,16 @@ public class WordCountsTest extends BaseTest {
 		this.w1 = report.get("wordcounts.WordCounts");
 		this.w2 = report.get("wordcounts.WordCounts2");
 		this.w3 = report.get("wordcounts.WordCounts3");
+		this.w4 = report.get("wordcounts.RecordCount");
 	}
 
 	@Test
 	public void count() {
 		Assertions.assertEquals(1, w1.getMethod("m1/0").get().getUniqueWordsQty());
 		Assertions.assertEquals(7, w1.getMethod("m2/0").get().getUniqueWordsQty());
+
+		Assertions.assertEquals(1, w4.getMethod("m1/0").get().getUniqueWordsQty());
+		Assertions.assertEquals(7, w4.getMethod("m2/0").get().getUniqueWordsQty());
 	}
 
 	// related to issue #33

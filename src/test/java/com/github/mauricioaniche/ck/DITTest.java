@@ -52,4 +52,9 @@ public class DITTest extends BaseTest {
 		Assertions.assertEquals(2, a.getDit());
 	}
 
+	@Test
+	public void recordInheritance(){
+		CKClassResult a = report.get("dit.RecordR");
+		Assertions.assertEquals(2, a.getDit());
+	}
 }

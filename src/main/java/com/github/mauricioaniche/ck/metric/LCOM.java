@@ -16,7 +16,7 @@ public class LCOM implements CKASTVisitor, ClassLevelMetric {
 	public LCOM() {
 		this.declaredFields = new HashSet<String>();
 	}
-	
+
 	public void visit(FieldDeclaration node) {
 		
 		for(Object o : node.fragments()) {

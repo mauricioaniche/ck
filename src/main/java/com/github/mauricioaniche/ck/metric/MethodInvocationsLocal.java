@@ -2,6 +2,7 @@ package com.github.mauricioaniche.ck.metric;
 
 import com.github.mauricioaniche.ck.CKClassResult;
 import com.github.mauricioaniche.ck.CKMethodResult;
+
 import java.util.*;
 import java.util.stream.Collectors;
 

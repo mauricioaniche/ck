@@ -26,6 +26,9 @@ public class CBOTest extends BaseTest {
 		
 		CKClassResult a = report.get("cbo.Coupling1");
 		Assertions.assertEquals(6, a.getCbo());
+
+		CKClassResult b = report.get("cbo.RecordCoupling");
+		Assertions.assertEquals(6, b.getCbo());
 	}
 	
 	@Test
@@ -40,6 +43,9 @@ public class CBOTest extends BaseTest {
 		
 		CKClassResult b = report.get("cbo.Coupling2");
 		Assertions.assertEquals(5, b.getCbo());
+
+		CKClassResult c = report.get("cbo.RecordCoupling");
+		Assertions.assertEquals(6, c.getCbo());
 	}
 
 	@Test

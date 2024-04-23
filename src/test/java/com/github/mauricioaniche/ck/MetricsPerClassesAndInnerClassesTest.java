@@ -5,8 +5,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
-import java.util.Map;
-
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class MetricsPerClassesAndInnerClassesTest extends BaseTest {
 
@@ -18,7 +16,7 @@ public class MetricsPerClassesAndInnerClassesTest extends BaseTest {
 	@Test
 	public void metricsPerClass() {
 
-		Assertions.assertEquals(9, report.values().size());
+		Assertions.assertEquals(18, report.values().size());
 
 		CKClassResult a = report.get("innerclasses.MessyClass");
 		Assertions.assertEquals(6, a.getNumberOfMethods());

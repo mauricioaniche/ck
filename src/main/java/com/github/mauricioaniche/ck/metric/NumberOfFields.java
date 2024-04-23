@@ -3,6 +3,8 @@ package com.github.mauricioaniche.ck.metric;
 import com.github.mauricioaniche.ck.CKClassResult;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.Modifier;
+import org.eclipse.jdt.core.dom.RecordDeclaration;
+import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -20,6 +22,19 @@ public class NumberOfFields implements CKASTVisitor, ClassLevelMetric {
 	private int defaultFields;
 	private int finalFields;
 	private int synchronizedFields;
+
+	@Override
+	public void visit(RecordDeclaration node) {
+		for(Object member : node.recordComponents()) {
+			SingleVariableDeclaration variable = (SingleVariableDeclaration) member;
+
+			fields++;
+			fieldNames.add(variable.getName().getIdentifier());
+
+			privateFields++;
+			finalFields++;
+		}
+	}
 
 	@Override
 	public void visit(FieldDeclaration node) {

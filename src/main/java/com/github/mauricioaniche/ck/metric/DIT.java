@@ -2,11 +2,18 @@ package com.github.mauricioaniche.ck.metric;
 
 import com.github.mauricioaniche.ck.CKClassResult;
 import org.eclipse.jdt.core.dom.ITypeBinding;
+import org.eclipse.jdt.core.dom.RecordDeclaration;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 public class DIT implements CKASTVisitor, ClassLevelMetric {
 
 	int dit = 1; // Object is the father of everyone!
+
+	@Override
+	public void visit(RecordDeclaration node) {
+		ITypeBinding binding = node.resolveBinding();
+		if(binding!=null) calculate(binding);
+	}
 
 	@Override
 	public void visit(TypeDeclaration node) {

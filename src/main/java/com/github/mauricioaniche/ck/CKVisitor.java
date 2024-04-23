@@ -53,6 +53,45 @@ public class CKVisitor extends ASTVisitor {
 	}
 
 	@Override
+	public boolean visit(RecordDeclaration node){
+		ITypeBinding binding = node.resolveBinding();
+
+		// build a CKClassResult based on the current type
+		// declaration we are visiting
+		String className = binding != null ? binding.getBinaryName() : node.getName().getFullyQualifiedName();
+		String type = getTypeOfTheUnit(node);
+		int modifiers = node.getModifiers();
+		CKClassResult currentClass = new CKClassResult(sourceFilePath, className, type, modifiers);
+		currentClass.setLoc(calculate(node.toString()));
+
+//		// there might be metrics that use it
+//		// (even before a class is declared)
+		if(!classes.isEmpty()) {
+			classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.visit(node));
+			if (!classes.peek().methods.isEmpty())
+				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.visit(node));
+
+		}
+
+		// create a set of visitors, just for the current class
+		List<ClassLevelMetric> classLevelMetrics = instantiateClassLevelMetricVisitors(className);
+
+		// store everything in a 'class in the stack' data structure
+		ClassInTheStack classInTheStack = new ClassInTheStack();
+		classInTheStack.result = currentClass;
+		classInTheStack.classLevelMetrics = classLevelMetrics;
+
+		// push it to the stack, so we know the current class we are visiting
+		classes.push(classInTheStack);
+
+		// there might be class level metrics that use the TypeDeclaration
+		// so, let's run them
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.visit(node));
+
+		return true;
+	}
+
+	@Override
 	public boolean visit(TypeDeclaration node) {
 		ITypeBinding binding = node.resolveBinding();
 
@@ -91,6 +130,21 @@ public class CKVisitor extends ASTVisitor {
 		return true;
 	}
 
+	@Override
+	public void endVisit(RecordDeclaration node) {
+
+		// let's first visit any metrics that might make use of this endVisit
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+
+		ClassInTheStack completedClass = classes.pop();
+
+		// persist the results of the class level metrics in the result
+		completedClass.classLevelMetrics.forEach(m -> m.setResult(completedClass.result));
+
+		// we are done processing this class, so now let's
+		// store it in the collected classes set
+		collectedClasses.add(completedClass.result);
+	}
 
 	@Override
 	public void endVisit(TypeDeclaration node) {
@@ -332,6 +386,10 @@ public class CKVisitor extends ASTVisitor {
 
 	private String getTypeOfTheUnit(TypeDeclaration node) {
 		return node.isInterface() ? "interface" : (classes.isEmpty() ? "class" : "innerclass");
+	}
+
+	private String getTypeOfTheUnit(RecordDeclaration node) {
+		return "record";
 	}
 
 	// -------------------------------------------------------
@@ -913,6 +971,11 @@ public class CKVisitor extends ASTVisitor {
 		}
 		return true;
 
+	}
+
+	@Override
+	public boolean visit(RecordPattern node) {
+		return super.visit(node);
 	}
 
 	public boolean visit(ReturnStatement node) {
