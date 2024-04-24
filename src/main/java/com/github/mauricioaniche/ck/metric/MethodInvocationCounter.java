@@ -9,6 +9,7 @@ import java.util.*;
 public class MethodInvocationCounter implements CKASTVisitor, ClassLevelMetric {
     private Map<String, MethodCounter.MethodInformation> methodInvocations = new HashMap<>();
     private String currentMethod = null;
+    public static final boolean IS_VERBOSE = true;
 
     @Override
     public void visit(MethodDeclaration node) {
