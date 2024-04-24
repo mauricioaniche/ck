@@ -140,7 +140,7 @@ To use the _latest version_ (which you should), clone the project and generate a
 
 Then, just run:
 ```
-java -jar ck-x.x.x-SNAPSHOT-jar-with-dependencies.jar <project dir> <use jars:true|false> <max files per partition, 0=automatic selection> <variables and fields metrics? True|False> <output dir> [ignored directories...]
+java -jar ck-x.x.x-SNAPSHOT-jar-with-dependencies.jar <project dir> <use jars:true|false> <max files per partition, 0=automatic selection> <variables and fields metrics? True|False> <output dir> [ignored directories...] <verbose flag for large metric outputs? true|false>
 ```
 
 `Project dir` refers to the directory where CK can find all the source code to be parsed.
@@ -150,10 +150,10 @@ in the directory and use them to better resolve types. `Max files per partition`
 of the batch to process. Let us decide that for you and start with 0; if problems happen (i.e., 
 out of memory) you think of tuning it. `Variables and field metrics` indicates to CK whether
 you want metrics at variable- and field-levels too. They are highly fine-grained and produce a lot of output;
-you should skip it if you only need metrics at class or method level. Finally, `output dir` refer to the 
+you should skip it if you only need metrics at class or method level. Aditionally, `output dir` refer to the 
 directory where CK will export the csv file with metrics from the analyzed project.
 Optionally, you can specify any number ignored directories, separated by spaces (for example, `build/`).
-By default, `.git` and all other hidden folders are ignored.
+By default, `.git` and all other hidden folders are ignored. Finally, the `verbose flag` tells CK if it must process metrics tagged as large outputs. If you are not interested in the detailed output of the metrics, you can set it to false.
 
 The tool will generate three csv files: class, method, and variable levels.
 
