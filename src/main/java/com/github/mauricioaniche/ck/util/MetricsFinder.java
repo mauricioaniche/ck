@@ -48,8 +48,7 @@ public class MetricsFinder {
 		try {
 			ArrayList<ClassLevelMetric> metrics = new ArrayList<>();
 			for (Class<? extends ClassLevelMetric> aClass : classLevelClasses) {
-				boolean isVerbose = Arrays.stream(aClass.getFields())
-						.anyMatch(f -> f.getName().equals("IS_VERBOSE")) ? aClass.getField("IS_VERBOSE").getBoolean(null) : false;
+				boolean isVerbose = aClass.getDeclaredConstructor().newInstance().isVerbose();
 
 				if (verbose) {
 					metrics.add(aClass.getDeclaredConstructor().newInstance());
