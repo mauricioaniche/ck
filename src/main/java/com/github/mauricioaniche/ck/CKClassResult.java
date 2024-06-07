@@ -66,6 +66,8 @@ public class CKClassResult {
 	private float tightClassCohesion;
 	private float looseClassCohesion;
 
+	private String methodInvocations;
+
 	public CKClassResult(String file, String className, String type, int modifiers) {
 		this.file = file;
 		this.className = className;
@@ -537,6 +539,14 @@ public class CKClassResult {
 	@Override
 	public int hashCode() {
 		return Objects.hash(file, className, type);
+	}
+
+	public void setMethodInvocation(String methodInvocations) {
+		this.methodInvocations = methodInvocations;
+	}
+
+	public String getMethodInvocations() {
+		return this.methodInvocations;
 	}
 
 }
