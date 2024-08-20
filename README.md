@@ -195,11 +195,11 @@ Then, just run:
 java -jar ck-x.x.x-SNAPSHOT-jar-with-dependencies.jar \
 	<project dir> \
 	<use jars:true|false> \
-	<max files per partition, 0=automatic selection> \
-	<variables and fields metrics? True|False> \
+	<max files per partition:0=automatic selection> \
+	<variables and fields metrics?true|false> \
 	<output dir> \
 	[ignored directories...] \
-	<verbose flag for large metric outputs? true|false>
+	<verbose flag for large metric outputs?true|false>
 ```
 
 `Project dir` refers to the directory where CK can find all the source code to be parsed.
