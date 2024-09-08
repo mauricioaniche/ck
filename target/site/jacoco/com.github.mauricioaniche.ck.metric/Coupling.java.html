@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Coupling.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CK calculator</a> &gt; <a href="index.source.html" class="el_package">com.github.mauricioaniche.ck.metric</a> &gt; <span class="el_source">Coupling.java</span></div><h1>Coupling.java</h1><pre class="source lang-java linenums">package com.github.mauricioaniche.ck.metric;
+
+import com.github.mauricioaniche.ck.CKClassResult;
+import com.github.mauricioaniche.ck.CKMethodResult;
+import com.github.mauricioaniche.ck.util.JDTUtils;
+
+import org.eclipse.jdt.core.dom.*;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+public class Coupling implements CKASTVisitor, ClassLevelMetric, MethodLevelMetric {
+
+	private CouplingExtras extras;
+	private String className;
+	private String methodName;
+	
+<span class="fc" id="L20">	public Coupling() {</span>
+<span class="fc" id="L21">		this.extras = CouplingExtras.getInstance();</span>
+<span class="fc" id="L22">	}</span>
+
+	@Override
+	public void visit(VariableDeclarationStatement node) {
+<span class="fc bfc" id="L26" title="All 2 branches covered.">		if(this.className != null) {</span>
+<span class="fc" id="L27">			coupleTo(node.getType());</span>
+		}
+<span class="fc" id="L29">	}</span>
+
+	@Override
+	public void visit(ClassInstanceCreation node) {
+<span class="fc bfc" id="L33" title="All 2 branches covered.">		if(this.className != null) {</span>
+<span class="fc" id="L34">			coupleTo(node.getType());</span>
+<span class="pc bpc" id="L35" title="1 of 2 branches missed.">		} else if(this.methodName != null) {	</span>
+<span class="fc" id="L36">			IMethodBinding binding = node.resolveConstructorBinding();</span>
+<span class="fc" id="L37">			coupleTo(binding);</span>
+		} 
+<span class="fc" id="L39">	}</span>
+
+	@Override
+	public void visit(ArrayCreation node) {
+<span class="fc bfc" id="L43" title="All 2 branches covered.">		if(this.className != null) {</span>
+<span class="fc" id="L44">			coupleTo(node.getType());</span>
+		}
+<span class="fc" id="L46">	}</span>
+
+	@Override
+	public void visit(FieldDeclaration node) {
+<span class="pc bpc" id="L50" title="1 of 2 branches missed.">		if(this.className != null) {</span>
+<span class="fc" id="L51">			coupleTo(node.getType());</span>
+		}
+<span class="fc" id="L53">	}</span>
+
+	public void visit(ReturnStatement node) {
+<span class="fc bfc" id="L56" title="All 2 branches covered.">		if(this.className != null){</span>
+<span class="fc bfc" id="L57" title="All 2 branches covered.">			if (node.getExpression() != null) {</span>
+<span class="fc" id="L58">				coupleTo(node.getExpression().resolveTypeBinding());</span>
+			}
+		}
+<span class="fc" id="L61">	}</span>
+
+	@Override
+	public void visit(TypeLiteral node) {
+<span class="fc bfc" id="L65" title="All 2 branches covered.">		if(this.className != null) {</span>
+<span class="fc" id="L66">			coupleTo(node.getType());</span>
+		}
+<span class="fc" id="L68">	}</span>
+	
+	public void visit(ThrowStatement node) {
+<span class="fc bfc" id="L71" title="All 2 branches covered.">		if(this.className != null) {</span>
+<span class="pc bpc" id="L72" title="1 of 2 branches missed.">			if(node.getExpression()!=null)</span>
+<span class="fc" id="L73">				coupleTo(node.getExpression().resolveTypeBinding());</span>
+		}
+<span class="fc" id="L75">	}</span>
+
+	public void visit(TypeDeclaration node) {
+<span class="fc bfc" id="L78" title="All 2 branches covered.">		if(this.className != null) {</span>
+<span class="fc" id="L79">			ITypeBinding resolvedType = node.resolveBinding();</span>
+	
+<span class="pc bpc" id="L81" title="1 of 2 branches missed.">			if(resolvedType!=null) {</span>
+<span class="fc" id="L82">				ITypeBinding binding = resolvedType.getSuperclass();</span>
+<span class="fc bfc" id="L83" title="All 2 branches covered.">				if (binding != null)</span>
+<span class="fc" id="L84">					coupleTo(binding);</span>
+	
+<span class="fc bfc" id="L86" title="All 2 branches covered.">				for (ITypeBinding interfaces : resolvedType.getInterfaces()) {</span>
+<span class="fc" id="L87">					coupleTo(interfaces);</span>
+				}
+<span class="fc" id="L89">			} else {</span>
+<span class="nc" id="L90">				coupleTo(node.getSuperclassType());</span>
+<span class="nc" id="L91">				List&lt;Type&gt; list = node.superInterfaceTypes();</span>
+<span class="nc" id="L92">				list.forEach(x -&gt; coupleTo(x));</span>
+			}
+		}
+
+<span class="fc" id="L96">	}</span>
+
+	public void visit(MethodDeclaration node) {
+<span class="fc bfc" id="L99" title="All 2 branches covered.">		if(this.className != null) {</span>
+<span class="fc" id="L100">			IMethodBinding resolvedMethod = node.resolveBinding();</span>
+<span class="fc bfc" id="L101" title="All 2 branches covered.">			if (resolvedMethod != null) {</span>
+	
+<span class="fc" id="L103">				coupleTo(resolvedMethod.getReturnType());</span>
+	
+<span class="fc bfc" id="L105" title="All 2 branches covered.">				for (ITypeBinding param : resolvedMethod.getParameterTypes()) {</span>
+<span class="fc" id="L106">					coupleTo(param);</span>
+				}
+			} else {
+<span class="fc" id="L109">				coupleTo(node.getReturnType2());</span>
+<span class="fc" id="L110">				List&lt;TypeParameter&gt; list = node.typeParameters();</span>
+<span class="pc" id="L111">				list.forEach(x -&gt; coupleTo(x.getName()));</span>
+			}
+		}
+
+<span class="fc" id="L115">	}</span>
+
+	@Override
+	public void visit(CastExpression node) {
+<span class="fc bfc" id="L119" title="All 2 branches covered.">		if(this.className != null) {</span>
+<span class="fc" id="L120">			coupleTo(node.getType());</span>
+		}
+
+<span class="fc" id="L123">	}</span>
+
+	@Override
+	public void visit(InstanceofExpression node) {
+<span class="fc bfc" id="L127" title="All 2 branches covered.">		if(this.className != null) {</span>
+<span class="fc" id="L128">			coupleTo(node.getRightOperand());</span>
+<span class="fc" id="L129">			coupleTo(node.getLeftOperand().resolveTypeBinding());</span>
+		}
+
+<span class="fc" id="L132">	}</span>
+
+	@Override
+	public void visit(MethodInvocation node) {
+		
+<span class="fc" id="L137">		IMethodBinding binding = node.resolveMethodBinding();</span>
+<span class="fc bfc" id="L138" title="All 2 branches covered.">		if(binding!=null) {</span>
+<span class="fc bfc" id="L139" title="All 2 branches covered.">			if(this.className != null) {</span>
+<span class="fc" id="L140">				coupleTo(binding.getDeclaringClass());</span>
+<span class="pc bpc" id="L141" title="1 of 2 branches missed.">			} else if(this.methodName != null) {</span>
+<span class="fc" id="L142">				coupleTo(binding);</span>
+			}
+		}
+
+<span class="fc" id="L146">	}</span>
+
+	public void visit(NormalAnnotation node) {
+<span class="fc bfc" id="L149" title="All 2 branches covered.">		if(this.className != null) {</span>
+<span class="fc" id="L150">			coupleTo(node);</span>
+		}
+<span class="fc" id="L152">	}</span>
+
+	public void visit(MarkerAnnotation node) {
+<span class="fc bfc" id="L155" title="All 2 branches covered.">		if(this.className != null) {</span>
+<span class="fc" id="L156">			coupleTo(node);</span>
+		}
+<span class="fc" id="L158">	}</span>
+
+	public void visit(SingleMemberAnnotation node) {
+<span class="fc bfc" id="L161" title="All 2 branches covered.">		if(this.className != null) {</span>
+<span class="fc" id="L162">			coupleTo(node);</span>
+		}
+<span class="fc" id="L164">	}</span>
+
+	public void visit(ParameterizedType node) {
+<span class="fc bfc" id="L167" title="All 2 branches covered.">		if(this.className != null) {</span>
+			
+			try {	
+<span class="fc" id="L170">				ITypeBinding binding = node.resolveBinding();</span>
+<span class="fc bfc" id="L171" title="All 2 branches covered.">				if (binding != null) {</span>
+		
+<span class="fc" id="L173">					coupleTo(binding);</span>
+		
+<span class="fc bfc" id="L175" title="All 2 branches covered.">					for (ITypeBinding types : binding.getTypeArguments()) {</span>
+<span class="fc" id="L176">						coupleTo(types);</span>
+					}
+				} else {
+<span class="fc" id="L179">					coupleTo(node.getType());</span>
+				}
+<span class="nc" id="L181">			} catch (NullPointerException e) {</span>
+				// TODO: handle exception
+<span class="fc" id="L183">			}</span>
+		}
+
+<span class="fc" id="L186">	}</span>
+	private void coupleTo(Annotation type) {
+<span class="pc bpc" id="L188" title="1 of 2 branches missed.">		if(this.className != null) {</span>
+<span class="fc" id="L189">			ITypeBinding resolvedType = type.resolveTypeBinding();</span>
+<span class="fc bfc" id="L190" title="All 2 branches covered.">			if(resolvedType!=null)</span>
+<span class="fc" id="L191">				coupleTo(resolvedType);</span>
+			else {
+<span class="fc" id="L193">				addToSet(type.getTypeName().getFullyQualifiedName());</span>
+			}
+		}
+<span class="fc" id="L196">	}</span>
+
+	private void coupleTo(Type type) {
+<span class="fc bfc" id="L199" title="All 2 branches covered.">		if(type==null)</span>
+<span class="fc" id="L200">			return;</span>
+
+<span class="pc bpc" id="L202" title="1 of 2 branches missed.">		if(this.className != null) {</span>
+<span class="fc" id="L203">			ITypeBinding resolvedBinding = type.resolveBinding();</span>
+<span class="fc bfc" id="L204" title="All 2 branches covered.">			if(resolvedBinding!=null)</span>
+<span class="fc" id="L205">				coupleTo(resolvedBinding);</span>
+			else {
+<span class="fc bfc" id="L207" title="All 2 branches covered.">				if(type instanceof SimpleType) {</span>
+<span class="fc" id="L208">					SimpleType castedType = (SimpleType) type;</span>
+<span class="fc" id="L209">					addToSet(castedType.getName().getFullyQualifiedName());</span>
+<span class="fc" id="L210">				}</span>
+<span class="pc bpc" id="L211" title="1 of 2 branches missed.">				else if(type instanceof QualifiedType) {</span>
+<span class="nc" id="L212">					QualifiedType castedType = (QualifiedType) type;</span>
+<span class="nc" id="L213">					addToSet(castedType.getName().getFullyQualifiedName());</span>
+<span class="nc" id="L214">				}</span>
+<span class="pc bpc" id="L215" title="1 of 2 branches missed.">				else if(type instanceof NameQualifiedType) {</span>
+<span class="nc" id="L216">					NameQualifiedType castedType = (NameQualifiedType) type;</span>
+<span class="nc" id="L217">					addToSet(castedType.getName().getFullyQualifiedName());</span>
+<span class="nc" id="L218">				}</span>
+<span class="fc bfc" id="L219" title="All 2 branches covered.">				else if(type instanceof ParameterizedType) {</span>
+<span class="fc" id="L220">					ParameterizedType castedType = (ParameterizedType) type;</span>
+<span class="fc" id="L221">					coupleTo(castedType.getType());</span>
+<span class="fc" id="L222">				}</span>
+<span class="pc bpc" id="L223" title="1 of 2 branches missed.">				else if(type instanceof WildcardType) {</span>
+<span class="nc" id="L224">					WildcardType castedType = (WildcardType) type;</span>
+<span class="nc" id="L225">					coupleTo(castedType.getBound());</span>
+<span class="nc" id="L226">				}</span>
+<span class="fc bfc" id="L227" title="All 2 branches covered.">				else if(type instanceof ArrayType) {</span>
+<span class="fc" id="L228">					ArrayType castedType = (ArrayType) type;</span>
+<span class="fc" id="L229">					coupleTo(castedType.getElementType());</span>
+<span class="fc" id="L230">				}</span>
+<span class="pc bpc" id="L231" title="1 of 2 branches missed.">				else if(type instanceof IntersectionType) {</span>
+<span class="nc" id="L232">					IntersectionType castedType = (IntersectionType) type;</span>
+<span class="nc" id="L233">					List&lt;Type&gt; types = castedType.types();</span>
+<span class="nc" id="L234">					types.stream().forEach(x -&gt; coupleTo(x));</span>
+<span class="nc" id="L235">				}</span>
+<span class="pc bpc" id="L236" title="1 of 2 branches missed.">				else if(type instanceof UnionType) {</span>
+<span class="nc" id="L237">					UnionType castedType = (UnionType) type;</span>
+<span class="nc" id="L238">					List&lt;Type&gt; types = castedType.types();</span>
+<span class="nc" id="L239">					types.stream().forEach(x -&gt; coupleTo(x));</span>
+				}
+			}
+		}
+<span class="fc" id="L243">	}</span>
+
+	private void coupleTo(SimpleName name) {
+<span class="nc bnc" id="L246" title="All 2 branches missed.">		if(this.className != null) {</span>
+<span class="nc" id="L247">			addToSet(name.getFullyQualifiedName());</span>
+		}
+<span class="nc" id="L249">	}</span>
+
+	private void coupleTo(ITypeBinding binding) {
+
+<span class="pc bpc" id="L253" title="1 of 2 branches missed.">		if(this.className != null) {</span>
+<span class="fc bfc" id="L254" title="All 2 branches covered.">			if (binding == null)</span>
+<span class="fc" id="L255">				return;</span>
+<span class="fc bfc" id="L256" title="All 2 branches covered.">			if (binding.isWildcardType())</span>
+<span class="fc" id="L257">				return;</span>
+<span class="fc bfc" id="L258" title="All 2 branches covered.">			if (binding.isNullType())</span>
+<span class="fc" id="L259">				return;</span>
+	
+<span class="fc" id="L261">			String type = binding.getQualifiedName();</span>
+<span class="pc bpc" id="L262" title="1 of 2 branches missed.">			if (type.equals(&quot;null&quot;))</span>
+<span class="nc" id="L263">				return;</span>
+	
+<span class="fc bfc" id="L265" title="All 4 branches covered.">			if (isFromJava(type) || binding.isPrimitive())</span>
+<span class="fc" id="L266">				return;</span>
+	
+	
+<span class="fc" id="L269">			String cleanedType = cleanClassName(type);</span>
+<span class="fc" id="L270">			addToSet(cleanedType);</span>
+		}
+<span class="fc" id="L272">	}</span>
+	
+	private void coupleTo(IMethodBinding binding) {
+		
+<span class="fc bfc" id="L276" title="All 2 branches covered.">		if(binding == null)</span>
+<span class="fc" id="L277">			return;</span>
+		
+<span class="fc" id="L279">		String methodNameInvoked = JDTUtils.getQualifiedMethodFullName(binding);</span>
+		
+<span class="pc bpc" id="L281" title="1 of 2 branches missed.">		if (methodNameInvoked.equals(&quot;null&quot;))</span>
+<span class="nc" id="L282">			return;</span>
+
+<span class="fc bfc" id="L284" title="All 2 branches covered.">		if (isFromJava(methodNameInvoked))</span>
+<span class="fc" id="L285">			return;</span>
+		
+<span class="fc" id="L287">		addToSet(methodNameInvoked);</span>
+		
+<span class="fc" id="L289">	}</span>
+
+	private String cleanClassName(String type) {
+		// remove possible array(s) in the class name
+<span class="fc" id="L293">		String cleanedType = type.replace(&quot;[]&quot;, &quot;&quot;).replace(&quot;\\$&quot;, &quot;.&quot;);</span>
+
+		// remove generics declaration, let's stype with the type
+<span class="fc bfc" id="L296" title="All 2 branches covered.">		if(cleanedType.contains(&quot;&lt;&quot;))</span>
+<span class="fc" id="L297">			cleanedType = cleanedType.substring(0, cleanedType.indexOf(&quot;&lt;&quot;));</span>
+
+<span class="fc" id="L299">		return cleanedType;</span>
+	}
+
+	private boolean isFromJava(String type) {
+<span class="fc bfc" id="L303" title="All 4 branches covered.">		return type.startsWith(&quot;java.&quot;) || type.startsWith(&quot;javax.&quot;);</span>
+	}
+
+	private void addToSet(String name) {
+<span class="fc bfc" id="L307" title="All 2 branches covered.">		if(className != null){</span>
+<span class="fc" id="L308">			this.extras.addToSetClassIn(name, this.className);</span>
+<span class="fc" id="L309">			this.extras.addToSetClassOut(this.className, name);</span>
+		} else {
+<span class="fc" id="L311">			this.extras.addToSetMethodIn(name, this.methodName);</span>
+<span class="fc" id="L312">			this.extras.addToSetMethodOut(this.methodName, name);</span>
+		}
+<span class="fc" id="L314">	}</span>
+
+	@Override
+	public void setResult(CKClassResult result) {
+		
+<span class="fc" id="L319">	}</span>
+
+	@Override
+	public void setResult(CKMethodResult result) {
+		
+<span class="fc" id="L324">	}</span>
+	
+	@Override
+	public void setClassName(String className) {
+<span class="fc" id="L328">		this.className = className;</span>
+<span class="fc" id="L329">	}</span>
+	
+	@Override
+	public void setMethodName(String methodName) {
+<span class="fc" id="L333">		this.methodName = methodName;</span>
+<span class="fc" id="L334">	}</span>
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

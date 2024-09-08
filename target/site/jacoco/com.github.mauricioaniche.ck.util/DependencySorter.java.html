@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DependencySorter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CK calculator</a> &gt; <a href="index.source.html" class="el_package">com.github.mauricioaniche.ck.util</a> &gt; <span class="el_source">DependencySorter.java</span></div><h1>DependencySorter.java</h1><pre class="source lang-java linenums">package com.github.mauricioaniche.ck.util;
+
+import com.github.mauricioaniche.ck.metric.RunAfter;
+import org.apache.commons.lang3.tuple.Pair;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Stack;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+<span class="fc" id="L12">public class DependencySorter {</span>
+
+    public &lt;T&gt; List&lt;Class&lt;? extends T&gt;&gt; sort(List&lt;Class&lt;? extends T&gt;&gt; toSort) {
+        // the stack will contain the final list of vertexes
+<span class="fc" id="L16">        Stack&lt;Integer&gt; sortedStack = new Stack&lt;&gt;();</span>
+
+        // first step, we build a simple adjacent matrix
+<span class="fc" id="L19">        boolean[][] adjacencyMatrix = deriveAdjacencyMatrix(toSort);</span>
+
+        // the array will keep a list of nodes we visited before
+        // all marked as 'not visited' at the beginning
+<span class="fc" id="L23">        boolean visited[] = new boolean[toSort.size()];</span>
+
+        // visit all of them, in order
+<span class="fc bfc" id="L26" title="All 2 branches covered.">        for (int i = 0; i &lt; toSort.size(); i++)</span>
+<span class="fc bfc" id="L27" title="All 2 branches covered.">            if (visited[i] == false)</span>
+<span class="fc" id="L28">                topologicalSort(i, visited, adjacencyMatrix, sortedStack);</span>
+
+<span class="fc" id="L30">        return sortedStack.stream().map(i -&gt; toSort.get(i)).collect(Collectors.toList());</span>
+    }
+
+    private void topologicalSort(int v, boolean[] visited, boolean[][] adjacencyMatrix, Stack&lt;Integer&gt; sortedStack) {
+        // Mark the current node as visited
+<span class="fc" id="L35">        visited[v] = true;</span>
+
+        // Visit the adjacent nodes before adding this one in the solution
+<span class="fc" id="L38">        IntStream.range(0, adjacencyMatrix[v].length)</span>
+<span class="fc" id="L39">                .filter(i -&gt; adjacencyMatrix[v][i])</span>
+<span class="fc bfc" id="L40" title="All 2 branches covered.">                .filter(i -&gt; !visited[i])</span>
+<span class="fc" id="L41">                .forEach(i -&gt; topologicalSort(i, visited, adjacencyMatrix, sortedStack));</span>
+
+        // After visiting all adjacent nodes (and their adjacents, ...) first,
+        // we can add this one to the solution
+<span class="fc" id="L45">        sortedStack.push(v);</span>
+<span class="fc" id="L46">    }</span>
+
+    private &lt;T&gt; boolean[][] deriveAdjacencyMatrix(List&lt;Class&lt;? extends T&gt;&gt; toSort) {
+
+<span class="fc" id="L50">        final boolean[][] adjacencyMatrix = new boolean[toSort.size()][toSort.size()];</span>
+
+        // for each element in the list
+<span class="fc" id="L53">        IntStream.range(0, toSort.size())</span>
+                // remove the ones that do not contain @RunAfter
+<span class="fc bfc" id="L55" title="All 2 branches covered.">                .filter(i -&gt; toSort.get(i).getAnnotation(RunAfter.class) != null)</span>
+                // get the list of elements they depend upon, together with the index of the current element
+<span class="fc" id="L57">                .mapToObj(i -&gt; Pair.of(i,toSort.get(i).getAnnotation(RunAfter.class).metrics()))</span>
+                // for each element, for each dependency, mark it as true in the adjacent list
+                // we ignore dependencies that are not in the list (a list might contain method-level
+                // class-level dependencies, so we should ignore the ones we are not dealing with here)
+<span class="fc" id="L61">                .flatMap(p -&gt; Arrays.stream(p.getValue())</span>
+<span class="fc" id="L62">                        .map(d -&gt; Pair.of(p.getKey(),toSort.indexOf(d)))</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">                        .filter(d -&gt; d.getValue() != -1))</span>
+<span class="fc" id="L64">                .forEach(p -&gt; adjacencyMatrix[p.getKey()][p.getValue()] = true);</span>
+
+<span class="fc" id="L66">        return adjacencyMatrix;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

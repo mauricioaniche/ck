@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NumberOfMethods.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CK calculator</a> &gt; <a href="index.source.html" class="el_package">com.github.mauricioaniche.ck.metric</a> &gt; <span class="el_source">NumberOfMethods.java</span></div><h1>NumberOfMethods.java</h1><pre class="source lang-java linenums">package com.github.mauricioaniche.ck.metric;
+
+import com.github.mauricioaniche.ck.CKClassResult;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jdt.core.dom.Modifier;
+
+<span class="fc" id="L7">public class NumberOfMethods implements CKASTVisitor, ClassLevelMetric {</span>
+
+	private int methods;
+	private int staticMethods;
+	private int publicMethods;
+	private int privateMethods;
+	private int protectedMethods;
+	private int defaultMethods;
+	private int abstractMethods;
+	private int finalMethods;
+	private int synchronizedMethods;
+
+	@Override
+	public void visit(MethodDeclaration node) {
+<span class="fc" id="L21">		methods++;</span>
+
+		// visibility
+<span class="fc" id="L24">		boolean isPublic = Modifier.isPublic(node.getModifiers());</span>
+<span class="fc" id="L25">		boolean isPrivate = Modifier.isPrivate(node.getModifiers());</span>
+<span class="fc" id="L26">		boolean isProtected = Modifier.isProtected(node.getModifiers());</span>
+
+<span class="fc bfc" id="L28" title="All 2 branches covered.">		if(isPublic)</span>
+<span class="fc" id="L29">			publicMethods++;</span>
+<span class="fc bfc" id="L30" title="All 2 branches covered.">		else if(isPrivate)</span>
+<span class="fc" id="L31">			privateMethods++;</span>
+<span class="fc bfc" id="L32" title="All 2 branches covered.">		else if(isProtected)</span>
+<span class="fc" id="L33">			protectedMethods++;</span>
+		else
+<span class="fc" id="L35">			defaultMethods++;</span>
+
+		// other characteristics
+
+<span class="fc" id="L39">		boolean isFinal = Modifier.isFinal(node.getModifiers());</span>
+<span class="fc" id="L40">		boolean isSynchronized = Modifier.isSynchronized(node.getModifiers());</span>
+<span class="fc" id="L41">		boolean isAbstract = Modifier.isAbstract(node.getModifiers());</span>
+<span class="fc" id="L42">		boolean isStatic = Modifier.isStatic(node.getModifiers());</span>
+
+<span class="fc bfc" id="L44" title="All 2 branches covered.">		if(isStatic)</span>
+<span class="fc" id="L45">			staticMethods++;</span>
+
+<span class="fc bfc" id="L47" title="All 2 branches covered.">		if(isAbstract)</span>
+<span class="fc" id="L48">			abstractMethods++;</span>
+
+<span class="fc bfc" id="L50" title="All 2 branches covered.">		if(isFinal)</span>
+<span class="fc" id="L51">			finalMethods++;</span>
+
+<span class="fc bfc" id="L53" title="All 2 branches covered.">		if(isSynchronized)</span>
+<span class="fc" id="L54">			synchronizedMethods++;</span>
+<span class="fc" id="L55">	}</span>
+
+	@Override
+	public void setResult(CKClassResult result) {
+<span class="fc" id="L59">		result.setNumberOfMethods(methods);</span>
+<span class="fc" id="L60">		result.setNumberOfStaticMethods(staticMethods);</span>
+<span class="fc" id="L61">		result.setNumberOfPublicMethods(publicMethods);</span>
+<span class="fc" id="L62">		result.setNumberOfPrivateMethods(privateMethods);</span>
+<span class="fc" id="L63">		result.setNumberOfProtectedMethods(protectedMethods);</span>
+<span class="fc" id="L64">		result.setNumberOfDefaultMethods(defaultMethods);</span>
+<span class="fc" id="L65">		result.setNumberOfAbstractMethods(abstractMethods);</span>
+<span class="fc" id="L66">		result.setNumberOfFinalMethods(finalMethods);</span>
+<span class="fc" id="L67">		result.setNumberOfSynchronizedMethods(synchronizedMethods);</span>
+
+<span class="fc" id="L69">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

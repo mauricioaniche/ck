@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WordCounter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CK calculator</a> &gt; <a href="index.source.html" class="el_package">com.github.mauricioaniche.ck.util</a> &gt; <span class="el_source">WordCounter.java</span></div><h1>WordCounter.java</h1><pre class="source lang-java linenums"><span class="fc" id="L1">package com.github.mauricioaniche.ck.util;</span>
+
+import java.util.*;
+import java.util.stream.Collectors;
+
+<span class="nc" id="L6">public class WordCounter {</span>
+
+	private static Set&lt;String&gt; javaKeywords;
+
+	static {
+<span class="fc" id="L11">		javaKeywords = new HashSet&lt;String&gt;(){{</span>
+<span class="fc" id="L12">			add(&quot;abstract&quot;);</span>
+<span class="fc" id="L13">			add(&quot;continue&quot;);</span>
+<span class="fc" id="L14">			add(&quot;for&quot;);</span>
+<span class="fc" id="L15">			add(&quot;new&quot;);</span>
+<span class="fc" id="L16">			add(&quot;switch&quot;);</span>
+<span class="fc" id="L17">			add(&quot;assert***&quot;);</span>
+<span class="fc" id="L18">			add(&quot;default&quot;);</span>
+<span class="fc" id="L19">			add(&quot;goto*&quot;);</span>
+<span class="fc" id="L20">			add(&quot;package&quot;);</span>
+<span class="fc" id="L21">			add(&quot;synchronized&quot;);</span>
+<span class="fc" id="L22">			add(&quot;boolean&quot;);</span>
+<span class="fc" id="L23">			add(&quot;do&quot;);</span>
+<span class="fc" id="L24">			add(&quot;if&quot;);</span>
+<span class="fc" id="L25">			add(&quot;private&quot;);</span>
+<span class="fc" id="L26">			add(&quot;this&quot;);</span>
+<span class="fc" id="L27">			add(&quot;break&quot;);</span>
+<span class="fc" id="L28">			add(&quot;double&quot;);</span>
+<span class="fc" id="L29">			add(&quot;implements&quot;);</span>
+<span class="fc" id="L30">			add(&quot;protected&quot;);</span>
+<span class="fc" id="L31">			add(&quot;throw&quot;);</span>
+<span class="fc" id="L32">			add(&quot;byte&quot;);</span>
+<span class="fc" id="L33">			add(&quot;else&quot;);</span>
+<span class="fc" id="L34">			add(&quot;import&quot;);</span>
+<span class="fc" id="L35">			add(&quot;public&quot;);</span>
+<span class="fc" id="L36">			add(&quot;throws&quot;);</span>
+<span class="fc" id="L37">			add(&quot;case&quot;);</span>
+<span class="fc" id="L38">			add(&quot;enum****&quot;);</span>
+<span class="fc" id="L39">			add(&quot;instanceof&quot;);</span>
+<span class="fc" id="L40">			add(&quot;return&quot;);</span>
+<span class="fc" id="L41">			add(&quot;transient&quot;);</span>
+<span class="fc" id="L42">			add(&quot;catch&quot;);</span>
+<span class="fc" id="L43">			add(&quot;extends&quot;);</span>
+<span class="fc" id="L44">			add(&quot;int&quot;);</span>
+<span class="fc" id="L45">			add(&quot;short&quot;);</span>
+<span class="fc" id="L46">			add(&quot;try&quot;);</span>
+<span class="fc" id="L47">			add(&quot;char&quot;);</span>
+<span class="fc" id="L48">			add(&quot;final&quot;);</span>
+<span class="fc" id="L49">			add(&quot;interface&quot;);</span>
+<span class="fc" id="L50">			add(&quot;static&quot;);</span>
+<span class="fc" id="L51">			add(&quot;void&quot;);</span>
+<span class="fc" id="L52">			add(&quot;class&quot;);</span>
+<span class="fc" id="L53">			add(&quot;finally&quot;);</span>
+<span class="fc" id="L54">			add(&quot;long&quot;);</span>
+<span class="fc" id="L55">			add(&quot;strictfp**&quot;);</span>
+<span class="fc" id="L56">			add(&quot;volatile&quot;);</span>
+<span class="fc" id="L57">			add(&quot;const*&quot;);</span>
+<span class="fc" id="L58">			add(&quot;float&quot;);</span>
+<span class="fc" id="L59">			add(&quot;native&quot;);</span>
+<span class="fc" id="L60">			add(&quot;super&quot;);</span>
+<span class="fc" id="L61">			add(&quot;while&quot;);</span>
+
+<span class="fc" id="L63">			add(&quot;String&quot;);</span>
+		}};
+<span class="fc" id="L65">	}</span>
+
+
+	public static Set&lt;String&gt; wordsIn(String fullString) {
+<span class="fc" id="L69">		String[] cleanString = fullString</span>
+<span class="fc" id="L70">				.replace(&quot;\t&quot;, &quot; &quot;)</span>
+<span class="fc" id="L71">				.replace(&quot;\n&quot;, &quot; &quot;)</span>
+<span class="fc" id="L72">				.replace(&quot;\r&quot;, &quot; &quot;)</span>
+<span class="fc" id="L73">				.replace(&quot;(&quot;, &quot; &quot;)</span>
+<span class="fc" id="L74">				.replace(&quot;)&quot;, &quot; &quot;)</span>
+<span class="fc" id="L75">				.replace(&quot;{&quot;, &quot; &quot;)</span>
+<span class="fc" id="L76">				.replace(&quot;}&quot;, &quot; &quot;)</span>
+<span class="fc" id="L77">				.replace(&quot;=&quot;, &quot; &quot;)</span>
+<span class="fc" id="L78">				.replace(&quot;&gt;&quot;, &quot; &quot;)</span>
+<span class="fc" id="L79">				.replace(&quot;&gt;&quot;, &quot; &quot;)</span>
+<span class="fc" id="L80">				.replace(&quot;&amp;&quot;, &quot; &quot;)</span>
+<span class="fc" id="L81">				.replace(&quot;|&quot;, &quot; &quot;)</span>
+<span class="fc" id="L82">				.replace(&quot;!&quot;, &quot; &quot;)</span>
+<span class="fc" id="L83">				.replace(&quot;+&quot;, &quot; &quot;)</span>
+<span class="fc" id="L84">				.replace(&quot;*&quot;, &quot; &quot;)</span>
+<span class="fc" id="L85">				.replace(&quot;/&quot;, &quot; &quot;)</span>
+<span class="fc" id="L86">				.replace(&quot;-&quot;, &quot; &quot;)</span>
+<span class="fc" id="L87">				.replace(&quot;;&quot;, &quot; &quot;)</span>
+<span class="fc" id="L88">				.split(&quot; &quot;);</span>
+
+<span class="fc bfc" id="L90" title="All 2 branches covered.">		List&lt;String&gt; strings = Arrays.stream(cleanString).filter(word -&gt; !javaKeywords.contains(word))</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">				.filter(word -&gt; !word.isEmpty())</span>
+<span class="fc" id="L92">				.filter(word -&gt; word.matches(&quot;\\w*&quot;))</span>
+<span class="fc bfc" id="L93" title="All 2 branches covered.">				.filter(word -&gt; !word.matches(&quot;[0-9]*&quot;))</span>
+<span class="fc" id="L94">				.collect(Collectors.toList());</span>
+
+<span class="fc" id="L96">		HashSet&lt;String&gt; words = new HashSet&lt;&gt;();</span>
+<span class="fc bfc" id="L97" title="All 2 branches covered.">		for(String string : strings) {</span>
+<span class="fc" id="L98">			words.addAll(breakString(string));</span>
+<span class="fc" id="L99">		}</span>
+
+<span class="fc" id="L101">		return words;</span>
+
+	}
+
+	private static Collection&lt;? extends String&gt; breakString(String string) {
+
+<span class="fc bfc" id="L107" title="All 2 branches covered.">		if(string.length() == 1)</span>
+<span class="fc" id="L108">			return Arrays.asList(string);</span>
+
+<span class="fc" id="L110">		int current = 0;</span>
+<span class="fc" id="L111">		List&lt;String&gt; words = new ArrayList&lt;&gt;();</span>
+
+<span class="fc bfc" id="L113" title="All 2 branches covered.">		for(int i = 1; i &lt; string.length(); i++) {</span>
+<span class="fc bfc" id="L114" title="All 4 branches covered.">			if(string.charAt(i) == '_' || Character.isUpperCase(string.charAt(i))) {</span>
+<span class="fc" id="L115">				String wordToAdd = string.substring(current, i);</span>
+<span class="fc" id="L116">				words.add(wordToAdd);</span>
+<span class="fc bfc" id="L117" title="All 2 branches covered.">				current = i + (string.charAt(i) == '_' ? 1 : 0);</span>
+			}
+		}
+<span class="fc" id="L120">		String remainingWord = string.substring(current);</span>
+<span class="fc" id="L121">		words.add(remainingWord);</span>
+<span class="fc" id="L122">		return words;</span>
+	}
+
+
+	public static String removeSpacesAndIdentation(String toString) {
+<span class="fc" id="L127">		return toString</span>
+<span class="fc" id="L128">				.trim()</span>
+<span class="fc" id="L129">				.replace(&quot;\r&quot;, &quot; &quot;)</span>
+<span class="fc" id="L130">				.replace(&quot;\t&quot;, &quot; &quot;)</span>
+<span class="fc" id="L131">				.replace(&quot;\n&quot;, &quot; &quot;)</span>
+<span class="fc" id="L132">				.replaceAll(&quot; +&quot;, &quot; &quot;);</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

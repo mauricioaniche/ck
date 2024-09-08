@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MetricsExecutor.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CK calculator</a> &gt; <a href="index.source.html" class="el_package">com.github.mauricioaniche.ck</a> &gt; <span class="el_source">MetricsExecutor.java</span></div><h1>MetricsExecutor.java</h1><pre class="source lang-java linenums">package com.github.mauricioaniche.ck;
+
+import com.github.mauricioaniche.ck.metric.ClassLevelMetric;
+import com.github.mauricioaniche.ck.metric.MethodLevelMetric;
+import org.apache.log4j.Logger;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.FileASTRequestor;
+
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.Callable;
+
+public class MetricsExecutor extends FileASTRequestor {
+
+	private Callable&lt;List&lt;ClassLevelMetric&gt;&gt; classLevelMetrics;
+	private Callable&lt;List&lt;MethodLevelMetric&gt;&gt; methodLevelMetrics;
+	private CKNotifier notifier;
+
+<span class="fc" id="L19">	private static Logger log = Logger.getLogger(MetricsExecutor.class);</span>
+	
+<span class="fc" id="L21">	public MetricsExecutor(Callable&lt;List&lt;ClassLevelMetric&gt;&gt; classLevelMetrics, Callable&lt;List&lt;MethodLevelMetric&gt;&gt; methodLevelMetrics, CKNotifier notifier) {</span>
+<span class="fc" id="L22">		this.classLevelMetrics = classLevelMetrics;</span>
+<span class="fc" id="L23">		this.methodLevelMetrics = methodLevelMetrics;</span>
+<span class="fc" id="L24">		this.notifier = notifier;</span>
+<span class="fc" id="L25">	}</span>
+
+
+	@Override
+	public void acceptAST(String sourceFilePath, 
+			CompilationUnit cu) {
+		
+		try {
+<span class="fc" id="L33">			log.info(&quot;Processing: &quot; + sourceFilePath);</span>
+<span class="fc" id="L34">			CKVisitor visitor = new CKVisitor(sourceFilePath, cu, classLevelMetrics, methodLevelMetrics);</span>
+
+<span class="fc" id="L36">			cu.accept(visitor);</span>
+<span class="fc" id="L37">			Set&lt;CKClassResult&gt; collectedClasses = visitor.getCollectedClasses();</span>
+
+<span class="fc bfc" id="L39" title="All 2 branches covered.">			for (CKClassResult collectedClass : collectedClasses) {</span>
+<span class="fc" id="L40">				log.info(collectedClass);</span>
+<span class="fc" id="L41">				notifier.notify(collectedClass);</span>
+<span class="fc" id="L42">			}</span>
+<span class="nc" id="L43">		} catch(Exception e) {</span>
+<span class="nc" id="L44">			log.error(&quot;error in &quot; + sourceFilePath, e);</span>
+<span class="nc" id="L45">			notifier.notifyError(sourceFilePath, e);</span>
+<span class="fc" id="L46">		}</span>
+<span class="fc" id="L47">	}</span>
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

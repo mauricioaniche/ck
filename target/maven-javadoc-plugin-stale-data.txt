@@ -1,0 +1,20 @@
+cmd.exe
+/X
+/C
+"D:\jdk\jdk-22.0.1\bin\javadoc.exe @options @packages"
+D:\Pedro\puc\6Semestre\Laboratorio\Um-estudo-das-caracteristicas-de-qualidade-de-sistemas-java\ck\target\apidocs\allclasses-index.html = 1725808251077
+D:\Pedro\puc\6Semestre\Laboratorio\Um-estudo-das-caracteristicas-de-qualidade-de-sistemas-java\ck\target\apidocs\allpackages-index.html = 1725808251080
+D:\Pedro\puc\6Semestre\Laboratorio\Um-estudo-das-caracteristicas-de-qualidade-de-sistemas-java\ck\target\apidocs\element-list = 1725808250872
+D:\Pedro\puc\6Semestre\Laboratorio\Um-estudo-das-caracteristicas-de-qualidade-de-sistemas-java\ck\target\apidocs\help-doc.html = 1725808251134
+D:\Pedro\puc\6Semestre\Laboratorio\Um-estudo-das-caracteristicas-de-qualidade-de-sistemas-java\ck\target\apidocs\index-all.html = 1725808251121
+D:\Pedro\puc\6Semestre\Laboratorio\Um-estudo-das-caracteristicas-de-qualidade-de-sistemas-java\ck\target\apidocs\index.html = 1725808251046
+D:\Pedro\puc\6Semestre\Laboratorio\Um-estudo-das-caracteristicas-de-qualidade-de-sistemas-java\ck\target\apidocs\member-search-index.js = 1725808251088
+D:\Pedro\puc\6Semestre\Laboratorio\Um-estudo-das-caracteristicas-de-qualidade-de-sistemas-java\ck\target\apidocs\module-search-index.js = 1725808251082
+D:\Pedro\puc\6Semestre\Laboratorio\Um-estudo-das-caracteristicas-de-qualidade-de-sistemas-java\ck\target\apidocs\options = 1725808248240
+D:\Pedro\puc\6Semestre\Laboratorio\Um-estudo-das-caracteristicas-de-qualidade-de-sistemas-java\ck\target\apidocs\overview-summary.html = 1725808251126
+D:\Pedro\puc\6Semestre\Laboratorio\Um-estudo-das-caracteristicas-de-qualidade-de-sistemas-java\ck\target\apidocs\overview-tree.html = 1725808251042
+D:\Pedro\puc\6Semestre\Laboratorio\Um-estudo-das-caracteristicas-de-qualidade-de-sistemas-java\ck\target\apidocs\package-search-index.js = 1725808251083
+D:\Pedro\puc\6Semestre\Laboratorio\Um-estudo-das-caracteristicas-de-qualidade-de-sistemas-java\ck\target\apidocs\packages = 1725808248241
+D:\Pedro\puc\6Semestre\Laboratorio\Um-estudo-das-caracteristicas-de-qualidade-de-sistemas-java\ck\target\apidocs\search.html = 1725808251123
+D:\Pedro\puc\6Semestre\Laboratorio\Um-estudo-das-caracteristicas-de-qualidade-de-sistemas-java\ck\target\apidocs\tag-search-index.js = 1725808251089
+D:\Pedro\puc\6Semestre\Laboratorio\Um-estudo-das-caracteristicas-de-qualidade-de-sistemas-java\ck\target\apidocs\type-search-index.js = 1725808251085

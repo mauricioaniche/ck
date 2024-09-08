@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NOSI.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CK calculator</a> &gt; <a href="index.source.html" class="el_package">com.github.mauricioaniche.ck.metric</a> &gt; <span class="el_source">NOSI.java</span></div><h1>NOSI.java</h1><pre class="source lang-java linenums">package com.github.mauricioaniche.ck.metric;
+
+import com.github.mauricioaniche.ck.CKClassResult;
+import org.eclipse.jdt.core.dom.IMethodBinding;
+import org.eclipse.jdt.core.dom.MethodInvocation;
+import org.eclipse.jdt.core.dom.Modifier;
+
+<span class="fc" id="L8">public class NOSI implements CKASTVisitor, ClassLevelMetric {</span>
+
+<span class="fc" id="L10">	private int count = 0;</span>
+
+	public void visit(MethodInvocation node) {
+
+<span class="fc" id="L14">		IMethodBinding binding = node.resolveMethodBinding();</span>
+<span class="fc bfc" id="L15" title="All 4 branches covered.">		if(binding!=null &amp;&amp; Modifier.isStatic(binding.getModifiers()))</span>
+<span class="fc" id="L16">				count++;</span>
+<span class="fc" id="L17">	}</span>
+
+	@Override
+	public void setResult(CKClassResult result) {
+<span class="fc" id="L21">		result.setNosi(count);</span>
+<span class="fc" id="L22">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,1299 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CKVisitor.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CK calculator</a> &gt; <a href="index.source.html" class="el_package">com.github.mauricioaniche.ck</a> &gt; <span class="el_source">CKVisitor.java</span></div><h1>CKVisitor.java</h1><pre class="source lang-java linenums">package com.github.mauricioaniche.ck;
+
+import com.github.mauricioaniche.ck.metric.CKASTVisitor;
+import com.github.mauricioaniche.ck.metric.ClassLevelMetric;
+import com.github.mauricioaniche.ck.metric.MethodLevelMetric;
+import com.github.mauricioaniche.ck.util.JDTUtils;
+import org.eclipse.jdt.core.dom.*;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.Stack;
+import java.util.concurrent.Callable;
+
+import static com.github.mauricioaniche.ck.util.LOCCalculator.calculate;
+
+public class CKVisitor extends ASTVisitor {
+
+	private String sourceFilePath;
+	private int anonymousNumber;
+	private int initializerNumber;
+
+<span class="fc" id="L23">	class MethodInTheStack {</span>
+		CKMethodResult result;
+		List&lt;MethodLevelMetric&gt; methodLevelMetrics;
+	}
+
+	class ClassInTheStack {
+		CKClassResult result;
+		List&lt;ClassLevelMetric&gt; classLevelMetrics;
+		Stack&lt;MethodInTheStack&gt; methods;
+
+
+<span class="fc" id="L34">		ClassInTheStack() {</span>
+<span class="fc" id="L35">			methods = new Stack&lt;&gt;();</span>
+<span class="fc" id="L36">		}</span>
+	}
+	private Stack&lt;ClassInTheStack&gt; classes;
+
+	private Set&lt;CKClassResult&gt; collectedClasses;
+
+	private CompilationUnit cu;
+	private Callable&lt;List&lt;ClassLevelMetric&gt;&gt; classLevelMetrics;
+	private Callable&lt;List&lt;MethodLevelMetric&gt;&gt; methodLevelMetrics;
+
+<span class="fc" id="L46">	public CKVisitor(String sourceFilePath, CompilationUnit cu, Callable&lt;List&lt;ClassLevelMetric&gt;&gt; classLevelMetrics, Callable&lt;List&lt;MethodLevelMetric&gt;&gt; methodLevelMetrics) {</span>
+<span class="fc" id="L47">		this.sourceFilePath = sourceFilePath;</span>
+<span class="fc" id="L48">		this.cu = cu;</span>
+<span class="fc" id="L49">		this.classLevelMetrics = classLevelMetrics;</span>
+<span class="fc" id="L50">		this.methodLevelMetrics = methodLevelMetrics;</span>
+<span class="fc" id="L51">		this.classes = new Stack&lt;&gt;();</span>
+<span class="fc" id="L52">		this.collectedClasses = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L53">	}</span>
+
+	@Override
+	public boolean visit(TypeDeclaration node) {
+<span class="fc" id="L57">		ITypeBinding binding = node.resolveBinding();</span>
+
+		// build a CKClassResult based on the current type
+		// declaration we are visiting
+<span class="pc bpc" id="L61" title="1 of 2 branches missed.">		String className = binding != null ? binding.getBinaryName() : node.getName().getFullyQualifiedName();</span>
+<span class="fc" id="L62">		String type = getTypeOfTheUnit(node);</span>
+<span class="fc" id="L63">		int modifiers = node.getModifiers();</span>
+<span class="fc" id="L64">		CKClassResult currentClass = new CKClassResult(sourceFilePath, className, type, modifiers);</span>
+<span class="fc" id="L65">		currentClass.setLoc(calculate(node.toString()));</span>
+		
+		// there might be metrics that use it
+		// (even before a class is declared)
+<span class="fc bfc" id="L69" title="All 2 branches covered.">		if(!classes.isEmpty()) {			</span>
+<span class="fc" id="L70">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L71" title="All 2 branches covered.">			if (!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L72">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+				
+		}
+
+		// create a set of visitors, just for the current class
+<span class="fc" id="L77">		List&lt;ClassLevelMetric&gt; classLevelMetrics = instantiateClassLevelMetricVisitors(className);</span>
+
+		// store everything in a 'class in the stack' data structure
+<span class="fc" id="L80">		ClassInTheStack classInTheStack = new ClassInTheStack();</span>
+<span class="fc" id="L81">		classInTheStack.result = currentClass;</span>
+<span class="fc" id="L82">		classInTheStack.classLevelMetrics = classLevelMetrics;</span>
+
+		// push it to the stack, so we know the current class we are visiting
+<span class="fc" id="L85">		classes.push(classInTheStack);</span>
+
+		// there might be class level metrics that use the TypeDeclaration
+		// so, let's run them
+<span class="fc" id="L89">		classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+
+<span class="fc" id="L91">		return true;</span>
+	}
+
+
+	@Override
+	public void endVisit(TypeDeclaration node) {
+
+		// let's first visit any metrics that might make use of this endVisit
+<span class="fc" id="L99">		classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.endVisit(node));</span>
+
+<span class="fc" id="L101">		ClassInTheStack completedClass = classes.pop();</span>
+
+		// persist the results of the class level metrics in the result
+<span class="fc" id="L104">		completedClass.classLevelMetrics.forEach(m -&gt; m.setResult(completedClass.result));</span>
+
+		// we are done processing this class, so now let's
+		// store it in the collected classes set
+<span class="fc" id="L108">		collectedClasses.add(completedClass.result);</span>
+<span class="fc" id="L109">	}</span>
+
+	public boolean visit(MethodDeclaration node) {
+
+<span class="fc" id="L113">		IMethodBinding binding = node.resolveBinding();</span>
+<span class="fc" id="L114">		String currentMethodName = JDTUtils.getMethodFullName(node);</span>
+<span class="fc" id="L115">		String currentQualifiedMethodName = JDTUtils.getQualifiedMethodFullName(node);</span>
+<span class="fc" id="L116">		boolean isConstructor = node.isConstructor();</span>
+		
+<span class="fc bfc" id="L118" title="All 2 branches covered.">		String className = ((currentQualifiedMethodName.lastIndexOf(currentMethodName) - 1) &gt; 0) ? currentQualifiedMethodName.substring(0, (currentQualifiedMethodName.lastIndexOf(currentMethodName) - 1)) : &quot;&quot;;</span>
+
+<span class="fc" id="L120">		CKMethodResult currentMethod = new CKMethodResult(currentMethodName, currentQualifiedMethodName, isConstructor, node.getModifiers());</span>
+<span class="fc" id="L121">		currentMethod.setLoc(calculate(node.toString()));</span>
+<span class="fc" id="L122">		currentMethod.setStartLine(JDTUtils.getStartLine(cu, node));</span>
+
+		// let's instantiate method level visitors for this current method
+<span class="fc" id="L125">		List&lt;MethodLevelMetric&gt; methodLevelMetrics = instantiateMethodLevelMetricVisitors(currentQualifiedMethodName);</span>
+
+		// we add it to the current class we are visiting
+<span class="fc" id="L128">		MethodInTheStack methodInTheStack = new MethodInTheStack();</span>
+<span class="fc" id="L129">		methodInTheStack.result = currentMethod;</span>
+<span class="fc" id="L130">		methodInTheStack.methodLevelMetrics = methodLevelMetrics;</span>
+<span class="fc" id="L131">		classes.peek().methods.push(methodInTheStack);</span>
+
+		// and there might be metrics that also use the methoddeclaration node.
+		// so, let's call them
+<span class="fc" id="L135">		classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="pc bpc" id="L136" title="1 of 2 branches missed.">		if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L137">			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+
+<span class="fc" id="L139">		return true;</span>
+	}
+
+	@Override
+	public void endVisit(MethodDeclaration node) {
+
+		// let's first invoke the metrics, because they might use this node
+<span class="fc" id="L146">		classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.endVisit(node));</span>
+<span class="fc" id="L147">		classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.endVisit(node));</span>
+
+		// remove the method from the stack
+<span class="fc" id="L150">		MethodInTheStack completedMethod = classes.peek().methods.pop();</span>
+
+		// persist the data of the visitors in the CKMethodResult
+<span class="fc" id="L153">		completedMethod.methodLevelMetrics.forEach(m -&gt; m.setResult(completedMethod.result));</span>
+
+		// store its final version in the current class
+<span class="fc" id="L156">		classes.peek().result.addMethod(completedMethod.result);</span>
+<span class="fc" id="L157">	}</span>
+
+
+	public boolean visit(AnonymousClassDeclaration node) {
+<span class="fc" id="L161">		java.util.List&lt;String&gt; stringList = new java.util.ArrayList&lt;&gt;();</span>
+<span class="pc" id="L162">		stringList = stringList.stream().map(string -&gt; string.toString()).collect(java.util.stream.Collectors.toList());</span>
+
+		// there might be metrics that use it
+		// (even before an anonymous class is created)
+<span class="fc" id="L166">		classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L167" title="All 2 branches covered.">		if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L168">			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+
+		// we give the anonymous class a 'class$AnonymousN' name
+<span class="fc" id="L171">		String anonClassName = classes.peek().result.getClassName() + &quot;$Anonymous&quot; + ++anonymousNumber;</span>
+<span class="fc" id="L172">		CKClassResult currentClass = new CKClassResult(sourceFilePath, anonClassName, &quot;anonymous&quot;, -1);</span>
+<span class="fc" id="L173">		currentClass.setLoc(calculate(node.toString()));</span>
+
+		// create a set of visitors, just for the current class
+<span class="fc" id="L176">		List&lt;ClassLevelMetric&gt; classLevelMetrics = instantiateClassLevelMetricVisitors(anonClassName);</span>
+
+		// store everything in a 'class in the stack' data structure
+<span class="fc" id="L179">		ClassInTheStack classInTheStack = new ClassInTheStack();</span>
+<span class="fc" id="L180">		classInTheStack.result = currentClass;</span>
+<span class="fc" id="L181">		classInTheStack.classLevelMetrics = classLevelMetrics;</span>
+
+		// push it to the stack, so we know the current class we are visiting
+<span class="fc" id="L184">		classes.push(classInTheStack);</span>
+
+		// and there might be metrics that also use the methoddeclaration node.
+		// so, let's call them
+<span class="fc" id="L188">		classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="pc bpc" id="L189" title="1 of 2 branches missed.">		if(!classes.peek().methods.isEmpty())</span>
+<span class="nc" id="L190">			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+
+<span class="fc" id="L192">		return true;</span>
+	}
+
+	public void endVisit(AnonymousClassDeclaration node) {
+
+<span class="fc" id="L197">		classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.endVisit(node));</span>
+
+<span class="fc" id="L199">		ClassInTheStack completedClass = classes.pop();</span>
+
+		// persist the results of the class level metrics in the result
+<span class="fc" id="L202">		completedClass.classLevelMetrics.forEach(m -&gt; m.setResult(completedClass.result));</span>
+
+		// we are done processing this class, so now let's
+		// store it in the collected classes set
+<span class="fc" id="L206">		collectedClasses.add(completedClass.result);</span>
+<span class="fc" id="L207">	}</span>
+
+	// static blocks
+	public boolean visit(Initializer node) {
+
+<span class="fc" id="L212">		String currentMethodName = &quot;(initializer &quot; + (++initializerNumber) + &quot;)&quot;;</span>
+
+<span class="fc" id="L214">		CKMethodResult currentMethod = new CKMethodResult(currentMethodName, currentMethodName, false, node.getModifiers());</span>
+<span class="fc" id="L215">		currentMethod.setLoc(calculate(node.toString()));</span>
+<span class="fc" id="L216">		currentMethod.setStartLine(JDTUtils.getStartLine(cu, node));</span>
+
+		// let's instantiate method level visitors for this current method
+<span class="fc" id="L219">		List&lt;MethodLevelMetric&gt; methodLevelMetrics = instantiateMethodLevelMetricVisitors(currentMethodName);</span>
+
+		// we add it to the current class we are visiting
+<span class="fc" id="L222">		MethodInTheStack methodInTheStack = new MethodInTheStack();</span>
+<span class="fc" id="L223">		methodInTheStack.result = currentMethod;</span>
+<span class="fc" id="L224">		methodInTheStack.methodLevelMetrics = methodLevelMetrics;</span>
+<span class="fc" id="L225">		classes.peek().methods.push(methodInTheStack);</span>
+
+		// and there might be metrics that also use the methoddeclaration node.
+		// so, let's call them
+<span class="fc" id="L229">		classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="pc bpc" id="L230" title="1 of 2 branches missed.">		if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L231">			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+
+<span class="fc" id="L233">		return true;</span>
+	}
+
+	@Override
+	public void endVisit(Initializer node) {
+
+		// let's first invoke the metrics, because they might use this node
+<span class="fc" id="L240">		classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.endVisit(node));</span>
+<span class="fc" id="L241">		classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.endVisit(node));</span>
+
+		// remove the method from the stack
+<span class="fc" id="L244">		MethodInTheStack completedMethod = classes.peek().methods.pop();</span>
+
+		// persist the data of the visitors in the CKMethodResult
+<span class="fc" id="L247">		completedMethod.methodLevelMetrics.forEach(m -&gt; m.setResult(completedMethod.result));</span>
+
+		// store its final version in the current class
+<span class="fc" id="L250">		classes.peek().result.addMethod(completedMethod.result);</span>
+<span class="fc" id="L251">	}</span>
+
+
+	public boolean visit(EnumDeclaration node) {
+<span class="fc" id="L255">		ITypeBinding binding = node.resolveBinding();</span>
+
+		// there might be metrics that use it
+		// (even before a enum is declared)
+<span class="fc bfc" id="L259" title="All 2 branches covered.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L260">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="pc bpc" id="L261" title="1 of 2 branches missed.">			if (!classes.peek().methods.isEmpty())</span>
+<span class="nc" id="L262">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+
+		// build a CKClassResult based on the current type
+		// declaration we are visiting
+<span class="pc bpc" id="L267" title="1 of 2 branches missed.">		String className = binding != null ? binding.getBinaryName() : node.getName().getFullyQualifiedName();</span>
+<span class="fc" id="L268">		String type = &quot;enum&quot;;</span>
+<span class="fc" id="L269">		int modifiers = node.getModifiers();</span>
+<span class="fc" id="L270">		CKClassResult currentClass = new CKClassResult(sourceFilePath, className, type, modifiers);</span>
+<span class="fc" id="L271">		currentClass.setLoc(calculate(node.toString()));</span>
+
+		// create a set of visitors, just for the current class
+<span class="fc" id="L274">		List&lt;ClassLevelMetric&gt; classLevelMetrics = instantiateClassLevelMetricVisitors(className);</span>
+
+		// store everything in a 'class in the stack' data structure
+<span class="fc" id="L277">		ClassInTheStack classInTheStack = new ClassInTheStack();</span>
+<span class="fc" id="L278">		classInTheStack.result = currentClass;</span>
+<span class="fc" id="L279">		classInTheStack.classLevelMetrics = classLevelMetrics;</span>
+
+		// push it to the stack, so we know the current class we are visiting
+<span class="fc" id="L282">		classes.push(classInTheStack);</span>
+
+		// there might be class level metrics that use the TypeDeclaration
+		// so, let's run them
+<span class="fc" id="L286">		classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+
+<span class="fc" id="L288">		return true;</span>
+
+	}
+
+	@Override
+	public void endVisit(EnumDeclaration node) {
+		// let's first visit any metrics that might make use of this endVisit
+<span class="fc" id="L295">		classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.endVisit(node));</span>
+
+<span class="fc" id="L297">		ClassInTheStack completedClass = classes.pop();</span>
+
+		// persist the results of the class level metrics in the result
+<span class="fc" id="L300">		completedClass.classLevelMetrics.forEach(m -&gt; m.setResult(completedClass.result));</span>
+
+		// we are done processing this class, so now let's
+		// store it in the collected classes set
+<span class="fc" id="L304">		collectedClasses.add(completedClass.result);</span>
+<span class="fc" id="L305">	}</span>
+
+	private List&lt;ClassLevelMetric&gt; instantiateClassLevelMetricVisitors(String className) {
+		try {
+<span class="fc" id="L309">			List&lt;ClassLevelMetric&gt; classes = classLevelMetrics.call();</span>
+<span class="fc" id="L310">			classes.forEach(c -&gt; { c.setClassName(className); });</span>
+<span class="fc" id="L311">			return classes;</span>
+//			return classLevelMetrics.call();
+<span class="nc" id="L313">		} catch(Exception e) {</span>
+<span class="nc" id="L314">			throw new RuntimeException(&quot;Could not instantiate class level visitors&quot;, e);</span>
+		}
+	}
+
+	private List&lt;MethodLevelMetric&gt; instantiateMethodLevelMetricVisitors(String methodName) {
+		try {
+<span class="fc" id="L320">			List&lt;MethodLevelMetric&gt; methods = methodLevelMetrics.call();</span>
+<span class="fc" id="L321">			methods.forEach(m -&gt; { m.setMethodName(methodName); });</span>
+<span class="fc" id="L322">			return methods;</span>
+//			return methodLevelMetrics.call();
+<span class="nc" id="L324">		} catch(Exception e) {</span>
+<span class="nc" id="L325">			throw new RuntimeException(&quot;Could not instantiate method level visitors&quot;, e);</span>
+		}
+	}
+
+	public Set&lt;CKClassResult&gt; getCollectedClasses() {
+<span class="fc" id="L330">		return collectedClasses;</span>
+	}
+
+	private String getTypeOfTheUnit(TypeDeclaration node) {
+<span class="fc bfc" id="L334" title="All 4 branches covered.">		return node.isInterface() ? &quot;interface&quot; : (classes.isEmpty() ? &quot;class&quot; : &quot;innerclass&quot;);</span>
+	}
+
+	// -------------------------------------------------------
+	// From here, just delegating the calls to the metrics
+	public boolean visit(AnnotationTypeDeclaration node) {
+<span class="fc bfc" id="L340" title="All 2 branches covered.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L341">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="pc bpc" id="L342" title="1 of 2 branches missed.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="nc" id="L343">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L345">		return true;</span>
+
+	}
+
+	public boolean visit(AnnotationTypeMemberDeclaration node) {
+<span class="fc bfc" id="L350" title="All 2 branches covered.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L351">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="pc bpc" id="L352" title="1 of 2 branches missed.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="nc" id="L353">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L355">		return true;</span>
+
+	}
+
+	public boolean visit(ArrayAccess node) {
+<span class="pc bpc" id="L360" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L361">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L362" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L363">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L365">		return true;</span>
+
+	}
+
+	public boolean visit(ArrayCreation node) {
+<span class="pc bpc" id="L370" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L371">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L372" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L373">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L375">		return true;</span>
+
+	}
+
+	public boolean visit(ArrayInitializer node) {
+<span class="fc bfc" id="L380" title="All 2 branches covered.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L381">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L382" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L383">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L385">		return true;</span>
+
+	}
+
+	public boolean visit(ArrayType node) {
+<span class="fc bfc" id="L390" title="All 2 branches covered.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L391">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L392" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L393">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L395">		return true;</span>
+
+	}
+
+	public boolean visit(AssertStatement node) {
+<span class="pc bpc" id="L400" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L401">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="pc bpc" id="L402" title="1 of 2 branches missed.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L403">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L405">		return true;</span>
+
+	}
+
+	public boolean visit(Assignment node) {
+<span class="pc bpc" id="L410" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L411">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L412" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L413">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L415">		return true;</span>
+
+	}
+
+	public boolean visit(Block node) {
+<span class="pc bpc" id="L420" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L421">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L422" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L423">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L425">		return true;</span>
+
+	}
+
+	public boolean visit(BlockComment node) {
+<span class="nc bnc" id="L430" title="All 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="nc" id="L431">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="nc bnc" id="L432" title="All 2 branches missed.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="nc" id="L433">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="nc" id="L435">		return true;</span>
+
+	}
+
+	public boolean visit(BooleanLiteral node) {
+<span class="pc bpc" id="L440" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L441">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L442" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L443">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L445">		return true;</span>
+
+	}
+
+	public boolean visit(BreakStatement node) {
+<span class="pc bpc" id="L450" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L451">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="pc bpc" id="L452" title="1 of 2 branches missed.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L453">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L455">		return true;</span>
+
+	}
+
+	public boolean visit(CastExpression node) {
+<span class="pc bpc" id="L460" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L461">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L462" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L463">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L465">		return true;</span>
+
+	}
+
+	public boolean visit(CatchClause node) {
+<span class="pc bpc" id="L470" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L471">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L472" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L473">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L475">		return true;</span>
+
+	}
+
+	public boolean visit(CharacterLiteral node) {
+<span class="pc bpc" id="L480" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L481">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L482" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L483">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L485">		return true;</span>
+
+	}
+
+	public boolean visit(ClassInstanceCreation node) {
+<span class="pc bpc" id="L490" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L491">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L492" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L493">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L495">		return true;</span>
+
+	}
+
+	public boolean visit(CompilationUnit node) {
+<span class="pc bpc" id="L500" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="nc" id="L501">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="nc bnc" id="L502" title="All 2 branches missed.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="nc" id="L503">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L505">		return true;</span>
+	}
+
+	public boolean visit(ConditionalExpression node) {
+<span class="pc bpc" id="L509" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L510">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="pc bpc" id="L511" title="1 of 2 branches missed.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L512">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L514">		return true;</span>
+
+	}
+
+	public boolean visit(ConstructorInvocation node) {
+<span class="pc bpc" id="L519" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L520">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="pc bpc" id="L521" title="1 of 2 branches missed.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L522">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L524">		return true;</span>
+
+	}
+
+	public boolean visit(ContinueStatement node) {
+<span class="pc bpc" id="L529" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L530">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="pc bpc" id="L531" title="1 of 2 branches missed.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L532">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L534">		return true;</span>
+
+	}
+
+	public boolean visit(CreationReference node) {
+<span class="pc bpc" id="L539" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L540">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L541" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L542">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L544">		return true;</span>
+
+	}
+
+	public boolean visit(Dimension node) {
+<span class="fc bfc" id="L549" title="All 2 branches covered.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L550">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L551" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L552">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L554">		return true;</span>
+
+	}
+
+	public boolean visit(DoStatement node) {
+<span class="pc bpc" id="L559" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L560">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="pc bpc" id="L561" title="1 of 2 branches missed.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L562">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L564">		return true;</span>
+
+	}
+
+	public boolean visit(EmptyStatement node) {
+<span class="pc bpc" id="L569" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L570">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="pc bpc" id="L571" title="1 of 2 branches missed.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L572">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L574">		return true;</span>
+
+	}
+
+	public boolean visit(EnhancedForStatement node) {
+<span class="pc bpc" id="L579" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L580">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="pc bpc" id="L581" title="1 of 2 branches missed.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L582">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L584">		return true;</span>
+
+	}
+
+	public boolean visit(EnumConstantDeclaration node) {
+<span class="pc bpc" id="L589" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L590">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="pc bpc" id="L591" title="1 of 2 branches missed.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="nc" id="L592">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L594">		return true;</span>
+
+	}
+
+	public boolean visit(ExpressionMethodReference node) {
+<span class="pc bpc" id="L599" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L600">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L601" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L602">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L604">		return true;</span>
+
+	}
+
+	public boolean visit(ExpressionStatement node) {
+<span class="pc bpc" id="L609" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L610">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L611" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L612">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L614">		return true;</span>
+
+	}
+
+	public boolean visit(FieldAccess node) {
+<span class="pc bpc" id="L619" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L620">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="pc bpc" id="L621" title="1 of 2 branches missed.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L622">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L624">		return true;</span>
+
+	}
+
+	public boolean visit(FieldDeclaration node) {
+<span class="pc bpc" id="L629" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L630">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="pc bpc" id="L631" title="1 of 2 branches missed.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="nc" id="L632">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L634">		return true;</span>
+
+	}
+
+	public boolean visit(ForStatement node) {
+<span class="pc bpc" id="L639" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L640">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L641" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L642">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L644">		return true;</span>
+
+	}
+
+	public boolean visit(IfStatement node) {
+<span class="pc bpc" id="L649" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L650">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L651" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L652">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L654">		return true;</span>
+
+	}
+
+	public boolean visit(ImportDeclaration node) {
+<span class="pc bpc" id="L659" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="nc" id="L660">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="nc bnc" id="L661" title="All 2 branches missed.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="nc" id="L662">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L664">		return true;</span>
+
+	}
+
+	public boolean visit(InfixExpression node) {
+<span class="pc bpc" id="L669" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L670">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L671" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L672">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L674">		return true;</span>
+
+	}
+
+	public boolean visit(InstanceofExpression node) {
+<span class="pc bpc" id="L679" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L680">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L681" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L682">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L684">		return true;</span>
+
+	}
+
+	public boolean visit(IntersectionType node) {
+<span class="nc bnc" id="L689" title="All 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="nc" id="L690">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="nc bnc" id="L691" title="All 2 branches missed.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="nc" id="L692">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="nc" id="L694">		return true;</span>
+
+	}
+
+	public boolean visit(LabeledStatement node) {
+<span class="pc bpc" id="L699" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L700">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="pc bpc" id="L701" title="1 of 2 branches missed.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L702">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L704">		return true;</span>
+
+	}
+
+	public boolean visit(LambdaExpression node) {
+<span class="pc bpc" id="L709" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L710">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L711" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L712">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L714">		return true;</span>
+
+	}
+
+	public boolean visit(LineComment node) {
+<span class="nc bnc" id="L719" title="All 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="nc" id="L720">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="nc bnc" id="L721" title="All 2 branches missed.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="nc" id="L722">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="nc" id="L724">		return true;</span>
+
+	}
+
+	public boolean visit(MarkerAnnotation node) {
+<span class="pc bpc" id="L729" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L730">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L731" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L732">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L734">		return true;</span>
+
+	}
+
+	public boolean visit(MemberRef node) {
+<span class="fc bfc" id="L739" title="All 2 branches covered.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L740">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L741" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L742">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L744">		return true;</span>
+
+	}
+
+	public boolean visit(MemberValuePair node) {
+<span class="pc bpc" id="L749" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L750">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L751" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L752">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L754">		return true;</span>
+
+	}
+
+	public boolean visit(MethodRef node) {
+<span class="fc bfc" id="L759" title="All 2 branches covered.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L760">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L761" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L762">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L764">		return true;</span>
+
+	}
+
+	public boolean visit(MethodRefParameter node) {
+<span class="fc bfc" id="L769" title="All 2 branches covered.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L770">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L771" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L772">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L774">		return true;</span>
+
+	}
+
+	public boolean visit(MethodInvocation node) {
+<span class="pc bpc" id="L779" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L780">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L781" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L782">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L784">		return true;</span>
+
+	}
+
+	public boolean visit(Modifier node) {
+<span class="fc bfc" id="L789" title="All 2 branches covered.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L790">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L791" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L792">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L794">		return true;</span>
+
+	}
+
+	public boolean visit(NameQualifiedType node) {
+<span class="nc bnc" id="L799" title="All 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="nc" id="L800">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="nc bnc" id="L801" title="All 2 branches missed.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="nc" id="L802">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="nc" id="L804">		return true;</span>
+
+	}
+
+	public boolean visit(NormalAnnotation node) {
+<span class="pc bpc" id="L809" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L810">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L811" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L812">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L814">		return true;</span>
+
+	}
+
+	public boolean visit(NullLiteral node) {
+<span class="pc bpc" id="L819" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L820">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L821" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L822">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L824">		return true;</span>
+
+	}
+
+	public boolean visit(NumberLiteral node) {
+<span class="fc bfc" id="L829" title="All 2 branches covered.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L830">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L831" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L832">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L834">		return true;</span>
+
+	}
+
+	public boolean visit(PackageDeclaration node) {
+<span class="pc bpc" id="L839" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="nc" id="L840">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="nc bnc" id="L841" title="All 2 branches missed.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="nc" id="L842">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L844">		return true;</span>
+
+	}
+
+	public boolean visit(ParameterizedType node) {
+<span class="pc bpc" id="L849" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L850">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L851" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L852">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L854">		return true;</span>
+
+	}
+
+	public boolean visit(ParenthesizedExpression node) {
+<span class="pc bpc" id="L859" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L860">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L861" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L862">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L864">		return true;</span>
+
+	}
+
+	public boolean visit(PostfixExpression node) {
+<span class="pc bpc" id="L869" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L870">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L871" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L872">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L874">		return true;</span>
+
+	}
+
+	public boolean visit(PrefixExpression node) {
+<span class="pc bpc" id="L879" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L880">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L881" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L882">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L884">		return true;</span>
+
+	}
+
+	public boolean visit(PrimitiveType node) {
+<span class="fc bfc" id="L889" title="All 2 branches covered.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L890">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L891" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L892">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L894">		return true;</span>
+
+	}
+
+	public boolean visit(QualifiedName node) {
+<span class="fc bfc" id="L899" title="All 2 branches covered.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L900">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L901" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L902">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L904">		return true;</span>
+
+	}
+
+	public boolean visit(QualifiedType node) {
+<span class="pc bpc" id="L909" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L910">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L911" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L912">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L914">		return true;</span>
+
+	}
+
+	public boolean visit(ReturnStatement node) {
+<span class="pc bpc" id="L919" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L920">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L921" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L922">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L924">		return true;</span>
+
+	}
+
+	public boolean visit(SimpleName node) {
+<span class="fc bfc" id="L929" title="All 2 branches covered.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L930">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L931" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L932">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L934">		return true;</span>
+
+	}
+
+	public boolean visit(SimpleType node) {
+<span class="fc bfc" id="L939" title="All 2 branches covered.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L940">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L941" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L942">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L944">		return true;</span>
+
+	}
+
+	public boolean visit(SingleMemberAnnotation node) {
+<span class="fc bfc" id="L949" title="All 2 branches covered.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L950">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L951" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L952">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L954">		return true;</span>
+
+	}
+
+	public boolean visit(SingleVariableDeclaration node) {
+<span class="pc bpc" id="L959" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L960">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L961" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L962">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L964">		return true;</span>
+
+	}
+
+	public boolean visit(StringLiteral node) {
+<span class="pc bpc" id="L969" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L970">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L971" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L972">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L974">		return true;</span>
+
+	}
+
+	public boolean visit(SuperConstructorInvocation node) {
+<span class="pc bpc" id="L979" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L980">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="pc bpc" id="L981" title="1 of 2 branches missed.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L982">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L984">		return true;</span>
+
+	}
+
+	public boolean visit(SuperFieldAccess node) {
+<span class="nc bnc" id="L989" title="All 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="nc" id="L990">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="nc bnc" id="L991" title="All 2 branches missed.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="nc" id="L992">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="nc" id="L994">		return true;</span>
+
+	}
+
+	public boolean visit(SuperMethodInvocation node) {
+<span class="pc bpc" id="L999" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L1000">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="pc bpc" id="L1001" title="1 of 2 branches missed.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L1002">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L1004">		return true;</span>
+
+	}
+
+	public boolean visit(SuperMethodReference node) {
+<span class="nc bnc" id="L1009" title="All 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="nc" id="L1010">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="nc bnc" id="L1011" title="All 2 branches missed.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="nc" id="L1012">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="nc" id="L1014">		return true;</span>
+
+	}
+
+	public boolean visit(SwitchCase node) {
+<span class="pc bpc" id="L1019" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L1020">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="pc bpc" id="L1021" title="1 of 2 branches missed.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L1022">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L1024">		return true;</span>
+
+	}
+
+	public boolean visit(SwitchStatement node) {
+<span class="pc bpc" id="L1029" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L1030">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="pc bpc" id="L1031" title="1 of 2 branches missed.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L1032">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L1034">		return true;</span>
+
+	}
+
+	public boolean visit(SynchronizedStatement node) {
+<span class="pc bpc" id="L1039" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L1040">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="pc bpc" id="L1041" title="1 of 2 branches missed.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L1042">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L1044">		return true;</span>
+
+	}
+
+	public boolean visit(TagElement node) {
+<span class="fc bfc" id="L1049" title="All 2 branches covered.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L1050">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L1051" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L1052">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L1054">		return true;</span>
+
+	}
+
+	public boolean visit(TextElement node) {
+<span class="fc bfc" id="L1059" title="All 2 branches covered.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L1060">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L1061" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L1062">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L1064">		return true;</span>
+
+	}
+
+	public boolean visit(ThisExpression node) {
+<span class="pc bpc" id="L1069" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L1070">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L1071" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L1072">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L1074">		return true;</span>
+
+	}
+
+	public boolean visit(ThrowStatement node) {
+<span class="pc bpc" id="L1079" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L1080">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L1081" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L1082">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L1084">		return true;</span>
+
+	}
+
+	public boolean visit(TryStatement node) {
+<span class="pc bpc" id="L1089" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L1090">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L1091" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L1092">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L1094">		return true;</span>
+
+	}
+
+	public boolean visit(TypeDeclarationStatement node) {
+<span class="pc bpc" id="L1099" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L1100">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="pc bpc" id="L1101" title="1 of 2 branches missed.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L1102">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L1104">		return true;</span>
+
+	}
+
+	public boolean visit(TypeLiteral node) {
+<span class="pc bpc" id="L1109" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L1110">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L1111" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L1112">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L1114">		return true;</span>
+
+	}
+
+	public boolean visit(TypeMethodReference node) {
+<span class="nc bnc" id="L1119" title="All 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="nc" id="L1120">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="nc bnc" id="L1121" title="All 2 branches missed.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="nc" id="L1122">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="nc" id="L1124">		return true;</span>
+
+	}
+
+	public boolean visit(TypeParameter node) {
+<span class="pc bpc" id="L1129" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L1130">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L1131" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L1132">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L1134">		return true;</span>
+
+	}
+
+	public boolean visit(UnionType node) {
+<span class="pc bpc" id="L1139" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L1140">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="pc bpc" id="L1141" title="1 of 2 branches missed.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L1142">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L1144">		return true;</span>
+
+	}
+
+	public boolean visit(VariableDeclarationExpression node) {
+<span class="pc bpc" id="L1149" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L1150">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L1151" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L1152">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L1154">		return true;</span>
+
+	}
+
+	public boolean visit(VariableDeclarationStatement node) {
+<span class="pc bpc" id="L1159" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L1160">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L1161" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L1162">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L1164">		return true;</span>
+
+	}
+
+	public boolean visit(VariableDeclarationFragment node) {
+<span class="pc bpc" id="L1169" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L1170">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L1171" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L1172">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L1174">		return true;</span>
+
+	}
+
+	public boolean visit(WhileStatement node) {
+<span class="pc bpc" id="L1179" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L1180">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="pc bpc" id="L1181" title="1 of 2 branches missed.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L1182">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L1184">		return true;</span>
+
+	}
+
+	public boolean visit(WildcardType node) {
+<span class="pc bpc" id="L1189" title="1 of 2 branches missed.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L1190">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L1191" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L1192">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L1194">		return true;</span>
+
+	}
+
+	// we only visit if we found a type already.
+	// TODO: understand what happens with a javadoc in a class. Will the TypeDeclaration come first?
+	public boolean visit(Javadoc node) {
+<span class="fc bfc" id="L1201" title="All 2 branches covered.">		if(!classes.isEmpty()) {</span>
+<span class="fc" id="L1202">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+<span class="fc bfc" id="L1203" title="All 2 branches covered.">			if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L1204">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.visit(node));</span>
+		}
+<span class="fc" id="L1206">		return true;</span>
+
+	}
+
+	// ---------------------------------------------
+	// End visits
+
+	@Override
+	public void endVisit(Block node) {
+<span class="fc" id="L1215">		classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.endVisit(node));</span>
+<span class="fc bfc" id="L1216" title="All 2 branches covered.">		if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L1217">			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.endVisit(node));</span>
+<span class="fc" id="L1218">	}</span>
+
+	@Override
+	public void endVisit(FieldAccess node) {
+<span class="fc" id="L1222">		classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.endVisit(node));</span>
+<span class="pc bpc" id="L1223" title="1 of 2 branches missed.">		if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L1224">			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.endVisit(node));</span>
+<span class="fc" id="L1225">	}</span>
+
+	@Override
+	public void endVisit(ConditionalExpression node) {
+<span class="fc" id="L1229">		classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.endVisit(node));</span>
+<span class="pc bpc" id="L1230" title="1 of 2 branches missed.">		if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L1231">			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.endVisit(node));</span>
+<span class="fc" id="L1232">	}</span>
+
+	public void endVisit(ForStatement node) {
+<span class="fc" id="L1235">		classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.endVisit(node));</span>
+<span class="fc bfc" id="L1236" title="All 2 branches covered.">		if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L1237">			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.endVisit(node));</span>
+<span class="fc" id="L1238">	}</span>
+
+	public void endVisit(EnhancedForStatement node) {
+<span class="fc" id="L1241">		classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.endVisit(node));</span>
+<span class="pc bpc" id="L1242" title="1 of 2 branches missed.">		if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L1243">			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.endVisit(node));</span>
+<span class="fc" id="L1244">	}</span>
+
+	public void endVisit(DoStatement node) {
+<span class="fc" id="L1247">		classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.endVisit(node));</span>
+<span class="pc bpc" id="L1248" title="1 of 2 branches missed.">		if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L1249">			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.endVisit(node));</span>
+<span class="fc" id="L1250">	}</span>
+
+	public void endVisit(WhileStatement node) {
+<span class="fc" id="L1253">		classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.endVisit(node));</span>
+<span class="pc bpc" id="L1254" title="1 of 2 branches missed.">		if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L1255">			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.endVisit(node));</span>
+<span class="fc" id="L1256">	}</span>
+
+	public void endVisit(SwitchCase node) {
+<span class="fc" id="L1259">		classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.endVisit(node));</span>
+<span class="pc bpc" id="L1260" title="1 of 2 branches missed.">		if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L1261">			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.endVisit(node));</span>
+<span class="fc" id="L1262">	}</span>
+
+	public void endVisit(IfStatement node) {
+<span class="fc" id="L1265">		classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.endVisit(node));</span>
+<span class="fc bfc" id="L1266" title="All 2 branches covered.">		if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L1267">			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.endVisit(node));</span>
+<span class="fc" id="L1268">	}</span>
+
+	public void endVisit(SwitchStatement node) {
+<span class="fc" id="L1271">		classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.endVisit(node));</span>
+<span class="pc bpc" id="L1272" title="1 of 2 branches missed.">		if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L1273">			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.endVisit(node));</span>
+<span class="fc" id="L1274">	}</span>
+
+	public void endVisit(CatchClause node) {
+<span class="fc" id="L1277">		classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.endVisit(node));</span>
+<span class="fc bfc" id="L1278" title="All 2 branches covered.">		if(!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L1279">			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.endVisit(node));</span>
+<span class="fc" id="L1280">	}</span>
+
+	public void endVisit(Javadoc node) {
+<span class="fc bfc" id="L1283" title="All 2 branches covered.">		if(!classes.empty()) {</span>
+<span class="fc" id="L1284">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.endVisit(node));</span>
+<span class="fc bfc" id="L1285" title="All 2 branches covered.">			if (!classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L1286">				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.endVisit(node));</span>
+		}
+<span class="fc" id="L1288">	}</span>
+
+	public void endVisit(QualifiedName node) {
+<span class="fc bfc" id="L1291" title="All 2 branches covered.">		if(!classes.empty()) {</span>
+<span class="fc" id="L1292">			classes.peek().classLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.endVisit(node));</span>
+		}
+<span class="fc bfc" id="L1294" title="All 4 branches covered.">		if(!classes.isEmpty() &amp;&amp; !classes.peek().methods.isEmpty())</span>
+<span class="fc" id="L1295">			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -&gt; (CKASTVisitor) metric).forEach(ast -&gt; ast.endVisit(node));</span>
+<span class="fc" id="L1296">	}</span>
+	// TODO: add all other endVisit blocks
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

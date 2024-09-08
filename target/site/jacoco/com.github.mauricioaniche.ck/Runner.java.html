@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Runner.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CK calculator</a> &gt; <a href="index.source.html" class="el_package">com.github.mauricioaniche.ck</a> &gt; <span class="el_source">Runner.java</span></div><h1>Runner.java</h1><pre class="source lang-java linenums">package com.github.mauricioaniche.ck;
+
+import com.github.mauricioaniche.ck.util.FileUtils;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+<span class="nc" id="L9">public class Runner {</span>
+
+	public static void main(String[] args) throws IOException {
+
+<span class="nc bnc" id="L13" title="All 4 branches missed.">		if (args == null || args.length &lt; 1) {</span>
+<span class="nc" id="L14">			System.out.println(&quot;Usage java -jar ck.jar &lt;path to project&gt; &lt;use Jars=true|false&gt; &lt;max files per partition, 0=automatic selection&gt; &lt;print variables and fields metrics? True|False&gt; &lt;path to save the output files&gt;&quot;);</span>
+<span class="nc" id="L15">			System.exit(1);</span>
+		}
+
+<span class="nc" id="L18">		String path = args[0];</span>
+
+		// use jars?
+<span class="nc" id="L21">		boolean useJars = false;</span>
+<span class="nc bnc" id="L22" title="All 2 branches missed.">		if(args.length &gt;= 2)</span>
+<span class="nc" id="L23">			useJars = Boolean.parseBoolean(args[1]);</span>
+
+		// number of files per partition?
+<span class="nc" id="L26">		int maxAtOnce = 0;</span>
+<span class="nc bnc" id="L27" title="All 2 branches missed.">		if(args.length &gt;= 3)</span>
+<span class="nc" id="L28">			maxAtOnce = Integer.parseInt(args[2]);</span>
+
+		// variables and field results?
+<span class="nc" id="L31">		boolean variablesAndFields = true;</span>
+<span class="nc bnc" id="L32" title="All 2 branches missed.">		if(args.length &gt;= 4)</span>
+<span class="nc" id="L33">			variablesAndFields = Boolean.parseBoolean(args[3]);</span>
+		
+		// path where the output csv files will be exported
+<span class="nc" id="L36">		String outputDir = &quot;&quot;;</span>
+<span class="nc bnc" id="L37" title="All 2 branches missed.">		if(args.length &gt;= 5)</span>
+<span class="nc" id="L38">			outputDir = args[4];</span>
+
+    // load possible additional ignored directories
+    //noinspection ManualArrayToCollectionCopy
+<span class="nc bnc" id="L42" title="All 2 branches missed.">    for (int i = 5; i &lt; args.length; i++) {</span>
+<span class="nc" id="L43">      FileUtils.IGNORED_DIRECTORIES.add(args[i]);</span>
+    }
+
+<span class="nc" id="L46">		ResultWriter writer = new ResultWriter(outputDir + &quot;class.csv&quot;, outputDir + &quot;method.csv&quot;, outputDir + &quot;variable.csv&quot;, outputDir + &quot;field.csv&quot;, variablesAndFields);</span>
+		
+<span class="nc" id="L48">		Map&lt;String, CKClassResult&gt; results = new HashMap&lt;&gt;();</span>
+		
+<span class="nc" id="L50">		new CK(useJars, maxAtOnce, variablesAndFields).calculate(path, new CKNotifier() {</span>
+			@Override
+			public void notify(CKClassResult result) {
+				
+				// Store the metrics values from each component of the project in a HashMap
+<span class="nc" id="L55">				results.put(result.getClassName(), result);</span>
+				
+<span class="nc" id="L57">			}</span>
+
+			@Override
+			public void notifyError(String sourceFilePath, Exception e) {
+<span class="nc" id="L61">				System.err.println(&quot;Error in &quot; + sourceFilePath);</span>
+<span class="nc" id="L62">				e.printStackTrace(System.err);</span>
+<span class="nc" id="L63">			}</span>
+		});
+		
+		// Write the metrics value of each component in the csv files
+<span class="nc bnc" id="L67" title="All 2 branches missed.">		for(Map.Entry&lt;String, CKClassResult&gt; entry : results.entrySet()){</span>
+<span class="nc" id="L68">			writer.printResult(entry.getValue());</span>
+<span class="nc" id="L69">		}</span>
+		
+<span class="nc" id="L71">		writer.flushAndClose();</span>
+<span class="nc" id="L72">		System.out.println(&quot;Metrics extracted!!!&quot;);</span>
+<span class="nc" id="L73">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CK.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CK calculator</a> &gt; <a href="index.source.html" class="el_package">com.github.mauricioaniche.ck</a> &gt; <span class="el_source">CK.java</span></div><h1>CK.java</h1><pre class="source lang-java linenums">package com.github.mauricioaniche.ck;
+
+import com.github.mauricioaniche.ck.metric.ClassLevelMetric;
+import com.github.mauricioaniche.ck.metric.MethodLevelMetric;
+import com.github.mauricioaniche.ck.util.FileUtils;
+import com.github.mauricioaniche.ck.util.MetricsFinder;
+import com.google.common.collect.Lists;
+import org.apache.log4j.Logger;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.dom.AST;
+import org.eclipse.jdt.core.dom.ASTParser;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+public class CK {
+
+	private final int maxAtOnce;
+	private final boolean useJars;
+	
+<span class="fc" id="L26">	private static Logger log = Logger.getLogger(CK.class);</span>
+
+	Callable&lt;List&lt;ClassLevelMetric&gt;&gt; classLevelMetrics;
+	Callable&lt;List&lt;MethodLevelMetric&gt;&gt; methodLevelMetrics;
+
+	// mostly for testing purposes
+<span class="nc" id="L32">	public CK(Callable&lt;List&lt;ClassLevelMetric&gt;&gt; classLevelMetrics, Callable&lt;List&lt;MethodLevelMetric&gt;&gt; methodLevelMetrics) {</span>
+<span class="nc" id="L33">		this.useJars = false;</span>
+<span class="nc" id="L34">		this.classLevelMetrics = classLevelMetrics;</span>
+<span class="nc" id="L35">		this.methodLevelMetrics = methodLevelMetrics;</span>
+<span class="nc" id="L36">		this.maxAtOnce = 100;</span>
+<span class="nc" id="L37">	}</span>
+
+<span class="fc" id="L39">	public CK(boolean useJars, int maxAtOnce, boolean variablesAndFields) {</span>
+<span class="fc" id="L40">		MetricsFinder finder = new MetricsFinder();</span>
+<span class="fc" id="L41">		this.classLevelMetrics = () -&gt; finder.allClassLevelMetrics();</span>
+<span class="fc" id="L42">		this.methodLevelMetrics = () -&gt; finder.allMethodLevelMetrics(variablesAndFields);</span>
+
+<span class="fc" id="L44">		this.useJars = useJars;</span>
+<span class="pc bpc" id="L45" title="1 of 2 branches missed.">		if(maxAtOnce == 0)</span>
+<span class="fc" id="L46">			this.maxAtOnce = getMaxPartitionBasedOnMemory();</span>
+		else
+<span class="nc" id="L48">			this.maxAtOnce = maxAtOnce;</span>
+<span class="fc" id="L49">	}</span>
+
+	public CK() {
+<span class="fc" id="L52">		this(false, 0, true);</span>
+<span class="fc" id="L53">	}</span>
+
+	public void calculate(String path, CKNotifier notifier) {
+<span class="fc" id="L56">		String[] javaFiles = FileUtils.getAllJavaFiles(path);</span>
+<span class="fc" id="L57">		log.info(&quot;Found &quot; + javaFiles.length + &quot; java files&quot;);</span>
+
+<span class="fc" id="L59">		calculate(Paths.get(path), notifier,</span>
+<span class="fc" id="L60">		 	Stream.of(javaFiles)</span>
+<span class="fc" id="L61">				.map(Paths::get)</span>
+<span class="fc" id="L62">				.toArray(Path[]::new)</span>
+			);
+<span class="fc" id="L64">	}</span>
+
+	/**
+	 * Convenience method to call ck with a path rather than a string
+	 * @param path The path which contain the java class files to analyse
+	 * @param notifier Handle to process the results and handle errors
+	 */
+	public void calculate(Path path, CKNotifier notifier) {
+<span class="fc" id="L72">		calculate(path.toString(), notifier);</span>
+<span class="fc" id="L73">	}</span>
+
+	/**
+	 * Calculate metrics for the passed javaFilePaths. Uses path to set the environment
+	 * @param path The environment to where the source code is located
+	 * @param notifier Handle to process the results and handle errors
+	 * @param javaFilePaths The files to collect metrics of.
+	 */
+	public void calculate(Path path, CKNotifier notifier, Path... javaFilePaths) {
+<span class="fc" id="L82">		String[] srcDirs = FileUtils.getAllDirs(path.toString());</span>
+<span class="fc" id="L83">		log.info(&quot;Found &quot; + srcDirs.length + &quot; src dirs&quot;);</span>
+
+<span class="pc bpc" id="L85" title="1 of 2 branches missed.">		String[] allDependencies = useJars ? FileUtils.getAllJars(path.toString()) : null;</span>
+
+<span class="pc bpc" id="L87" title="1 of 2 branches missed.">		if(useJars)</span>
+<span class="nc" id="L88">			log.info(&quot;Found &quot; + allDependencies.length + &quot; jar dependencies&quot;);</span>
+		
+<span class="fc" id="L90">		MetricsExecutor storage = new MetricsExecutor(classLevelMetrics, methodLevelMetrics, notifier);</span>
+
+		// Converts the paths to strings and makes the method support relative paths as well.
+<span class="fc bfc" id="L93" title="All 2 branches covered.">		List&lt;String&gt; strJavaFilePaths = Stream.of(javaFilePaths).map(file -&gt; file.isAbsolute() ? file.toString() : path.resolve(file).toString()).collect(Collectors.toList());</span>
+
+<span class="fc" id="L95">		List&lt;List&lt;String&gt;&gt; partitions = Lists.partition(strJavaFilePaths, maxAtOnce);</span>
+<span class="fc" id="L96">		log.debug(&quot;Max partition size: &quot; + maxAtOnce + &quot;, total partitions=&quot; + partitions.size());</span>
+
+<span class="fc bfc" id="L98" title="All 2 branches covered.">		for(List&lt;String&gt; partition : partitions) {</span>
+<span class="fc" id="L99">			log.debug(&quot;Next partition&quot;);</span>
+<span class="fc" id="L100">			ASTParser parser = ASTParser.newParser(AST.JLS11);</span>
+			
+<span class="fc" id="L102">			parser.setResolveBindings(true);</span>
+<span class="fc" id="L103">			parser.setBindingsRecovery(true);</span>
+			
+<span class="fc" id="L105">			Map&lt;String, String&gt; options = JavaCore.getOptions();</span>
+<span class="fc" id="L106">			JavaCore.setComplianceOptions(JavaCore.VERSION_11, options);</span>
+<span class="fc" id="L107">			parser.setCompilerOptions(options);</span>
+<span class="fc" id="L108">			parser.setEnvironment(allDependencies, srcDirs, null, true);</span>
+<span class="fc" id="L109">			parser.createASTs(partition.toArray(new String[partition.size()]), null, new String[0], storage, null);</span>
+<span class="fc" id="L110">		}</span>
+		
+<span class="fc" id="L112">		log.info(&quot;Finished parsing&quot;);</span>
+<span class="fc" id="L113">    }</span>
+
+	private int getMaxPartitionBasedOnMemory() {
+<span class="fc" id="L116">		long maxMemory= Runtime.getRuntime().maxMemory() / (1 &lt;&lt; 20); // in MiB</span>
+
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">		if      (maxMemory &gt;= 2000) return 400;</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">		else if (maxMemory &gt;= 1500) return 300;</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">		else if (maxMemory &gt;= 1000) return 200;</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">		else if (maxMemory &gt;=  500) return 100;</span>
+<span class="nc" id="L122">		else                        return 25;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

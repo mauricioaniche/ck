@@ -1,0 +1,701 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CKASTVisitor.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CK calculator</a> &gt; <a href="index.source.html" class="el_package">com.github.mauricioaniche.ck.metric</a> &gt; <span class="el_source">CKASTVisitor.java</span></div><h1>CKASTVisitor.java</h1><pre class="source lang-java linenums">package com.github.mauricioaniche.ck.metric;
+
+import org.eclipse.jdt.core.dom.*;
+
+public interface CKASTVisitor {
+
+
+	default void visit(AnnotationTypeDeclaration node) {
+
+<span class="fc" id="L10">	}</span>
+
+	default void visit(AnnotationTypeMemberDeclaration node) {
+
+<span class="fc" id="L14">	}</span>
+
+	default void visit(AnonymousClassDeclaration node) {
+
+<span class="fc" id="L18">	}</span>
+
+	default void visit(ArrayAccess node) {
+
+<span class="fc" id="L22">	}</span>
+
+	default void visit(ArrayCreation node) {
+
+<span class="fc" id="L26">	}</span>
+
+	default void visit(ArrayInitializer node) {
+
+<span class="fc" id="L30">	}</span>
+
+	default void visit(ArrayType node) {
+
+<span class="fc" id="L34">	}</span>
+
+	default void visit(AssertStatement node) {
+
+<span class="fc" id="L38">	}</span>
+
+	default void visit(Assignment node) {
+
+<span class="fc" id="L42">	}</span>
+
+	default void visit(Block node) {
+
+<span class="fc" id="L46">	}</span>
+
+	default void visit(BlockComment node) {
+
+<span class="nc" id="L50">	}</span>
+
+	default void visit(BooleanLiteral node) {
+
+<span class="fc" id="L54">	}</span>
+
+	default void visit(BreakStatement node) {
+
+<span class="fc" id="L58">	}</span>
+
+	default void visit(CastExpression node) {
+
+<span class="fc" id="L62">	}</span>
+
+	default void visit(CatchClause node) {
+
+<span class="fc" id="L66">	}</span>
+
+	default void visit(CharacterLiteral node) {
+
+<span class="fc" id="L70">	}</span>
+
+	default void visit(ClassInstanceCreation node) {
+
+<span class="fc" id="L74">	}</span>
+
+	default void visit(CompilationUnit node) {
+
+<span class="nc" id="L78">	}</span>
+
+	default void visit(ConditionalExpression node) {
+
+<span class="fc" id="L82">	}</span>
+
+	default void visit(ConstructorInvocation node) {
+
+<span class="fc" id="L86">	}</span>
+
+	default void visit(ContinueStatement node) {
+
+<span class="fc" id="L90">	}</span>
+
+	default void visit(CreationReference node) {
+
+<span class="fc" id="L94">	}</span>
+
+	default void visit(Dimension node) {
+
+<span class="fc" id="L98">	}</span>
+
+	default void visit(DoStatement node) {
+
+<span class="fc" id="L102">	}</span>
+
+	default void visit(EmptyStatement node) {
+
+<span class="fc" id="L106">	}</span>
+
+	default void visit(EnhancedForStatement node) {
+
+<span class="fc" id="L110">	}</span>
+
+	default void visit(EnumConstantDeclaration node) {
+
+<span class="fc" id="L114">	}</span>
+
+	default void visit(EnumDeclaration node) {
+
+<span class="fc" id="L118">	}</span>
+
+	default void visit(ExportsDirective node) {
+
+<span class="nc" id="L122">	}</span>
+
+	default void visit(ExpressionMethodReference node) {
+
+<span class="fc" id="L126">	}</span>
+
+	default void visit(ExpressionStatement node) {
+
+<span class="fc" id="L130">	}</span>
+
+	default void visit(FieldAccess node) {
+
+<span class="fc" id="L134">	}</span>
+
+	default void visit(FieldDeclaration node) {
+
+<span class="fc" id="L138">	}</span>
+
+	default void visit(ForStatement node) {
+
+<span class="fc" id="L142">	}</span>
+
+	default void visit(IfStatement node) {
+
+<span class="fc" id="L146">	}</span>
+
+	default void visit(ImportDeclaration node) {
+
+<span class="nc" id="L150">	}</span>
+
+	default void visit(InfixExpression node) {
+
+<span class="fc" id="L154">	}</span>
+
+	default void visit(Initializer node) {
+
+<span class="fc" id="L158">	}</span>
+
+	default void visit(InstanceofExpression node) {
+
+<span class="fc" id="L162">	}</span>
+
+	default void visit(IntersectionType node) {
+
+<span class="nc" id="L166">	}</span>
+
+	default void visit(Javadoc node) {
+
+<span class="fc" id="L170">	}</span>
+
+	default void visit(LabeledStatement node) {
+
+<span class="fc" id="L174">	}</span>
+
+	default void visit(LambdaExpression node) {
+
+<span class="fc" id="L178">	}</span>
+
+	default void visit(LineComment node) {
+
+<span class="nc" id="L182">	}</span>
+
+	default void visit(MarkerAnnotation node) {
+
+<span class="fc" id="L186">	}</span>
+
+	default void visit(MemberRef node) {
+
+<span class="fc" id="L190">	}</span>
+
+	default void visit(MemberValuePair node) {
+
+<span class="fc" id="L194">	}</span>
+
+	default void visit(MethodRef node) {
+
+<span class="fc" id="L198">	}</span>
+
+	default void visit(MethodRefParameter node) {
+
+<span class="fc" id="L202">	}</span>
+
+	default void visit(MethodDeclaration node) {
+
+<span class="fc" id="L206">	}</span>
+
+	default void visit(MethodInvocation node) {
+
+<span class="fc" id="L210">	}</span>
+
+	default void visit(Modifier node) {
+
+<span class="fc" id="L214">	}</span>
+
+	default void visit(ModuleDeclaration node) {
+
+<span class="nc" id="L218">	}</span>
+
+	default void visit(ModuleModifier node) {
+
+<span class="nc" id="L222">	}</span>
+
+	default void visit(NameQualifiedType node) {
+
+<span class="nc" id="L226">	}</span>
+
+	default void visit(NormalAnnotation node) {
+
+<span class="fc" id="L230">	}</span>
+
+	default void visit(NullLiteral node) {
+
+<span class="fc" id="L234">	}</span>
+
+	default void visit(NumberLiteral node) {
+
+<span class="fc" id="L238">	}</span>
+
+	default void visit(OpensDirective node) {
+
+<span class="nc" id="L242">	}</span>
+
+	default void visit(PackageDeclaration node) {
+
+<span class="nc" id="L246">	}</span>
+
+	default void visit(ParameterizedType node) {
+
+<span class="fc" id="L250">	}</span>
+
+	default void visit(ParenthesizedExpression node) {
+
+<span class="fc" id="L254">	}</span>
+
+	default void visit(PostfixExpression node) {
+
+<span class="fc" id="L258">	}</span>
+
+	default void visit(PrefixExpression node) {
+
+<span class="fc" id="L262">	}</span>
+
+	default void visit(ProvidesDirective node) {
+
+<span class="nc" id="L266">	}</span>
+
+	default void visit(PrimitiveType node) {
+
+<span class="fc" id="L270">	}</span>
+
+	default void visit(QualifiedName node) {
+
+<span class="fc" id="L274">	}</span>
+
+	default void visit(QualifiedType node) {
+
+<span class="fc" id="L278">	}</span>
+
+	default void visit(RequiresDirective node) {
+
+<span class="nc" id="L282">	}</span>
+
+	default void visit(ReturnStatement node) {
+
+<span class="fc" id="L286">	}</span>
+
+	default void visit(SimpleName node) {
+
+<span class="fc" id="L290">	}</span>
+
+	default void visit(SimpleType node) {
+
+<span class="fc" id="L294">	}</span>
+
+	default void visit(SingleMemberAnnotation node) {
+
+<span class="fc" id="L298">	}</span>
+
+	default void visit(SingleVariableDeclaration node) {
+
+<span class="fc" id="L302">	}</span>
+
+	default void visit(StringLiteral node) {
+
+<span class="fc" id="L306">	}</span>
+
+	default void visit(SuperConstructorInvocation node) {
+
+<span class="fc" id="L310">	}</span>
+
+	default void visit(SuperFieldAccess node) {
+
+<span class="nc" id="L314">	}</span>
+
+	default void visit(SuperMethodInvocation node) {
+
+<span class="fc" id="L318">	}</span>
+
+	default void visit(SuperMethodReference node) {
+
+<span class="nc" id="L322">	}</span>
+
+	default void visit(SwitchCase node) {
+
+<span class="fc" id="L326">	}</span>
+
+	default void visit(SwitchStatement node) {
+
+<span class="fc" id="L330">	}</span>
+
+	default void visit(SynchronizedStatement node) {
+
+<span class="fc" id="L334">	}</span>
+
+	default void visit(TagElement node) {
+
+<span class="fc" id="L338">	}</span>
+
+	default void visit(TextElement node) {
+
+<span class="fc" id="L342">	}</span>
+
+	default void visit(ThisExpression node) {
+
+<span class="fc" id="L346">	}</span>
+
+	default void visit(ThrowStatement node) {
+
+<span class="fc" id="L350">	}</span>
+
+	default void visit(TryStatement node) {
+
+<span class="fc" id="L354">	}</span>
+
+	default void visit(TypeDeclaration node) {
+
+<span class="fc" id="L358">	}</span>
+
+	default void visit(TypeDeclarationStatement node) {
+
+<span class="fc" id="L362">	}</span>
+
+	default void visit(TypeLiteral node) {
+
+<span class="fc" id="L366">	}</span>
+
+	default void visit(TypeMethodReference node) {
+
+<span class="nc" id="L370">	}</span>
+
+	default void visit(TypeParameter node) {
+
+<span class="fc" id="L374">	}</span>
+
+	default void visit(UnionType node) {
+
+<span class="fc" id="L378">	}</span>
+
+	default void visit(UsesDirective node) {
+
+<span class="nc" id="L382">	}</span>
+
+	default void visit(VariableDeclarationExpression node) {
+
+<span class="fc" id="L386">	}</span>
+
+	default void visit(VariableDeclarationStatement node) {
+
+<span class="fc" id="L390">	}</span>
+
+	default void visit(VariableDeclarationFragment node) {
+
+<span class="fc" id="L394">	}</span>
+
+	default void visit(WhileStatement node) {
+
+<span class="fc" id="L398">	}</span>
+
+	default void visit(WildcardType node) {
+
+<span class="fc" id="L402">	}</span>
+
+	default void endVisit(AnnotationTypeDeclaration node) {
+<span class="nc" id="L405">	}</span>
+
+	default void endVisit(AnnotationTypeMemberDeclaration node) {
+<span class="nc" id="L408">	}</span>
+
+	default void endVisit(AnonymousClassDeclaration node) {
+<span class="fc" id="L411">	}</span>
+
+	default void endVisit(ArrayAccess node) {
+<span class="nc" id="L414">	}</span>
+
+	default void endVisit(ArrayCreation node) {
+<span class="nc" id="L417">	}</span>
+
+	default void endVisit(ArrayInitializer node) {
+<span class="nc" id="L420">	}</span>
+
+	default void endVisit(ArrayType node) {
+<span class="nc" id="L423">	}</span>
+
+	default void endVisit(AssertStatement node) {
+<span class="nc" id="L426">	}</span>
+
+	default void endVisit(Assignment node) {
+<span class="nc" id="L429">	}</span>
+
+	default void endVisit(Block node) {
+<span class="fc" id="L432">	}</span>
+
+	default void endVisit(BlockComment node) {
+<span class="nc" id="L435">	}</span>
+
+	default void endVisit(BooleanLiteral node) {
+<span class="nc" id="L438">	}</span>
+
+	default void endVisit(BreakStatement node) {
+<span class="nc" id="L441">	}</span>
+
+	default void endVisit(CastExpression node) {
+<span class="nc" id="L444">	}</span>
+
+	default void endVisit(CatchClause node) {
+<span class="fc" id="L447">	}</span>
+
+	default void endVisit(CharacterLiteral node) {
+<span class="nc" id="L450">	}</span>
+
+	default void endVisit(ClassInstanceCreation node) {
+<span class="nc" id="L453">	}</span>
+
+	default void endVisit(CompilationUnit node) {
+<span class="nc" id="L456">	}</span>
+
+	default void endVisit(ConditionalExpression node) {
+<span class="fc" id="L459">	}</span>
+
+	default void endVisit(ConstructorInvocation node) {
+<span class="nc" id="L462">	}</span>
+
+	default void endVisit(ContinueStatement node) {
+<span class="nc" id="L465">	}</span>
+
+	default void endVisit(CreationReference node) {
+<span class="nc" id="L468">	}</span>
+
+	default void endVisit(DoStatement node) {
+<span class="fc" id="L471">	}</span>
+
+	default void endVisit(EmptyStatement node) {
+<span class="nc" id="L474">	}</span>
+
+	default void endVisit(EnhancedForStatement node) {
+<span class="fc" id="L477">	}</span>
+
+	default void endVisit(EnumConstantDeclaration node) {
+<span class="nc" id="L480">	}</span>
+
+	default void endVisit(EnumDeclaration node) {
+<span class="fc" id="L483">	}</span>
+
+	default void endVisit(ExportsDirective node) {
+<span class="nc" id="L486">	}</span>
+
+	default void endVisit(ExpressionMethodReference node) {
+<span class="nc" id="L489">	}</span>
+
+	default void endVisit(ExpressionStatement node) {
+<span class="nc" id="L492">	}</span>
+
+	default void endVisit(Dimension node) {
+<span class="nc" id="L495">	}</span>
+
+	default void endVisit(FieldAccess node) {
+<span class="fc" id="L498">	}</span>
+
+	default void endVisit(FieldDeclaration node) {
+<span class="nc" id="L501">	}</span>
+
+	default void endVisit(ForStatement node) {
+<span class="fc" id="L504">	}</span>
+
+	default void endVisit(IfStatement node) {
+<span class="fc" id="L507">	}</span>
+
+	default void endVisit(ImportDeclaration node) {
+<span class="nc" id="L510">	}</span>
+
+	default void endVisit(InfixExpression node) {
+<span class="nc" id="L513">	}</span>
+
+	default void endVisit(InstanceofExpression node) {
+<span class="nc" id="L516">	}</span>
+
+	default void endVisit(Initializer node) {
+<span class="fc" id="L519">	}</span>
+
+	default void endVisit(Javadoc node) {
+<span class="fc" id="L522">	}</span>
+
+	default void endVisit(LabeledStatement node) {
+<span class="nc" id="L525">	}</span>
+
+	default void endVisit(LambdaExpression node) {
+<span class="nc" id="L528">	}</span>
+
+	default void endVisit(LineComment node) {
+<span class="nc" id="L531">	}</span>
+
+	default void endVisit(MarkerAnnotation node) {
+<span class="nc" id="L534">	}</span>
+
+	default void endVisit(MemberRef node) {
+<span class="nc" id="L537">	}</span>
+
+	default void endVisit(MemberValuePair node) {
+<span class="nc" id="L540">	}</span>
+
+	default void endVisit(MethodRef node) {
+<span class="nc" id="L543">	}</span>
+
+	default void endVisit(MethodRefParameter node) {
+<span class="nc" id="L546">	}</span>
+
+	default void endVisit(MethodDeclaration node) {
+<span class="fc" id="L549">	}</span>
+
+	default void endVisit(MethodInvocation node) {
+<span class="nc" id="L552">	}</span>
+
+	default void endVisit(Modifier node) {
+<span class="nc" id="L555">	}</span>
+
+	default void endVisit(ModuleDeclaration node) {
+<span class="nc" id="L558">	}</span>
+
+	default void endVisit(ModuleModifier node) {
+<span class="nc" id="L561">	}</span>
+
+	default void endVisit(NameQualifiedType node) {
+<span class="nc" id="L564">	}</span>
+
+	default void endVisit(NormalAnnotation node) {
+<span class="nc" id="L567">	}</span>
+
+	default void endVisit(NullLiteral node) {
+<span class="nc" id="L570">	}</span>
+
+	default void endVisit(NumberLiteral node) {
+<span class="nc" id="L573">	}</span>
+
+	default void endVisit(OpensDirective node) {
+<span class="nc" id="L576">	}</span>
+
+	default void endVisit(PackageDeclaration node) {
+<span class="nc" id="L579">	}</span>
+
+	default void endVisit(ParameterizedType node) {
+<span class="nc" id="L582">	}</span>
+
+	default void endVisit(ParenthesizedExpression node) {
+<span class="nc" id="L585">	}</span>
+
+	default void endVisit(PostfixExpression node) {
+<span class="nc" id="L588">	}</span>
+
+	default void endVisit(PrefixExpression node) {
+<span class="nc" id="L591">	}</span>
+
+	default void endVisit(PrimitiveType node) {
+<span class="nc" id="L594">	}</span>
+
+	default void endVisit(ProvidesDirective node) {
+<span class="nc" id="L597">	}</span>
+
+	default void endVisit(QualifiedName node) {
+<span class="fc" id="L600">	}</span>
+
+	default void endVisit(QualifiedType node) {
+<span class="nc" id="L603">	}</span>
+
+	default void endVisit(RequiresDirective node) {
+<span class="nc" id="L606">	}</span>
+
+	default void endVisit(ReturnStatement node) {
+<span class="nc" id="L609">	}</span>
+
+	default void endVisit(SimpleName node) {
+<span class="nc" id="L612">	}</span>
+
+	default void endVisit(SimpleType node) {
+<span class="nc" id="L615">	}</span>
+
+	default void endVisit(SingleMemberAnnotation node) {
+<span class="nc" id="L618">	}</span>
+
+	default void endVisit(SingleVariableDeclaration node) {
+<span class="nc" id="L621">	}</span>
+
+	default void endVisit(StringLiteral node) {
+<span class="nc" id="L624">	}</span>
+
+	default void endVisit(SuperConstructorInvocation node) {
+<span class="nc" id="L627">	}</span>
+
+	default void endVisit(SuperFieldAccess node) {
+<span class="nc" id="L630">	}</span>
+
+	default void endVisit(SuperMethodInvocation node) {
+<span class="nc" id="L633">	}</span>
+
+	default void endVisit(SuperMethodReference node) {
+<span class="nc" id="L636">	}</span>
+
+	default void endVisit(SwitchCase node) {
+<span class="fc" id="L639">	}</span>
+
+	default void endVisit(SwitchStatement node) {
+<span class="fc" id="L642">	}</span>
+
+	default void endVisit(SynchronizedStatement node) {
+<span class="nc" id="L645">	}</span>
+
+	default void endVisit(TagElement node) {
+<span class="nc" id="L648">	}</span>
+
+	default void endVisit(TextElement node) {
+<span class="nc" id="L651">	}</span>
+
+	default void endVisit(ThisExpression node) {
+<span class="nc" id="L654">	}</span>
+
+	default void endVisit(ThrowStatement node) {
+<span class="nc" id="L657">	}</span>
+
+	default void endVisit(TryStatement node) {
+<span class="nc" id="L660">	}</span>
+
+	default void endVisit(TypeDeclaration node) {
+<span class="fc" id="L663">	}</span>
+
+	default void endVisit(TypeDeclarationStatement node) {
+<span class="nc" id="L666">	}</span>
+
+	default void endVisit(TypeLiteral node) {
+<span class="nc" id="L669">	}</span>
+
+	default void endVisit(TypeMethodReference node) {
+<span class="nc" id="L672">	}</span>
+
+	default void endVisit(TypeParameter node) {
+<span class="nc" id="L675">	}</span>
+
+	default void endVisit(UnionType node) {
+<span class="nc" id="L678">	}</span>
+
+	default void endVisit(UsesDirective node) {
+<span class="nc" id="L681">	}</span>
+
+	default void endVisit(IntersectionType node) {
+<span class="nc" id="L684">	}</span>
+
+	default void endVisit(VariableDeclarationExpression node) {
+<span class="nc" id="L687">	}</span>
+
+	default void endVisit(VariableDeclarationStatement node) {
+<span class="nc" id="L690">	}</span>
+
+	default void endVisit(VariableDeclarationFragment node) {
+<span class="nc" id="L693">	}</span>
+
+	default void endVisit(WhileStatement node) {
+<span class="fc" id="L696">	}</span>
+
+	default void endVisit(WildcardType node) {
+<span class="nc" id="L699">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

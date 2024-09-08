@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NumberOfMaxNestedBlock.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CK calculator</a> &gt; <a href="index.source.html" class="el_package">com.github.mauricioaniche.ck.metric</a> &gt; <span class="el_source">NumberOfMaxNestedBlock.java</span></div><h1>NumberOfMaxNestedBlock.java</h1><pre class="source lang-java linenums">package com.github.mauricioaniche.ck.metric;
+
+import com.github.mauricioaniche.ck.CKClassResult;
+import com.github.mauricioaniche.ck.CKMethodResult;
+import org.eclipse.jdt.core.dom.*;
+
+import java.util.Stack;
+
+<span class="fc" id="L9">public class NumberOfMaxNestedBlock implements CKASTVisitor, ClassLevelMetric, MethodLevelMetric {</span>
+
+<span class="fc" id="L11">	private int current = 0;</span>
+<span class="fc" id="L12">	private int max = 0;</span>
+<span class="fc" id="L13">	private Stack&lt;ASTNode&gt; currentNode = new Stack&lt;&gt;();</span>
+<span class="fc" id="L14">	private Stack&lt;Boolean&gt; blocks = new Stack&lt;&gt;();</span>
+<span class="fc" id="L15">	private Stack&lt;Boolean&gt; nodes = new Stack&lt;&gt;();</span>
+
+	@Override
+	public void visit(Block node) {
+
+		// we always do a +1 if we see a block, with the exception of
+		// a switch case, as we do the +1 in the block.
+		// note that blocks might not always exist, and that's why we check
+		// for their existence at every node later on...
+		// if they do not exist, we +1 in the node.
+<span class="fc bfc" id="L25" title="All 4 branches covered.">		if(currentNode.empty() || !(currentNode.peek() instanceof SwitchCase)) {</span>
+<span class="fc" id="L26">			plusOne();</span>
+<span class="fc" id="L27">			blocks.push(true);</span>
+		} else {
+<span class="fc" id="L29">			blocks.push(false);</span>
+		}
+
+<span class="fc" id="L32">		currentNode.push(node);</span>
+<span class="fc" id="L33">	}</span>
+
+	@Override
+	public void visit(ForStatement node) {
+<span class="fc" id="L37">		currentNode.push(node);</span>
+
+<span class="fc" id="L39">		boolean containsBlock = containsBlock(node.getBody());</span>
+<span class="fc bfc" id="L40" title="All 2 branches covered.">		if(!containsBlock) {</span>
+<span class="fc" id="L41">			plusOne();</span>
+<span class="fc" id="L42">			nodes.push(true);</span>
+		} else {
+<span class="fc" id="L44">			nodes.push(false);</span>
+		}
+
+<span class="fc" id="L47">	}</span>
+
+	@Override
+	public void visit(EnhancedForStatement node) {
+
+<span class="fc" id="L52">		currentNode.push(node);</span>
+
+<span class="fc" id="L54">		boolean containsBlock = containsBlock(node.getBody());</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">		if(!containsBlock) {</span>
+<span class="fc" id="L56">			plusOne();</span>
+<span class="fc" id="L57">			nodes.push(true);</span>
+		} else {
+<span class="fc" id="L59">			nodes.push(false);</span>
+		}
+
+<span class="fc" id="L62">	}</span>
+
+	@Override
+	public void visit(DoStatement node) {
+<span class="fc" id="L66">		currentNode.push(node);</span>
+
+<span class="fc" id="L68">		boolean containsBlock = containsBlock(node.getBody());</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">		if(!containsBlock) {</span>
+<span class="fc" id="L70">			plusOne();</span>
+<span class="fc" id="L71">			nodes.push(true);</span>
+		} else {
+<span class="fc" id="L73">			nodes.push(false);</span>
+		}
+
+<span class="fc" id="L76">	}</span>
+
+	@Override
+	public void visit(WhileStatement node) {
+<span class="fc" id="L80">		currentNode.push(node);</span>
+
+<span class="fc" id="L82">		boolean containsBlock = containsBlock(node.getBody());</span>
+<span class="fc bfc" id="L83" title="All 2 branches covered.">		if(!containsBlock) {</span>
+<span class="fc" id="L84">			plusOne();</span>
+<span class="fc" id="L85">			nodes.push(true);</span>
+		} else {
+<span class="fc" id="L87">			nodes.push(false);</span>
+		}
+<span class="fc" id="L89">	}</span>
+
+	@Override
+	public void visit(SwitchStatement node) {
+
+<span class="fc" id="L94">		currentNode.push(node);</span>
+<span class="fc" id="L95">		nodes.push(true);</span>
+<span class="fc" id="L96">		plusOne();</span>
+<span class="fc" id="L97">	}</span>
+
+	@Override
+	public void visit(SwitchCase node) {
+<span class="fc" id="L101">		currentNode.push(node);</span>
+<span class="fc" id="L102">	}</span>
+
+
+	@Override
+	public void visit(CatchClause node) {
+
+<span class="fc" id="L108">		currentNode.push(node);</span>
+
+<span class="fc" id="L110">		boolean containsBlock = containsBlock(node.getBody());</span>
+<span class="pc bpc" id="L111" title="1 of 2 branches missed.">		if(!containsBlock) {</span>
+<span class="nc" id="L112">			plusOne();</span>
+<span class="nc" id="L113">			nodes.push(true);</span>
+		} else {
+<span class="fc" id="L115">			nodes.push(false);</span>
+		}
+
+<span class="fc" id="L118">	}</span>
+
+	public void visit(IfStatement node) {
+
+<span class="fc" id="L122">		currentNode.push(node);</span>
+
+<span class="fc" id="L124">		boolean containsBlock = containsBlock(node.getThenStatement());</span>
+<span class="fc bfc" id="L125" title="All 2 branches covered.">		if(!containsBlock) {</span>
+<span class="fc" id="L126">			plusOne();</span>
+<span class="fc" id="L127">			nodes.push(true);</span>
+		} else {
+<span class="fc" id="L129">			nodes.push(false);</span>
+		}
+<span class="fc" id="L131">	}</span>
+
+
+	@Override
+	public void endVisit(Block node) {
+<span class="fc" id="L136">		Boolean pop = blocks.pop();</span>
+<span class="fc bfc" id="L137" title="All 2 branches covered.">		if(pop)</span>
+<span class="fc" id="L138">			current--;</span>
+
+<span class="fc" id="L140">		currentNode.pop();</span>
+<span class="fc" id="L141">	}</span>
+
+	@Override
+	public void endVisit(IfStatement node) {
+<span class="fc" id="L145">		popBlock();</span>
+<span class="fc" id="L146">	}</span>
+
+	private boolean containsBlock(Statement body) {
+<span class="fc" id="L149">		return (body instanceof Block);</span>
+	}
+
+
+	private void plusOne() {
+<span class="fc" id="L154">		current++;</span>
+<span class="fc" id="L155">		max = Math.max(current, max);</span>
+<span class="fc" id="L156">	}</span>
+
+	private void popBlock() {
+<span class="fc" id="L159">		Boolean pop = nodes.pop();</span>
+<span class="fc bfc" id="L160" title="All 2 branches covered.">		if(pop)</span>
+<span class="fc" id="L161">			current--;</span>
+<span class="fc" id="L162">	}</span>
+
+	@Override
+	public void endVisit(CatchClause node) {
+<span class="fc" id="L166">		popBlock();</span>
+<span class="fc" id="L167">	}</span>
+
+	@Override
+	public void endVisit(WhileStatement node) {
+<span class="fc" id="L171">		popBlock();</span>
+<span class="fc" id="L172">	}</span>
+
+	@Override
+	public void endVisit(DoStatement node) {
+<span class="fc" id="L176">		popBlock();</span>
+<span class="fc" id="L177">	}</span>
+
+	@Override
+	public void endVisit(EnhancedForStatement node) {
+<span class="fc" id="L181">		popBlock();</span>
+<span class="fc" id="L182">	}</span>
+
+	@Override
+	public void endVisit(ForStatement node) {
+<span class="fc" id="L186">		popBlock();</span>
+<span class="fc" id="L187">	}</span>
+
+	@Override
+	public void endVisit(SwitchStatement node) {
+<span class="fc" id="L191">		popBlock();</span>
+<span class="fc" id="L192">	}</span>
+
+	@Override
+	public void setResult(CKMethodResult result) {
+		// -1 because the method block is considered a block.
+		// and we avoid 0, that can happen in case of enums
+<span class="fc" id="L198">		result.setMaxNestedBlocks(Math.max(0, max - 1));</span>
+<span class="fc" id="L199">	}</span>
+
+	@Override
+	public void setResult(CKClassResult result) {
+<span class="fc" id="L203">		result.setMaxNestedBlocks(Math.max(0, max - 1));</span>
+<span class="fc" id="L204">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

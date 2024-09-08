@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TightClassCohesion.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CK calculator</a> &gt; <a href="index.source.html" class="el_package">com.github.mauricioaniche.ck.metric</a> &gt; <span class="el_source">TightClassCohesion.java</span></div><h1>TightClassCohesion.java</h1><pre class="source lang-java linenums">package com.github.mauricioaniche.ck.metric;
+
+import com.github.mauricioaniche.ck.CKClassResult;
+import com.github.mauricioaniche.ck.CKMethodResult;
+import com.google.common.collect.Sets;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+//Calculates the tight and loose class cohesion for a class.
+//For more details see: https://www.aivosto.com/project/help/pm-oo-cohesion.html#TCC_LCC
+@RunAfter(metrics={RFC.class, MethodLevelFieldUsageCount.class, MethodInvocationsLocal.class})
+<span class="fc" id="L16">public class TightClassCohesion implements CKASTVisitor, ClassLevelMetric {</span>
+<span class="fc" id="L17">    private HashMap&lt;String, Set&lt;String&gt;&gt; accessedFields = new HashMap&lt;&gt;();</span>
+
+    //Two methods are directly connected if:
+    //1. both access the same class-level variable
+    //2. their call trees access the same class-level variable (only within the class)
+    private Set&lt;ImmutablePair&lt;String, String&gt;&gt; getDirectConnections(CKClassResult result){
+<span class="fc bfc" id="L23" title="All 2 branches covered.">        for (CKMethodResult method : result.getMethods()){</span>
+<span class="fc" id="L24">            accessedFields.put(method.getMethodName(), method.getFieldsAccessed());</span>
+<span class="fc" id="L25">        }</span>
+
+<span class="fc" id="L27">        HashMap&lt;String, Set&lt;String&gt;&gt; allAccessedFields = new HashMap&lt;&gt;();</span>
+<span class="fc bfc" id="L28" title="All 2 branches covered.">        for (CKMethodResult method : result.getVisibleMethods()){</span>
+<span class="fc" id="L29">            Set&lt;String&gt; allLocalFields = collectAccessedFields(method);</span>
+<span class="fc" id="L30">            allLocalFields.addAll(method.getFieldsAccessed());</span>
+<span class="fc" id="L31">            allAccessedFields.put(method.getMethodName(), allLocalFields);</span>
+<span class="fc" id="L32">        }</span>
+
+<span class="fc" id="L34">        Set&lt;ImmutablePair&lt;String, String&gt;&gt; directConnections = new HashSet&lt;&gt;();</span>
+<span class="fc bfc" id="L35" title="All 2 branches covered.">        for(String firstKey : allAccessedFields.keySet()){</span>
+<span class="fc bfc" id="L36" title="All 2 branches covered.">            for(String secondKey : allAccessedFields.keySet()){</span>
+<span class="fc" id="L37">                Set&lt;String&gt; accessedFieldsFirst = Sets.newHashSet(allAccessedFields.get(firstKey));</span>
+<span class="fc" id="L38">                Set&lt;String&gt; accessedFieldsSecond = allAccessedFields.get(secondKey);</span>
+<span class="fc" id="L39">                accessedFieldsFirst.retainAll(accessedFieldsSecond);</span>
+<span class="fc bfc" id="L40" title="All 4 branches covered.">                if(!firstKey.equals(secondKey) &amp;&amp; accessedFieldsFirst.size() &gt; 0){</span>
+<span class="fc" id="L41">                    directConnections.add(new ImmutablePair&lt;String, String&gt;(firstKey, secondKey));</span>
+                }
+<span class="fc" id="L43">            }</span>
+<span class="fc" id="L44">        }</span>
+<span class="fc" id="L45">        return directConnections;</span>
+    }
+
+    //Collect all accessed fields from the invocation tree of a method
+    private Set&lt;String&gt; collectAccessedFields(CKMethodResult method){
+<span class="fc" id="L50">        Set&lt;String&gt; allLocalInvocations = method.getMethodInvocationsIndirectLocal().keySet();</span>
+
+<span class="fc" id="L52">        Set&lt;String&gt; allLocalFields = new HashSet&lt;&gt;();</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">        for (String invocation : allLocalInvocations){</span>
+<span class="fc" id="L54">            Set&lt;String&gt; currentFields = accessedFields.get(invocation);</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">            if(currentFields != null)</span>
+<span class="fc" id="L56">                allLocalFields.addAll(currentFields);</span>
+<span class="fc" id="L57">        }</span>
+
+<span class="fc" id="L59">        return allLocalFields;</span>
+    }
+
+    //Two methods are indirectly connected if:
+    //1. they are not directly connected
+    //2. they are connected via other methods, e.g. X -&gt; Y -&gt; Z
+    private Set&lt;ImmutablePair&lt;String, String&gt;&gt; getIndirectConnections(CKClassResult result, Set&lt;ImmutablePair&lt;String, String&gt;&gt; directConnections){
+        //convert the direct connections into a Map in order to simplify the usage
+<span class="fc" id="L67">        HashMap&lt;String, Set&lt;String&gt;&gt; directConnectionsMap = new HashMap&lt;&gt;();</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">        for(CKMethodResult method : result.getMethods()){</span>
+<span class="fc" id="L69">            directConnectionsMap.put(method.getMethodName(), Sets.newHashSet(Sets.newHashSet(ArrayUtils.EMPTY_STRING_ARRAY)));</span>
+<span class="fc" id="L70">        }</span>
+<span class="fc bfc" id="L71" title="All 2 branches covered.">        for(ImmutablePair&lt;String, String&gt; pair : directConnections){</span>
+<span class="fc" id="L72">            directConnectionsMap.get(pair.left).add(pair.right);</span>
+<span class="fc" id="L73">        }</span>
+
+        //extract all direct and indirect connections between methods from the direct connections
+<span class="fc" id="L76">        HashMap&lt;String, Set&lt;String&gt;&gt; indirectConnectionsMap = new HashMap&lt;&gt;();</span>
+<span class="fc bfc" id="L77" title="All 2 branches covered.">        for (CKMethodResult method : result.getVisibleMethods()){</span>
+<span class="fc" id="L78">            Set&lt;String&gt; localConnections = extractConnections(method.getMethodName(), new HashSet&lt;&gt;(), directConnectionsMap);</span>
+<span class="fc" id="L79">            indirectConnectionsMap.put(method.getMethodName(), localConnections);</span>
+<span class="fc" id="L80">        }</span>
+
+        //map the indirect connections into connection pairs
+<span class="fc" id="L83">        Set&lt;ImmutablePair&lt;String, String&gt;&gt; indirectConnections = new HashSet&lt;&gt;();</span>
+<span class="fc bfc" id="L84" title="All 2 branches covered.">        for(String key : indirectConnectionsMap.keySet()){</span>
+<span class="fc" id="L85">            indirectConnections.addAll(indirectConnectionsMap.get(key).stream()</span>
+<span class="fc bfc" id="L86" title="All 2 branches covered.">                    .filter(right -&gt; !key.equals(right))</span>
+<span class="fc" id="L87">                    .map(right -&gt; new ImmutablePair&lt;String, String&gt;(key, right))</span>
+<span class="fc" id="L88">                    .collect(Collectors.toSet()));</span>
+<span class="fc" id="L89">        }</span>
+        //remove all direct connections
+<span class="fc" id="L91">        indirectConnections.removeAll(directConnections);</span>
+<span class="fc" id="L92">        return indirectConnections;</span>
+    }
+
+    //Recursively extract all indirect connections between methods starting with the given method
+    //Explored contains all previously explored connections
+    //connections contains all direct method connections of interest
+    private Set&lt;String&gt; extractConnections(String currentConnection, Set&lt;String&gt; explored, HashMap&lt;String, Set&lt;String&gt;&gt; connections){
+<span class="fc" id="L99">        explored.add(currentConnection);</span>
+
+        //only explore connections that were not previously explored
+<span class="fc" id="L102">        Set&lt;String&gt; nextConnections = connections.get(currentConnection).stream()</span>
+<span class="fc bfc" id="L103" title="All 2 branches covered.">                .filter(connection -&gt; !explored.contains(connection))</span>
+<span class="fc" id="L104">                .collect(Collectors.toSet());</span>
+<span class="fc" id="L105">        explored.addAll(nextConnections);</span>
+<span class="fc bfc" id="L106" title="All 2 branches covered.">        for (String nextConnection : nextConnections){</span>
+<span class="fc" id="L107">            explored.addAll(extractConnections(nextConnection, explored, connections));</span>
+<span class="fc" id="L108">        }</span>
+
+        //Stops when all invocations are explored: there are no more invocations to be explored
+<span class="fc" id="L111">        return explored;</span>
+    }
+
+    public void setResult(CKClassResult result) {
+        //in case the class does not contain any visible methods, TCC and LCC have no reasonable value, thus set it to -1
+<span class="fc bfc" id="L116" title="All 2 branches covered.">        if(result.getVisibleMethods().size() &lt; 1){</span>
+<span class="fc" id="L117">            result.setTightClassCohesion(-1);</span>
+<span class="fc" id="L118">            result.setLooseClassCohesion(-1);</span>
+        } else {
+            //maximum number of possible connections (N * (N -1))
+<span class="fc" id="L121">            float np = result.getVisibleMethods().size() * (result.getVisibleMethods().size() - 1);</span>
+
+            //number of direct connections (number of edges in the connection graph) in this class
+<span class="fc" id="L124">            Set&lt;ImmutablePair&lt;String, String&gt;&gt; directConnections = getDirectConnections(result);</span>
+<span class="fc" id="L125">            result.setTightClassCohesion(directConnections.size() / np);</span>
+
+            //number of indirect connections in this class
+<span class="fc" id="L128">            Set&lt;ImmutablePair&lt;String, String&gt;&gt; indirectConnections = getIndirectConnections(result, directConnections);</span>
+<span class="fc" id="L129">            result.setLooseClassCohesion((directConnections.size() + indirectConnections.size()) / np);</span>
+        }
+<span class="fc" id="L131">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

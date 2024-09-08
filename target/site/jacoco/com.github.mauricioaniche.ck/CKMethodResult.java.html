@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CKMethodResult.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CK calculator</a> &gt; <a href="index.source.html" class="el_package">com.github.mauricioaniche.ck</a> &gt; <span class="el_source">CKMethodResult.java</span></div><h1>CKMethodResult.java</h1><pre class="source lang-java linenums">package com.github.mauricioaniche.ck;
+
+import org.eclipse.jdt.core.dom.Modifier;
+
+import com.github.mauricioaniche.ck.metric.CouplingExtras;
+
+import java.util.*;
+
+public class CKMethodResult {
+	private int cbo;
+<span class="fc" id="L11">	private int cboModified = -1;</span>
+<span class="fc" id="L12">	private int fanin = -1;</span>
+<span class="fc" id="L13">	private int fanout = -1;</span>
+	private int rfc;
+	private int wmc;
+	private String methodName;
+	private String qualifiedMethodName;
+	private boolean isVisible;
+	private int parametersQty;
+	private int returnQty;
+	private int loc;
+	private int variablesQty;
+	private Map&lt;String, Integer&gt; variablesUsage;
+	private int startLine;
+	private int loopQty;
+	private int comparisonsQty;
+	private int tryCatchQty;
+	private int parenthesizedExpsQty;
+	private int stringLiteralsQty;
+	private int numbersQty;
+	private int assignmentsQty;
+	private int mathOperationsQty;
+	private int maxNestedBlocks;
+	private int anonymousClassesQty;
+	private int innerClassesQty;
+	private int lambdasQty;
+	private int uniqueWordsQty;
+	//all local field accesses
+	private Map&lt;String, Integer&gt; fieldUsage;
+	private boolean isConstructor;
+	private int modifiers;
+	private int logStatementsQty;
+	private boolean hasJavadoc;
+
+	//All direct invocations of methods
+	private Set&lt;String&gt; methodInvocations;
+	//All direct invocations of methods of the same class
+	private Set&lt;String&gt; methodInvocationsLocal;
+	//All indirect invocations of methods of the same class
+	private Map&lt;String, Set&lt;String&gt;&gt; methodInvocationsIndirectLocal;
+
+<span class="fc" id="L52">	public CKMethodResult(String methodName, String qualifiedMethodName, boolean isConstructor, int modifiers) {</span>
+<span class="fc" id="L53">		this.methodName = methodName;</span>
+<span class="fc" id="L54">		this.qualifiedMethodName = qualifiedMethodName;</span>
+<span class="fc" id="L55">		this.isConstructor = isConstructor;</span>
+<span class="fc" id="L56">		this.modifiers = modifiers;</span>
+<span class="fc bfc" id="L57" title="All 2 branches covered.">		this.isVisible = !Modifier.isPrivate(modifiers);</span>
+<span class="fc" id="L58">	}</span>
+
+	/**
+	 * public/static/private and other org.eclipse.jdt.core.dom.Modifier modifiers
+	 *
+	 * @see org.eclipse.jdt.core.dom.Modifier to decode int
+	 * @return
+	 */
+	public int getModifiers() {
+<span class="fc" id="L67">		return modifiers;</span>
+	}
+
+<span class="fc" id="L70">	public boolean getIsVisible(){ return isVisible;}</span>
+
+	public void setCbo(int cbo) {
+<span class="fc" id="L73">		this.cbo = cbo;</span>
+<span class="fc" id="L74">	}</span>
+	
+	public void setCboModified(int cboModified) {
+<span class="fc" id="L77">		this.cboModified = cboModified;</span>
+<span class="fc" id="L78">	}</span>
+	
+	public int getCboModified() {
+<span class="fc bfc" id="L81" title="All 2 branches covered.">		if(this.cboModified == -1){</span>
+<span class="fc" id="L82">			CouplingExtras extras = CouplingExtras.getInstance();</span>
+<span class="fc" id="L83">			this.setCboModified(extras.getValueCBOMethod(this.qualifiedMethodName));</span>
+		}
+<span class="fc" id="L85">		return cboModified;</span>
+	}
+	
+	public void setFanin(int fanin) {
+<span class="fc" id="L89">		this.fanin = fanin;</span>
+<span class="fc" id="L90">	}</span>
+	
+	public int getFanin() {
+<span class="fc bfc" id="L93" title="All 2 branches covered.">		if(this.fanin == -1){</span>
+<span class="fc" id="L94">			CouplingExtras extras = CouplingExtras.getInstance();</span>
+<span class="fc" id="L95">			this.setFanin(extras.getValueFanInMethod(this.qualifiedMethodName));</span>
+		}
+<span class="fc" id="L97">		return fanin;</span>
+	}
+	
+	public void setFanout(int fanout) {
+<span class="fc" id="L101">		this.fanout = fanout;</span>
+<span class="fc" id="L102">	}</span>
+	
+	public int getFanout() {
+<span class="fc bfc" id="L105" title="All 2 branches covered.">		if(this.fanout == -1){</span>
+<span class="fc" id="L106">			CouplingExtras extras = CouplingExtras.getInstance();</span>
+<span class="fc" id="L107">			this.setFanout(extras.getValueFanOutMethod(this.qualifiedMethodName));</span>
+		}
+<span class="fc" id="L109">		return fanout;</span>
+	}
+
+	public void setRfc(int rfc) {
+<span class="fc" id="L113">		this.rfc = rfc;</span>
+<span class="fc" id="L114">	}</span>
+
+	public void setWmc(int wmc) {
+<span class="fc" id="L117">		this.wmc = wmc;</span>
+<span class="fc" id="L118">	}</span>
+
+	public void setParametersQty(int parametersQty) {
+<span class="fc" id="L121">		this.parametersQty = parametersQty;</span>
+<span class="fc" id="L122">	}</span>
+
+	public int getCbo() {
+<span class="fc" id="L125">		return cbo;</span>
+	}
+
+	public int getRfc() {
+<span class="fc" id="L129">		return rfc;</span>
+	}
+
+	public int getWmc() {
+<span class="fc" id="L133">		return wmc;</span>
+	}
+
+	public String getMethodName() {
+<span class="fc" id="L137">		return methodName;</span>
+	}
+
+	public String getQualifiedMethodName() {
+<span class="fc" id="L141">		return qualifiedMethodName;</span>
+	}
+
+	@Override
+	public String toString() {
+<span class="nc" id="L146">		return &quot;CKMethodResult{&quot; +</span>
+				&quot;cbo=&quot; + cbo +
+				&quot;, rfc=&quot; + rfc +
+				&quot;, wmc=&quot; + wmc +
+				&quot;, methodName='&quot; + methodName + '\'' +
+				'}';
+	}
+
+	public void setReturnQty(int returnQty) {
+<span class="fc" id="L155">		this.returnQty = returnQty;</span>
+<span class="fc" id="L156">	}</span>
+
+	public void setLoc(int loc) {
+<span class="fc" id="L159">		this.loc = loc;</span>
+<span class="fc" id="L160">	}</span>
+
+	public void setVariablesQty(int variablesQty) {
+<span class="fc" id="L163">		this.variablesQty = variablesQty;</span>
+<span class="fc" id="L164">	}</span>
+
+	public int getLoc() {
+<span class="fc" id="L167">		return loc;</span>
+	}
+
+	public int getParametersQty() {
+<span class="fc" id="L171">		return parametersQty;</span>
+	}
+
+	public int getVariablesQty() {
+<span class="fc" id="L175">		return variablesQty;</span>
+	}
+
+	public int getReturnQty() {
+<span class="fc" id="L179">		return returnQty;</span>
+	}
+
+	public void setVariablesUsage(Map&lt;String, Integer&gt; variablesUsage) {
+<span class="fc" id="L183">		this.variablesUsage = variablesUsage;</span>
+<span class="fc" id="L184">	}</span>
+
+	public Map&lt;String, Integer&gt; getVariablesUsage() {
+<span class="pc bpc" id="L187" title="1 of 2 branches missed.">		if(this.variablesUsage==null)</span>
+<span class="nc" id="L188">			this.variablesUsage = new HashMap&lt;&gt;();</span>
+
+<span class="fc" id="L190">		return variablesUsage;</span>
+	}
+
+	public void setStartLine(int startLine) {
+<span class="fc" id="L194">		this.startLine = startLine;</span>
+<span class="fc" id="L195">	}</span>
+
+	public int getStartLine() {
+<span class="fc" id="L198">		return startLine;</span>
+	}
+
+	public void setLoopQty(int loopQty) {
+<span class="fc" id="L202">		this.loopQty = loopQty;</span>
+<span class="fc" id="L203">	}</span>
+
+	public int getLoopQty() {
+<span class="fc" id="L206">		return loopQty;</span>
+	}
+
+	public void setComparisonsQty(int comparisonsQty) {
+<span class="fc" id="L210">		this.comparisonsQty = comparisonsQty;</span>
+<span class="fc" id="L211">	}</span>
+
+	public int getComparisonsQty() {
+<span class="fc" id="L214">		return comparisonsQty;</span>
+	}
+
+	public void setTryCatchQty(int tryCatchQty) {
+<span class="fc" id="L218">		this.tryCatchQty = tryCatchQty;</span>
+<span class="fc" id="L219">	}</span>
+
+	public int getTryCatchQty() {
+<span class="fc" id="L222">		return tryCatchQty;</span>
+	}
+
+	public void setParenthesizedExpsQty(int parenthesizedExpsQty) {
+<span class="fc" id="L226">		this.parenthesizedExpsQty = parenthesizedExpsQty;</span>
+<span class="fc" id="L227">	}</span>
+
+	public int getParenthesizedExpsQty() {
+<span class="fc" id="L230">		return parenthesizedExpsQty;</span>
+	}
+
+	public void setStringLiteralsQty(int stringsQty) {
+<span class="fc" id="L234">		this.stringLiteralsQty = stringsQty;</span>
+<span class="fc" id="L235">	}</span>
+
+	public int getStringLiteralsQty() {
+<span class="fc" id="L238">		return stringLiteralsQty;</span>
+	}
+
+	public void setNumbersQty(int numbersQty) {
+<span class="fc" id="L242">		this.numbersQty = numbersQty;</span>
+<span class="fc" id="L243">	}</span>
+
+	public void setAssignmentsQty(int assignmentsQty) {
+<span class="fc" id="L246">		this.assignmentsQty = assignmentsQty;</span>
+<span class="fc" id="L247">	}</span>
+
+	public int getAssignmentsQty() {
+<span class="fc" id="L250">		return assignmentsQty;</span>
+	}
+
+	public void setMathOperationsQty(int mathOperationsQty) {
+<span class="fc" id="L254">		this.mathOperationsQty = mathOperationsQty;</span>
+<span class="fc" id="L255">	}</span>
+
+	public int getMathOperationsQty() {
+<span class="fc" id="L258">		return mathOperationsQty;</span>
+	}
+
+	public void setMaxNestedBlocks(int maxNestedBlocks) {
+<span class="fc" id="L262">		this.maxNestedBlocks = maxNestedBlocks;</span>
+<span class="fc" id="L263">	}</span>
+
+	public int getMaxNestedBlocks() {
+<span class="fc" id="L266">		return maxNestedBlocks;</span>
+	}
+
+	public int getNumbersQty() {
+<span class="fc" id="L270">		return numbersQty;</span>
+	}
+
+	public void setAnonymousClassesQty(int anonymousClassesQty) {
+<span class="fc" id="L274">		this.anonymousClassesQty = anonymousClassesQty;</span>
+<span class="fc" id="L275">	}</span>
+
+	public int getAnonymousClassesQty() {
+<span class="fc" id="L278">		return anonymousClassesQty;</span>
+	}
+
+	public void setInnerClassesQty(int innerClassesQty) {
+<span class="fc" id="L282">		this.innerClassesQty = innerClassesQty;</span>
+<span class="fc" id="L283">	}</span>
+
+	public int getInnerClassesQty() {
+<span class="fc" id="L286">		return innerClassesQty;</span>
+	}
+
+	public void setLambdasQty(int lambdasQty) {
+<span class="fc" id="L290">		this.lambdasQty = lambdasQty;</span>
+<span class="fc" id="L291">	}</span>
+
+	public int getLambdasQty() {
+<span class="fc" id="L294">		return lambdasQty;</span>
+	}
+
+	public void setUniqueWordsQty(int uniqueWordsQty) {
+<span class="fc" id="L298">		this.uniqueWordsQty = uniqueWordsQty;</span>
+<span class="fc" id="L299">	}</span>
+
+	public int getUniqueWordsQty() {
+<span class="fc" id="L302">		return uniqueWordsQty;</span>
+	}
+
+	public void setFieldUsage(Map&lt;String, Integer&gt; fieldUsage) {
+<span class="fc" id="L306">		this.fieldUsage = fieldUsage;</span>
+<span class="fc" id="L307">	}</span>
+
+	public Map&lt;String, Integer&gt; getFieldUsage() {
+<span class="pc bpc" id="L310" title="1 of 2 branches missed.">		if(this.fieldUsage==null)</span>
+<span class="nc" id="L311">			fieldUsage = new HashMap&lt;&gt;();</span>
+
+<span class="fc" id="L313">		return fieldUsage;</span>
+	}
+
+	public Set&lt;String&gt; getFieldsAccessed() {
+<span class="pc bpc" id="L317" title="1 of 2 branches missed.">		if(this.fieldUsage==null)</span>
+<span class="nc" id="L318">			fieldUsage = new HashMap&lt;&gt;();</span>
+
+<span class="fc" id="L320">		return fieldUsage.keySet();</span>
+	}
+
+	public boolean isConstructor() {
+<span class="fc" id="L324">		return isConstructor;</span>
+	}
+
+	public int getLogStatementsQty() {
+<span class="fc" id="L328">		return logStatementsQty;</span>
+	}
+
+	public void setLogStatementsQty(int logStatementsQty) {
+<span class="fc" id="L332">		this.logStatementsQty = logStatementsQty;</span>
+<span class="fc" id="L333">	}</span>
+
+	public void setHasJavadoc(boolean hasJavadoc) {
+<span class="fc" id="L336">		this.hasJavadoc = hasJavadoc;</span>
+<span class="fc" id="L337">	}</span>
+
+	public boolean getHasJavadoc() {
+<span class="fc" id="L340">		return hasJavadoc;</span>
+	}
+
+	public void setMethodInvocations(Set&lt;String&gt; methodInvocations) {
+<span class="fc" id="L344">		this.methodInvocations = methodInvocations;</span>
+<span class="fc" id="L345">	}</span>
+
+	public Set&lt;String&gt; getMethodInvocations() {
+<span class="pc bpc" id="L348" title="1 of 2 branches missed.">		if(methodInvocations==null)</span>
+<span class="nc" id="L349">			methodInvocations = new HashSet&lt;&gt;();</span>
+
+<span class="fc" id="L351">		return methodInvocations;</span>
+	}
+
+	public void setMethodInvocationLocal(Set&lt;String&gt; methodInvocationsLocal) {
+<span class="fc" id="L355">		this.methodInvocationsLocal = methodInvocationsLocal;</span>
+<span class="fc" id="L356">	}</span>
+
+	public Set&lt;String&gt; getMethodInvocationsLocal() {
+<span class="fc" id="L359">		return methodInvocationsLocal;</span>
+	}
+
+	public void setMethodInvocationsIndirectLocal(Map&lt;String, Set&lt;String&gt;&gt; methodInvocationsIndirect) {
+<span class="fc" id="L363">		this.methodInvocationsIndirectLocal = methodInvocationsIndirect;</span>
+<span class="fc" id="L364">	}</span>
+
+	public Map&lt;String, Set&lt;String&gt;&gt; getMethodInvocationsIndirectLocal() {
+<span class="fc" id="L367">		return methodInvocationsIndirectLocal;</span>
+	}
+
+	@Override
+	public boolean equals(Object o) {
+<span class="nc bnc" id="L372" title="All 2 branches missed.">		if (this == o) return true;</span>
+<span class="nc bnc" id="L373" title="All 4 branches missed.">		if (o == null || getClass() != o.getClass()) return false;</span>
+<span class="nc" id="L374">		CKMethodResult that = (CKMethodResult) o;</span>
+<span class="nc bnc" id="L375" title="All 2 branches missed.">		return startLine == that.startLine &amp;&amp;</span>
+<span class="nc bnc" id="L376" title="All 2 branches missed.">				methodName.equals(that.methodName);</span>
+	}
+
+	@Override
+	public int hashCode() {
+<span class="fc" id="L381">		return Objects.hash(methodName, startLine);</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

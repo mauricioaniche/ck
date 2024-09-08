@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LOCCalculator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CK calculator</a> &gt; <a href="index.source.html" class="el_package">com.github.mauricioaniche.ck.util</a> &gt; <span class="el_source">LOCCalculator.java</span></div><h1>LOCCalculator.java</h1><pre class="source lang-java linenums">package com.github.mauricioaniche.ck.util;
+
+import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Logger;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+<span class="nc" id="L11">public class LOCCalculator {</span>
+
+<span class="fc" id="L13">	private static Logger log = Logger.getLogger(LOCCalculator.class);</span>
+	
+	public static int calculate(String sourceCode) {
+		try {
+<span class="fc" id="L17">			InputStream is = IOUtils.toInputStream(sourceCode);</span>
+<span class="fc" id="L18">			BufferedReader reader = new BufferedReader(new InputStreamReader(is));</span>
+<span class="fc" id="L19">			return getNumberOfLines(reader);</span>
+<span class="nc" id="L20">		} catch (IOException e) {</span>
+<span class="nc" id="L21">			log.error(&quot;Error when counting lines&quot;, e);</span>
+<span class="nc" id="L22">			return 0;</span>
+		}
+	}
+
+
+
+	// Code extracted from https://gist.github.com/shiva27/1432290
+
+	/**
+	 * This class  counts the number of source code lines by excluding comments, in a Java file
+	 * The pseudocode is as below
+	 *
+	 * Initial: Set count = 0, commentBegan = false
+	 * Start: Read line
+	 * Begin: If line is not null, goto Check, else goto End
+	 * Check: If line is a trivial line(after trimming, either begins with // or is &quot;&quot;), goto Start
+	 *        If commentBegan = true
+	 *             if comment has not ended in line
+	 *                goto Start
+	 *              else
+	 *                line = what remains in the line after comment ends
+	 *                commenBegan = false
+	 *                if line is trivial
+	 *                   goto Start
+	 * 		  If line is a valid source code line, count++
+	 *        If comment has begun in the line, set commentBegan = true
+	 *        goto Start
+	 * End: print count
+	 */
+	private static int getNumberOfLines(BufferedReader bReader)
+			throws IOException {
+<span class="fc" id="L53">		int count = 0;</span>
+<span class="fc" id="L54">		boolean commentBegan = false;</span>
+<span class="fc" id="L55">		String line = null;</span>
+
+<span class="fc bfc" id="L57" title="All 2 branches covered.">		while ((line = bReader.readLine()) != null) {</span>
+<span class="fc" id="L58">			line = line.trim();</span>
+<span class="fc bfc" id="L59" title="All 4 branches covered.">			if (&quot;&quot;.equals(line) || line.startsWith(&quot;//&quot;)) {</span>
+<span class="fc" id="L60">				continue;</span>
+			}
+<span class="fc bfc" id="L62" title="All 2 branches covered.">			if (commentBegan) {</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">				if (commentEnded(line)) {</span>
+<span class="fc" id="L64">					line = line.substring(line.indexOf(&quot;*/&quot;) + 2).trim();</span>
+<span class="fc" id="L65">					commentBegan = false;</span>
+<span class="pc bpc" id="L66" title="3 of 4 branches missed.">					if (&quot;&quot;.equals(line) || line.startsWith(&quot;//&quot;)) {</span>
+<span class="nc" id="L67">						continue;</span>
+					}
+				} else
+					continue;
+			}
+<span class="fc bfc" id="L72" title="All 2 branches covered.">			if (isSourceCodeLine(line)) {</span>
+<span class="fc" id="L73">				count++;</span>
+			}
+<span class="fc bfc" id="L75" title="All 2 branches covered.">			if (commentBegan(line)) {</span>
+<span class="fc" id="L76">				commentBegan = true;</span>
+			}
+		}
+<span class="fc" id="L79">		return count;</span>
+	}
+
+	/**
+	 *
+	 * @param line
+	 * @return This method checks if in the given line a comment has begun and has not ended
+	 */
+	private static boolean commentBegan(String line) {
+		// If line = /* */, this method will return false
+		// If line = /* */ /*, this method will return true
+<span class="fc" id="L90">		int index = line.indexOf(&quot;/*&quot;);</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">		if (index &lt; 0) {</span>
+<span class="fc" id="L92">			return false;</span>
+		}
+<span class="fc" id="L94">		int quoteStartIndex = line.indexOf(&quot;\&quot;&quot;);</span>
+<span class="pc bpc" id="L95" title="1 of 4 branches missed.">		if (quoteStartIndex != -1 &amp;&amp; quoteStartIndex &lt; index) {</span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">			while (quoteStartIndex &gt; -1) {</span>
+<span class="fc" id="L97">				line = line.substring(quoteStartIndex + 1);</span>
+<span class="fc" id="L98">				int quoteEndIndex = line.indexOf(&quot;\&quot;&quot;);</span>
+<span class="fc" id="L99">				line = line.substring(quoteEndIndex + 1);</span>
+<span class="fc" id="L100">				quoteStartIndex = line.indexOf(&quot;\&quot;&quot;);</span>
+<span class="fc" id="L101">			}</span>
+<span class="fc" id="L102">			return commentBegan(line);</span>
+		}
+<span class="fc bfc" id="L104" title="All 2 branches covered.">		return !commentEnded(line.substring(index + 2));</span>
+	}
+
+	/**
+	 *
+	 * @param line
+	 * @return This method checks if in the given line a comment has ended and no new comment has not begun
+	 */
+	private static boolean commentEnded(String line) {
+		// If line = */ /* , this method will return false
+		// If line = */ /* */, this method will return true
+<span class="fc" id="L115">		int index = line.indexOf(&quot;*/&quot;);</span>
+<span class="fc bfc" id="L116" title="All 2 branches covered.">		if (index &lt; 0) {</span>
+<span class="fc" id="L117">			return false;</span>
+		} else {
+<span class="fc" id="L119">			String subString = line.substring(index + 2).trim();</span>
+<span class="pc bpc" id="L120" title="1 of 4 branches missed.">			if (&quot;&quot;.equals(subString) || subString.startsWith(&quot;//&quot;)) {</span>
+<span class="fc" id="L121">				return true;</span>
+			}
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">			if(commentBegan(subString))</span>
+			{
+<span class="nc" id="L125">				return false;</span>
+			}
+			else
+			{
+<span class="fc" id="L129">				return true;</span>
+			}
+		}
+	}
+
+	/**
+	 *
+	 * @param line
+	 * @return This method returns true if there is any valid source code in the given input line. It does not worry if comment has begun or not.
+	 * This method will work only if we are sure that comment has not already begun previously. Hence, this method should be called only after {@link #commentBegan(String)} is called
+	 */
+	private static boolean isSourceCodeLine(String line) {
+<span class="fc" id="L141">		boolean isSourceCodeLine = false;</span>
+<span class="fc" id="L142">		line = line.trim();</span>
+<span class="pc bpc" id="L143" title="2 of 4 branches missed.">		if (&quot;&quot;.equals(line) || line.startsWith(&quot;//&quot;)) {</span>
+<span class="nc" id="L144">			return isSourceCodeLine;</span>
+		}
+<span class="fc bfc" id="L146" title="All 2 branches covered.">		if (line.length() == 1) {</span>
+<span class="fc" id="L147">			return true;</span>
+		}
+<span class="fc" id="L149">		int index = line.indexOf(&quot;/*&quot;);</span>
+<span class="fc bfc" id="L150" title="All 2 branches covered.">		if (index != 0) {</span>
+<span class="fc" id="L151">			return true;</span>
+		} else {
+<span class="pc bpc" id="L153" title="1 of 2 branches missed.">			while (line.length() &gt; 0) {</span>
+<span class="fc" id="L154">				line = line.substring(index + 2);</span>
+<span class="fc" id="L155">				int endCommentPosition = line.indexOf(&quot;*/&quot;);</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">				if (endCommentPosition &lt; 0) {</span>
+<span class="fc" id="L157">					return false;</span>
+				}
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">				if (endCommentPosition == line.length() - 2) {</span>
+<span class="fc" id="L160">					return false;</span>
+				} else {
+<span class="nc" id="L162">					String subString = line.substring(endCommentPosition + 2)</span>
+<span class="nc" id="L163">							.trim();</span>
+<span class="nc bnc" id="L164" title="All 4 branches missed.">					if (&quot;&quot;.equals(subString) || subString.indexOf(&quot;//&quot;) == 0) {</span>
+<span class="nc" id="L165">						return false;</span>
+					} else {
+<span class="nc bnc" id="L167" title="All 2 branches missed.">						if (subString.startsWith(&quot;/*&quot;)) {</span>
+<span class="nc" id="L168">							line = subString;</span>
+<span class="nc" id="L169">							continue;</span>
+						}
+<span class="nc" id="L171">						return true;</span>
+					}
+				}
+
+			}
+		}
+<span class="nc" id="L177">		return isSourceCodeLine;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

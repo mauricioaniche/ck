@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WMC.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CK calculator</a> &gt; <a href="index.source.html" class="el_package">com.github.mauricioaniche.ck.metric</a> &gt; <span class="el_source">WMC.java</span></div><h1>WMC.java</h1><pre class="source lang-java linenums">package com.github.mauricioaniche.ck.metric;
+
+import com.github.mauricioaniche.ck.CKClassResult;
+import com.github.mauricioaniche.ck.CKMethodResult;
+import org.apache.commons.lang3.StringUtils;
+import org.eclipse.jdt.core.dom.*;
+
+import java.util.*;
+
+<span class="fc" id="L10">public class WMC implements CKASTVisitor, ClassLevelMetric, MethodLevelMetric {</span>
+
+<span class="fc" id="L12">	protected int cc = 0;</span>
+	// this stack helps us in knowing whether we could evaluate InfixExpressions or not
+	// if we count the conditions directly in the branch node (e.g., if, for, ...), then
+	// do not need to (re-)count the Infix agains
+	// this is needed for some inline conditions, e.g., boolean x = a &gt; 10;
+<span class="fc" id="L17">	private LinkedList&lt;ASTNode&gt; stack = new LinkedList&lt;&gt;();</span>
+
+	@Override
+	public void visit(MethodDeclaration node) {
+
+		// plus 1 for the method itself
+<span class="fc" id="L23">		increaseCc();</span>
+<span class="fc" id="L24">	}</span>
+
+    @Override
+    public void visit(ForStatement node) {
+<span class="fc" id="L28">	    increaseCCFromExpression(node.getExpression());</span>
+
+<span class="fc" id="L30">    	stack.push(node);</span>
+<span class="fc" id="L31">    }</span>
+
+	@Override
+    public void visit(EnhancedForStatement node) {
+<span class="fc" id="L35">	    increaseCCFromExpression(node.getExpression());</span>
+
+<span class="fc" id="L37">	    stack.push(node);</span>
+<span class="fc" id="L38">    }</span>
+    
+    @Override
+    public void visit(ConditionalExpression node) {
+
+<span class="fc" id="L43">		increaseCCFromExpression(node.getExpression());</span>
+
+<span class="fc" id="L45">		stack.push(node);</span>
+<span class="fc" id="L46">    }</span>
+    
+    @Override
+    public void visit(DoStatement node) {
+<span class="fc" id="L50">	    increaseCCFromExpression(node.getExpression());</span>
+
+<span class="fc" id="L52">	    stack.push(node);</span>
+<span class="fc" id="L53">    }</span>
+
+    @Override
+    public void visit(WhileStatement node) {
+<span class="fc" id="L57">	    increaseCCFromExpression(node.getExpression());</span>
+
+<span class="fc" id="L59">	    stack.push(node);</span>
+<span class="fc" id="L60">    }</span>
+    
+    @Override
+    public void visit(SwitchCase node) {
+
+<span class="fc bfc" id="L65" title="All 2 branches covered.">		if(!node.isDefault()) {</span>
+<span class="fc" id="L66">			increaseCCFromExpression(node.getExpression());</span>
+		}
+
+<span class="fc" id="L69">	    stack.push(node);</span>
+<span class="fc" id="L70">    }</span>
+
+	@Override
+	public void visit(InfixExpression node) {
+
+<span class="fc bfc" id="L75" title="All 2 branches covered.">		if(stack.isEmpty()) {</span>
+<span class="fc" id="L76">			Set&lt;InfixExpression.Operator&gt; operatorsToConsider = new HashSet&lt;InfixExpression.Operator&gt;() {{</span>
+<span class="fc" id="L77">				add(InfixExpression.Operator.LESS);</span>
+<span class="fc" id="L78">				add(InfixExpression.Operator.GREATER);</span>
+<span class="fc" id="L79">				add(InfixExpression.Operator.LESS_EQUALS);</span>
+<span class="fc" id="L80">				add(InfixExpression.Operator.GREATER_EQUALS);</span>
+<span class="fc" id="L81">				add(InfixExpression.Operator.EQUALS);</span>
+<span class="fc" id="L82">				add(InfixExpression.Operator.NOT_EQUALS);</span>
+			}};
+
+<span class="fc bfc" id="L85" title="All 2 branches covered.">			if (operatorsToConsider.contains(node.getOperator()))</span>
+<span class="fc" id="L86">				increaseCc();</span>
+		}
+<span class="fc" id="L88">	}</span>
+
+    @Override
+    public void visit(Initializer node) {
+<span class="fc" id="L92">    	increaseCc();</span>
+<span class="fc" id="L93">    }</span>
+
+
+    @Override
+    public void visit(CatchClause node) {
+<span class="fc" id="L98">    	increaseCc();</span>
+<span class="fc" id="L99">    }</span>
+
+    public void visit(IfStatement node) {
+
+<span class="fc" id="L103">	    increaseCCFromExpression(node.getExpression());</span>
+<span class="fc" id="L104">	    stack.push(node);</span>
+<span class="fc" id="L105">    }</span>
+
+	@Override
+	public void endVisit(ForStatement node) {
+<span class="fc" id="L109">		stack.pop();</span>
+<span class="fc" id="L110">	}</span>
+
+	@Override
+	public void endVisit(EnhancedForStatement node) {
+<span class="fc" id="L114">		stack.pop();</span>
+<span class="fc" id="L115">	}</span>
+
+	@Override
+	public void endVisit(ConditionalExpression node) {
+<span class="fc" id="L119">		stack.pop();</span>
+<span class="fc" id="L120">	}</span>
+
+	@Override
+	public void endVisit(DoStatement node) {
+<span class="fc" id="L124">		stack.pop();</span>
+<span class="fc" id="L125">	}</span>
+
+	@Override
+	public void endVisit(WhileStatement node) {
+<span class="fc" id="L129">		stack.pop();</span>
+<span class="fc" id="L130">	}</span>
+
+	@Override
+	public void endVisit(SwitchCase node) {
+<span class="fc" id="L134">		stack.pop();</span>
+<span class="fc" id="L135">	}</span>
+
+	@Override
+	public void endVisit(IfStatement node) {
+<span class="fc" id="L139">		stack.pop();</span>
+<span class="fc" id="L140">	}</span>
+
+	@Override
+	public void endVisit(MethodDeclaration node) {
+<span class="fc" id="L144">		stack.clear();</span>
+<span class="fc" id="L145">	}</span>
+
+	private int increaseCCFromExpression(Expression expression) {
+<span class="fc bfc" id="L148" title="All 2 branches covered.">		if(expression==null) {</span>
+<span class="fc" id="L149">			increaseCc();</span>
+<span class="fc" id="L150">			return 0;</span>
+		}
+
+<span class="fc bfc" id="L153" title="All 2 branches covered.">		if(!containsIfTenary(expression)) {</span>
+<span class="fc" id="L154">			increaseCc();</span>
+		}
+
+<span class="fc" id="L157">		String expr = expression.toString().replace(&quot;&amp;&amp;&quot;, &quot;&amp;&quot;).replace(&quot;||&quot;, &quot;|&quot;);</span>
+<span class="fc" id="L158">		int ands = StringUtils.countMatches(expr, &quot;&amp;&quot;);</span>
+<span class="fc" id="L159">		int ors = StringUtils.countMatches(expr, &quot;|&quot;);</span>
+
+<span class="fc" id="L161">		increaseCc(ands + ors);</span>
+<span class="fc" id="L162">		return ands + ors;</span>
+	}
+
+
+	private boolean containsIfTenary(Expression expression) {
+<span class="fc bfc" id="L167" title="All 2 branches covered.">		if(expression instanceof ParenthesizedExpression) {</span>
+<span class="fc" id="L168">			ParenthesizedExpression x = (ParenthesizedExpression) expression;</span>
+<span class="fc" id="L169">			return containsIfTenary(x.getExpression());</span>
+<span class="fc bfc" id="L170" title="All 2 branches covered.">		} else if(expression instanceof InfixExpression) {</span>
+<span class="fc" id="L171">			InfixExpression x = (InfixExpression) expression;</span>
+<span class="fc bfc" id="L172" title="All 4 branches covered.">			return containsIfTenary(x.getLeftOperand()) || containsIfTenary(x.getRightOperand());</span>
+<span class="fc bfc" id="L173" title="All 2 branches covered.">		} else if (expression instanceof ConditionalExpression) {</span>
+<span class="fc" id="L174">			return true;</span>
+		}
+
+<span class="fc" id="L177">		return false;</span>
+
+	}
+
+	private void increaseCc() {
+<span class="fc" id="L182">    	increaseCc(1);</span>
+<span class="fc" id="L183">    }</span>
+
+    protected void increaseCc(int qtd) {
+<span class="fc" id="L186">    	cc += qtd;</span>
+<span class="fc" id="L187">    }</span>
+
+	@Override
+	public void setResult(CKClassResult result) {
+<span class="fc" id="L191">		result.setWmc(cc);</span>
+<span class="fc" id="L192">	}</span>
+
+	@Override
+	public void setResult(CKMethodResult result) {
+<span class="fc" id="L196">		result.setWmc(cc);</span>
+<span class="fc" id="L197">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

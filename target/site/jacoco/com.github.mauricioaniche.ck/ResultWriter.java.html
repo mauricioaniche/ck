@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ResultWriter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CK calculator</a> &gt; <a href="index.source.html" class="el_package">com.github.mauricioaniche.ck</a> &gt; <span class="el_source">ResultWriter.java</span></div><h1>ResultWriter.java</h1><pre class="source lang-java linenums">package com.github.mauricioaniche.ck;
+
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Map;
+
+public class ResultWriter {
+
+<span class="nc" id="L12">    private static final String[] CLASS_HEADER = {</span>
+            &quot;file&quot;,
+            &quot;class&quot;,
+            &quot;type&quot;,
+
+            /* OO Metrics */
+            &quot;cbo&quot;,
+            &quot;cboModified&quot;,
+            &quot;fanin&quot;,
+            &quot;fanout&quot;,
+            &quot;wmc&quot;,
+            &quot;dit&quot;,
+            &quot;noc&quot;,
+            &quot;rfc&quot;,
+            &quot;lcom&quot;,
+            &quot;lcom*&quot;,
+            &quot;tcc&quot;,
+            &quot;lcc&quot;,
+
+            /* Method Counting */
+            &quot;totalMethodsQty&quot;,
+            &quot;staticMethodsQty&quot;,
+            &quot;publicMethodsQty&quot;,
+            &quot;privateMethodsQty&quot;,
+            &quot;protectedMethodsQty&quot;,
+            &quot;defaultMethodsQty&quot;,
+            &quot;visibleMethodsQty&quot;,
+            &quot;abstractMethodsQty&quot;,
+            &quot;finalMethodsQty&quot;,
+            &quot;synchronizedMethodsQty&quot;,
+
+            /* Field Counting */
+            &quot;totalFieldsQty&quot;,
+            &quot;staticFieldsQty&quot;,
+            &quot;publicFieldsQty&quot;,
+            &quot;privateFieldsQty&quot;,
+            &quot;protectedFieldsQty&quot;,
+            &quot;defaultFieldsQty&quot;,
+            &quot;finalFieldsQty&quot;,
+            &quot;synchronizedFieldsQty&quot;,
+
+            /* Others */
+            &quot;nosi&quot;,
+            &quot;loc&quot;,
+            &quot;returnQty&quot;,
+            &quot;loopQty&quot;,
+            &quot;comparisonsQty&quot;,
+            &quot;tryCatchQty&quot;,
+            &quot;parenthesizedExpsQty&quot;,
+            &quot;stringLiteralsQty&quot;,
+            &quot;numbersQty&quot;,
+            &quot;assignmentsQty&quot;,
+            &quot;mathOperationsQty&quot;,
+            &quot;variablesQty&quot;,
+            &quot;maxNestedBlocksQty&quot;,
+            &quot;anonymousClassesQty&quot;,
+            &quot;innerClassesQty&quot;,
+            &quot;lambdasQty&quot;,
+            &quot;uniqueWordsQty&quot;,
+            &quot;modifiers&quot;,
+            &quot;logStatementsQty&quot;};
+<span class="nc" id="L73">    private static final String[] METHOD_HEADER = { </span>
+            &quot;file&quot;, 
+            &quot;class&quot;, 
+            &quot;method&quot;, 
+            &quot;constructor&quot;, 
+            &quot;line&quot;, 
+            &quot;cbo&quot;, 
+            &quot;cboModified&quot;,
+            &quot;fanin&quot;,
+            &quot;fanout&quot;,
+            &quot;wmc&quot;, 
+            &quot;rfc&quot;, 
+            &quot;loc&quot;,
+            &quot;returnsQty&quot;, 
+            &quot;variablesQty&quot;, 
+            &quot;parametersQty&quot;, 
+            &quot;methodsInvokedQty&quot;, 
+            &quot;methodsInvokedLocalQty&quot;, 
+            &quot;methodsInvokedIndirectLocalQty&quot;, 
+            &quot;loopQty&quot;, 
+            &quot;comparisonsQty&quot;, 
+            &quot;tryCatchQty&quot;,
+            &quot;parenthesizedExpsQty&quot;, 
+            &quot;stringLiteralsQty&quot;, 
+            &quot;numbersQty&quot;, 
+            &quot;assignmentsQty&quot;, 
+            &quot;mathOperationsQty&quot;,
+            &quot;maxNestedBlocksQty&quot;, 
+            &quot;anonymousClassesQty&quot;, 
+            &quot;innerClassesQty&quot;, 
+            &quot;lambdasQty&quot;, 
+            &quot;uniqueWordsQty&quot;, 
+            &quot;modifiers&quot;, 
+            &quot;logStatementsQty&quot;, 
+            &quot;hasJavaDoc&quot; };
+                          
+<span class="nc" id="L109">    private static final String[] VAR_FIELD_HEADER = { &quot;file&quot;, &quot;class&quot;, &quot;method&quot;, &quot;variable&quot;, &quot;usage&quot; };</span>
+    private final boolean variablesAndFields;
+
+    private CSVPrinter classPrinter;
+    private CSVPrinter methodPrinter;
+    private CSVPrinter variablePrinter;
+    private CSVPrinter fieldPrinter;
+
+    /**
+     * Initialise a new ResultWriter that writes to the specified files. Begins by
+     * writing CSV headers to each file.
+     * 
+     * @param classFile    Output file for class metrics
+     * @param methodFile   Output file for method metrics
+     * @param variableFile Output file for variable metrics
+     * @param fieldFile    Output file for field metrics
+     * @throws IOException If headers cannot be written
+     */
+<span class="nc" id="L127">    public ResultWriter(String classFile, String methodFile, String variableFile, String fieldFile, boolean variablesAndFields) throws IOException {</span>
+<span class="nc" id="L128">        FileWriter classOut = new FileWriter(classFile);</span>
+<span class="nc" id="L129">        this.classPrinter = new CSVPrinter(classOut, CSVFormat.DEFAULT.withHeader(CLASS_HEADER));</span>
+<span class="nc" id="L130">        FileWriter methodOut = new FileWriter(methodFile);</span>
+<span class="nc" id="L131">        this.methodPrinter = new CSVPrinter(methodOut, CSVFormat.DEFAULT.withHeader(METHOD_HEADER));</span>
+
+<span class="nc" id="L133">        this.variablesAndFields = variablesAndFields;</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">        if(variablesAndFields) {</span>
+<span class="nc" id="L135">            FileWriter variableOut = new FileWriter(variableFile);</span>
+<span class="nc" id="L136">            this.variablePrinter = new CSVPrinter(variableOut, CSVFormat.DEFAULT.withHeader(VAR_FIELD_HEADER));</span>
+<span class="nc" id="L137">            FileWriter fieldOut = new FileWriter(fieldFile);</span>
+<span class="nc" id="L138">            this.fieldPrinter = new CSVPrinter(fieldOut, CSVFormat.DEFAULT.withHeader(VAR_FIELD_HEADER));</span>
+        }
+<span class="nc" id="L140">    }</span>
+
+    /**
+     * Print results for a single class and its methods and fields to the
+     * appropriate CSVPrinters.
+     * 
+     * @param result The CKClassResult
+     * @throws IOException If output files cannot be written to
+     */
+    public void printResult(CKClassResult result) throws IOException {
+
+<span class="nc" id="L151">        this.classPrinter.printRecord(</span>
+<span class="nc" id="L152">                result.getFile(),</span>
+<span class="nc" id="L153">                result.getClassName(),</span>
+<span class="nc" id="L154">                result.getType(),</span>
+
+                /* OO Metrics */
+<span class="nc" id="L157">                result.getCbo(),</span>
+<span class="nc" id="L158">                result.getCboModified(),</span>
+<span class="nc" id="L159">                result.getFanin(),</span>
+<span class="nc" id="L160">                result.getFanout(),</span>
+<span class="nc" id="L161">                result.getWmc(),</span>
+<span class="nc" id="L162">                result.getDit(),</span>
+<span class="nc" id="L163">                result.getNoc(),</span>
+<span class="nc" id="L164">                result.getRfc(),</span>
+<span class="nc" id="L165">                result.getLcom(),</span>
+<span class="nc" id="L166">                result.getLcomNormalized(),</span>
+<span class="nc" id="L167">                result.getTightClassCohesion(),</span>
+<span class="nc" id="L168">                result.getLooseClassCohesion(),</span>
+
+                /* Method Counting */
+<span class="nc" id="L171">                result.getNumberOfMethods(),</span>
+<span class="nc" id="L172">                result.getNumberOfStaticMethods(),</span>
+<span class="nc" id="L173">                result.getNumberOfPublicMethods(),</span>
+<span class="nc" id="L174">                result.getNumberOfPrivateMethods(),</span>
+<span class="nc" id="L175">                result.getNumberOfProtectedMethods(),</span>
+<span class="nc" id="L176">                result.getNumberOfDefaultMethods(),</span>
+<span class="nc" id="L177">                result.getVisibleMethods().size(),</span>
+<span class="nc" id="L178">                result.getNumberOfAbstractMethods(),</span>
+<span class="nc" id="L179">                result.getNumberOfFinalMethods(),</span>
+<span class="nc" id="L180">                result.getNumberOfSynchronizedMethods(),</span>
+
+                /* Field Counting */
+<span class="nc" id="L183">                result.getNumberOfFields(),</span>
+<span class="nc" id="L184">                result.getNumberOfStaticFields(),</span>
+<span class="nc" id="L185">                result.getNumberOfPublicFields(),</span>
+<span class="nc" id="L186">                result.getNumberOfPrivateFields(),</span>
+<span class="nc" id="L187">                result.getNumberOfProtectedFields(),</span>
+<span class="nc" id="L188">                result.getNumberOfDefaultFields(),</span>
+<span class="nc" id="L189">                result.getNumberOfFinalFields(),</span>
+<span class="nc" id="L190">                result.getNumberOfSynchronizedFields(),</span>
+
+                /* Others */
+<span class="nc" id="L193">                result.getNosi(),</span>
+<span class="nc" id="L194">                result.getLoc(),</span>
+<span class="nc" id="L195">                result.getReturnQty(),</span>
+<span class="nc" id="L196">                result.getLoopQty(),</span>
+<span class="nc" id="L197">                result.getComparisonsQty(),</span>
+<span class="nc" id="L198">                result.getTryCatchQty(),</span>
+<span class="nc" id="L199">                result.getParenthesizedExpsQty(),</span>
+<span class="nc" id="L200">                result.getStringLiteralsQty(),</span>
+<span class="nc" id="L201">                result.getNumbersQty(),</span>
+<span class="nc" id="L202">                result.getAssignmentsQty(),</span>
+<span class="nc" id="L203">                result.getMathOperationsQty(),</span>
+<span class="nc" id="L204">                result.getVariablesQty(),</span>
+<span class="nc" id="L205">                result.getMaxNestedBlocks(),</span>
+<span class="nc" id="L206">                result.getAnonymousClassesQty(),</span>
+<span class="nc" id="L207">                result.getInnerClassesQty(),</span>
+<span class="nc" id="L208">                result.getLambdasQty(),</span>
+<span class="nc" id="L209">                result.getUniqueWordsQty(),</span>
+<span class="nc" id="L210">                result.getModifiers(),</span>
+<span class="nc" id="L211">                result.getNumberOfLogStatements());</span>
+
+<span class="nc bnc" id="L213" title="All 2 branches missed.">        for (CKMethodResult method : result.getMethods()) {</span>
+<span class="nc" id="L214">            this.methodPrinter.printRecord(</span>
+<span class="nc" id="L215">                    result.getFile(), </span>
+<span class="nc" id="L216">                    result.getClassName(), </span>
+<span class="nc" id="L217">                    method.getMethodName(),</span>
+<span class="nc" id="L218">                    method.isConstructor(),</span>
+<span class="nc" id="L219">                    method.getStartLine(), </span>
+<span class="nc" id="L220">                    method.getCbo(), </span>
+<span class="nc" id="L221">                    method.getCboModified(), </span>
+<span class="nc" id="L222">                    method.getFanin(), </span>
+<span class="nc" id="L223">                    method.getFanout(), </span>
+<span class="nc" id="L224">                    method.getWmc(), </span>
+<span class="nc" id="L225">                    method.getRfc(), </span>
+<span class="nc" id="L226">                    method.getLoc(),</span>
+<span class="nc" id="L227">                    method.getReturnQty(), </span>
+<span class="nc" id="L228">                    method.getVariablesQty(), </span>
+<span class="nc" id="L229">                    method.getParametersQty(),</span>
+<span class="nc" id="L230">                    method.getMethodInvocations().size(), </span>
+<span class="nc" id="L231">                    method.getMethodInvocationsLocal().size(), </span>
+<span class="nc" id="L232">                    method.getMethodInvocationsIndirectLocal().size(),</span>
+<span class="nc" id="L233">                    method.getLoopQty(), </span>
+<span class="nc" id="L234">                    method.getComparisonsQty(), </span>
+<span class="nc" id="L235">                    method.getTryCatchQty(),</span>
+<span class="nc" id="L236">                    method.getParenthesizedExpsQty(), </span>
+<span class="nc" id="L237">                    method.getStringLiteralsQty(), </span>
+<span class="nc" id="L238">                    method.getNumbersQty(),</span>
+<span class="nc" id="L239">                    method.getAssignmentsQty(), </span>
+<span class="nc" id="L240">                    method.getMathOperationsQty(), </span>
+<span class="nc" id="L241">                    method.getMaxNestedBlocks(),</span>
+<span class="nc" id="L242">                    method.getAnonymousClassesQty(), </span>
+<span class="nc" id="L243">                    method.getInnerClassesQty(), </span>
+<span class="nc" id="L244">                    method.getLambdasQty(),</span>
+<span class="nc" id="L245">                    method.getUniqueWordsQty(), </span>
+<span class="nc" id="L246">                    method.getModifiers(), </span>
+<span class="nc" id="L247">                    method.getLogStatementsQty(), </span>
+<span class="nc" id="L248">                    method.getHasJavadoc());</span>
+
+<span class="nc bnc" id="L250" title="All 2 branches missed.">            if(variablesAndFields) {</span>
+<span class="nc bnc" id="L251" title="All 2 branches missed.">                for (Map.Entry&lt;String, Integer&gt; entry : method.getVariablesUsage().entrySet()) {</span>
+<span class="nc" id="L252">                    this.variablePrinter.printRecord(result.getFile(), result.getClassName(), method.getMethodName(),</span>
+<span class="nc" id="L253">                            entry.getKey(), entry.getValue());</span>
+<span class="nc" id="L254">                }</span>
+
+<span class="nc bnc" id="L256" title="All 2 branches missed.">                for (Map.Entry&lt;String, Integer&gt; entry : method.getFieldUsage().entrySet()) {</span>
+<span class="nc" id="L257">                    this.fieldPrinter.printRecord(result.getFile(), result.getClassName(), method.getMethodName(),</span>
+<span class="nc" id="L258">                            entry.getKey(), entry.getValue());</span>
+<span class="nc" id="L259">                }</span>
+            }
+<span class="nc" id="L261">        }</span>
+<span class="nc" id="L262">    }</span>
+
+    /**
+     * Flush and close resources that were opened to write results. This method
+     * should be called after all CKClassResults have been calculated and printed.
+     * 
+     * @throws IOException If the resources cannot be closed
+     */
+    public void flushAndClose() throws IOException {
+<span class="nc" id="L271">        this.classPrinter.flush();</span>
+<span class="nc" id="L272">        this.classPrinter.close();</span>
+<span class="nc" id="L273">        this.methodPrinter.flush();</span>
+<span class="nc" id="L274">        this.methodPrinter.close();</span>
+<span class="nc bnc" id="L275" title="All 2 branches missed.">        if(variablesAndFields) {</span>
+<span class="nc" id="L276">            this.variablePrinter.flush();</span>
+<span class="nc" id="L277">            this.variablePrinter.close();</span>
+<span class="nc" id="L278">            this.fieldPrinter.flush();</span>
+<span class="nc" id="L279">            this.fieldPrinter.close();</span>
+        }
+<span class="nc" id="L281">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.github.mauricioaniche.ck.CBOTest
+-------------------------------------------------------------------------------
+Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.212 s - in com.github.mauricioaniche.ck.CBOTest

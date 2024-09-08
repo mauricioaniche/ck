@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FileUtils.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CK calculator</a> &gt; <a href="index.source.html" class="el_package">com.github.mauricioaniche.ck.util</a> &gt; <span class="el_source">FileUtils.java</span></div><h1>FileUtils.java</h1><pre class="source lang-java linenums">package com.github.mauricioaniche.ck.util;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+<span class="nc" id="L12">public class FileUtils {</span>
+<span class="fc" id="L13">  public static final List&lt;String&gt; IGNORED_DIRECTORIES = new ArrayList&lt;&gt;();</span>
+
+  //Initialize ignored directories with .git.
+  static {
+    //Use separator so this works on both Windows and Unix-like systems!
+<span class="fc" id="L18">    IGNORED_DIRECTORIES.add(String.format(&quot;%c.git%c&quot;, File.separatorChar, File.separatorChar));</span>
+<span class="fc" id="L19">  }</span>
+
+	//Get all directories from the directory at the given path.
+	public static String[] getAllDirs(String path) {
+		try {
+<span class="fc" id="L24">			return Files.walk(Paths.get(path))</span>
+<span class="fc" id="L25">					.filter(Files::isDirectory)</span>
+<span class="fc" id="L26">          .filter(FileUtils::isHiddenDir)</span>
+<span class="pc bpc" id="L27" title="1 of 2 branches missed.">					.filter(x -&gt; !isIgnoredDir(x.toAbsolutePath().toString(), IGNORED_DIRECTORIES))</span>
+<span class="fc" id="L28">					.map(x -&gt; x.toAbsolutePath().toString())</span>
+<span class="fc" id="L29">					.toArray(String[]::new);</span>
+<span class="nc" id="L30">		} catch(Exception e) {</span>
+<span class="nc" id="L31">			throw new RuntimeException(e);</span>
+		}
+	}
+
+	//Get all java class files from the directory at the given path.
+	public static String[] getAllJavaFiles(String path) {
+<span class="fc" id="L37">		return getAllFiles(path, &quot;java&quot;);</span>
+	}
+
+	//Get all jars from the directory at the given path.
+	public static String[] getAllJars(String path) {
+<span class="nc" id="L42">		return getAllFiles(path, &quot;jar&quot;);</span>
+	}
+
+	//Get all files from of the given file ending from the directory at the given path.
+	private static String[] getAllFiles(String path, String ending){
+		try {
+<span class="fc" id="L48">			return Files.walk(Paths.get(path))</span>
+<span class="fc" id="L49">					.filter(Files::isRegularFile)</span>
+<span class="fc bfc" id="L50" title="All 2 branches covered.">					.filter(x -&gt; !isIgnoredDir(x.toAbsolutePath().toString(), IGNORED_DIRECTORIES))</span>
+<span class="fc" id="L51">					.filter(x -&gt; x.toAbsolutePath().toString().toLowerCase().endsWith(ending))</span>
+<span class="fc" id="L52">					.map(x -&gt; x.toAbsolutePath().toString())</span>
+<span class="fc" id="L53">					.toArray(String[]::new);</span>
+<span class="nc" id="L54">		} catch(Exception e) {</span>
+<span class="nc" id="L55">			throw new RuntimeException(e);</span>
+		}
+	}
+
+  // Helper method that falls back to false if there is an exception.
+  public static boolean isHiddenDir(Path path) {
+    try {
+<span class="fc" id="L62">      return Files.isHidden(path);</span>
+<span class="nc" id="L63">    } catch (IOException exception) {</span>
+<span class="nc" id="L64">      exception.printStackTrace();</span>
+<span class="nc" id="L65">      return false;</span>
+    }
+  }
+
+  //Is the directory an ignored directory (e.g. .git)?
+  public static boolean isIgnoredDir(String path, Collection&lt;String&gt; blocked) {
+<span class="fc bfc" id="L71" title="All 2 branches covered.">    for (String ignoredDirectory : blocked) {</span>
+<span class="fc bfc" id="L72" title="All 2 branches covered.">      if (path.contains(ignoredDirectory)) {</span>
+<span class="fc" id="L73">        return true;</span>
+      }
+<span class="fc" id="L75">    }</span>
+<span class="fc" id="L76">    return false;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

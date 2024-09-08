@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NOC.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CK calculator</a> &gt; <a href="index.source.html" class="el_package">com.github.mauricioaniche.ck.metric</a> &gt; <span class="el_source">NOC.java</span></div><h1>NOC.java</h1><pre class="source lang-java linenums">package com.github.mauricioaniche.ck.metric;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.dom.ITypeBinding;
+import org.eclipse.jdt.core.dom.ParameterizedType;
+import org.eclipse.jdt.core.dom.SimpleType;
+import org.eclipse.jdt.core.dom.Type;
+import org.eclipse.jdt.core.dom.TypeDeclaration;
+
+import com.github.mauricioaniche.ck.CKClassResult;
+
+public class NOC implements CKASTVisitor, ClassLevelMetric{
+
+	private String name;
+	private NOCExtras extras;
+	
+<span class="fc" id="L20">	public NOC() {</span>
+<span class="fc" id="L21">		this.extras = NOCExtras.getInstance();</span>
+<span class="fc" id="L22">	}</span>
+	
+	@Override
+	public void visit(TypeDeclaration node){
+<span class="fc" id="L26">		ITypeBinding binding = node.resolveBinding();</span>
+		
+<span class="pc bpc" id="L28" title="1 of 2 branches missed.">		if(binding != null){</span>
+<span class="fc" id="L29">			this.name = binding.getQualifiedName();</span>
+<span class="fc" id="L30">			ITypeBinding father = binding.getSuperclass();</span>
+<span class="fc bfc" id="L31" title="All 2 branches covered.">			if(father != null){</span>
+<span class="fc" id="L32">				this.extras.plusOne(father.getQualifiedName());</span>
+			}
+<span class="fc" id="L34">		} else {</span>
+<span class="nc" id="L35">			this.name = node.getName().getFullyQualifiedName();</span>
+<span class="nc" id="L36">			Type type = node.getSuperclassType();</span>
+			
+<span class="nc" id="L38">			SimpleType castedFatherType = null;</span>
+			
+<span class="nc bnc" id="L40" title="All 2 branches missed.">			if(node.getSuperclassType() instanceof SimpleType)</span>
+<span class="nc" id="L41">				castedFatherType = ((SimpleType) node.getSuperclassType());</span>
+			
+<span class="nc bnc" id="L43" title="All 2 branches missed.">			if(castedFatherType != null){</span>
+<span class="nc" id="L44">				this.extras.plusOne(castedFatherType.getName().getFullyQualifiedName());</span>
+			}
+<span class="nc" id="L46">			List&lt;Type&gt; list = node.superInterfaceTypes();</span>
+<span class="nc" id="L47">			list = list.stream().filter(x -&gt; (x instanceof SimpleType)).collect(Collectors.toList());</span>
+<span class="nc" id="L48">			list.stream().map(x -&gt; (SimpleType) x).forEach(x -&gt; this.extras.plusOne(x.getName().getFullyQualifiedName()));</span>
+		}
+		
+<span class="fc" id="L51">	}</span>
+	
+	@Override
+	public void setResult(CKClassResult result) {
+		
+<span class="fc" id="L56">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

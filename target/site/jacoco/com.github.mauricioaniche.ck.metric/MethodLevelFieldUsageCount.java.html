@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MethodLevelFieldUsageCount.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CK calculator</a> &gt; <a href="index.source.html" class="el_package">com.github.mauricioaniche.ck.metric</a> &gt; <span class="el_source">MethodLevelFieldUsageCount.java</span></div><h1>MethodLevelFieldUsageCount.java</h1><pre class="source lang-java linenums">package com.github.mauricioaniche.ck.metric;
+
+import com.github.mauricioaniche.ck.CKMethodResult;
+import org.eclipse.jdt.core.dom.*;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+public class MethodLevelFieldUsageCount implements CKASTVisitor, MethodLevelMetric, VariableOrFieldMetric {
+	private Set&lt;String&gt; declaredFields;
+	private Map&lt;String, Integer&gt; occurrences;
+
+	private Set&lt;String&gt; variables;
+	private boolean isFieldAccess;
+	private boolean isQualifiedName;
+
+<span class="fc" id="L19">	public MethodLevelFieldUsageCount() {</span>
+<span class="fc" id="L20">		declaredFields = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L21">		this.occurrences = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L22">		this.variables = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L23">	}</span>
+
+	public void visit(MethodDeclaration node) {
+<span class="fc" id="L26">		IMethodBinding binding = node.resolveBinding();</span>
+<span class="fc bfc" id="L27" title="All 2 branches covered.">		if(binding==null)</span>
+<span class="fc" id="L28">			return;</span>
+
+<span class="fc" id="L30">		IVariableBinding[] fields = binding.getDeclaringClass().getDeclaredFields();</span>
+
+<span class="fc bfc" id="L32" title="All 2 branches covered.">		for (IVariableBinding field : fields) {</span>
+<span class="fc" id="L33">			declaredFields.add(field.getName());</span>
+		}
+<span class="fc" id="L35">	}</span>
+
+	public void visit(VariableDeclarationFragment node) {
+<span class="fc" id="L38">		String var = node.getName().toString();</span>
+<span class="fc" id="L39">		variables.add(var);</span>
+<span class="fc" id="L40">	}</span>
+
+	public void visit(FieldAccess node) {
+<span class="fc" id="L43">		isFieldAccess = true;</span>
+<span class="fc" id="L44">	}</span>
+
+	public void endVisit(FieldAccess node) {
+<span class="fc" id="L47">		isFieldAccess = false;</span>
+<span class="fc" id="L48">	}</span>
+
+	public void visit(QualifiedName node){
+<span class="fc" id="L51">		isQualifiedName = true;</span>
+<span class="fc" id="L52">	}</span>
+
+	public void endVisit(QualifiedName node) {
+<span class="fc" id="L55">		isQualifiedName = false;</span>
+<span class="fc" id="L56">	}</span>
+
+	private void plusOne(String var) {
+<span class="fc bfc" id="L59" title="All 2 branches covered.">		if (!occurrences.containsKey(var))</span>
+<span class="fc" id="L60">			occurrences.put(var, 0);</span>
+<span class="fc" id="L61">		occurrences.put(var, occurrences.get(var) + 1);</span>
+<span class="fc" id="L62">	}</span>
+
+	public void visit(SimpleName node) {
+<span class="fc" id="L65">		String variableName = node.getIdentifier();</span>
+
+<span class="fc bfc" id="L67" title="All 4 branches covered.">		boolean accessFieldUsingThis = isFieldAccess &amp;&amp; declaredFields.contains(variableName);</span>
+<span class="fc bfc" id="L68" title="All 6 branches covered.">		boolean accessFieldUsingOnlyVariableName = !isFieldAccess &amp;&amp; declaredFields.contains(variableName) &amp;&amp; !variables.contains(variableName);</span>
+<span class="fc bfc" id="L69" title="All 6 branches covered.">		if((accessFieldUsingThis || accessFieldUsingOnlyVariableName) &amp;&amp; !isQualifiedName) {</span>
+<span class="fc" id="L70">			plusOne(variableName);</span>
+		}
+<span class="fc" id="L72">	}</span>
+
+	@Override
+	public void setResult(CKMethodResult result) {
+<span class="fc" id="L76">		result.setFieldUsage(occurrences);</span>
+<span class="fc" id="L77">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

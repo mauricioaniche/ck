@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MetricsFinder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CK calculator</a> &gt; <a href="index.source.html" class="el_package">com.github.mauricioaniche.ck.util</a> &gt; <span class="el_source">MetricsFinder.java</span></div><h1>MetricsFinder.java</h1><pre class="source lang-java linenums">package com.github.mauricioaniche.ck.util;
+
+import com.github.mauricioaniche.ck.metric.ClassLevelMetric;
+import com.github.mauricioaniche.ck.metric.MethodLevelMetric;
+import com.github.mauricioaniche.ck.metric.RunAfter;
+import com.github.mauricioaniche.ck.metric.VariableOrFieldMetric;
+import org.reflections.Reflections;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
+public class MetricsFinder {
+
+<span class="fc" id="L14">	private static List&lt;Class&lt;? extends MethodLevelMetric&gt;&gt; methodLevelClasses = null;</span>
+<span class="fc" id="L15">	private static List&lt;Class&lt;? extends ClassLevelMetric&gt;&gt; classLevelClasses = null;</span>
+	private DependencySorter sorter;
+
+<span class="fc" id="L18">	public MetricsFinder(DependencySorter sorter) {</span>
+<span class="fc" id="L19">		this.sorter = sorter;</span>
+<span class="fc" id="L20">	}</span>
+
+	public MetricsFinder() {
+<span class="fc" id="L23">		this(new DependencySorter());</span>
+<span class="fc" id="L24">	}</span>
+
+	public List&lt;MethodLevelMetric&gt; allMethodLevelMetrics(boolean variablesAndFields) {
+<span class="fc bfc" id="L27" title="All 2 branches covered.">		if(methodLevelClasses == null)</span>
+<span class="fc" id="L28">			loadMethodLevelClasses(variablesAndFields);</span>
+
+		try {
+<span class="fc" id="L31">			ArrayList&lt;MethodLevelMetric&gt; metrics = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L32" title="All 2 branches covered.">			for (Class&lt;? extends MethodLevelMetric&gt; aClass : methodLevelClasses) {</span>
+<span class="fc" id="L33">				metrics.add(aClass.getDeclaredConstructor().newInstance());</span>
+<span class="fc" id="L34">			}</span>
+
+<span class="fc" id="L36">			return metrics;</span>
+<span class="nc" id="L37">		} catch(Exception e) {</span>
+<span class="nc" id="L38">			throw new RuntimeException(&quot;Could not instantiate a method level metric. Something is really wrong&quot;, e);</span>
+		}
+	}
+
+	public List&lt;ClassLevelMetric&gt; allClassLevelMetrics() {
+
+<span class="fc bfc" id="L44" title="All 2 branches covered.">		if(classLevelClasses == null)</span>
+<span class="fc" id="L45">			loadClassLevelClasses();</span>
+
+		try {
+<span class="fc" id="L48">			ArrayList&lt;ClassLevelMetric&gt; metrics = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">			for (Class&lt;? extends ClassLevelMetric&gt; aClass : classLevelClasses) {</span>
+<span class="fc" id="L50">				metrics.add(aClass.getDeclaredConstructor().newInstance());</span>
+<span class="fc" id="L51">			}</span>
+
+<span class="fc" id="L53">			return metrics;</span>
+<span class="nc" id="L54">		} catch(Exception e) {</span>
+<span class="nc" id="L55">			throw new RuntimeException(&quot;Could not instantiate a method level metric. Something is really wrong&quot;, e);</span>
+		}
+	}
+
+	private void loadMethodLevelClasses(boolean variablesAndFields) {
+		try {
+<span class="fc" id="L61">			Reflections reflections = new Reflections(&quot;com.github.mauricioaniche.ck.metric&quot;);</span>
+
+<span class="fc" id="L63">			methodLevelClasses = sorter.sort(reflections.getSubTypesOf(MethodLevelMetric.class).stream()</span>
+<span class="pc bpc" id="L64" title="3 of 4 branches missed.">					.filter(x -&gt; variablesAndFields || !Arrays.asList(x.getInterfaces()).contains(VariableOrFieldMetric.class))</span>
+<span class="fc" id="L65">					.collect(Collectors.toList()));</span>
+
+<span class="nc" id="L67">		} catch(Exception e) {</span>
+<span class="nc" id="L68">			throw new RuntimeException(&quot;Could not find method level metrics. Something is really wrong&quot;, e);</span>
+<span class="fc" id="L69">		}</span>
+<span class="fc" id="L70">	}</span>
+
+	private void loadClassLevelClasses() {
+		try {
+<span class="fc" id="L74">			Reflections reflections = new Reflections(&quot;com.github.mauricioaniche.ck.metric&quot;);</span>
+<span class="fc" id="L75">			classLevelClasses = sorter.sort(new ArrayList&lt;&gt;(reflections.getSubTypesOf(ClassLevelMetric.class)));</span>
+<span class="nc" id="L76">		} catch(Exception e) {</span>
+<span class="nc" id="L77">			throw new RuntimeException(&quot;Could not find class level metrics. Something is really wrong&quot;, e);</span>
+<span class="fc" id="L78">		}</span>
+<span class="fc" id="L79">	}</span>
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

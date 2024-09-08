@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MethodInvocationsLocal.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CK calculator</a> &gt; <a href="index.source.html" class="el_package">com.github.mauricioaniche.ck.metric</a> &gt; <span class="el_source">MethodInvocationsLocal.java</span></div><h1>MethodInvocationsLocal.java</h1><pre class="source lang-java linenums">package com.github.mauricioaniche.ck.metric;
+
+import com.github.mauricioaniche.ck.CKClassResult;
+import com.github.mauricioaniche.ck.CKMethodResult;
+import java.util.*;
+import java.util.stream.Collectors;
+
+//we ignore invocations in the super class, because they are always outside the current class and can never return
+@RunAfter(metrics={RFC.class, MethodLevelFieldUsageCount.class})
+<span class="fc" id="L10">public class MethodInvocationsLocal implements CKASTVisitor, ClassLevelMetric {</span>
+    //Recursively extract all method invocations starting with the given method
+    //Explored contains all previously explored invocations
+    //Invocations contains all direct method invocations of interest
+    //The algorithm is a depth first search
+    private Map&lt;String, Set&lt;String&gt;&gt; invocations(String invokedMethod, Map&lt;String, Set&lt;String&gt;&gt; explored, HashMap&lt;String, Set&lt;String&gt;&gt; invocations){
+        //only explore local method invocations that were not previously explored
+<span class="fc" id="L17">        Set&lt;String&gt; exploredKeys = explored.keySet();</span>
+<span class="fc" id="L18">        Set&lt;String&gt; nextInvocations = invocations.get(invokedMethod).stream()</span>
+<span class="fc bfc" id="L19" title="All 4 branches covered.">                .filter(invoked -&gt; !exploredKeys.contains(invoked) &amp;&amp; !invoked.equals(invokedMethod))</span>
+<span class="fc" id="L20">                .collect(Collectors.toSet());</span>
+<span class="fc bfc" id="L21" title="All 2 branches covered.">        if(nextInvocations.size() &gt; 0){</span>
+<span class="fc" id="L22">            explored.put(invokedMethod, nextInvocations);</span>
+
+<span class="fc bfc" id="L24" title="All 2 branches covered.">            for (String nextInvocation : nextInvocations){</span>
+<span class="fc" id="L25">                explored = invocations(nextInvocation, explored, invocations);</span>
+<span class="fc" id="L26">            }</span>
+        }
+
+        //Stops when all invocations are explored: there are no more invocations to be explored
+<span class="fc" id="L30">        return explored;</span>
+    }
+
+    //Generate an indirect method invocations map
+    //Method contains all methods of interest
+    //Invocations contains all indirect method invocations of interest with the calling method
+    private HashMap&lt;String, Map&lt;String, Set&lt;String&gt;&gt;&gt; invocationsIndirect(Set&lt;CKMethodResult&gt; methods, HashMap&lt;String, Set&lt;String&gt;&gt; methodInvocationsLocal){
+<span class="fc" id="L37">        HashMap&lt;String, Map&lt;String, Set&lt;String&gt;&gt;&gt; methodInvocationsIndirectLocal = new HashMap&lt;&gt;();</span>
+
+        //extract all indirect local invocations for all methods in the current class
+<span class="fc bfc" id="L40" title="All 2 branches covered.">        for (CKMethodResult method : methods){</span>
+            //extract all local invocations for the current method
+<span class="fc" id="L42">            Map&lt;String, Set&lt;String&gt;&gt; localInvocations =  invocations(method.getQualifiedMethodName(), new HashMap(), methodInvocationsLocal);</span>
+<span class="fc" id="L43">            methodInvocationsIndirectLocal.put(method.getQualifiedMethodName(), localInvocations);</span>
+<span class="fc" id="L44">        }</span>
+<span class="fc" id="L45">        return methodInvocationsIndirectLocal;</span>
+    }
+
+    //Extract all local(inner-class) method invocations and save them in a HashMap
+    private HashMap&lt;String, Set&lt;String&gt;&gt; extractLocalInvocations(Set&lt;CKMethodResult&gt; methods){
+<span class="fc" id="L50">        HashMap&lt;String, Set&lt;String&gt;&gt; methodInvocationsLocal = new HashMap&lt;&gt;();</span>
+
+<span class="fc" id="L52">        Set&lt;String&gt; methodNames = methods.stream().map(CKMethodResult::getQualifiedMethodName).collect(Collectors.toSet());</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">        for (CKMethodResult method : methods){</span>
+<span class="fc" id="L54">            Set&lt;String&gt; invokedLocal =  method.getMethodInvocations().stream()</span>
+<span class="fc" id="L55">                    .filter(methodNames::contains)</span>
+<span class="fc" id="L56">                    .collect(Collectors.toSet());</span>
+<span class="fc" id="L57">            methodInvocationsLocal.put(method.getQualifiedMethodName(), invokedLocal);</span>
+<span class="fc" id="L58">        }</span>
+<span class="fc" id="L59">        return methodInvocationsLocal;</span>
+    }
+
+    public void setResult(CKClassResult result) {
+        //extract all direct local invocations for all methods in the current class
+<span class="fc" id="L64">        Set&lt;CKMethodResult&gt; methods = result.getMethods();</span>
+<span class="fc" id="L65">        HashMap&lt;String, Set&lt;String&gt;&gt; methodInvocationsLocal = extractLocalInvocations(methods);</span>
+<span class="fc bfc" id="L66" title="All 2 branches covered.">        for (CKMethodResult method : methods){</span>
+<span class="fc" id="L67">            method.setMethodInvocationLocal(methodInvocationsLocal.get(method.getQualifiedMethodName()));</span>
+<span class="fc" id="L68">        }</span>
+
+<span class="fc" id="L70">        HashMap&lt;String, Map&lt;String, Set&lt;String&gt;&gt;&gt; methodInvocationsIndirectLocal = invocationsIndirect(methods, methodInvocationsLocal);</span>
+<span class="fc bfc" id="L71" title="All 2 branches covered.">        for (CKMethodResult method : methods){</span>
+<span class="fc" id="L72">            method.setMethodInvocationsIndirectLocal(methodInvocationsIndirectLocal.get(method.getQualifiedMethodName()));</span>
+<span class="fc" id="L73">        }</span>
+<span class="fc" id="L74">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

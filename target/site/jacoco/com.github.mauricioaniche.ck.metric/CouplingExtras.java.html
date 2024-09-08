@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CouplingExtras.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CK calculator</a> &gt; <a href="index.source.html" class="el_package">com.github.mauricioaniche.ck.metric</a> &gt; <span class="el_source">CouplingExtras.java</span></div><h1>CouplingExtras.java</h1><pre class="source lang-java linenums">package com.github.mauricioaniche.ck.metric;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+public class CouplingExtras {
+
+	private Map&lt;String, Set&lt;String&gt;&gt; couplingClassIn;
+	private Map&lt;String, Set&lt;String&gt;&gt; couplingClassOut;
+	private Map&lt;String, Set&lt;String&gt;&gt; couplingMethodIn;
+	private Map&lt;String, Set&lt;String&gt;&gt; couplingMethodOut;
+	private static CouplingExtras instance;
+	
+<span class="fc" id="L17">	private CouplingExtras() {</span>
+<span class="fc" id="L18">		this.couplingClassIn = new HashMap&lt;String, Set&lt;String&gt;&gt;();</span>
+<span class="fc" id="L19">		this.couplingClassOut = new HashMap&lt;String, Set&lt;String&gt;&gt;();</span>
+<span class="fc" id="L20">		this.couplingMethodIn = new HashMap&lt;String, Set&lt;String&gt;&gt;();</span>
+<span class="fc" id="L21">		this.couplingMethodOut = new HashMap&lt;String, Set&lt;String&gt;&gt;();</span>
+<span class="fc" id="L22">	}</span>
+	
+	public void addToSetClassIn(String key, String clazz){
+<span class="fc bfc" id="L25" title="All 2 branches covered.">		if(this.couplingClassIn.get(key) != null){</span>
+<span class="fc" id="L26">			this.couplingClassIn.get(key).add(clazz);</span>
+		}else {
+<span class="fc" id="L28">			this.couplingClassIn.put(key, new HashSet&lt;&gt;());</span>
+<span class="fc" id="L29">			this.couplingClassIn.get(key).add(clazz);</span>
+		}
+<span class="fc" id="L31">	}</span>
+	
+	public void addToSetClassOut(String key, String clazz){
+<span class="fc bfc" id="L34" title="All 2 branches covered.">		if(this.couplingClassOut.get(key) != null){</span>
+<span class="fc" id="L35">			this.couplingClassOut.get(key).add(clazz);</span>
+		}else {
+<span class="fc" id="L37">			this.couplingClassOut.put(key, new HashSet&lt;&gt;());</span>
+<span class="fc" id="L38">			this.couplingClassOut.get(key).add(clazz);</span>
+		}
+<span class="fc" id="L40">	}</span>
+	
+	public void addToSetMethodIn(String key, String method){
+<span class="fc bfc" id="L43" title="All 2 branches covered.">		if(this.couplingMethodIn.get(key) != null){</span>
+<span class="fc" id="L44">			this.couplingMethodIn.get(key).add(method);</span>
+		}else {
+<span class="fc" id="L46">			this.couplingMethodIn.put(key, new HashSet&lt;&gt;());</span>
+<span class="fc" id="L47">			this.couplingMethodIn.get(key).add(method);</span>
+		}
+<span class="fc" id="L49">	}</span>
+	
+	public void addToSetMethodOut(String key, String method){
+<span class="fc bfc" id="L52" title="All 2 branches covered.">		if(this.couplingMethodOut.get(key) != null){</span>
+<span class="fc" id="L53">			this.couplingMethodOut.get(key).add(method);</span>
+		}else {
+<span class="fc" id="L55">			this.couplingMethodOut.put(key, new HashSet&lt;&gt;());</span>
+<span class="fc" id="L56">			this.couplingMethodOut.get(key).add(method);</span>
+		}
+<span class="fc" id="L58">	}</span>
+	
+	public int getValueCBOClass(String className){
+
+<span class="fc" id="L62">		return getValueFanInClass(className) + getValueFanOutClass(className);</span>
+		
+	}
+	
+	public int getValueCBOMethod(String methodName){
+
+<span class="fc" id="L68">		return getValueFanInMethod(methodName) + getValueFanOutMethod(methodName);</span>
+		
+	}
+	
+	public int getValueFanInClass(String className){
+
+<span class="fc bfc" id="L74" title="All 2 branches covered.">		if(this.couplingClassIn.get(className) != null){</span>
+<span class="fc" id="L75">			this.couplingClassIn = clean(className, this.couplingClassIn);</span>
+<span class="fc" id="L76">			return this.couplingClassIn.get(className).size();</span>
+		}
+<span class="fc" id="L78">		return 0;</span>
+	}
+	
+	public int getValueFanOutClass(String className){
+
+<span class="fc bfc" id="L83" title="All 2 branches covered.">		if(this.couplingClassOut.get(className) != null){</span>
+<span class="fc" id="L84">			this.couplingClassOut = clean(className, this.couplingClassOut);</span>
+<span class="fc" id="L85">			return this.couplingClassOut.get(className).size();</span>
+		}
+<span class="fc" id="L87">		return 0;</span>
+	}
+	
+	public int getValueFanInMethod(String methodName){
+
+<span class="fc bfc" id="L92" title="All 2 branches covered.">		if(this.couplingMethodIn.get(methodName) != null)</span>
+<span class="fc" id="L93">			return this.couplingMethodIn.get(methodName).size();</span>
+		
+<span class="fc" id="L95">		return 0;</span>
+	}
+	
+	public int getValueFanOutMethod(String methodName){
+
+<span class="fc bfc" id="L100" title="All 2 branches covered.">		if(this.couplingMethodOut.get(methodName) != null)</span>
+<span class="fc" id="L101">			return this.couplingMethodOut.get(methodName).size();</span>
+		
+<span class="fc" id="L103">		return 0;</span>
+	}
+	
+	private Map&lt;String, Set&lt;String&gt;&gt; clean(String componentName, Map&lt;String, Set&lt;String&gt;&gt; coupling) {
+<span class="fc bfc" id="L107" title="All 2 branches covered.">		Set&lt;String&gt; singleQualifiedTypes = coupling.get(componentName).stream().filter(x -&gt; !x.contains(&quot;.&quot;)).collect(Collectors.toSet());</span>
+
+<span class="fc bfc" id="L109" title="All 2 branches covered.">		for(String singleQualifiedType : singleQualifiedTypes) {</span>
+<span class="fc" id="L110">			long count = coupling.get(componentName).stream().filter(x -&gt; x.endsWith(&quot;.&quot; + singleQualifiedType)).count();</span>
+
+<span class="fc bfc" id="L112" title="All 2 branches covered.">			boolean theSameFullyQualifiedTypeExists = count &gt; 0;</span>
+<span class="fc bfc" id="L113" title="All 2 branches covered.">			if(theSameFullyQualifiedTypeExists)</span>
+<span class="fc" id="L114">				coupling.get(componentName).remove(singleQualifiedType);</span>
+<span class="fc" id="L115">		}</span>
+		
+<span class="fc" id="L117">		return coupling;</span>
+	}
+	
+	public static CouplingExtras getInstance(){
+<span class="fc bfc" id="L121" title="All 2 branches covered.">		if(instance == null){</span>
+<span class="fc" id="L122">			instance = new CouplingExtras();</span>
+		}
+<span class="fc" id="L124">		return instance;</span>
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NumberOfInnerClassesLambdasAndAnonymousClasses.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CK calculator</a> &gt; <a href="index.source.html" class="el_package">com.github.mauricioaniche.ck.metric</a> &gt; <span class="el_source">NumberOfInnerClassesLambdasAndAnonymousClasses.java</span></div><h1>NumberOfInnerClassesLambdasAndAnonymousClasses.java</h1><pre class="source lang-java linenums">package com.github.mauricioaniche.ck.metric;
+
+import com.github.mauricioaniche.ck.CKClassResult;
+import com.github.mauricioaniche.ck.CKMethodResult;
+import org.eclipse.jdt.core.dom.*;
+
+<span class="fc" id="L7">public class NumberOfInnerClassesLambdasAndAnonymousClasses implements CKASTVisitor, ClassLevelMetric, MethodLevelMetric {</span>
+
+<span class="fc" id="L9">	private int anonymousClassesQty = 0;</span>
+<span class="fc" id="L10">	private int innerClassesQty = 0;</span>
+<span class="fc" id="L11">	private int lambdasQty = 0;</span>
+
+<span class="fc" id="L13">	private String firstFound = null;</span>
+
+	public void visit(TypeDeclaration node) {
+
+<span class="fc bfc" id="L17" title="All 2 branches covered.">		if(firstFound == null)</span>
+<span class="fc" id="L18">			firstFound = &quot;type&quot;;</span>
+
+<span class="fc" id="L20">		innerClassesQty++;</span>
+<span class="fc" id="L21">	}</span>
+
+	public void visit(EnumDeclaration node) {
+		// we count enum as class declaration!
+<span class="fc" id="L25">		innerClassesQty++;</span>
+
+<span class="fc bfc" id="L27" title="All 2 branches covered.">		if(firstFound == null)</span>
+<span class="fc" id="L28">			firstFound = &quot;enum&quot;;</span>
+<span class="fc" id="L29">	}</span>
+
+	public void visit(LambdaExpression node) {
+<span class="fc" id="L32">		lambdasQty++;</span>
+
+<span class="fc bfc" id="L34" title="All 2 branches covered.">		if(firstFound == null)</span>
+<span class="fc" id="L35">			firstFound = &quot;lambda&quot;;</span>
+<span class="fc" id="L36">	}</span>
+
+	public void visit(AnonymousClassDeclaration node) {
+<span class="fc" id="L39">		anonymousClassesQty++;</span>
+
+<span class="fc bfc" id="L41" title="All 2 branches covered.">		if(firstFound == null)</span>
+<span class="fc" id="L42">			firstFound = &quot;anonymous&quot;;</span>
+<span class="fc" id="L43">	}</span>
+
+	@Override
+	public void setResult(CKClassResult result) {
+		// the -1 there is because the main type under analysis here is counted as +1.
+<span class="fc bfc" id="L48" title="All 2 branches covered.">		result.setAnonymousClassesQty(anonymousClassesQty - (firstFound.equals(&quot;anonymous&quot;)?1:0));</span>
+<span class="fc bfc" id="L49" title="All 4 branches covered.">		result.setInnerClassesQty(innerClassesQty - (firstFound.equals(&quot;type&quot;) || firstFound.equals(&quot;enum&quot;)?1:0));</span>
+<span class="pc bpc" id="L50" title="1 of 2 branches missed.">		result.setLambdasQty(lambdasQty - (firstFound.equals(&quot;lambda&quot;)?1:0));</span>
+<span class="fc" id="L51">	}</span>
+
+	@Override
+	public void setResult(CKMethodResult result) {
+<span class="fc" id="L55">		result.setAnonymousClassesQty(anonymousClassesQty);</span>
+<span class="fc" id="L56">		result.setInnerClassesQty(innerClassesQty);</span>
+<span class="fc" id="L57">		result.setLambdasQty(lambdasQty);</span>
+<span class="fc" id="L58">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

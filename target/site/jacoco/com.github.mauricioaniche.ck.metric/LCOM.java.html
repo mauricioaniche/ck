@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LCOM.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CK calculator</a> &gt; <a href="index.source.html" class="el_package">com.github.mauricioaniche.ck.metric</a> &gt; <span class="el_source">LCOM.java</span></div><h1>LCOM.java</h1><pre class="source lang-java linenums">package com.github.mauricioaniche.ck.metric;
+
+import com.github.mauricioaniche.ck.CKClassResult;
+import org.eclipse.jdt.core.dom.*;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.TreeSet;
+
+public class LCOM implements CKASTVisitor, ClassLevelMetric {
+
+<span class="fc" id="L13">	ArrayList&lt;TreeSet&lt;String&gt;&gt; methods = new ArrayList&lt;TreeSet&lt;String&gt;&gt;();</span>
+	Set&lt;String&gt; declaredFields;
+	
+<span class="fc" id="L16">	public LCOM() {</span>
+<span class="fc" id="L17">		this.declaredFields = new HashSet&lt;String&gt;();</span>
+<span class="fc" id="L18">	}</span>
+	
+	public void visit(FieldDeclaration node) {
+		
+<span class="fc bfc" id="L22" title="All 2 branches covered.">		for(Object o : node.fragments()) {</span>
+<span class="fc" id="L23">			VariableDeclarationFragment vdf = (VariableDeclarationFragment) o;</span>
+<span class="fc" id="L24">			declaredFields.add(vdf.getName().toString());</span>
+<span class="fc" id="L25">		}</span>
+		
+<span class="fc" id="L27">	}</span>
+	
+	public void visit(SimpleName node) {
+<span class="fc" id="L30">		String name = node.getFullyQualifiedName();</span>
+<span class="fc bfc" id="L31" title="All 2 branches covered.">		if(declaredFields.contains(name)) {</span>
+<span class="fc" id="L32">			acessed(name);</span>
+		}
+		
+<span class="fc" id="L35">	}</span>
+
+	private void acessed(String name) {
+<span class="fc bfc" id="L38" title="All 2 branches covered.">		if(!methods.isEmpty()){</span>
+<span class="fc" id="L39">			methods.get(methods.size() - 1).add(name);</span>
+		}
+<span class="fc" id="L41">	}</span>
+	
+	public void visit(MethodDeclaration node) {
+<span class="fc" id="L44">		methods.add(new TreeSet&lt;String&gt;());</span>
+		
+<span class="fc" id="L46">	}</span>
+	
+	@Override
+	public void setResult(CKClassResult result) {
+		
+		/*
+		 * LCOM = |P| - |Q| if |P| - |Q| &gt; 0
+		 * where
+		 * P = set of all empty set intersections
+		 * Q = set of all nonempty set intersections
+		 */
+		
+		// extracted from https://github.com/dspinellis/ckjm
+<span class="fc" id="L59">		int lcom = 0;</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">		for (int i = 0; i &lt; methods.size(); i++)</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">		    for (int j = i + 1; j &lt; methods.size(); j++) {</span>
+		    	
+<span class="fc" id="L63">				TreeSet&lt;?&gt; intersection = (TreeSet&lt;?&gt;)methods.get(i).clone();</span>
+<span class="fc" id="L64">				intersection.retainAll(methods.get(j));</span>
+<span class="fc bfc" id="L65" title="All 2 branches covered.">				if (intersection.size() == 0) lcom++;</span>
+<span class="fc" id="L66">				else lcom--;</span>
+		    }
+<span class="fc bfc" id="L68" title="All 2 branches covered.">		result.setLcom(lcom &gt; 0 ? lcom : 0);</span>
+<span class="fc" id="L69">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

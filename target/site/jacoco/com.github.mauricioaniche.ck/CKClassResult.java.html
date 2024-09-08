@@ -1,0 +1,543 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CKClassResult.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CK calculator</a> &gt; <a href="index.source.html" class="el_package">com.github.mauricioaniche.ck</a> &gt; <span class="el_source">CKClassResult.java</span></div><h1>CKClassResult.java</h1><pre class="source lang-java linenums">package com.github.mauricioaniche.ck;
+
+import java.util.*;
+
+import com.github.mauricioaniche.ck.metric.CouplingExtras;
+import com.github.mauricioaniche.ck.metric.NOCExtras;
+
+public class CKClassResult {
+
+	private String file;
+	private String className;
+	private String type;
+
+	private int dit;
+<span class="fc" id="L15">	private int noc = -1;</span>
+	private int wmc;
+	private int cbo;
+<span class="fc" id="L18">	private int cboModified = -1;</span>
+<span class="fc" id="L19">	private int fanin = -1;</span>
+<span class="fc" id="L20">	private int fanout = -1;</span>
+	private int lcom;
+	private float lcomNormalized;
+	private int rfc;
+
+	private int nosi;
+	private int loc;
+	
+	private Set&lt;CKMethodResult&gt; methods;
+	private Set&lt;CKMethodResult&gt; visibleMethods;
+	private Set&lt;String&gt; fieldNames;
+	private int returnQty;
+	private int loopQty;
+	private int comparisonsQty;
+	private int tryCatchQty;
+	private int parenthesizedExpsQty;
+	private int stringLiteralsQty;
+	private int numbersQty;
+	private int assignmentsQty;
+	private int mathOperationsQty;
+	private int variablesQty;
+	private int maxNestedBlocks;
+	private int anonymousClassesQty;
+	private int innerClassesQty;
+	private int lambdasQty;
+	private int uniqueWordsQty;
+	private int numberOfMethods;
+	private int numberOfStaticMethods;
+	private int numberOfPublicMethods;
+	private int numberOfPrivateMethods;
+	private int numberOfProtectedMethods;
+	private int numberOfDefaultMethods;
+	private int numberOfAbstractMethods;
+	private int numberOfFinalMethods;
+	private int numberOfSynchronizedMethods;
+	private int numberOfFields;
+	private int numberOfStaticFields;
+	private int numberOfPublicFields;
+	private int numberOfPrivateFields;
+	private int numberOfProtectedFields;
+	private int numberOfDefaultFields;
+	private int numberOfFinalFields;
+	private int numberOfSynchronizedFields;
+	private int modifiers;
+	private int numberOfLogStatements;
+
+	private float tightClassCohesion;
+	private float looseClassCohesion;
+
+<span class="fc" id="L69">	public CKClassResult(String file, String className, String type, int modifiers) {</span>
+<span class="fc" id="L70">		this.file = file;</span>
+<span class="fc" id="L71">		this.className = className;</span>
+<span class="fc" id="L72">		this.type = type;</span>
+<span class="fc" id="L73">		this.methods = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L74">		this.visibleMethods= new HashSet&lt;&gt;();</span>
+<span class="fc" id="L75">		this.modifiers = modifiers;</span>
+<span class="fc" id="L76">	}</span>
+
+	/**
+	 * public/static/private and other org.eclipse.jdt.core.dom.Modifier modifiers
+	 * 
+	 * @see org.eclipse.jdt.core.dom.Modifier to decode int
+	 * @return
+	 */
+	public int getModifiers() {
+<span class="fc" id="L85">		return modifiers;</span>
+	}
+	
+	public String getFile() {
+<span class="fc" id="L89">		return file;</span>
+	}
+
+	public int getDit() {
+<span class="fc" id="L93">		return dit;</span>
+	}
+
+	public void setDit(int dit) {
+<span class="fc" id="L97">		this.dit = dit;</span>
+<span class="fc" id="L98">	}</span>
+
+	public int getNoc(){
+<span class="fc bfc" id="L101" title="All 2 branches covered.">		if (this.noc == -1){</span>
+<span class="fc" id="L102">			NOCExtras extras = NOCExtras.getInstance();</span>
+<span class="fc" id="L103">			this.setNoc(extras.getNocValueByName(this.className));</span>
+		}
+			
+<span class="fc" id="L106">		return this.noc;</span>
+	}
+	
+	public void setNoc(int noc){
+<span class="fc" id="L110">		this.noc = noc;</span>
+<span class="fc" id="L111">	}</span>
+	
+	public String getClassName() {
+<span class="fc" id="L114">		return className;</span>
+	}
+
+	public void setWmc(int cc) {
+<span class="fc" id="L118">		this.wmc = cc;</span>
+<span class="fc" id="L119">	}</span>
+	
+	public int getWmc() {
+<span class="fc" id="L122">		return wmc;</span>
+	}
+
+	public int getCbo() {
+<span class="fc" id="L126">		return cbo;</span>
+	}
+
+	public void setCbo(int cbo) {
+<span class="fc" id="L130">		this.cbo = cbo;</span>
+<span class="fc" id="L131">	}</span>
+	
+	public int getCboModified() {
+<span class="fc bfc" id="L134" title="All 2 branches covered.">		if(this.cboModified == -1){</span>
+<span class="fc" id="L135">			CouplingExtras extras = CouplingExtras.getInstance();</span>
+<span class="fc" id="L136">			this.setCboModified(extras.getValueCBOClass(this.className));</span>
+		}
+<span class="fc" id="L138">		return cboModified;</span>
+	}
+
+	public void setCboModified(int cboModified) {
+<span class="fc" id="L142">		this.cboModified = cboModified;</span>
+<span class="fc" id="L143">	}</span>
+
+	public int getFanin() {
+		
+<span class="fc bfc" id="L147" title="All 2 branches covered.">		if(this.fanin == -1){</span>
+<span class="fc" id="L148">			CouplingExtras extras = CouplingExtras.getInstance();</span>
+<span class="fc" id="L149">			this.setFanin(extras.getValueFanInClass(this.className));</span>
+		}
+		
+<span class="fc" id="L152">		return fanin;</span>
+	}
+	
+	public void setFanin(int fanin) {
+<span class="fc" id="L156">		this.fanin = fanin;</span>
+<span class="fc" id="L157">	}</span>
+	
+	public int getFanout() {
+		
+<span class="fc bfc" id="L161" title="All 2 branches covered.">		if(this.fanout == -1){</span>
+<span class="fc" id="L162">			CouplingExtras extras = CouplingExtras.getInstance();</span>
+<span class="fc" id="L163">			this.setFanout(extras.getValueFanOutClass(this.className));</span>
+		}
+		
+<span class="fc" id="L166">		return fanout;</span>
+	}
+	
+	public void setFanout(int fanout) {
+<span class="fc" id="L170">		this.fanout = fanout;</span>
+<span class="fc" id="L171">	}</span>
+
+	public void setLcom(int lcom) {
+<span class="fc" id="L174">		this.lcom = lcom;</span>
+<span class="fc" id="L175">	}</span>
+	public int getLcom() {
+<span class="fc" id="L177">		return lcom;</span>
+	}
+
+	public void setLcomNormalized(float lcomNormalized) {
+<span class="fc" id="L181">		this.lcomNormalized = lcomNormalized;</span>
+<span class="fc" id="L182">	}</span>
+	
+	public float getLcomNormalized() {
+<span class="fc" id="L185">		return lcomNormalized;</span>
+	}
+	
+	public void setRfc(int rfc) {
+<span class="fc" id="L189">		this.rfc = rfc;</span>
+<span class="fc" id="L190">	}</span>
+	
+	public int getRfc() {
+<span class="fc" id="L193">		return rfc;</span>
+	}
+	
+	public int getNosi() {
+<span class="fc" id="L197">		return nosi;</span>
+	}
+
+	public void setNosi(int nosi) {
+<span class="fc" id="L201">		this.nosi = nosi;</span>
+<span class="fc" id="L202">	}</span>
+
+	public int getLoc() {
+<span class="fc" id="L205">		return loc;</span>
+	}
+
+	public void setLoc(int loc) {
+<span class="fc" id="L209">		this.loc = loc;</span>
+<span class="fc" id="L210">	}</span>
+
+
+	@Override
+	public String toString() {
+<span class="nc" id="L215">		return &quot;CKClassResult [file=&quot; + file + &quot;, className=&quot; + className + &quot;]&quot;;</span>
+	}
+
+	public void addMethod(CKMethodResult method) {
+<span class="fc" id="L219">		this.methods.add(method);</span>
+<span class="fc bfc" id="L220" title="All 2 branches covered.">		if(method.getIsVisible()){</span>
+<span class="fc" id="L221">			visibleMethods.add(method);</span>
+		}
+<span class="fc" id="L223">	}</span>
+
+	public Set&lt;CKMethodResult&gt; getMethods() {
+<span class="fc" id="L226">		return Collections.unmodifiableSet(methods);</span>
+	}
+
+	public Set&lt;CKMethodResult&gt; getVisibleMethods() {
+<span class="fc" id="L230">		return Collections.unmodifiableSet(visibleMethods);</span>
+	}
+
+	public Optional&lt;CKMethodResult&gt; getMethod(String methodName) {
+<span class="fc" id="L234">		return methods.stream().filter(m -&gt; m.getMethodName().equals(methodName)).findFirst();</span>
+	}
+
+<span class="fc" id="L237">	public void setFieldNames(Set&lt;String&gt; fieldNames){ this.fieldNames = fieldNames;}</span>
+
+<span class="fc" id="L239">	public Set&lt;String&gt; getFieldNames(){ return fieldNames; }</span>
+
+	public void setReturnQty(int returnQty) {
+<span class="fc" id="L242">		this.returnQty = returnQty;</span>
+<span class="fc" id="L243">	}</span>
+
+	public int getReturnQty() {
+<span class="fc" id="L246">		return returnQty;</span>
+	}
+
+	public void setLoopQty(int loopQty) {
+<span class="fc" id="L250">		this.loopQty = loopQty;</span>
+<span class="fc" id="L251">	}</span>
+
+	public int getLoopQty() {
+<span class="fc" id="L254">		return loopQty;</span>
+	}
+
+	public void setComparisonsQty(int comparisonsQty) {
+<span class="fc" id="L258">		this.comparisonsQty = comparisonsQty;</span>
+<span class="fc" id="L259">	}</span>
+
+	public int getComparisonsQty() {
+<span class="fc" id="L262">		return comparisonsQty;</span>
+	}
+
+	public void setTryCatchQty(int tryCatchQty) {
+<span class="fc" id="L266">		this.tryCatchQty = tryCatchQty;</span>
+<span class="fc" id="L267">	}</span>
+
+	public int getTryCatchQty() {
+<span class="fc" id="L270">		return tryCatchQty;</span>
+	}
+
+	public void setParenthesizedExpsQty(int parenthesizedExpsQty) {
+<span class="fc" id="L274">		this.parenthesizedExpsQty = parenthesizedExpsQty;</span>
+<span class="fc" id="L275">	}</span>
+
+	public int getParenthesizedExpsQty() {
+<span class="fc" id="L278">		return parenthesizedExpsQty;</span>
+	}
+
+	public void setStringLiteralsQty(int stringLiteralsQty) {
+<span class="fc" id="L282">		this.stringLiteralsQty = stringLiteralsQty;</span>
+<span class="fc" id="L283">	}</span>
+
+	public int getStringLiteralsQty() {
+<span class="fc" id="L286">		return stringLiteralsQty;</span>
+	}
+
+	public void setNumbersQty(int numbersQty) {
+<span class="fc" id="L290">		this.numbersQty = numbersQty;</span>
+<span class="fc" id="L291">	}</span>
+
+	public int getNumbersQty() {
+<span class="fc" id="L294">		return numbersQty;</span>
+	}
+
+	public void setAssignmentsQty(int assignmentsQty) {
+<span class="fc" id="L298">		this.assignmentsQty = assignmentsQty;</span>
+<span class="fc" id="L299">	}</span>
+
+	public int getAssignmentsQty() {
+<span class="fc" id="L302">		return assignmentsQty;</span>
+	}
+
+	public void setMathOperationsQty(int mathOperationsQty) {
+<span class="fc" id="L306">		this.mathOperationsQty = mathOperationsQty;</span>
+<span class="fc" id="L307">	}</span>
+
+	public int getMathOperationsQty() {
+<span class="fc" id="L310">		return mathOperationsQty;</span>
+	}
+
+	public void setVariablesQty(int variablesQty) {
+<span class="fc" id="L314">		this.variablesQty = variablesQty;</span>
+<span class="fc" id="L315">	}</span>
+
+	public int getVariablesQty() {
+<span class="fc" id="L318">		return variablesQty;</span>
+	}
+
+	public void setMaxNestedBlocks(int maxNestedBlocks) {
+<span class="fc" id="L322">		this.maxNestedBlocks = maxNestedBlocks;</span>
+<span class="fc" id="L323">	}</span>
+
+	public int getMaxNestedBlocks() {
+<span class="fc" id="L326">		return maxNestedBlocks;</span>
+	}
+
+	public void setAnonymousClassesQty(int anonymousClassesQty) {
+<span class="fc" id="L330">		this.anonymousClassesQty = anonymousClassesQty;</span>
+<span class="fc" id="L331">	}</span>
+
+	public int getAnonymousClassesQty() {
+<span class="fc" id="L334">		return anonymousClassesQty;</span>
+	}
+
+	public void setInnerClassesQty(int innerClassesQty) {
+<span class="fc" id="L338">		this.innerClassesQty = innerClassesQty;</span>
+<span class="fc" id="L339">	}</span>
+
+	public int getInnerClassesQty() {
+<span class="fc" id="L342">		return innerClassesQty;</span>
+	}
+
+	public void setLambdasQty(int lambdasQty) {
+<span class="fc" id="L346">		this.lambdasQty = lambdasQty;</span>
+<span class="fc" id="L347">	}</span>
+
+	public int getLambdasQty() {
+<span class="fc" id="L350">		return lambdasQty;</span>
+	}
+
+	public void setUniqueWordsQty(int uniqueWordsQty) {
+<span class="fc" id="L354">		this.uniqueWordsQty = uniqueWordsQty;</span>
+<span class="fc" id="L355">	}</span>
+
+	public int getUniqueWordsQty() {
+<span class="fc" id="L358">		return uniqueWordsQty;</span>
+	}
+
+	public void setNumberOfMethods(int numberOfMethods) {
+<span class="fc" id="L362">		this.numberOfMethods = numberOfMethods;</span>
+<span class="fc" id="L363">	}</span>
+
+	public int getNumberOfMethods() {
+<span class="fc" id="L366">		return numberOfMethods;</span>
+	}
+
+	public void setNumberOfStaticMethods(int numberOfStaticMethods) {
+<span class="fc" id="L370">		this.numberOfStaticMethods = numberOfStaticMethods;</span>
+<span class="fc" id="L371">	}</span>
+
+	public int getNumberOfStaticMethods() {
+<span class="fc" id="L374">		return numberOfStaticMethods;</span>
+	}
+
+	public void setNumberOfPublicMethods(int numberOfPublicMethods) {
+<span class="fc" id="L378">		this.numberOfPublicMethods = numberOfPublicMethods;</span>
+<span class="fc" id="L379">	}</span>
+
+	public int getNumberOfPublicMethods() {
+<span class="fc" id="L382">		return numberOfPublicMethods;</span>
+	}
+
+	public void setNumberOfPrivateMethods(int numberOfPrivateMethods) {
+<span class="fc" id="L386">		this.numberOfPrivateMethods = numberOfPrivateMethods;</span>
+<span class="fc" id="L387">	}</span>
+
+	public int getNumberOfPrivateMethods() {
+<span class="fc" id="L390">		return numberOfPrivateMethods;</span>
+	}
+
+	public void setNumberOfProtectedMethods(int numberOfProtectedMethods) {
+<span class="fc" id="L394">		this.numberOfProtectedMethods = numberOfProtectedMethods;</span>
+<span class="fc" id="L395">	}</span>
+
+	public int getNumberOfProtectedMethods() {
+<span class="fc" id="L398">		return numberOfProtectedMethods;</span>
+	}
+
+	public void setNumberOfDefaultMethods(int numberOfDefaultMethods) {
+<span class="fc" id="L402">		this.numberOfDefaultMethods = numberOfDefaultMethods;</span>
+<span class="fc" id="L403">	}</span>
+
+	public int getNumberOfDefaultMethods() {
+<span class="fc" id="L406">		return numberOfDefaultMethods;</span>
+	}
+
+	public void setNumberOfAbstractMethods(int numberOfAbstractMethods) {
+<span class="fc" id="L410">		this.numberOfAbstractMethods = numberOfAbstractMethods;</span>
+<span class="fc" id="L411">	}</span>
+
+	public int getNumberOfAbstractMethods() {
+<span class="fc" id="L414">		return numberOfAbstractMethods;</span>
+	}
+
+	public void setNumberOfFinalMethods(int numberOfFinalMethods) {
+<span class="fc" id="L418">		this.numberOfFinalMethods = numberOfFinalMethods;</span>
+<span class="fc" id="L419">	}</span>
+
+	public int getNumberOfFinalMethods() {
+<span class="fc" id="L422">		return numberOfFinalMethods;</span>
+	}
+
+	public void setNumberOfSynchronizedMethods(int numberOfSynchronizedMethods) {
+<span class="fc" id="L426">		this.numberOfSynchronizedMethods = numberOfSynchronizedMethods;</span>
+<span class="fc" id="L427">	}</span>
+
+<span class="fc" id="L429">	public int getNumberOfVisibleMethods() { return visibleMethods.size();	}</span>
+
+	public int getNumberOfSynchronizedMethods() {
+<span class="fc" id="L432">		return numberOfSynchronizedMethods;</span>
+	}
+
+	public void setNumberOfFields(int numberOfFields) {
+<span class="fc" id="L436">		this.numberOfFields = numberOfFields;</span>
+<span class="fc" id="L437">	}</span>
+
+	public int getNumberOfFields() {
+<span class="fc" id="L440">		return numberOfFields;</span>
+	}
+
+	public void setNumberOfStaticFields(int numberOfStaticFields) {
+<span class="fc" id="L444">		this.numberOfStaticFields = numberOfStaticFields;</span>
+<span class="fc" id="L445">	}</span>
+
+	public int getNumberOfStaticFields() {
+<span class="fc" id="L448">		return numberOfStaticFields;</span>
+	}
+
+	public void setNumberOfPublicFields(int numberOfPublicFields) {
+<span class="fc" id="L452">		this.numberOfPublicFields = numberOfPublicFields;</span>
+<span class="fc" id="L453">	}</span>
+
+	public int getNumberOfPublicFields() {
+<span class="fc" id="L456">		return numberOfPublicFields;</span>
+	}
+
+	public void setNumberOfPrivateFields(int numberOfPrivateFields) {
+<span class="fc" id="L460">		this.numberOfPrivateFields = numberOfPrivateFields;</span>
+<span class="fc" id="L461">	}</span>
+
+	public int getNumberOfPrivateFields() {
+<span class="fc" id="L464">		return numberOfPrivateFields;</span>
+	}
+
+	public void setNumberOfProtectedFields(int numberOfProtectedFields) {
+<span class="fc" id="L468">		this.numberOfProtectedFields = numberOfProtectedFields;</span>
+<span class="fc" id="L469">	}</span>
+
+	public int getNumberOfProtectedFields() {
+<span class="fc" id="L472">		return numberOfProtectedFields;</span>
+	}
+
+	public void setNumberOfDefaultFields(int numberOfDefaultFields) {
+<span class="fc" id="L476">		this.numberOfDefaultFields = numberOfDefaultFields;</span>
+<span class="fc" id="L477">	}</span>
+
+	public int getNumberOfDefaultFields() {
+<span class="fc" id="L480">		return numberOfDefaultFields;</span>
+	}
+
+	public void setNumberOfFinalFields(int numberOfFinalFields) {
+<span class="fc" id="L484">		this.numberOfFinalFields = numberOfFinalFields;</span>
+<span class="fc" id="L485">	}</span>
+
+	public int getNumberOfFinalFields() {
+<span class="fc" id="L488">		return numberOfFinalFields;</span>
+	}
+
+	public void setNumberOfSynchronizedFields(int numberOfSynchronizedFields) {
+<span class="fc" id="L492">		this.numberOfSynchronizedFields = numberOfSynchronizedFields;</span>
+<span class="fc" id="L493">	}</span>
+
+	public int getNumberOfSynchronizedFields() {
+<span class="fc" id="L496">		return numberOfSynchronizedFields;</span>
+	}
+
+	public String getType() {
+<span class="fc" id="L500">		return type;</span>
+	}
+
+	public void setLogStatementsQty(int numberOfLogStatements) {
+<span class="fc" id="L504">		this.numberOfLogStatements = numberOfLogStatements;</span>
+<span class="fc" id="L505">	}</span>
+
+	public int getNumberOfLogStatements() {
+<span class="fc" id="L508">		return numberOfLogStatements;</span>
+	}
+
+	public float getTightClassCohesion() {
+<span class="fc" id="L512">		return tightClassCohesion;</span>
+	}
+
+	public float getLooseClassCohesion() {
+<span class="fc" id="L516">		return looseClassCohesion;</span>
+	}
+
+	public void setTightClassCohesion(float tightClassCohesion) {
+<span class="fc" id="L520">		this.tightClassCohesion = tightClassCohesion;</span>
+<span class="fc" id="L521">	}</span>
+
+	public void setLooseClassCohesion(float looseClassCohesion) {
+<span class="fc" id="L524">		this.looseClassCohesion = looseClassCohesion;</span>
+<span class="fc" id="L525">	}</span>
+
+	@Override
+	public boolean equals(Object o) {
+<span class="nc bnc" id="L529" title="All 2 branches missed.">		if (this == o) return true;</span>
+<span class="nc bnc" id="L530" title="All 4 branches missed.">		if (o == null || getClass() != o.getClass()) return false;</span>
+<span class="nc" id="L531">		CKClassResult that = (CKClassResult) o;</span>
+<span class="nc bnc" id="L532" title="All 2 branches missed.">		return file.equals(that.file) &amp;&amp;</span>
+<span class="nc bnc" id="L533" title="All 2 branches missed.">				className.equals(that.className) &amp;&amp;</span>
+<span class="nc bnc" id="L534" title="All 2 branches missed.">				type.equals(that.type);</span>
+	}
+
+	@Override
+	public int hashCode() {
+<span class="fc" id="L539">		return Objects.hash(file, className, type);</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

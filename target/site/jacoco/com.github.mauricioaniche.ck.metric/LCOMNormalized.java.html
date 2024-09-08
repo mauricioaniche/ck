@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LCOMNormalized.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CK calculator</a> &gt; <a href="index.source.html" class="el_package">com.github.mauricioaniche.ck.metric</a> &gt; <span class="el_source">LCOMNormalized.java</span></div><h1>LCOMNormalized.java</h1><pre class="source lang-java linenums">package com.github.mauricioaniche.ck.metric;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.TreeSet;
+
+import org.eclipse.jdt.core.dom.FieldDeclaration;
+import org.eclipse.jdt.core.dom.IMethodBinding;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jdt.core.dom.SimpleName;
+import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
+
+import com.github.mauricioaniche.ck.CKClassResult;
+import com.github.mauricioaniche.ck.util.JDTUtils;
+
+public class LCOMNormalized implements CKASTVisitor, ClassLevelMetric {
+
+	HashMap&lt;String, TreeSet&lt;String&gt;&gt; declaredFields;
+	ArrayList&lt;String&gt; methods;
+	ArrayList&lt;Integer&gt; flags;
+	
+<span class="fc" id="L24">	public LCOMNormalized() {</span>
+<span class="fc" id="L25">		this.declaredFields = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L26">		this.methods = new ArrayList&lt;String&gt;();</span>
+<span class="fc" id="L27">		this.flags = new ArrayList&lt;Integer&gt;();</span>
+<span class="fc" id="L28">	}</span>
+	
+	public void visit(FieldDeclaration node) {
+		
+<span class="fc bfc" id="L32" title="All 2 branches covered.">		for(Object o : node.fragments()) {</span>
+<span class="fc" id="L33">			VariableDeclarationFragment vdf = (VariableDeclarationFragment) o;</span>
+<span class="fc" id="L34">			declaredFields.put(vdf.getName().toString(), new TreeSet&lt;String&gt;());</span>
+<span class="fc" id="L35">		}</span>
+		
+<span class="fc" id="L37">	}</span>
+	
+	public void visit(SimpleName node) {
+<span class="fc" id="L40">		String name = node.getFullyQualifiedName();</span>
+<span class="fc bfc" id="L41" title="All 2 branches covered.">		if(declaredFields.containsKey(name)) {</span>
+<span class="fc" id="L42">			acessed(name);</span>
+		}
+		
+<span class="fc" id="L45">	}</span>
+
+	private void acessed(String name) {
+<span class="fc bfc" id="L48" title="All 2 branches covered.">		if(!methods.isEmpty()){</span>
+<span class="fc" id="L49">			this.declaredFields.get(name).add(this.methods.get(this.methods.size() - 1));</span>
+		}
+<span class="fc" id="L51">	}</span>
+	
+	public void visit(MethodDeclaration node) {
+		
+<span class="fc" id="L55">		String currentMethodName = JDTUtils.getMethodFullName(node);</span>
+		
+<span class="fc bfc" id="L57" title="All 2 branches covered.">		if(!this.methods.isEmpty()){</span>
+<span class="fc bfc" id="L58" title="All 2 branches covered.">			if(this.methods.get(this.methods.size() - 1).equals(currentMethodName)){</span>
+<span class="fc bfc" id="L59" title="All 2 branches covered.">				if(this.flags.get(this.flags.size() - 1) == 0){</span>
+<span class="fc" id="L60">					this.flags.set((this.flags.size() - 1), 1);</span>
+				}else{
+<span class="fc" id="L62">					this.methods.add(currentMethodName);</span>
+<span class="fc" id="L63">					this.flags.add(0);</span>
+				}
+			} else{
+<span class="fc" id="L66">				this.methods.add(currentMethodName);</span>
+<span class="fc" id="L67">				this.flags.add(0);</span>
+			}
+		} else {
+<span class="fc" id="L70">			this.methods.add(currentMethodName);</span>
+<span class="fc" id="L71">			this.flags.add(0);</span>
+		}
+		
+<span class="fc" id="L74">	}</span>
+	
+	@Override
+	public void setResult(CKClassResult result) {
+		
+		/*
+		 * LCOM = 1/a * (Σ{i=1 to a} {(m - μ(Ai)) / m})
+		 * where
+		 * a = number of attributes
+		 * m = number of methods
+		 * Σ{i=1 to a} = sum from 1 to a (number of attributes)
+		 * μ(Ai) = number of methods accessing attribute Ai
+		 *  
+		 * This version of computing LCOM is based on Henderson-Sellers definition:
+		 * Henderson-Sellers, Brian, Larry L. Constantine and Ian M. Graham. &quot;Coupling and cohesion (towards a valid metrics suite for object-oriented analysis and design).&quot; Object Oriented Systems 3 (1996): 143-158.
+		 */
+		
+		// formula (13) extracted from https://github.com/cqfn/jpeek/blob/master/papers/sellers96_LCOM2_LCOM3_LCOM5.pdf
+<span class="fc" id="L92">		float sum = 0;</span>
+<span class="fc" id="L93">		float lcomNormalized = 0;</span>
+		
+<span class="fc" id="L95">		int numberOfAttributes = this.declaredFields.size();</span>
+<span class="fc" id="L96">		int numberOfMethods = this.methods.size();</span>
+		
+<span class="fc bfc" id="L98" title="All 2 branches covered.">		for (String key : this.declaredFields.keySet())</span>
+<span class="fc" id="L99">			sum = sum + (((float) (numberOfMethods - this.declaredFields.get(key).size())) / numberOfMethods);</span>
+		
+<span class="fc bfc" id="L101" title="All 2 branches covered.">		if(numberOfAttributes &gt; 0)</span>
+<span class="fc" id="L102">			lcomNormalized = (((float) 1) * sum) / numberOfAttributes;</span>
+		
+<span class="fc" id="L104">		result.setLcomNormalized(lcomNormalized);</span>
+		
+<span class="fc" id="L106">	}	</span>
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

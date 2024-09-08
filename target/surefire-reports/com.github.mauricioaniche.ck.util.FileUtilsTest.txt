@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.github.mauricioaniche.ck.util.FileUtilsTest
+-------------------------------------------------------------------------------
+Tests run: 10, Failures: 0, Errors: 0, Skipped: 6, Time elapsed: 0 s - in com.github.mauricioaniche.ck.util.FileUtilsTest

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JDTUtils.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CK calculator</a> &gt; <a href="index.source.html" class="el_package">com.github.mauricioaniche.ck.util</a> &gt; <span class="el_source">JDTUtils.java</span></div><h1>JDTUtils.java</h1><pre class="source lang-java linenums">package com.github.mauricioaniche.ck.util;
+
+import org.eclipse.jdt.core.dom.*;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
+<span class="nc" id="L10">public class JDTUtils {</span>
+
+	/**
+	 * If the method has a body, we can get the starting line of the method, ignoring any possible
+	 * Javadoc at the top of it.
+	 * If there's no body, JDT doesn't create a 'body', and thus, we can't get its starting position; thus,
+	 * we fall back to the starting position of the methoddeclarationnode, which can contain the javadoc.
+	 * This seems like an exceptional case, though.
+	 * TODO: better ideas are welcome.
+	 */
+
+	public static int getStartLine(CompilationUnit cu, MethodDeclaration node) {
+<span class="fc bfc" id="L22" title="All 2 branches covered.">		return node.getBody() != null ?</span>
+<span class="fc" id="L23">				cu.getLineNumber(node.getBody().getStartPosition()) :</span>
+<span class="fc" id="L24">				cu.getLineNumber(node.getStartPosition());</span>
+	}
+
+	public static int getStartLine(CompilationUnit cu, Initializer node) {
+<span class="pc bpc" id="L28" title="1 of 2 branches missed.">		return node.getBody() != null ?</span>
+<span class="fc" id="L29">				cu.getLineNumber(node.getBody().getStartPosition()) :</span>
+<span class="nc" id="L30">				cu.getLineNumber(node.getStartPosition());</span>
+	}
+
+	//Get the method name with parameter count and types, e.g. m1/1[int]
+	public static String getMethodFullName(IMethodBinding binding) {
+<span class="fc" id="L35">		String methodName = binding.getName();</span>
+<span class="fc" id="L36">		return methodName + &quot;/&quot; + getMethodSignature(binding);</span>
+	}
+
+	public static String getMethodFullName(MethodDeclaration node) {
+<span class="fc bfc" id="L40" title="All 2 branches covered.">		if(node.resolveBinding() != null){</span>
+<span class="fc" id="L41">			return getMethodFullName(node.resolveBinding());</span>
+		}
+<span class="fc" id="L43">		String methodName = node.getName().getFullyQualifiedName();</span>
+<span class="fc" id="L44">		return methodName + &quot;/&quot; + getMethodSignature(node);</span>
+	}
+
+	//Get the fully qualified method name with parameter count and types, e.g. rfc.GO.m1/1[int]
+	public static String getQualifiedMethodFullName(IMethodBinding binding){
+<span class="fc" id="L49">		String methodName = binding.getName();</span>
+<span class="pc bpc" id="L50" title="1 of 2 branches missed.">		if(binding.getDeclaringClass() != null){</span>
+<span class="fc" id="L51">			methodName = binding.getDeclaringClass().getQualifiedName() + &quot;.&quot; + binding.getName();</span>
+		}
+<span class="fc" id="L53">		return methodName + &quot;/&quot; + getMethodSignature(binding);</span>
+	}
+
+	//Get the fully qualified method name with parameter count and types, e.g. rfc.GO.m1/1[int]
+	public static String getQualifiedMethodFullName(MethodDeclaration node) {
+<span class="fc bfc" id="L58" title="All 2 branches covered.">		if(node.resolveBinding() != null){</span>
+<span class="fc" id="L59">			return getQualifiedMethodFullName(node.resolveBinding());</span>
+		}
+<span class="fc" id="L61">		String methodName = node.getName().getFullyQualifiedName();</span>
+<span class="fc" id="L62">		return methodName + &quot;/&quot; + getMethodSignature(node);</span>
+	}
+
+	//Get the fully qualified method name with parameter count and types, e.g. rfc.GO.m1/1[int]
+	public static String getQualifiedMethodFullName(MethodInvocation node) {
+<span class="fc" id="L67">		IMethodBinding binding = node.resolveMethodBinding();</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">		if(binding != null){</span>
+<span class="fc" id="L69">			return getQualifiedMethodFullName(binding);</span>
+		} else {
+<span class="fc" id="L71">			return node.getName().getFullyQualifiedName() + &quot;/&quot; + getMethodSignature(node.arguments(), node.typeArguments());</span>
+		}
+	}
+
+	//Get the fully qualified method name with parameter count and types, e.g. rfc.GO.m1/1[int]
+	public static String getQualifiedMethodFullName(SuperMethodInvocation node) {
+<span class="fc" id="L77">		IMethodBinding binding = node.resolveMethodBinding();</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">		if(binding != null){</span>
+<span class="fc" id="L79">			return getQualifiedMethodFullName(binding);</span>
+<span class="pc bpc" id="L80" title="1 of 2 branches missed.">		} else if(node.getQualifier() != null){</span>
+<span class="nc" id="L81">			return node.getQualifier().getFullyQualifiedName() + getMethodSignature(node.arguments(), node.typeArguments());</span>
+		}
+<span class="fc" id="L83">		return node.getName().getFullyQualifiedName() + &quot;/&quot; + getMethodSignature(node.arguments(), node.typeArguments());</span>
+	}
+
+	//Get the signature of a method with parameter count and types, e.g. 1[int]
+	public static String getMethodSignature(IMethodBinding node){
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">		int parameterCount = node.getParameterTypes()==null ? 0 : node.getParameterTypes().length;</span>
+<span class="fc" id="L89">		List&lt;String&gt; parameterTypes = new ArrayList&lt;&gt;();</span>
+
+<span class="fc bfc" id="L91" title="All 2 branches covered.">		if(parameterCount &gt; 0) {</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">			for(ITypeBinding binding : node.getParameterTypes()) {</span>
+
+<span class="fc" id="L94">				String v = binding.getQualifiedName();</span>
+
+<span class="fc" id="L96">				parameterTypes.add(v);</span>
+			}
+		}
+<span class="fc" id="L99">		return formatSignature(parameterTypes);</span>
+	}
+
+	//Get the signature of a method with parameter count and types, e.g. 1[int]
+	public static String getMethodSignature(MethodDeclaration node){
+<span class="pc bpc" id="L104" title="1 of 2 branches missed.">		int parameterCount = node.parameters()==null ? 0 : node.parameters().size();</span>
+<span class="fc" id="L105">		List&lt;String&gt; parameterTypes = new ArrayList&lt;&gt;();</span>
+
+<span class="fc bfc" id="L107" title="All 2 branches covered.">		if(parameterCount &gt; 0) {</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">			for(Object p0 : node.parameters()) {</span>
+<span class="fc" id="L109">				SingleVariableDeclaration parameter = (SingleVariableDeclaration) p0;</span>
+
+<span class="fc" id="L111">				ITypeBinding binding = parameter.getType().resolveBinding();</span>
+
+				String v;
+<span class="fc bfc" id="L114" title="All 4 branches covered.">				if(binding == null || binding.isRecovered())</span>
+<span class="fc" id="L115">					v = parameter.getType().toString();</span>
+				else
+<span class="fc" id="L117">					v = binding.getQualifiedName();</span>
+
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">				if(parameter.isVarargs()) v+=&quot;[]&quot;;</span>
+
+<span class="fc" id="L121">				parameterTypes.add(v);</span>
+<span class="fc" id="L122">			}</span>
+		}
+
+<span class="fc" id="L125">		return formatSignature(parameterTypes);</span>
+	}
+
+	//Helper method to extract the number of arguments from an argument list used to generate the method signature for MethodInvocation nodes
+	private static String getMethodSignature(List&lt;?&gt; arguments, List&lt;?&gt; typeArguments) {
+<span class="pc bpc" id="L130" title="1 of 2 branches missed.">		int argumentCount = arguments != null ? arguments.size() : 0;</span>
+<span class="fc" id="L131">		List&lt;String&gt; parameterTypes = typeArguments.stream().map(object -&gt; object.toString()).collect(Collectors.toList());</span>
+<span class="fc" id="L132">		return formatSignature(parameterTypes);</span>
+	}
+
+	private static String formatSignature(List&lt;String&gt; parameters){
+<span class="fc" id="L136">		int parameterCount = parameters.size();</span>
+<span class="fc" id="L137">		return String.format(&quot;%d%s%s%s&quot;,</span>
+<span class="fc" id="L138">				parameterCount,</span>
+<span class="fc bfc" id="L139" title="All 2 branches covered.">				(parameterCount &gt; 0 ? &quot;[&quot; : &quot;&quot;),</span>
+<span class="fc bfc" id="L140" title="All 2 branches covered.">				(parameterCount &gt; 0 ? String.join(&quot;,&quot;, parameters) : &quot;&quot;),</span>
+<span class="fc bfc" id="L141" title="All 2 branches covered.">				(parameterCount &gt; 0 ? &quot;]&quot; : &quot;&quot;)</span>
+		);
+	}
+
+	//get the simple name from the fragments of a variable or field declaration, e.g. [a=10] -&gt; a
+	//Be aware: the function might return the empty string
+	public static List&lt;String&gt; getVariableName(List&lt;VariableDeclarationFragment&gt; fragments){
+<span class="pc bpc" id="L148" title="1 of 2 branches missed.">		if (fragments != null)</span>
+<span class="fc" id="L149">			return fragments.stream().map(fragment -&gt; fragment.getName().getIdentifier()).collect(Collectors.toList());</span>
+<span class="nc" id="L150">		return Collections.emptyList();</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
