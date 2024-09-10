@@ -5,9 +5,9 @@ import requests
 # Configurações
 GITHUB_API_URL = 'https://api.github.com/graphql'
 GITHUB_TOKEN = ''
-CK_JAR_PATH = r'D:\Pedro\puc\6Semestre\Laboratorio\ck-1\ck\target\ck-0.7.1-SNAPSHOT-jar-with-dependencies.jar'
-CLONE_DIR = r'D:\Pedro\puc\6Semestre\Laboratorio\ck-1\repos'
-OUTPUT_DIR = r'D:\Pedro\puc\6Semestre\Laboratorio\ck-1\output'
+CK_JAR_PATH = r'D:\Pedro\puc\6Semestre\Laboratorio\Analyze-java-repositories\ck\target\ck-0.7.1-SNAPSHOT-jar-with-dependencies.jar'
+CLONE_DIR = r'repos'
+OUTPUT_DIR = r'output'
 
 # Nova consulta GraphQL
 QUERY = """
@@ -79,8 +79,7 @@ def clone_repository(owner, repo_name):
 # Função para analisar repositórios com CK
 def analyze_with_ck(repo_dir, output_file):
     subprocess.run([
-        "java", "-jar", CK_JAR_PATH, repo_dir, 
-        "--output", output_file
+        "java", "-jar", CK_JAR_PATH, repo_dir
     ])
 
 # Função principal para coordenar o processo
