@@ -1,10 +1,12 @@
 import os
 import subprocess
 import requests
+import shutil
+import stat
 
 # Configurações
 GITHUB_API_URL = 'https://api.github.com/graphql'
-GITHUB_TOKEN = ''
+GITHUB_TOKEN = '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'
 CK_JAR_PATH = r'D:\Pedro\puc\6Semestre\Laboratorio\Analyze-java-repositories\ck\target\ck-0.7.1-SNAPSHOT-jar-with-dependencies.jar'
 CLONE_DIR = r'repos'
 OUTPUT_DIR = r'output'
@@ -77,10 +79,33 @@ def clone_repository(owner, repo_name):
     return repo_dir
 
 # Função para analisar repositórios com CK
-def analyze_with_ck(repo_dir, output_file):
-    subprocess.run([
-        "java", "-jar", CK_JAR_PATH, repo_dir
-    ])
+def analyze_with_ck(repo_dir, output_dir, name):
+    # Executa o CK e espera até que ele termine
+    process = subprocess.Popen(
+        ["java", "-jar", CK_JAR_PATH, repo_dir],
+        stdout=subprocess.PIPE, stderr=subprocess.PIPE
+    )
+    stdout, stderr = process.communicate()  # Espera o comando terminar
+    if process.returncode != 0:
+        print(f"Erro ao executar CK para {repo_dir}: {stderr.decode('utf-8')}")
+    else:
+        print(f"Análise concluída para {repo_dir}")
+    
+    # Mover arquivos .csv gerados para o diretório de saída
+    for file_name in ["class.csv", "method.csv", "variable.csv", "field.csv"]:
+        src_file = os.path.join(output_dir, name)
+        if os.path.exists(src_file):
+            shutil.move(file_name, src_file)
+
+# Função para alterar permissões de arquivos e diretórios antes de removê-los
+def handle_remove_readonly(func, path, exc):
+    exc_type, exc_value, exc_tb = exc
+    if exc_type is PermissionError:
+        # Tenta alterar as permissões do arquivo e remover novamente
+        os.chmod(path, stat.S_IWRITE)
+        func(path)
+    else:
+        raise
 
 # Função principal para coordenar o processo
 def main():
@@ -98,10 +123,26 @@ def main():
         name = repo['node']['name']
         print(f"Clonando repositório {owner}/{name}...")
         repo_dir = clone_repository(owner, name)
-        output_file = os.path.join(OUTPUT_DIR, f"{name}.csv")
+
+        # Criar diretório de saída específico para cada repositório
+        repo_output_dir = os.path.join(OUTPUT_DIR, name)
+        if not os.path.exists(repo_output_dir):
+            os.makedirs(repo_output_dir)
+
         print(f"Analisando repositório {owner}/{name} com CK...")
-        analyze_with_ck(repo_dir, output_file)
-        print(f"Análise concluída para {owner}/{name}, resultados salvos em {output_file}.")
+        analyze_with_ck(repo_dir, repo_output_dir, name)
+        print(f"Análise concluída para {owner}/{name}, resultados salvos em {repo_output_dir}.")
+
+        # Verificar se os arquivos .csv foram movidos antes de excluir o repositório
+        csv_files = ["class.csv", "method.csv", "variable.csv", "field.csv"]
+        all_csv_moved = all(os.path.exists(os.path.join(repo_output_dir, file)) for file in csv_files)
+        
+        if all_csv_moved:
+            # Remover o repositório clonado após a análise
+            print(f"Removendo clone do repositório {owner}/{name}...")
+            shutil.rmtree(repo_dir, onerror=handle_remove_readonly)
+        else:
+            print(f"Erro: Nem todos os arquivos CSV foram movidos corretamente para {repo_output_dir}. Repositório {name} não será excluído.")
 
 if __name__ == "__main__":
     main()
