@@ -7,6 +7,7 @@ import stat
 # Configurações
 GITHUB_API_URL = 'https://api.github.com/graphql'
 GITHUB_TOKEN = ''
+
 CK_JAR_PATH = r'D:\Pedro\puc\6Semestre\Laboratorio\Analyze-java-repositories\ck\target\ck-0.7.1-SNAPSHOT-jar-with-dependencies.jar'
 CLONE_DIR = r'repos'
 OUTPUT_DIR = r'output'
