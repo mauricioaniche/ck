@@ -7,7 +7,7 @@ import stat
 # Configurações
 GITHUB_API_URL = 'https://api.github.com/graphql'
 GITHUB_TOKEN = ''
-CK_JAR_PATH = r'D:\Pedro\puc\6Semestre\Laboratorio\Analyze-java-repositories\ck\target\ck-0.7.1-SNAPSHOT-jar-with-dependencies.jar'
+CK_JAR_PATH = r'C:\Users\giova\OneDrive\Documentos\Puc\6 periodo\Analyze-java-repositories\ck\target\ck-0.7.1-SNAPSHOT-jar-with-dependencies.jar' #Mudar aqui
 CLONE_DIR = r'repos'
 OUTPUT_DIR = r'output'
 
@@ -91,11 +91,16 @@ def analyze_with_ck(repo_dir, output_dir, name):
     else:
         print(f"Análise concluída para {repo_dir}")
     
-    # Mover arquivos .csv gerados para o diretório de saída
+    # Verifica se os arquivos .csv foram gerados na pasta raiz do projeto
     for file_name in ["class.csv", "method.csv", "variable.csv", "field.csv"]:
-        src_file = os.path.join(output_dir, name)
+        src_file = os.path.join(os.getcwd(), file_name)  # Arquivos gerados na pasta raiz
+        dst_file = os.path.join(output_dir, file_name)  # Destino correto no diretório de saída
+        
         if os.path.exists(src_file):
-            shutil.move(file_name, src_file)
+            shutil.move(src_file, dst_file)  # Mover os arquivos da raiz para o diretório de saída
+        else:
+            print(f"Erro: {file_name} não foi encontrado no diretório {os.getcwd()}.")
+
 
 # Função para alterar permissões de arquivos e diretórios antes de removê-los
 def handle_remove_readonly(func, path, exc):
