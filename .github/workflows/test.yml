@@ -6,17 +6,48 @@ jobs:
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v2
-      - name: Set up JDK 11
-        uses: actions/setup-java@v1
-        with:
-          java-version: 11
-      - name: Cache Maven packages
-        uses: actions/cache@v2
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
-      - name: Run tests with Maven
-        run: mvn -B test --file pom.xml
-      - name: Submit coverage report
-        uses: codecov/codecov-action@v2
+      - name: Check env variables
+        run: 
+          echo $GITHUB_ACTION
+          echo $GITHUB_ACTION_PATH
+          echo $GITHUB_ACTION_REPOSITORY
+          echo $GITHUB_ACTIONS
+          echo $GITHUB_ACTOR
+          echo $GITHUB_ACTOR_ID
+          echo $GITHUB_API_URL
+          echo $GITHUB_BASE_REF
+          echo $GITHUB_ENV
+          echo $GITHUB_EVENT_NAME
+          echo $GITHUB_EVENT_PATH
+          echo $GITHUB_GRAPHQL_URL
+          echo $GITHUB_HEAD_REF
+          echo $GITHUB_JOB
+          echo $GITHUB_OUTPUT
+          echo $GITHUB_PATH
+          echo $GITHUB_REF
+          echo $GITHUB_REF_NAME
+          echo $GITHUB_REF_PROTECTED
+          echo $GITHUB_REF_TYPE
+          echo $GITHUB_REPOSITORY
+          echo $GITHUB_REPOSITORY_ID
+          echo $GITHUB_REPOSITORY_OWNER
+          echo $GITHUB_REPOSITORY_OWNER_ID
+          echo $GITHUB_RETENTION_DAYS
+          echo $GITHUB_RUN_ATTEMPT
+          echo $GITHUB_RUN_ID
+          echo $GITHUB_RUN_NUMBER
+          echo $GITHUB_SERVER_URL
+          echo $GITHUB_SHA
+          echo $GITHUB_STEP_SUMMARY
+          echo $GITHUB_TRIGGERING_ACTOR
+          echo $GITHUB_WORKFLOW
+          echo $GITHUB_WORKFLOW_REF
+          echo $GITHUB_WORKFLOW_SHA
+          echo $GITHUB_WORKSPACE
+          echo $RUNNER_ARCH
+          echo $RUNNER_DEBUG
+          echo $RUNNER_ENVIRONMENT
+          echo $RUNNER_NAME
+          echo $RUNNER_OS
+          echo $RUNNER_TEMP
+          echo $RUNNER_TOOL_CACHE
