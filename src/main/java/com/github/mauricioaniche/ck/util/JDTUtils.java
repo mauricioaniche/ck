@@ -19,15 +19,36 @@ public class JDTUtils {
 	 */
 
 	public static int getStartLine(CompilationUnit cu, MethodDeclaration node) {
-		return node.getBody() != null ?
-				cu.getLineNumber(node.getBody().getStartPosition()) :
-				cu.getLineNumber(node.getStartPosition());
+		if (node.getBody() != null) {
+			return cu.getLineNumber(node.getBody().getStartPosition());
+		}
+
+		int startPos = node.getStartPosition();
+
+		if (node.getJavadoc() != null) {
+			int javadocStartLine = cu.getLineNumber(node.getJavadoc().getStartPosition());
+			if (startPos <= javadocStartLine) {
+				startPos = node.getJavadoc().getStartPosition() + node.getJavadoc().getLength();
+			}
+		}
+
+		return cu.getLineNumber(startPos);
 	}
 
 	public static int getStartLine(CompilationUnit cu, Initializer node) {
-		return node.getBody() != null ?
-				cu.getLineNumber(node.getBody().getStartPosition()) :
-				cu.getLineNumber(node.getStartPosition());
+		if (node.getBody() != null) {
+			return cu.getLineNumber(node.getBody().getStartPosition());
+		}
+
+		int startPos = node.getStartPosition();
+		if (node.getJavadoc() != null) {
+			int javadocStartLine = cu.getLineNumber(node.getJavadoc().getStartPosition());
+			if (startPos <= javadocStartLine) {
+				startPos = node.getJavadoc().getStartPosition() + node.getJavadoc().getLength();
+			}
+		}
+
+		return cu.getLineNumber(startPos);
 	}
 
 	//Get the method name with parameter count and types, e.g. m1/1[int]
