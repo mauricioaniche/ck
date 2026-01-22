@@ -3,6 +3,7 @@ package com.github.mauricioaniche.ck;
 import com.github.mauricioaniche.ck.util.FileUtils;
 
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,7 +44,13 @@ public class Runner {
       FileUtils.IGNORED_DIRECTORIES.add(args[i]);
     }
 
-		ResultWriter writer = new ResultWriter(outputDir + "class.csv", outputDir + "method.csv", outputDir + "variable.csv", outputDir + "field.csv", variablesAndFields);
+		ResultWriter writer = new ResultWriter(
+				Paths.get(outputDir, "class.csv").toString(),
+				Paths.get(outputDir, "method.csv").toString(),
+				Paths.get(outputDir, "variable.csv").toString(),
+				Paths.get(outputDir, "field.csv").toString(),
+				variablesAndFields
+		);
 		
 		Map<String, CKClassResult> results = new HashMap<>();
 		
