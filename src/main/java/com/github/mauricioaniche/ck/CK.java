@@ -36,9 +36,9 @@ public class CK {
 		this.maxAtOnce = 100;
 	}
 
-	public CK(boolean useJars, int maxAtOnce, boolean variablesAndFields) {
+	public CK(boolean useJars, int maxAtOnce, boolean variablesAndFields, boolean verbose) {
 		MetricsFinder finder = new MetricsFinder();
-		this.classLevelMetrics = () -> finder.allClassLevelMetrics();
+		this.classLevelMetrics = () -> finder.allClassLevelMetrics(verbose);
 		this.methodLevelMetrics = () -> finder.allMethodLevelMetrics(variablesAndFields);
 
 		this.useJars = useJars;
@@ -49,7 +49,7 @@ public class CK {
 	}
 
 	public CK() {
-		this(false, 0, true);
+		this(false, 0, true, false);
 	}
 
 	public void calculate(String path, CKNotifier notifier) {

@@ -2,11 +2,12 @@ package com.github.mauricioaniche.ck.util;
 
 import com.github.mauricioaniche.ck.metric.ClassLevelMetric;
 import com.github.mauricioaniche.ck.metric.MethodLevelMetric;
-import com.github.mauricioaniche.ck.metric.RunAfter;
 import com.github.mauricioaniche.ck.metric.VariableOrFieldMetric;
 import org.reflections.Reflections;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class MetricsFinder {
@@ -39,7 +40,7 @@ public class MetricsFinder {
 		}
 	}
 
-	public List<ClassLevelMetric> allClassLevelMetrics() {
+	public List<ClassLevelMetric> allClassLevelMetrics(boolean verbose) {
 
 		if(classLevelClasses == null)
 			loadClassLevelClasses();
@@ -47,7 +48,16 @@ public class MetricsFinder {
 		try {
 			ArrayList<ClassLevelMetric> metrics = new ArrayList<>();
 			for (Class<? extends ClassLevelMetric> aClass : classLevelClasses) {
-				metrics.add(aClass.getDeclaredConstructor().newInstance());
+				boolean isVerbose = aClass.getDeclaredConstructor().newInstance().isVerbose();
+
+				if (verbose) {
+					metrics.add(aClass.getDeclaredConstructor().newInstance());
+				}
+				else {
+					if (!isVerbose) {
+						metrics.add(aClass.getDeclaredConstructor().newInstance());
+					}
+				}
 			}
 
 			return metrics;
