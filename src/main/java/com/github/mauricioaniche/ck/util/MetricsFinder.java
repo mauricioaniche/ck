@@ -1,9 +1,6 @@
 package com.github.mauricioaniche.ck.util;
 
-import com.github.mauricioaniche.ck.metric.ClassLevelMetric;
-import com.github.mauricioaniche.ck.metric.MethodLevelMetric;
-import com.github.mauricioaniche.ck.metric.RunAfter;
-import com.github.mauricioaniche.ck.metric.VariableOrFieldMetric;
+import com.github.mauricioaniche.ck.metric.*;
 import org.reflections.Reflections;
 
 import java.util.*;

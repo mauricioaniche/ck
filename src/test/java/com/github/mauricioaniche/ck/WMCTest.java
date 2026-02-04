@@ -63,6 +63,10 @@ public class WMCTest extends BaseTest {
 
 		Assertions.assertEquals(2, c.getMethod("m2/1[boolean]").get().getWmc());
 		Assertions.assertEquals(2, c.getMethod("m1/1[boolean]").get().getWmc());
+
+		CKClassResult r = report.get("wmc.RecordWMC");
+		Assertions.assertEquals(2, r.getMethod("m2/1[boolean]").get().getWmc());
+		Assertions.assertEquals(2, r.getMethod("m1/1[boolean]").get().getWmc());
 	}
 
 	@Test

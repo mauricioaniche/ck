@@ -3,12 +3,7 @@ package com.github.mauricioaniche.ck.metric;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.dom.ITypeBinding;
-import org.eclipse.jdt.core.dom.ParameterizedType;
-import org.eclipse.jdt.core.dom.SimpleType;
-import org.eclipse.jdt.core.dom.Type;
-import org.eclipse.jdt.core.dom.TypeDeclaration;
+import org.eclipse.jdt.core.dom.*;
 
 import com.github.mauricioaniche.ck.CKClassResult;
 
@@ -20,11 +15,11 @@ public class NOC implements CKASTVisitor, ClassLevelMetric{
 	public NOC() {
 		this.extras = NOCExtras.getInstance();
 	}
-	
+
 	@Override
 	public void visit(TypeDeclaration node){
 		ITypeBinding binding = node.resolveBinding();
-		
+
 		if(binding != null){
 			this.name = binding.getQualifiedName();
 			ITypeBinding father = binding.getSuperclass();
@@ -34,12 +29,12 @@ public class NOC implements CKASTVisitor, ClassLevelMetric{
 		} else {
 			this.name = node.getName().getFullyQualifiedName();
 			Type type = node.getSuperclassType();
-			
+
 			SimpleType castedFatherType = null;
-			
+
 			if(node.getSuperclassType() instanceof SimpleType)
 				castedFatherType = ((SimpleType) node.getSuperclassType());
-			
+
 			if(castedFatherType != null){
 				this.extras.plusOne(castedFatherType.getName().getFullyQualifiedName());
 			}

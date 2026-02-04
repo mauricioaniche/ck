@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
-import java.util.Map;
 import java.util.Optional;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -20,24 +19,36 @@ public class MethodsTest extends BaseTest {
     public void all() {
         CKClassResult a = report.get("methods.Methods");
         Assertions.assertEquals(9, a.getNumberOfMethods());
+        
+        CKClassResult b = report.get("methods.OneRecord");
+        Assertions.assertEquals(8, b.getNumberOfMethods());
     }
 
     @Test
     public void allPublic() {
         CKClassResult a = report.get("methods.Methods");
         Assertions.assertEquals(4, a.getNumberOfPublicMethods());
+        
+        CKClassResult b = report.get("methods.OneRecord");
+        Assertions.assertEquals(5, b.getNumberOfPublicMethods());
     }
 
     @Test
     public void allStatic() {
         CKClassResult a = report.get("methods.Methods");
         Assertions.assertEquals(2, a.getNumberOfStaticMethods());
+        
+        CKClassResult b = report.get("methods.OneRecord");
+        Assertions.assertEquals(1, b.getNumberOfStaticMethods());
     }
 
     @Test
     public void allDefault() {
         CKClassResult a = report.get("methods.Methods");
         Assertions.assertEquals(1, a.getNumberOfDefaultMethods());
+        
+        CKClassResult b = report.get("methods.OneRecord");
+        Assertions.assertEquals(1, b.getNumberOfDefaultMethods());
     }
 
     @Test
@@ -50,13 +61,18 @@ public class MethodsTest extends BaseTest {
     public void allProtected() {
         CKClassResult a = report.get("methods.Methods");
         Assertions.assertEquals(1, a.getNumberOfProtectedMethods());
+        
+        CKClassResult b = report.get("methods.OneRecord");
+        Assertions.assertEquals(1, b.getNumberOfProtectedMethods());
     }
-
 
     @Test
     public void allSynchronized() {
         CKClassResult a = report.get("methods.Methods");
         Assertions.assertEquals(1, a.getNumberOfSynchronizedMethods());
+        
+        CKClassResult b = report.get("methods.OneRecord");
+        Assertions.assertEquals(1, b.getNumberOfSynchronizedMethods());
     }
 
     @Test
@@ -80,6 +96,11 @@ public class MethodsTest extends BaseTest {
 
         CKMethodResult m3 = a.getMethods().stream().filter(x -> x.getMethodName().equals("a/0")).findFirst().get();
         Assertions.assertFalse(m3.isConstructor());
+       
+        CKClassResult r = report.get("methods.OneRecord");
+        System.out.println(r.getMethods());
+        CKMethodResult rm1 = r.getMethods().stream().filter(x -> x.getMethodName().equals("OneRecord/2[java.lang.String,java.lang.Long]")).findFirst().get();
+        Assertions.assertTrue(rm1.isConstructor());
     }
 
     @Test
@@ -110,5 +131,8 @@ public class MethodsTest extends BaseTest {
     public void allFinal() {
         CKClassResult a = report.get("methods.Methods");
         Assertions.assertEquals(1, a.getNumberOfFinalMethods());
+        
+        CKClassResult b = report.get("methods.OneRecord");
+        Assertions.assertEquals(1, b.getNumberOfFinalMethods());
     }
 }

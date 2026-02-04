@@ -12,6 +12,8 @@ import org.eclipse.jdt.core.dom.ASTParser;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -97,13 +99,13 @@ public class CK {
 
 		for(List<String> partition : partitions) {
 			log.debug("Next partition");
-			ASTParser parser = ASTParser.newParser(AST.JLS11);
+			ASTParser parser = ASTParser.newParser(AST.JLS16);
 			
 			parser.setResolveBindings(true);
 			parser.setBindingsRecovery(true);
 			
 			Map<String, String> options = JavaCore.getOptions();
-			JavaCore.setComplianceOptions(JavaCore.VERSION_11, options);
+			JavaCore.setComplianceOptions(JavaCore.VERSION_16, options);
 			parser.setCompilerOptions(options);
 			parser.setEnvironment(allDependencies, srcDirs, null, true);
 			parser.createASTs(partition.toArray(new String[partition.size()]), null, new String[0], storage, null);

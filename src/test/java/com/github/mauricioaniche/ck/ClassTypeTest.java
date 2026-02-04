@@ -19,11 +19,10 @@ public class ClassTypeTest extends BaseTest {
 		report = run(fixturesDir() + "/class-types");
 	}
 
-
 	@Test
 	public void identifyTypesCorrectly() {
 
-		Assertions.assertEquals(5, report.size());
+		Assertions.assertEquals(6, report.size());
 
 		CKClassResult a = report.get("classtypes.A");
 		Assertions.assertEquals("class", a.getType());
@@ -40,7 +39,8 @@ public class ClassTypeTest extends BaseTest {
 		CKClassResult anon2 = report.get("classtypes.A$Anonymous2");
 		Assertions.assertEquals("anonymous", anon2.getType());
 
-
+		CKClassResult aRecord = report.get("classtypes.ARecord");
+		Assertions.assertEquals("record", aRecord.getType());
 	}
 
 

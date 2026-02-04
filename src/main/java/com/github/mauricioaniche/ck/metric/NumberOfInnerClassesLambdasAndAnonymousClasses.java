@@ -20,6 +20,14 @@ public class NumberOfInnerClassesLambdasAndAnonymousClasses implements CKASTVisi
 		innerClassesQty++;
 	}
 
+	@Override
+	public void visit(RecordDeclaration node) {
+		if(firstFound == null)
+			firstFound = "record";
+
+		innerClassesQty++;
+	}
+
 	public void visit(EnumDeclaration node) {
 		// we count enum as class declaration!
 		innerClassesQty++;

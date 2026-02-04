@@ -26,6 +26,14 @@ public class NumberOfAssignmentsTest extends BaseTest {
 		Assertions.assertEquals(5, a.getMethod("m1/0").get().getAssignmentsQty());
 		Assertions.assertEquals(3, a.getMethod("m2/0").get().getAssignmentsQty());
 		Assertions.assertEquals(0, a.getMethod("m3/0").get().getAssignmentsQty());
+		
+		CKClassResult b = report.get("assignments.RecordAssignments");
+
+		Assertions.assertEquals(8, b.getAssignmentsQty());
+
+		Assertions.assertEquals(5, b.getMethod("m1/0").get().getAssignmentsQty());
+		Assertions.assertEquals(3, b.getMethod("m2/0").get().getAssignmentsQty());
+		Assertions.assertEquals(0, b.getMethod("m3/0").get().getAssignmentsQty());
 
 	}
 }
