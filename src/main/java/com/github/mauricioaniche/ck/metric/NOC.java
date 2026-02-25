@@ -34,7 +34,7 @@ public class NOC implements CKASTVisitor, ClassLevelMetric{
 		} else {
 			this.name = node.getName().getFullyQualifiedName();
 			Type type = node.getSuperclassType();
-			
+
 			SimpleType castedFatherType = null;
 			
 			if(node.getSuperclassType() instanceof SimpleType)
@@ -49,10 +49,4 @@ public class NOC implements CKASTVisitor, ClassLevelMetric{
 		}
 		
 	}
-	
-	@Override
-	public void setResult(CKClassResult result) {
-		
-	}
-
 }
