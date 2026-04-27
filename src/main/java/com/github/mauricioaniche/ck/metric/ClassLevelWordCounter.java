@@ -4,6 +4,7 @@ import com.github.mauricioaniche.ck.CKClassResult;
 import com.github.mauricioaniche.ck.util.WordCounter;
 import org.eclipse.jdt.core.dom.AnonymousClassDeclaration;
 import org.eclipse.jdt.core.dom.EnumDeclaration;
+import org.eclipse.jdt.core.dom.RecordDeclaration;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 import static com.github.mauricioaniche.ck.util.WordCounter.removeSpacesAndIdentation;
@@ -25,6 +26,11 @@ public class ClassLevelWordCounter implements CKASTVisitor, ClassLevelMetric {
 	}
 
 	public void visit(EnumDeclaration node) {
+		setOrRemoveSourceCode(node.toString());
+
+	}
+
+	public void visit(RecordDeclaration node) {
 		setOrRemoveSourceCode(node.toString());
 
 	}

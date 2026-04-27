@@ -304,6 +304,58 @@ public class CKVisitor extends ASTVisitor {
 		collectedClasses.add(completedClass.result);
 	}
 
+	public boolean visit(RecordDeclaration node) {
+		ITypeBinding binding = node.resolveBinding();
+
+		// there might be metrics that use it
+		// (even before a record is declared)
+		if(!classes.isEmpty()) {
+			classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.visit(node));
+			if (!classes.peek().methods.isEmpty())
+				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.visit(node));
+		}
+
+		// build a CKClassResult based on the current type
+		// declaration we are visiting
+		String className = binding != null ? binding.getBinaryName() : node.getName().getFullyQualifiedName();
+		String type = "record";
+		int modifiers = node.getModifiers();
+		CKClassResult currentClass = new CKClassResult(sourceFilePath, className, type, modifiers);
+		currentClass.setLoc(calculate(node.toString()));
+
+		// create a set of visitors, just for the current class
+		List<ClassLevelMetric> classLevelMetrics = instantiateClassLevelMetricVisitors(className);
+
+		// store everything in a 'class in the stack' data structure
+		ClassInTheStack classInTheStack = new ClassInTheStack();
+		classInTheStack.result = currentClass;
+		classInTheStack.classLevelMetrics = classLevelMetrics;
+
+		// push it to the stack, so we know the current class we are visiting
+		classes.push(classInTheStack);
+
+		// there might be class level metrics that use the RecordDeclaration
+		// so, let's run them
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.visit(node));
+
+		return true;
+	}
+
+	@Override
+	public void endVisit(RecordDeclaration node) {
+		// let's first visit any metrics that might make use of this endVisit
+		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+
+		ClassInTheStack completedClass = classes.pop();
+
+		// persist the results of the class level metrics in the result
+		completedClass.classLevelMetrics.forEach(m -> m.setResult(completedClass.result));
+
+		// we are done processing this class, so now let's
+		// store it in the collected classes set
+		collectedClasses.add(completedClass.result);
+	}
+
 	private List<ClassLevelMetric> instantiateClassLevelMetricVisitors(String className) {
 		try {
 			List<ClassLevelMetric> classes = classLevelMetrics.call();
