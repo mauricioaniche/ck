@@ -28,6 +28,14 @@ public class NumberOfInnerClassesLambdasAndAnonymousClasses implements CKASTVisi
 			firstFound = "enum";
 	}
 
+	public void visit(RecordDeclaration node) {
+		// we count records as class declarations.
+		innerClassesQty++;
+
+		if(firstFound == null)
+			firstFound = "record";
+	}
+
 	public void visit(LambdaExpression node) {
 		lambdasQty++;
 
@@ -46,7 +54,7 @@ public class NumberOfInnerClassesLambdasAndAnonymousClasses implements CKASTVisi
 	public void setResult(CKClassResult result) {
 		// the -1 there is because the main type under analysis here is counted as +1.
 		result.setAnonymousClassesQty(anonymousClassesQty - (firstFound.equals("anonymous")?1:0));
-		result.setInnerClassesQty(innerClassesQty - (firstFound.equals("type") || firstFound.equals("enum")?1:0));
+		result.setInnerClassesQty(innerClassesQty - (firstFound.equals("type") || firstFound.equals("enum") || firstFound.equals("record")?1:0));
 		result.setLambdasQty(lambdasQty - (firstFound.equals("lambda")?1:0));
 	}
 

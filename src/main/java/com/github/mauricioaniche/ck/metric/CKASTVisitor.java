@@ -277,6 +277,10 @@ public interface CKASTVisitor {
 
 	}
 
+	default void visit(RecordDeclaration node) {
+
+	}
+
 	default void visit(RequiresDirective node) {
 
 	}
@@ -600,6 +604,9 @@ public interface CKASTVisitor {
 	}
 
 	default void endVisit(QualifiedType node) {
+	}
+
+	default void endVisit(RecordDeclaration node) {
 	}
 
 	default void endVisit(RequiresDirective node) {
