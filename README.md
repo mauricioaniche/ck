@@ -184,7 +184,7 @@ By leveraging these design patterns, CK efficiently manages complexity and ensur
 
 ## How to use the standalone version
 
-You need at least Java 8 to be able to compile and run this tool.
+You need at least Java 17 to be able to compile and run this tool.
 
 To use the _latest version_ (which you should), clone the project and generate a JAR. A simple
 `mvn clean compile package` generates the single JAR file for you (see your _target_ folder).
@@ -241,7 +241,7 @@ You also may use the CK maven plugin, developed by @jazzmuesli, which automatica
 ## Supporting a new version of Java
 
 This tool uses Eclipse's JDT Core library under the hood for AST
-construction. Currently the compliance version is set to Java 11.
+construction. Currently the compliance version is set to Java 21.
 
 Need support for a newer language version? The process of adding it is
 very straightforward, considering contributing a PR:
@@ -257,9 +257,9 @@ properties of the Maven Compiler plugin accordingly.
 4. Adjust the following lines in `CK.java`:
     ```
     [...]
-    ASTParser parser = ASTParser.newParser(AST.JLS11);
+    ASTParser parser = ASTParser.newParser(AST.JLS21);
     [...]
-    JavaCore.setComplianceOptions(JavaCore.VERSION_11, options);
+    JavaCore.setComplianceOptions(JavaCore.VERSION_21, options);
     [...]
     ```
 5. Check if the failing unit test case you added in the first step is
