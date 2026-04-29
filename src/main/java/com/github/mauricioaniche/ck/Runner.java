@@ -32,11 +32,15 @@ public class Runner {
 		boolean variablesAndFields = true;
 		if(args.length >= 4)
 			variablesAndFields = Boolean.parseBoolean(args[3]);
-		
+
 		// path where the output csv files will be exported
 		String outputDir = "";
 		if(args.length >= 5)
 			outputDir = args[4];
+
+		boolean isVerbose = false;
+		if(args.length >= 6)
+			isVerbose = Boolean.parseBoolean(args[5]);
 
     // load possible additional ignored directories
     //noinspection ManualArrayToCollectionCopy
@@ -54,7 +58,7 @@ public class Runner {
 		
 		Map<String, CKClassResult> results = new HashMap<>();
 		
-		new CK(useJars, maxAtOnce, variablesAndFields).calculate(path, new CKNotifier() {
+		new CK(useJars, maxAtOnce, variablesAndFields, isVerbose).calculate(path, new CKNotifier() {
 			@Override
 			public void notify(CKClassResult result) {
 				
