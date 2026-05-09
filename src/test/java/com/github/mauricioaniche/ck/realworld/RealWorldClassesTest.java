@@ -205,11 +205,10 @@ public class RealWorldClassesTest extends BaseTest {
 	}
 
 	// illustrates the example of https://github.com/mauricioaniche/ck/issues/54
-	// still to be implemented
 	@Test
 	public void hectorPolicyManager_betterNamesForAnonymousClasses() {
 		CKClassResult class1 = report.get("net.retakethe.policyauction.data.impl.HectorPolicyManagerImpl");
-		CKClassResult anonymousClass = report.get("net.retakethe.policyauction.data.impl.HectorPolicyManagerImpl$Anonymous1");
+		CKClassResult anonymousClass = report.get("net.retakethe.policyauction.data.impl.HectorPolicyManagerImpl#getAllPolicies$Anonymous1");
 
 		Assertions.assertNotNull(class1);
 		Assertions.assertNotNull(anonymousClass);
