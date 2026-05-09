@@ -1,7 +1,9 @@
 package com.github.mauricioaniche.ck.metric;
 
+import com.github.mauricioaniche.ck.CK;
 import com.github.mauricioaniche.ck.CKClassResult;
 import com.github.mauricioaniche.ck.CKMethodResult;
+import org.apache.log4j.Logger;
 import org.eclipse.jdt.core.dom.*;
 
 import java.util.HashSet;
@@ -11,6 +13,7 @@ import java.util.stream.Collectors;
 
 public class CBO implements CKASTVisitor, ClassLevelMetric, MethodLevelMetric {
 
+	private static Logger log = Logger.getLogger(CK.class);
 	private Set<String> coupling = new HashSet<String>();
 
 	@Override
@@ -135,9 +138,8 @@ public class CBO implements CKASTVisitor, ClassLevelMetric, MethodLevelMetric {
 				coupleTo(node.getType());
 			}
 		} catch (NullPointerException e) {
-			// TODO: handle exception
+			log.error(e.getMessage());
 		}
-
 	}
 	private void coupleTo(Annotation type) {
 		ITypeBinding resolvedType = type.resolveTypeBinding();
